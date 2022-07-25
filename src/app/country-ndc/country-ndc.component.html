@@ -1,0 +1,377 @@
+<section class="container pl-20 pr-20">
+  <div class="row">
+    <div>
+      <h4 class="mt-4">Manage Aggregated Actions</h4>
+    </div>
+    <div class="p-grid p-fluid card" style="z-index: 2;">
+      <div class="col-sm-12 col-md-6 mb-4" style="background-color: transparent">
+        <h6>Aggregated Actions Version</h6><br />
+        <p-dropdown name="projStatus" [autoDisplayFirst]="false" [options]="setno" optionLabel="name"
+          placeholder="Aggregated Actions set no" [(ngModel)]="selectedtype" (onChange)="onSetChange($event)"></p-dropdown>
+      </div>
+
+      <div class="col-md-3">
+        <button   pRipple (click)="showDialog()" class="" pButton type="button"
+          label="Add New Aggregated Actions"></button>
+     
+
+        <!-- <button pRipple (click)="targets()" class="" pButton type="button"
+          label="Emission Reduction Targets"></button> -->
+    
+    </div>
+      <div class="col-sm-10 p-grid p-fluid">
+        <div>
+          <!-- <p-dialog [(visible)]="confirm1" (onHide)="close()">
+            Selected NDCs Activated successfully!!
+          </p-dialog> -->
+          <!-- <p-confirmDialog header="Activation" icon="pi pi-exclamation-triangle"></p-confirmDialog> -->
+        </div>
+        <h6>{{ test }} Sector</h6><br /><br />
+        <button pRipple (click)="activate()" pButton icon="pi pi-check" label="Activate Selected Aggregated Actions"
+          [disabled]="selectedndc"></button>
+        <p-table [value]="data"
+        [lazy]="true"
+        (onLazyLoad)="loadGridData($event)"
+        [paginator]="true"
+        [rows]="rows"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[ 10, 25, 50]"
+        [totalRecords]="totalRecords"
+        
+        
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                <div class="col-sm-2" style="width: 70.666667%">
+                  <button
+                    class="ml-4"
+                    type="button"
+                    (click)="addNewNDC()"
+                    pButton
+                    pRipple
+                    icon="pi pi-plus"
+                    styleClass="p-button-warn"
+                  ></button>
+                </div>
+              </th>
+              <th>Aggregated Actions</th>
+              <th>Agregrated Action Name</th>
+              <th>No of Action Areas</th>
+              <th>Edit Aggregated Actions</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-data let-i="rowIndex">
+            <tr>
+              <td>
+                <p-checkbox (click)="checkbox(data.id, data.isSelected)" [(ngModel)]="data.isSelected" name="groupname"
+                  value="check" [disabled]="data.status"></p-checkbox>
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ data.name }}</td>
+              <td class="has-details">
+                {{ data.subNdc.length }}
+                <span class="details">
+                  <p-table [value]="data.subNdc">
+                    <ng-template pTemplate="body" let-x let-y="rowIndex">
+                      <tr>
+                        <td>{{ i + 1 }}.{{ y + 1 }}</td>
+                        <td>{{ x.name }}</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </span>
+             </td>
+        <td>
+          <button pRipple pButton type="button" (click)="editSubNDC(data.id, data.name)"
+            class="btn btn-primary btn-block text-uppercase btn-lg" style="margin-left: 1%">
+              Edit
+          </button>
+        </td>
+        </tr>
+        </ng-template>
+        </p-table>
+      </div>
+    </div>
+      <br /><br />
+
+
+      
+      <!-- <div class="p-grid p-fluid card" style="z-index: 0;">
+        <h6>Add New NDCs</h6><br />
+        <button pRipple class="fas fa-plus" (click)="addNewNDC()" pButton type="button"
+          style="background-color: #c6cfd7; border-color: transparent">
+          <i class="pi pi-plus" style="font-size: 1rem; color: #000"></i>
+        </button>
+      </div> -->
+      <p-dialog header="Set Of Aggregated Actions" [(visible)]="display">
+        <p-table [value]="setno">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Title</th>
+              <th>Submission Date</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-setno>
+            <tr>
+              <td>{{ setno.name }}</td>
+              <td>{{ setno.submissionDate | date: "dd-MM-yyyy " }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div>
+          <label class="mt-20" for="">Title</label>
+          <input 
+          type="text"
+          class="p-inputtext w-100"
+          name="setname" 
+          #setname="ngModel"
+          field="setname" 
+          [(ngModel)]="set" 
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+          required
+          placeholder="Please enter the same name as Aggregated Actions submition" />
+          <p
+          class="info-message text-danger"
+          *ngIf="
+            !set &&
+            (confirm2 || setname.touched)
+          "
+          
+        >
+          This is a mandatory field
+        </p>
+        </div>
+        <div>
+          <label class="mt-10" for="">Submission Date</label>
+          <input 
+           type="text" 
+           class="p-inputtext w-100" 
+           [(ngModel)]="submitdate" 
+           name="subdate" 
+           #subdate="ngModel"
+           field="subdate" 
+           pInputText
+           [ngModelOptions]="{ standalone: true }"
+           required
+           placeholder="Please Enter the same Date as Aggregated Actions submit" />
+         
+              <p
+              class="info-message text-danger"
+              *ngIf="
+                !submitdate &&
+                (confirm2 || subdate.touched)
+              "
+            >
+              This is a mandatory field
+            </p>
+        </div>
+        
+        <button pButton type="button" (click)="saveSetofNDcs()" label="Save" class="mt-10"
+          onClick="window.location.reload();"></button>
+      </p-dialog>
+      <p-dialog [(visible)]="confirm3"> Saved Successfully!! </p-dialog>
+      <p-dialog [(visible)]="confirm4"> Failed!! </p-dialog>
+      
+      <!-- <div class="text-end">
+        <button  style="margin-right: 20px" pRipple (click)="showDialog()" class="" pButton type="button"
+          label="Add New Set of NDCs"></button>
+    
+    </div> -->
+      <p-dialog header="{{ test }} Sector" [(visible)]="display1">
+        <h6>BAU Scenario</h6><br>
+      <div class="row">
+        <div class="col" >
+          
+          <label >Base year</label><br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="baseyear" 
+          #baseyear="ngModel"
+          field="baseyear" 
+          [(ngModel)]="emissionReduction.baseYear" 
+
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+         
+          placeholder="Please enter the Base Year" />
+          <p
+          class="info-message text-danger"
+          *ngIf="
+           !emissionReduction.baseYear &&
+            (display2 || baseyear.touched)
+          "
+          
+        >
+          This is a mandatory field
+        </p>
+        </div>
+        <div class="col" >
+          <label >Base year Emission(MtCO₂e)</label><br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="baseyearemission" 
+          #baseyearemission="ngModel"
+          field="baseyearemission" 
+          [(ngModel)]="emissionReduction.baseYearEmission" 
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+          
+          placeholder="Please enter the Base Year Emission" />
+          <p
+          class="info-message text-danger"
+          *ngIf="
+           !emissionReduction.baseYearEmission &&
+            (display2 || baseyearemission.touched)
+          "
+          
+        >
+          This is a mandatory field
+        </p>
+        </div>
+     </div> 
+        <!-- ////////////////////////////////////////////////////////////////////////////// -->
+
+        <div class="row">
+          <div class="col mt-10" >
+          <label >Target Year</label><br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="targetyear" 
+          #targetyear="ngModel"
+          field="targetyear" 
+          [(ngModel)]="emissionReduction.targetYear" 
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+          
+          placeholder="Please enter the Base Year Emission" />
+          <p
+          class="info-message text-danger"
+          *ngIf="
+           !emissionReduction.targetYear &&
+            (display2 || targetyear.touched)
+          "
+          
+        >
+
+          This is a mandatory field
+        </p>
+        </div>
+        <!-- ///////////////////////////////////////////////////////////////////////////// -->
+        <div class="col mt-10" >
+          <label >Target Year Emission(MtCO₂e)</label><br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="targetyearem" 
+          #targetyearem="ngModel"
+          field="targetyearem" 
+          [(ngModel)]="emissionReduction.targetYearEmission" 
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+         
+          placeholder="Please enter the Base Year Emission" />
+          <p
+          class="info-message text-danger"
+          *ngIf="
+         !emissionReduction.targetYearEmission &&
+            (display2 || targetyearem.touched)
+          "
+          
+        >
+          This is a mandatory field
+        </p>
+        </div>
+        </div>
+<!-- 
+        ///////////////////////////////////////////////////////////////////////////////////// -->
+
+        
+          <h6 class="mt-20">Emission Reduction Targets</h6>
+          <div class="row">
+            <div class="col" >
+          <label >Unconditional(MtCO₂e)</label><br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="ucEmission" 
+          #ucEmission="ngModel"
+          field="ucEmission" 
+          [(ngModel)]="emissionReduction.unconditionaltco2" 
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+         
+          placeholder="Please enter the Base Year" />
+          <!-- <p
+          class="info-message text-danger"
+          *ngIf="
+            !unCEmission &&
+            (display2 || ucEmission.touched)
+          "
+          
+        >
+          This is a mandatory field
+        </p> -->
+        </div>
+
+        <!-- ////////////////////////////////////////////////////////// -->
+        
+          <div class="col" >
+          <label >conditional(MtCO₂e)</label><br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="cEmission" 
+          #cEmission="ngModel"
+          field="cEmission" 
+          [(ngModel)]="emissionReduction.conditionaltco2" 
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+          
+          placeholder="Please enter the Base Year" />
+          <p
+          class="info-message text-danger"
+          *ngIf="
+            !emissionReduction.conditionaltco2 && emissionReduction.unconditionaltco2 &&
+            (display2 || cEmission.touched)
+          "
+          
+        >
+          This is a mandatory field
+        </p>
+        </div>
+          </div>
+        <button pButton type="button" (click)="saveTargets()" [label]="(isNewNDAC) ? 'Save' :'Update'" 
+        class="mt-2" style="margin-right: 2%">
+        
+          
+        </button>
+      </p-dialog>
+
+      <div>
+        <p-dialog [(visible)]="display3" (onHide)="close1()">
+          Error in Saving !!
+        </p-dialog>
+        <!-- <p-confirmDialog header="Activation" icon="pi pi-exclamation-triangle"></p-confirmDialog> -->
+      </div>
+
+      <div>
+        <p-dialog [(visible)]="display4" (onHide)="close()">
+          Saved Successfully!!
+        </p-dialog>
+       
+      </div>
+
+      <p-toast position="top-right"></p-toast>
+    </div>
+
+
+  <!-- Add New NDC -->
+  <p-confirmDialog header="Activation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+  <!-- Edit NDC and Sub NDCs -->
+</section>

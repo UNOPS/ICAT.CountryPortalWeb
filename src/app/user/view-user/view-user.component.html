@@ -1,0 +1,253 @@
+<p-toast position="top-right"></p-toast>
+<div class="container pl-20 pr-20">
+  <div class="mb-12">
+    <h4 class="mt-4">View User</h4>
+  </div>
+  <div class="card">
+    <div class="p-grid p-fluid col-sm-12">
+      <div class="row p-2">
+        <div class="col-12 col-md-6">
+          <div class="p-field">
+            <label for="institution">Assign Institution </label>
+            <!-- <p-dropdown
+              [disabled]="editUserId > 0"
+              name="namehhhh"
+              [options]="institutions"
+              [(ngModel)]="user.institution"
+              #namehhhh="ngModel"
+              [filter]="false"
+              placeholder= {{user.institution.name}}
+              optionLabel="name"
+            ></p-dropdown> -->
+
+            <input
+              [disabled]="editUserId > 0"
+              type="text"
+              name="namehhhh"
+              class="form-control"
+              [(ngModel)]="user.institution.name"
+              #fdesignation="ngModel"
+              placeholder="Enter the institution"
+              required
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-grid p-fluid col-md-9 col-sm-12">
+      <div class="row p-2">
+        <div class="col-12 col-md-8">
+          <div class="p-field">
+            <label for="usertype">User Type </label>
+            <!-- <p-dropdown
+              [disabled]="editUserId > 0"
+              name="usertype"
+              [(ngModel)]="user.userType"
+              placeholder={{user.userType.name}}
+              optionLabel="name"
+              #fut="ngModel"
+            ></p-dropdown> -->
+
+            <input
+              [disabled]="editUserId > 0"
+              type="text"
+              name="usertype"
+              class="form-control"
+              [(ngModel)]="user.userType.name"
+              #fdesignation="ngModel"
+              placeholder="Enter the user type"
+              required
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-grid p-fluid col-md-9 col-sm-12">
+      <div class="row p-2">
+        <div class="col-12 col-md-8">
+          <div class="p-field">
+            <label for="email">Designation </label>
+
+            <input
+              [disabled]="editUserId > 0"
+              type="text"
+              name="designation"
+              class="form-control"
+              [(ngModel)]="user.designation"
+              #fdesignation="ngModel"
+              placeholder="-"
+              required
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-grid p-fluid col-md-9 col-sm-12">
+      <div class="row p-2">
+        <div class="col-12 col-md-8">
+          <div class="p-field">
+            <label for="firstname">First Name </label>
+            <input
+              [disabled]="editUserId > 0"
+              type="text"
+              name="firstname"
+              class="form-control"
+              [(ngModel)]="user.firstName"
+              #ffn="ngModel"
+              placeholder="Enter the first name"
+              required
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-grid p-fluid col-md-9 col-sm-12">
+      <div class="row p-2">
+        <div class="col-12 col-md-8">
+          <div class="p-field">
+            <label for="lastname">Last Name </label>
+
+            <input
+              [disabled]="editUserId > 0"
+              type="text"
+              name="lastname"
+              class="form-control"
+              [(ngModel)]="user.lastName"
+              #fln="ngModel"
+              placeholder="Enter the last name"
+              required
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-grid p-fluid col-md-9 col-sm-12">
+      <div class="row p-2">
+        <div class="col-12 col-md-8">
+          <div class="p-field">
+            <label for="email">Email </label>
+
+            <input
+              [disabled]="editUserId > 0"
+              type="email"
+              name="email"
+              class="form-control"
+              [(ngModel)]="user.email"
+              #femail="ngModel"
+              placeholder="Enter the email"
+              pattern="[\w-\.]+@([\w-]+\.)+[\w-]{1,20}$"
+              required
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-grid p-fluid col-md-9 col-sm-12">
+      <div class="row p-2">
+        <div class="col-12 col-md-8">
+          <div class="p-field">
+            <label for="institution">Landline </label>
+            <p-inputMask
+              [disabled]="editUserId > 0"
+              type="text"
+              name="telephone"
+              mask="+99 99-999-9999"
+              [autoClear]="false"
+              placeholder="+99 999 999-9999"
+              [(ngModel)]="user.telephone"
+              #ftelephone="ngModel"
+              [styleClass]="'form-control'"
+            ></p-inputMask>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-grid p-fluid col-md-9 col-sm-12">
+      <div class="row p-2">
+        <div class="col-12 col-md-8">
+          <div class="p-field">
+            <label for="mobile">Mobile </label>
+
+            <p-inputMask
+              [disabled]="editUserId > 0"
+              type="text"
+              name="mobile"
+              mask="+99 99-999-9999"
+              [autoClear]="false"
+              placeholder="+99 999 999-999"
+              [(ngModel)]="user.mobile"
+              [styleClass]="'form-control'"
+              #fmobile="ngModel"
+            ></p-inputMask>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="p-grid p-fluid col-md-9 col-sm-12">
+      <div class="row p-2">
+        <div class="col-12 col-md-8">
+          <div class="p-field">
+            <label for="photo">Uplaod profile photo</label>
+
+            <label class="image-upload-container btn btn-bwm">
+              <input #imageInput type="file" accept="image/*" />
+            </label>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="row">
+      <div class="d-flex  col-2 justify-content-start mb-0 pl-2  ">
+        <button
+          class="btn btn-secondary text-uppercase ml-15 "
+          (click)="onBackClick()"
+        >
+          Back
+        </button>
+      </div>
+      <div
+      class="d-flex offset-2 col-2 justify-content-end p-button-vertical mb-0 pl-2"
+      >
+        <button
+        pButton
+        pRipple
+          *ngIf="!isNewUser"
+          [disabled]="itsMe || user.canNotDelete == true || checkRole"
+          class="btn text-uppercase"
+          type="button"
+          (click)="confirmDeletUser()"
+        >
+          {{isActive==0?'Deactivate':'Activate'}}
+        </button>
+      </div>
+      <!-- <div class="col-2 d-flex justify-content-end ml-4">
+            <button
+              [disabled]="coreatingUser || user.canNotDelete == true"
+              class="btn btn-primary text-uppercase btn-lg"
+              type="submit"
+            >
+              Save
+            </button>
+          </div> -->
+    </div>
+    <!-- <div class="row">
+          <div *ngIf="coreatingUser" class="d-flex col-6 justify-content-end">
+            <p class="info-message text-warning mt-2" *ngIf="true">
+              please wait a moment...
+            </p>
+          </div>
+        </div> -->
+  </div>
+</div>
+
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"  rejectButtonStyleClass="p-button-text"></p-confirmDialog>

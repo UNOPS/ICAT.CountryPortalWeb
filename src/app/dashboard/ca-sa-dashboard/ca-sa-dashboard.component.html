@@ -1,0 +1,324 @@
+<div>
+  <div class="dahsboard-header">
+    <h1>Hello {{userName}} !</h1>
+    <h2>We are on a mission to help take actions against climate change.</h2>
+</div>
+    <section class="container pl-20 pr-20">
+       
+        <div class="row ">
+          <div class="p-grid p-fluid card" style="z-index: 1;">
+           <div class="row justify-content-center">
+            <div *ngIf="!projects || projects.length==0" class="col-md-5 ">
+
+              <p-messages severity="warn" >
+                <ng-template pTemplate>
+                    <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
+                    <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
+                    <div class="ml-2">There are no Specific Climate Actions data to show.</div>
+                </ng-template>
+            </p-messages>
+            </div>
+                    <div *ngIf="projects&&projects.length>0" class="col-md-5 ">
+                        <div class="row justify-content-center">
+                          <div class="col-lg-6 col-md-11 col-sm-8 " >
+                            <h6 align="center">Current Status of Specific Climate Actions</h6>
+                          </div>
+                                
+                            </div>
+               
+                        <p-chart class="myChartDiv" type="doughnut" [data]="data" [options]="chartOptions" ></p-chart>
+                     </div>
+                    
+            <div class="col col-md-7">
+                <div class="row ">
+                  
+                    <div class="col-12  col-md-12">
+                      <div class="row justify-content-center">
+                        <div class="col-lg-4 col-md-8 col-sm-4 col-4 " >
+                          <h6>Active Projects</h6>
+                        </div>
+                              
+                          </div>
+                        
+                    </div>
+                    <div class="col col-md-6" style="padding-top:1%">
+                        
+                            <label for="projStatus">Sector</label>
+                            <p-dropdown *ngIf="isCountryAdmin"
+                              name="sector"
+                              [options]="sectorList"
+                              [(ngModel)]="searchBy.sector"
+                              #fsector="ngModel"
+                              [showClear]="true"
+                              [filter]="true"
+                              placeholder="Select .."
+                              optionLabel="name"
+                              (ngModelChange)="onsectorChange($event)"
+                            >
+                            </p-dropdown>
+                            <h6 *ngIf="!isCountryAdmin">{{sector?sector.name:""}}</h6>
+                         
+                      </div>
+                      <div class="col col-md-6" style="padding-top:1%">
+                        
+                        
+                     
+                  </div>
+                     
+                      <div class="p-field col col-md-6" style="padding-top:1%;padding-bottom:1%">
+                        
+                            <label for="projStatus">Aggregated Actions</label>
+                            <p-dropdown
+                              name="ndc"
+                              [options]="ndcList"
+                              [(ngModel)]="searchBy.ndc"
+                              #fndc="ngModel"
+                              [showClear]="true"
+                              [filter]="true"
+                              placeholder="Select .."
+                              optionLabel="name"
+                              (ngModelChange)="onndcChange($event)"
+                            >
+                            </p-dropdown>
+                        
+                      </div>
+        
+                      <div class="col col-md-6" style="padding-top:1%;padding-bottom:1%">
+                       
+                            <label for="projStatus">Action Areas</label>
+                            <p-dropdown
+                              name="subndc"
+                              [options]="subndcList"
+                              [(ngModel)]="searchBy.subndc"
+                              #fsubndc="ngModel"
+                              [showClear]="true"
+                              [filter]="true"
+                              placeholder="Select .."
+                              optionLabel="name"
+                              [style]="{'minWidth':'100%'}"                              
+                              (ngModelChange)="onsubndcChange($event)"
+                               >
+                            </p-dropdown>
+                         
+                      </div> 
+                 </div>
+                 <div *ngIf="activeprojects.length==0" class="col">
+                  <p-messages severity="warn" >
+                    <ng-template pTemplate>
+                        <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
+                        <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
+                        <div class="ml-2">There are no  active projects data to show.</div>
+                    </ng-template>
+                </p-messages>
+                 </div>
+                 <div *ngIf="activeprojects.length>0"   class="col col-md-12">   <p-table
+                  #dt
+                  p-table
+                  #table
+                  width="100px"
+                  [value]="activeprojects"
+                  [lazy]="true"
+                  (onLazyLoad)="loadgridData($event)"
+                  [paginator]="true"
+                  [rows]="rows"
+                  
+                  [showCurrentPageReport]="true"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  [rowsPerPageOptions]="[5,10, 50]"
+                  [totalRecords]="totalRecords"
+                  [loading]="loading"
+                  [responsive]="true"
+                  
+                  responsiveLayout="scroll"
+                >
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th class=" col-lg-4">Specific Climate Actions </th>
+                      <th class=" col-lg-2">Emission Reduction Target    (MtCO<sub>2</sub>e)</th>
+                      <th class=" col-lg-2">Target Year Range</th>
+                      <th class=" col-lg-2">Emission Reduction Achievement (MtCO<sub>2</sub>e)</th>
+                      <th class=" col-lg-1">Achievement Year Range</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-activeprojects>
+                    <tr>
+                      <td   class=" col-lg-4 " ><div type ="button" class="  d-inline-block text-truncate"  [ngStyle]="{'max-width': screenWidth > 1300 ? '200px' : screenWidth > 980?'400px':'200px' }"
+                      [pTooltip]=" activeprojects.name" tooltipPosition="bottom" >
+                        {{ activeprojects.name}}</div>
+                        </td>
+                      <td  class=" col-lg-2">{{activeprojects.ertarget  | number: '2.'}}</td>
+                      <td class=" col-lg-2">{{activeprojects.targetyear}}</td>
+                      <td  class=" col-lg-2">{{activeprojects.erarchievment  | number: '2.'}}</td>
+                      <td  class=" col-lg-2">{{activeprojects.archivmentyear}}</td>
+                    </tr>
+                  </ng-template>
+                </p-table></div>
+             
+            </div>
+            </div></div>
+            
+            <div  class="p-grid p-fluid card" style="z-index: 0;">
+              <!-- <div class="col-12"><h6>Sector</h6></div> -->
+              <div class="col-2 ">       
+                <label for="projStatus">Sector</label>
+                <p-dropdown  *ngIf="isCountryAdmin"
+                  name="sector"
+                  [options]="sectorList"
+                  [(ngModel)]="searchBy1.sector"
+                  #fsector="ngModel"
+                  [showClear]="true"
+                  [filter]="true"
+                  placeholder="Select .."
+                  optionLabel="name"
+                  (ngModelChange)="onsectorChange1($event)"
+                >
+                </p-dropdown>
+
+                <h6 *ngIf="!isCountryAdmin">{{sector?sector.name:""}}</h6>
+             
+          </div>
+          <div *ngIf="!isNDCdata" class="p-grid p-fluid ">
+            <p-messages severity="warn" >
+              <ng-template pTemplate>
+                  <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
+                  <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
+                  <div class="ml-2">There are no Aggregated Actions achievements  data to show.</div>
+              </ng-template>
+          </p-messages></div>
+                <div *ngIf="isNDCdata" class="col">
+                
+                <p-chart type="bar" [data]="basicData" [options]="horizontalOptions"></p-chart>        
+              </div>
+              </div>
+
+                <!-- <div class="p-grid p-fluid card">
+                  <p-table [value]="ndcprojectdetails">
+        
+                    <ng-template pTemplate="body" let-ndcprojectdetails>
+                      <tr>
+                        <td>{{ ndcprojectdetails.name }}</td>
+                        <td>{{ ndcprojectdetails.cacount}}</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>  -->
+           <!-- <div class="card">
+                <h5>Horizontal</h5>
+                <p-chart type="bar" [data]="basicData" [options]="horizontalOptions"></p-chart> 
+            </div>  -->
+            <div  class="card">
+              <div *ngIf="bauValLst.length==0">
+                <p-messages severity="warn" >
+                  <ng-template pTemplate>
+                      <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
+                      <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
+                      <div class="ml-2">There are no emission reduction target data to show.</div>
+                  </ng-template>
+              </p-messages>
+                
+              </div>
+              <div *ngIf="bauValLst.length>0" class="row">
+                <div class="col-1"> <div style="font-size: 2em;"  type="button"  class="pi pi-info-circle " pTooltip="Click on the legend to filter the data" ></div></div></div>
+                <div  *ngIf="bauValLst.length>0" class="row"> 
+                  <!-- <div class="col-md-8"> -->
+                    
+                    <div class="col"> <p-chart type="line"  [data]="lineStylesData" [options]="basicOptions"></p-chart></div>
+                  <!-- </div> -->
+                  
+                  <!-- <div class="col"> <p-chart type="bar" [options]="chartOptions" [data]="data"></p-chart></div> -->
+                    
+          <!-- <h5>Total Emissions <br> {{sector}} Sector Emission Scenario </h5>
+          <p-chart type="line" [data]="lineStylesData" [options]="basicOptions"></p-chart> -->
+
+
+                </div>
+               
+            </div>
+            <!-- <div *ngFor="let macGrap of macGraps" of macGraps class="p-grid p-fluid card" >
+              <div class="row"> 
+                <div class="col-12">
+                  <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-8 col-sm-4 col-4 " >
+                      <h6>Mac Curve Year {{macGrap[0]}}</h6>
+                    </div>
+                          
+                      </div>
+                    
+                </div>
+                <div class="col-md-8">
+                  
+                  <img [src]="macGrap[1]"  width="800px" />
+                </div>
+                
+
+              </div>
+             
+            </div> -->
+            <div *ngIf="macGrapsForPosts.length==0" class="p-grid p-fluid card"  style="width: 100%;">
+              <p-messages severity="warn" >
+                <ng-template pTemplate>
+                    <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
+                    <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
+                    <div class="ml-2">There are no mac data to show.</div>
+                </ng-template>
+            </p-messages>
+
+            </div>
+            <div *ngIf="macGrapsForPosts.length>0" class="p-grid p-fluid card"  style="width: 100%;">
+
+              <p-carousel [value]="macGrapsForPosts" [numVisible]="1" [numScroll]="1" [style]="{'max-width':'1000px', 'margin-top':'2em'}" [circular]="false" >
+            
+                <ng-template let-macGrapsForPost pTemplate="item" style="width: 500px;">
+        
+                      <div class="row justify-content-center" >
+                        <div class="col-lg-6 col-md-8 col-sm-4 col-6 " >
+                          <h6>MAC Curve Year(EX-post) {{macGrapsForPost[0]}}</h6>
+                        </div>
+                              
+                          </div>
+                        
+                    
+                   
+                      
+                      <img [src]="macGrapsForPost[1]"  width="100%" />
+                   
+                    
+    
+                  
+               
+                </ng-template>
+             </p-carousel>
+
+            </div>
+            <div *ngIf="macGrapsForAntes.length>0" class="p-grid p-fluid card"  style="width: 100%;">
+
+              <p-carousel [value]="macGrapsForAntes" [numVisible]="1" [numScroll]="1" [style]="{'max-width':'1000px', 'margin-top':'2em'}" [circular]="false" >
+            
+                <ng-template let-macGrapsForAnte pTemplate="item" style="width: 500px;">
+        
+                      <div class="row justify-content-center" >
+                        <div class="col-lg-5 col-md-8 col-sm-4 col-6 " >
+                          <h6>MAC Curve Year(EX-ante) {{macGrapsForAnte[0]}}</h6>
+                        </div>
+                              
+                          </div>
+                        
+                    
+                   
+                      
+                      <img [src]="macGrapsForAnte[1]"  width="100%" />
+                   
+                    
+    
+                  
+               
+                </ng-template>
+             </p-carousel>
+
+            </div>
+       
+         
+        </div>
+    </section>   
+</div> 
+

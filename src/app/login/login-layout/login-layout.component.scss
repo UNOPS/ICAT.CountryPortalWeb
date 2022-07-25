@@ -1,0 +1,32 @@
+.login-back {
+    background-image: url(../../../assets/images/login-back.jpg);
+    height: 100vh;
+}
+.login-inner {
+    max-width: 500px;
+    margin: auto;
+}
+
+.login-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px;
+    align-content: center;
+}
+
+h2 {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 33px;
+    line-height: 130%;
+}
+
+.col-md-2{
+    cursor: pointer;
+}
+
+.col-md-5{
+    cursor: pointer;
+}

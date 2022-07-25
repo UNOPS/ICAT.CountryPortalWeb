@@ -1,0 +1,180 @@
+<div class="container pl-20 pr-20">
+  <h4 class="mt-4">Manage Default Values</h4>
+  <div class="p-grid p-fluid card">
+    <div class="row mb-3">
+      <div class="col-md-4"></div>
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="p-inputgroup pt-4">
+          <input
+            placeholder="Type Your Keyword"
+            type="text"
+            class="p-inputtext"
+            [(ngModel)]="searchBy.text"
+            #nameClimate="ngModel"
+            pInputText
+          />
+          <button type="button" pButton pRipple label="Search" (click)="ontextSearch()"></button>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Source</label>
+            <p-dropdown
+              name="projStatus"
+              [options]="sourceList"
+              [(ngModel)]="searchBy.source"
+              #projStatus="ngModel"
+              [showClear]="true"
+              [filter]="true"
+              placeholder="Select"
+              (ngModelChange)="onStatusChange($event)"
+              
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="projStatus">Year</label>
+          <p-dropdown
+            name="yearsLists"
+            [options]="yearsList"
+            [(ngModel)]="searchBy.year"
+            #yearsLists="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            placeholder="Select"
+            (ngModelChange)="onStatusChange($event)"
+            
+           
+          >
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="projStatus">Status</label>
+          <p-dropdown
+            name="statustype"
+            [options]="dropDownStatusList"
+            [(ngModel)]="searchBy.status"
+            #statustype="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            placeholder="Select"
+            (ngModelChange)="onStatusChange($event)"
+           
+          >
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div> {{climateactions|json}} </div> -->
+    <div class="row p-2">
+      <p-table
+        #table
+        [value]="defaulValList"
+        [lazy]="true"
+        (onLazyLoad)="loadgridData($event)"
+        [paginator]="true"
+        [rows]="rows"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[1, 10, 25, 50]"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+        [responsive]="true"
+      >
+        
+        <ng-template pTemplate="header">
+         
+
+          <tr>
+            <th>
+              <i 
+              class="ml-4"
+              type="button"
+              pButton
+              pRipple
+              icon="pi pi-plus"
+              styleClass="p-button-warn"
+              (click)="toForm()">
+              </i>
+            </th>
+            <th>Name</th>
+            <th>Value</th>
+            <th>Unit</th>
+            <th>Year</th>
+            <th>Description</th>
+            <th>Source</th>
+            <th>Updated Date</th>  
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-defaulValList>
+          <tr>
+            <td></td>
+            <td>{{ defaulValList?.parameterName }}</td>
+            <td>
+              {{ defaulValList?.value != null ? defaulValList?.value:'Pending'}}
+            </td>
+            <td>{{ defaulValList?.unit }}</td>
+            <td>{{ defaulValList?.year }}</td>
+            <td>{{ defaulValList?.administrationLevel }}</td>
+            <td>{{ defaulValList?.source }}</td>
+            <td>{{ defaulValList.editedOn | date: "dd-MM-yyyy " }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+      <!-- <div class="col-md-3 offset-9">
+            <button
+              type="button"
+              pButton
+              pRipple
+              label="Request Data Values"
+              
+            ></button>
+      </div> -->
+  </div>
+</div>
+<p-dialog [(visible)]="confirm1" header="New Deadline">
+  <div style="width: 600px; height: 500px">
+    <table>
+      <tr>
+        <td colspan="3">
+          <div class="p-field mb-2">
+            <label for="projStatus">Assign New Deadline</label>
+            <p-calendar
+              placeholder="DD/MM/YYYY"
+              dateFormat="dd/mm/yy"
+            ></p-calendar>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="p-field">
+            <button type="button" pButton pRipple label="Send Now"></button>
+          </div>
+        </td>
+        <td>
+          <div class="p-field">
+            <button type="button" pButton pRipple label="Save"></button>
+          </div>
+        </td>
+        <td>
+          <div class="p-field">
+            <button type="button" pButton pRipple label="Cancel"></button>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</p-dialog>

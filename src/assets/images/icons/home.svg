@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="23px" viewBox="0 0 23 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>flat-color-icons:home</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Creating-Pot-flow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Savings-Dashboard-Copy-25" transform="translate(-25.000000, -89.000000)" fill-rule="nonzero">
+            <g id="Side-bar">
+                <g id="Group-26" transform="translate(23.000000, 87.000000)">
+                    <g id="flat-color-icons:home">
+                        <g id="Icon" transform="translate(2.000000, 2.000000)">
+                            <polygon id="Icon-Path" fill="#E8EAF6" points="21.625 19.9375 1.375 19.9375 1.375 10.9375 11.5 1.375 21.625 10.9375"></polygon>
+                            <g id="Icon-Group" transform="translate(1.375000, 3.062500)" fill="#C5CAE9">
+                                <polygon id="Icon-Path" points="18.5625 6.75 15.75 3.9375 15.75 0 18.5625 0"></polygon>
+                                <polygon id="Icon-Path" points="0 16.875 20.25 16.875 20.25 19.6875 0 19.6875"></polygon>
+                            </g>
+                            <polygon id="Icon-Path" fill="#B71C1C" points="11.5 0.41875 0.25 10.88125 1.375 12.11875 11.5 2.725 21.625 12.11875 22.75 10.88125"></polygon>
+                            <polygon id="Icon-Path" fill="#D84315" points="8.125 13.75 14.875 13.75 14.875 22.75 8.125 22.75"></polygon>
+                            <polygon id="Icon-Path" fill="#01579B" points="9.8125 7.5625 13.1875 7.5625 13.1875 10.9375 9.8125 10.9375"></polygon>
+                            <path d="M13.46875,17.96875 C13.3,17.96875 13.1875,18.08125 13.1875,18.25 L13.1875,19.375 C13.1875,19.54375 13.3,19.65625 13.46875,19.65625 C13.6375,19.65625 13.75,19.54375 13.75,19.375 L13.75,18.25 C13.75,18.08125 13.6375,17.96875 13.46875,17.96875 Z" id="Icon-Path" fill="#FF8A65"></path>
+                        </g>
+                        <rect id="ViewBox" x="0" y="0" width="27" height="27"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

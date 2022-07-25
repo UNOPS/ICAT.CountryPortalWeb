@@ -1,0 +1,16 @@
+<div class="container pl-20 pr-20">
+  <div class="mb-12">
+    <h4 class="mt-4">GHG Impact Assessment</h4>
+  </div>
+
+  <div class="card overflow-none">
+    <p-tabView>
+      <p-tabPanel header="Assess a Proposed Specific Climate Action">
+        <app-ghg-assessment [IsProposal]="true"></app-ghg-assessment>
+      </p-tabPanel>
+      <p-tabPanel  [disabled]="dataCollectionModuleStatus==0" header=" Assess an Approved Specific Climate Action">
+        <app-ghg-assessment [IsProposal]="false"></app-ghg-assessment>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>

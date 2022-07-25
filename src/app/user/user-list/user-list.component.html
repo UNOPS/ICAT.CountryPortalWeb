@@ -1,0 +1,137 @@
+<div class="container">
+  <h4 class="mt-4">Users</h4>
+  <div class="p-grid p-fluid card">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="userType">User Type</label>
+          </div>
+
+          <p-dropdown
+            name="usertype1"
+            [(ngModel)]="searchBy.usertype"
+            [options]="userTypes"
+            #userType1="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            placeholder="Select"
+            optionLabel="name"
+            (ngModelChange)="onTypeChange($event)"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-inputgroup pt-4">
+          <input
+            placeholder="Type Your Keyword"
+            [(ngModel)]="searchBy.text"
+            #nameInstitution="ngModel"
+            type="text"
+            name="nameInstitution"
+            class="p-inputtext"
+            pInputText
+          />
+          <button
+            type="button"
+            pButton
+            pRipple
+            label="Search"
+            (click)="onSearch()"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <p-table
+      [value]="customers"
+      [lazy]="true"
+      (onLazyLoad)="loadCustomers($event)"
+      [paginator]="true"
+      [rows]="rows"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [rowsPerPageOptions]="[1, 10, 25, 50]"
+      [totalRecords]="totalRecords"
+      [loading]="loading"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>
+            <div class="col-sm-2" style="width: 70.666667%">
+              <button
+                class="ml-4"
+                type="button"
+                (click)="new()"
+                pButton
+                pRipple
+                icon="pi pi-plus"
+                styleClass="p-button-warn"
+              ></button>
+            </div>
+          </th>
+          <th></th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Institution</th>
+          <th>Type</th>
+          <th>Contact Number</th>
+          <th>Email</th>
+          <th>Status</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-customer>
+        <tr>
+          <td>
+            <button
+              type="button"
+              class="p-button-rounded p-button-text p-eye"
+              pButton
+              pRipple
+              icon="pi pi-eye"
+              (click)="viewUser(customer)"
+            ></button>
+            </td>
+            <td>
+            <button
+            type="button"
+            class="p-button-rounded p-button-text p-eye"
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            (click)="EditUser(customer)"
+          ></button>
+            <!-- <i
+              class="pi pi-eye"
+              style="font-size: 1.5rem; color: #000; margin-left: 17%"
+              (click)="viewUser(customer)"
+            ></i> -->
+          </td>
+
+          <td>{{ customer.firstName }}</td>
+          <td>{{ customer.lastName }}</td>
+
+          <td
+            pTooltip="{{ customer.institution?.name }}"
+            tooltipPosition="top"
+            class="tbl-cell-description"
+          >
+            {{ customer.institution?.name }}
+          </td>
+          <td>{{ customer.userType?.name }}</td>
+          <td>{{ customer.telephone }}</td>
+
+          <td
+            pTooltip="{{ customer.email }}"
+            tooltipPosition="top"
+            class="tbl-cell-description"
+          >
+            <a href="mailto:{{ customer.email }}">{{ customer.email }}</a>
+          </td>
+          <td>{{ customer.status == 0 ? "Active" : "Deactivated" }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

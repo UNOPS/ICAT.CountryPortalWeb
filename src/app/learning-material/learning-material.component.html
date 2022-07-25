@@ -1,0 +1,99 @@
+<div class="container pl-20 pr-20">
+    <h4 class="mt-4">Learning Material</h4>
+    <div class="p-grid p-fluid card">
+      <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="col-12">
+                <label for="projStatus">Sort By </label>
+              <div class="p-field">
+                <p-dropdown
+             
+              [options]="sortOptions"
+              [(ngModel)]="searchBy.sortOption"
+              #so="ngModel"
+              placeholder="Select ..."
+              optionLabel="name"
+             (ngModelChange)="onStatusChange($event)"
+            >
+            </p-dropdown>
+              </div>
+            </div>
+          </div>
+  
+        <div class="col-md-6">
+            <div class="p-inputgroup pt-4">
+              <input
+                placeholder="Type Your Keyword"
+                [(ngModel)]="searchBy.text"
+                #nameClimate="ngModel"
+                type="text"
+                name="nameClimate"
+                class="p-inputtext"
+                pInputText
+              />
+              <button
+                type="button"
+                pButton
+                pRipple
+                label="Search"
+                (click)="onSearch()"
+              ></button>
+            </div>
+          </div>   
+      </div>
+      
+
+      <h6 class="mt-4" style="color:#1a4f7b;" >Tools</h6>
+      <div class="row p-2"></div>
+      <div class="row p-2"></div>
+      <div class="row p-2">
+        <div class="scrollmenu">
+            <div class="container" fxLayout="column" fxLayout.md="row" fxLayoutGap="20px" >
+                <div class="cardWrap" fxLayout.lt-md="row" fxLayout.md="column"  fxLayout="row" fxFlex.md="50" fxLayoutAlign="start" fxLayoutGap="10px" >
+                    <div *ngFor="let item of lm">
+                    <ng-container *ngIf="item.documentType =='Learning Material' ">
+                        <div fxFlex.lt-md="100" fxFlex="30">
+                            <app-document
+                            [documents]="item">
+                            </app-document>
+                        </div>
+                  </ng-container>
+                </div>
+                </div>
+                
+            </div>
+          </div>    
+        </div>
+
+
+      <h6 class="mt-4" style="color:#1a4f7b;">Learning Materials</h6> 
+
+      <div class="row p-2"></div>
+      <div class="row p-2"></div>
+      <div class="row p-2">
+        <div class="scrollmenu">
+        <div class="container" fxLayout="column" fxLayout.md="row" fxLayoutGap="20px" >
+            <div class="cardWrap" fxLayout.lt-md="row" fxLayout.md="column"  fxLayout="row" fxFlex.md="50" fxLayoutAlign="start" fxLayoutGap="10px" >
+                <div *ngFor="let item of ug">
+                <ng-container *ngIf="item.documentType =='User Guidence' ">
+                    <div fxFlex.lt-md="100" fxFlex="30">
+        
+                        
+                        <app-document
+                        [documents]="item"
+                        >
+                        </app-document>
+                        
+                        
+                    </div>
+              </ng-container>
+            </div>
+            </div>
+            
+        </div>
+      </div>
+    </div>
+
+    </div>
+</div>
+  

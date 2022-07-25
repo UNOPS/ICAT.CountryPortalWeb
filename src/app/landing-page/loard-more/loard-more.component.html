@@ -1,0 +1,165 @@
+
+
+
+    <div class="container">
+        <div class="row">
+            
+            <div >
+                <div class="row">
+                    <div class="col-12 mb-40 mt-40">
+                        <h2>Case studies</h2>
+                    </div>
+                    <div *ngFor="let methologie of methologies" class="col-4 mb-4">
+                        <div style="cursor:pointer" class="row">
+                            <div class="col-8 mb-3">
+                                <img src="https://act.campaign.gov.uk/wp-content/uploads/sites/25/2017/02/form_icon-1.jpg" class="w-100"
+                                    (click)="viewPdf(methologie)">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-break">
+                                <h6>{{methologie.name}}</h6>
+                                <small>
+                                    <p>
+                                        {{methologie.displayName}}
+                                    </p>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="col-12 mb-4">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <img src="{{preportObject[0]?.thumbImage}}" class="w-100" (click)="viewPdf(reportObject[0])">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6>{{preportObject[0]?.title}}</h6>
+                                <small>
+                                    <p>
+                                        {{preportObject[0]?.description}} 
+                                    </p>
+                                </small>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <!-- <div class="col-12 mb-4">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <img src="{{preportObject[2]?.thumbImage}}" class="w-100" (click)="viewPdf(reportObject[2])">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6>{{preportObject[2]?.title}}</h6>
+                                <small>
+                                    <p>
+                                        {{preportObject[2]?.description}} 
+                                    </p>
+                                </small>
+                            </div>
+                        </div>
+                    </div> -->
+
+
+                    <!-- <div class="col-12 mb-4">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <img src="{{preportObject[4]?.thumbImage}}" class="w-100" (click)="viewPdf(reportObject[4])">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6>{{preportObject[4]?.title}}</h6>
+                                <small>
+                                    <p>
+                                        {{preportObject[4]?.description}} 
+                                    </p>
+                                </small>
+                            </div>
+                        </div>
+                    </div> -->
+
+                </div>
+            </div>
+            
+            <!-- <div class="col-md-2">
+            </div>
+            
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <img src="{{preportObject[1]?.thumbImage}}" class="w-100" (click)="viewPdf(reportObject[1])">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6>{{preportObject[1]?.title}}</h6>
+                                <small>
+                                    <p>
+                                        {{preportObject[1]?.description}}  
+                                    </p>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 mb-4">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <img src="{{preportObject[3]?.thumbImage}}" class="w-100">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6>{{preportObject[3]?.title}}</h6>
+                                <small>
+                                    <p>
+                                        {{preportObject[3]?.description}} 
+                                    </p>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 mb-4">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <img src="{{preportObject[5]?.thumbImage}}" class="w-100">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6>{{preportObject[5]?.title}}</h6>
+                                <small>
+                                    <p>
+                                        {{preportObject[5]?.description}} 
+                                    </p>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="col-md-2">
+            </div> -->
+
+
+           
+
+        </div>
+        
+    </div>
+
+<p-paginator [first]="first" [rows]="rows" [totalRecords]="totalRecords" (onPageChange)="onPageChange($event)"
+            [showJumpToPageDropdown]="true" [showPageLinks]="true"></p-paginator>

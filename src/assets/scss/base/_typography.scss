@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+h1{font-family: 'Inter', sans-serif;font-size: 64px; font-weight: bold;}
+h2{
+    font-family: 'Inter', sans-serif;
+    font-size: 48px; 
+    font-weight: bold;
+    &.regular{
+        font-family: 'Inter', serif; 
+    }
+}
+h3{
+    font-family: 'Inter', sans-serif;
+    font-size: 32px; 
+    font-weight: bold;
+    &.regular{
+        font-family: 'Inter', serif; 
+    }
+    &.small{
+        font-size: 28px;
+    }
+}
+h4{font-family: Inter;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 38px;
+    color: #1A4F7B !important;
+    margin-bottom: 20px;
+}
+h5{font-family: 'Inter', serif; font-size: 21px; font-weight: bold;}
+
+    h6 {
+        font-family: "Inter", serif;
+        font-size: 18px;
+        font-weight: 500;
+        color: #232D42;
+        font-size: 20px;
+    }
+
+p{
+    &.xlarge{
+        font-size: 18px;
+    }
+    &.large{
+        font-size: 16px;
+    }
+    &.info-message{
+        font-size: 12px;
+    }
+   
+}
+
+.text-primary{
+    color: $site-purple-300 !important;
+}
+.text-info{
+    color: $site-green-200 !important;
+}
+.text-secondary{
+    color: $site-black-100 !important;
+}
+.text-gray{
+    color: $site-gray-200 !important;
+}
+.text-danger{
+    color: $site-red-100 !important;
+}
+.text-dark-gray{
+    color: $site-gray-400 !important;
+}
+
+.text-gray-1{
+    color: $site-gray-700 !important;
+}
+
+.text-warning{
+    color: $site-yellow-400 !important;
+}
+.text-success-1{
+    color: $site-green-600 !important;
+}
+
+.text-danger-light{
+    color: #D87474 !important;
+}
+
+.font-weight-600{
+    font-weight: 600;
+}
+.font-size-18{
+    font-size: 18px;
+}
+
+.font-size-16{
+    font-size: 16px;
+}
+.font-size-12{
+    font-size: 12px;
+}
+
+.font-size-32{
+    font-size: 32px; 
+}
