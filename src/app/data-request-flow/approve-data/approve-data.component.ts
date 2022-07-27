@@ -40,6 +40,10 @@ export class ApproveDataComponent implements OnInit {
   reasonForReject: string;
   minDate: Date;
   selectedParameters: any[] = [];
+  selectedBaselineParameters: any[] = [];
+  selectedProjectParameters: any[] = [];
+  selectedLeakageParameters: any[] = [];
+  selectedProjectionParameters: any[] = [];
 
   headerlcimateActionName: string;
   headerAssessmentType: string;
@@ -249,6 +253,8 @@ export class ApproveDataComponent implements OnInit {
       });
   }
   onRejectClick() {
+    this.selectedParameters.push(...this.selectedBaselineParameters, ...this.selectedProjectParameters,
+                                  ...this.selectedLeakageParameters, ...this.selectedProjectParameters)
     if (this.selectedParameters.length > 1) {
       this.messageService.add({
         severity: 'error',
@@ -261,9 +267,12 @@ export class ApproveDataComponent implements OnInit {
     if (this.selectedParameters.length > 0) {
       this.confirm1 = true;
     }
+    this.selectedParameters = [];
   }
 
   onRejectConfirm() {
+    this.selectedParameters.push(...this.selectedBaselineParameters, ...this.selectedProjectParameters,
+                                  ...this.selectedLeakageParameters, this.selectedProjectParameters)
     let idList = new Array<number>();
     for (let index = 0; index < this.selectedParameters.length; index++) {
       const element = this.selectedParameters[index];
@@ -306,6 +315,7 @@ export class ApproveDataComponent implements OnInit {
       );
     }
     this.confirm1 = false;
+    this.selectedParameters = [];
   }
 
   onClickQC() {
@@ -395,6 +405,8 @@ export class ApproveDataComponent implements OnInit {
   }
 
   onAcceptClick() {
+    this.selectedParameters.push(...this.selectedBaselineParameters, ...this.selectedProjectParameters,
+                                  ...this.selectedLeakageParameters, ...this.selectedProjectionParameters)
     console.log('selectedParameters', this.selectedParameters);
     if (this.selectedParameters.length > 0) {
       let idList = new Array<number>();
@@ -435,5 +447,6 @@ export class ApproveDataComponent implements OnInit {
         );
       }
     }
+    this.selectedParameters = []
   }
 }
