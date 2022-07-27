@@ -66,6 +66,7 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
   projectScenarioTotalInvestment:number;
   baseScenarioTotalInvestment:number;
   isDiasbaleEye:boolean = true;
+  noUniqueYears:boolean = false;
 
 
   checkedbsAnnualfuelCost:boolean = false;
@@ -182,7 +183,11 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
     )
     .subscribe((res: any) => {
       this.climateActions = res.data;
-      this.climateActions = this.climateActions.filter((o)=>o.country.id == this.userCountryId)
+      this.climateActions = this.climateActions.filter((o)=>{
+        if (o.country !== undefined) {
+          return o.country.id == this.userCountryId
+        } else return false
+      })
       //
       console.log('climateActions', res.data);
      
@@ -261,7 +266,8 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
     //console.log('this.slectedProject', this.slectedProject);
     let filter1: string[] = new Array();
     filter1.push('project.id||$eq||' +this.slectedProject.id)&
-    filter1.push('Assessment.assessmentType||$in||' +this.approachList);
+    filter1.push('Assessment.assessmentType||$in||' +this.approachList)&
+    filter1.push('Assessment.isProposal||$eq||' +0);
     
     this.ndc = this.slectedProject.ndc?.name;
     this.subNdc = this.slectedProject.subNdc?.name;
@@ -309,6 +315,11 @@ getYears()
    // console.log('asse year',this.details)
      }
      this.uniqueYears = [...new Set(this.details)];
+     if(this.uniqueYears.length === 0){
+      this.noUniqueYears = true
+     } else {
+      this.noUniqueYears = false
+     }
     // console.log("unique years",this.uniqueYears)
   }
 
