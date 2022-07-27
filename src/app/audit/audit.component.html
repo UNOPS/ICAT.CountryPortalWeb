@@ -93,7 +93,7 @@
         </div>
       </div>
   
-      <div>
+      <div [ngStyle]="{'margin-bottom': itemsPerPage === 1?'100px':'unset'}">
         <p-table
           #table
           [value]="activities"

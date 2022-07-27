@@ -37,6 +37,7 @@ export class QualityCheckComponent implements OnInit {
   parameteters: AssessmentYear[] = [];
   loading: boolean;
   totalRecords: number = 0;
+  itemsPerPage: number = 0
   isActive: boolean = false;
   rows: number = 10;
   last: number;
@@ -147,6 +148,7 @@ export class QualityCheckComponent implements OnInit {
           this.totalRecords = a.meta.totalItems;
           console.log('parameteters', this.parameteters)
           this.loading = false;
+          this.itemsPerPage = a.meta.itemsPerPage;
         });
     }, 1);
   };

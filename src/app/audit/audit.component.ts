@@ -17,6 +17,7 @@ import {
 export class AuditComponent implements OnInit {
   loading: boolean;
   totalRecords: number = 0;
+  itemsPerPage: number = 0;
   rows: number = 10;
   last: number;
   event: any;
@@ -191,6 +192,7 @@ export class AuditComponent implements OnInit {
 
           console.log(a, 'kk');
           this.totalRecords = a.meta.totalItems;
+          this.itemsPerPage = a.meta.itemsPerPage;
           this.loading = false;
         });
     }, 1000);
