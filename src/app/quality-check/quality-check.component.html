@@ -85,7 +85,7 @@
       </div>
     </div>
 
-    <div class="row p-2">
+    <div class="row p-2" [ngStyle]="{'margin-bottom': itemsPerPage === 1?'100px':'unset'}">
       <p-table
         #table
         [value]="parameteters"
