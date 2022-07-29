@@ -654,7 +654,7 @@ export class ProposeProjectComponent implements OnInit {
               this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
-                detail: 'project  has updated successfully ',
+                detail: 'Project has updated successfully ',
                 closable: true,
               });
             } else {
