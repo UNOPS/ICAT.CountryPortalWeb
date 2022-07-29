@@ -1157,6 +1157,7 @@ this.getNDC(0);
       }
     }
     console.log("NdcList---1",this.ndcList)
+    console.log("NdcList---1",this.subndcList)
   }))
 
 
@@ -1382,6 +1383,8 @@ this.getNDC(0);
     this.onSearch1();
   }  
   onndcChange(event:any){
+    this.subndcList = [];
+    this.subndcList= event.subNdc;
     this.onSearch();
   } 
   onsubndcChange(event:any){
