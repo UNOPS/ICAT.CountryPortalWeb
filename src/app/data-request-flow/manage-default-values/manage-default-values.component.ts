@@ -49,6 +49,7 @@ export class ManageDefaultValuesComponent implements OnInit {
   userCountryId:number;
   loading: boolean;
   totalRecords: number = 0;
+  itemsPerPage: number = 0;
   rows: number = 10;
   last: number;
   event: any;
@@ -119,8 +120,8 @@ export class ManageDefaultValuesComponent implements OnInit {
 
       for(let item of this.initdefaulValList)
       {
-        this.sourceList.push(item.source);
-        this.yearsList.push(item.year);
+        if (item.source !== null) this.sourceList.push(item.source);
+        if (item.year !== null) this.yearsList.push(item.year);
       }
       this.sourceList = [...new Set(this.sourceList)];
       this.yearsList = [...new Set(this.yearsList)];
@@ -194,10 +195,12 @@ export class ManageDefaultValuesComponent implements OnInit {
         stats,
       ).subscribe(
         (res) => {
+          console.log(res)
           this.defaulValList = res.items;
           console.log('this.defaulValList..',this.defaulValList)
-          this.totalRecords = res.items.length;
+          this.totalRecords = res.meta.totalItems;
           this.loading = false;
+          this.itemsPerPage = res.meta.itemsPerPage;
         }
       );
 

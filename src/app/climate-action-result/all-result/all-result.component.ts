@@ -48,6 +48,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
 
   loading: boolean;
   totalRecords: number = 0;
+  itemsPerPage: number =0;
   rows: number = 10;
   last: number;
   event: any;
@@ -357,6 +358,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
         this.assessments = a.items;
         this.totalRecords = a.meta.totalItems;
         this.loading = false;
+        this.itemsPerPage = a.meta.itemsPerPage
         console.log('hii Assessements ', this.assessments);
       });
     }, 1);

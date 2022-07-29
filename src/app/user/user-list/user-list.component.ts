@@ -24,6 +24,7 @@ export class UserListComponent implements OnInit {
   customers: User[];
 
   totalRecords: number;
+  itemsPerPage: number = 0;
   userTypeSliceArray: any = [];
 
   searchText: string = '';
@@ -217,6 +218,7 @@ export class UserListComponent implements OnInit {
           this.customers = a.items;
           this.totalRecords = a.meta.totalItems;
           this.loading = false;
+          this.itemsPerPage = a.meta.itemsPerPage;
           console.log('new cutomersss', a);
           console.log('total..', this.totalRecords);
         });

@@ -80,7 +80,7 @@ export class AddNdcComponent implements OnInit {
   Back(){
     this.router.navigate(['/ndc'],
     { queryParams: { selectedtypeId: this.selectedtypeId }}).then(() => {
-      window.location.reload();
+      // window.location.reload();
     });
   }
    save(){
@@ -154,6 +154,9 @@ export class AddNdcComponent implements OnInit {
       }
     
     );
+    setTimeout(() => {
+      this.Back();    
+    },1000);
 
 
 

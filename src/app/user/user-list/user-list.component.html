@@ -55,6 +55,7 @@
       [rowsPerPageOptions]="[1, 10, 25, 50]"
       [totalRecords]="totalRecords"
       [loading]="loading"
+      [ngStyle]="{'margin-bottom': itemsPerPage === 1?'100px':'unset'}"
     >
       <ng-template pTemplate="header">
         <tr>

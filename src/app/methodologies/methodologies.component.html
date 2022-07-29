@@ -27,7 +27,7 @@
 
   </div>
 
-  <div class="col-sm-12">
+  <div class="col-sm-12" [ngStyle]="{'margin-bottom': itemsPerPage === 1?'45px':'unset'}">
     <p-table
       #dt
       p-table

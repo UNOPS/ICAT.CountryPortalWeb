@@ -200,8 +200,11 @@ export class MacAssessmentComponent implements OnInit,AfterViewInit {
     )
     .subscribe((res: any) => {
       this.climateActions = res.data;
-      this.climateActions = this.climateActions.filter((o)=>o.country.id == this.userCountryId);
-    //  console.log('climateActions', res.data);
+      this.climateActions = this.climateActions.filter((o)=>{
+        if (o.country !== undefined) {
+          return o.country.id == this.userCountryId
+        } else return false
+      });
      
     });
 
