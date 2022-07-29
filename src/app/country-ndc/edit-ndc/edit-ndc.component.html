@@ -1,6 +1,6 @@
 <div class="row p-2 container m-auto card mt-4" style="min-height: 250px;">
   <div class="row ">
-    <h6 disabled="active" class="mt-4">Name of the NDC</h6><br />
+    <h6 disabled="active" class="mt-4">Name of the Aggregated Actions</h6><br />
     <div id="d" class="col-md-6 p-3">
       <input type="text" class="p-inputtext" pInputText [(ngModel)]="ndcname" style="width: 100%"
         [disabled]="ndceditname" />
@@ -11,7 +11,7 @@
           <ng-template pTemplate="body" let-rowData let-data>
             <tr>
               <td>
-                <input type="text" class="p-inputtext" [(ngModel)]="data.name" pInputText placeholder="Add new Sub NDC"
+                <input type="text" class="p-inputtext" [(ngModel)]="data.name" pInputText placeholder="Add new Action Areas "
                   style="width: 100%" /><br />
               </td>
             </tr>
