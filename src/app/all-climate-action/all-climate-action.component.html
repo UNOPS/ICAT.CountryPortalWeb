@@ -17,7 +17,7 @@
       </div>
       <div class="col-md-4">
         <div class="p-field">
-          <label for="projStatus">Status</label>
+          <label for="projStatus">Implementation status</label>
           <p-dropdown name="projStatus" [(ngModel)]="searchBy.status" [options]="projectStatusList"
             #projStatus="ngModel" [showClear]="true" [filter]="true" placeholder="Select .." optionLabel="name"
             (ngModelChange)="onStatusChange($event)">

@@ -3054,7 +3054,7 @@ export class GhgAssessmentComponent implements OnInit {
 
           if(this.IsProposal == false)
           {
-            this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully Send to  DC team!'});
+            this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully send to  DC team!'});
             
 
             this.savedAsessment = res;
