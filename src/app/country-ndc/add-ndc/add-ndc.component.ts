@@ -108,7 +108,7 @@ export class AddNdcComponent implements OnInit {
           severity: 'success',
           summary: 'Success',
           detail: 
-          'NDC  has saved successfully ' ,
+          'Aggregated Actions  has saved successfully ' ,
           closable: true,
         });
         for(let s of this.subndcs){

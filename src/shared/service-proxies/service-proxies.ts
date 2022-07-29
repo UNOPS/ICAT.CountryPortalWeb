@@ -10369,57 +10369,6 @@ export class ServiceProxy {
     }
 
     /**
-     * Delete a single User
-     * @return Delete one base response
-     */
-    deleteOneBaseUsersControllerUser(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/users/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeleteOneBaseUsersControllerUser(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDeleteOneBaseUsersControllerUser(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processDeleteOneBaseUsersControllerUser(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(<any>null);
-    }
-
-    /**
      * Retrieve a single User
      * @param fields (optional) Selects resource fields. <a href="https://github.com/nestjsx/crud/wiki/Requests#select" target="_blank">Docs</a>
      * @param join (optional) Adds relational resources. <a href="https://github.com/nestjsx/crud/wiki/Requests#join" target="_blank">Docs</a>
@@ -10539,6 +10488,57 @@ export class ServiceProxy {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = User.fromJS(resultData200);
             return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    /**
+     * Delete a single User
+     * @return Delete one base response
+     */
+    deleteOneBaseUsersControllerUser(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/users/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteOneBaseUsersControllerUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteOneBaseUsersControllerUser(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteOneBaseUsersControllerUser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(<any>null);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -30367,6 +30367,129 @@ export interface ISubsectionEntity {
     sortOrder: number;
 }
 
+export class MethodologyData implements IMethodologyData {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    version: string;
+    name: string;
+    displayName: string;
+    developedBy: string;
+    parentId: number;
+    applicableSector: string;
+    documents: string;
+    easenessOfDataCollection: string;
+    transportSubSector: string;
+    upstream_downstream: string;
+    ghgIncluded: string;
+    uniqueIdentification: string;
+    sector: Sector;
+    mitigationActionType: MitigationActionType;
+    applicability: ApplicabilityEntity;
+
+    constructor(data?: IMethodologyData) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.version = _data["version"];
+            this.name = _data["name"];
+            this.displayName = _data["displayName"];
+            this.developedBy = _data["developedBy"];
+            this.parentId = _data["parentId"];
+            this.applicableSector = _data["applicableSector"];
+            this.documents = _data["documents"];
+            this.easenessOfDataCollection = _data["easenessOfDataCollection"];
+            this.transportSubSector = _data["transportSubSector"];
+            this.upstream_downstream = _data["upstream_downstream"];
+            this.ghgIncluded = _data["ghgIncluded"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
+            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : <any>undefined;
+            this.mitigationActionType = _data["mitigationActionType"] ? MitigationActionType.fromJS(_data["mitigationActionType"]) : <any>undefined;
+            this.applicability = _data["applicability"] ? ApplicabilityEntity.fromJS(_data["applicability"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): MethodologyData {
+        data = typeof data === 'object' ? data : {};
+        let result = new MethodologyData();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["version"] = this.version;
+        data["name"] = this.name;
+        data["displayName"] = this.displayName;
+        data["developedBy"] = this.developedBy;
+        data["parentId"] = this.parentId;
+        data["applicableSector"] = this.applicableSector;
+        data["documents"] = this.documents;
+        data["easenessOfDataCollection"] = this.easenessOfDataCollection;
+        data["transportSubSector"] = this.transportSubSector;
+        data["upstream_downstream"] = this.upstream_downstream;
+        data["ghgIncluded"] = this.ghgIncluded;
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
+        data["mitigationActionType"] = this.mitigationActionType ? this.mitigationActionType.toJSON() : <any>undefined;
+        data["applicability"] = this.applicability ? this.applicability.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): MethodologyData {
+        const json = this.toJSON();
+        let result = new MethodologyData();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IMethodologyData {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    version: string;
+    name: string;
+    displayName: string;
+    developedBy: string;
+    parentId: number;
+    applicableSector: string;
+    documents: string;
+    easenessOfDataCollection: string;
+    transportSubSector: string;
+    upstream_downstream: string;
+    ghgIncluded: string;
+    uniqueIdentification: string;
+    sector: Sector;
+    mitigationActionType: MitigationActionType;
+    applicability: ApplicabilityEntity;
+}
+
 export class Methodology implements IMethodology {
     createdBy: string;
     createdOn: moment.Moment;
@@ -30400,6 +30523,7 @@ export class Methodology implements IMethodology {
     ndc: Ndc[];
     subNdc: SubNdc[];
     methodologySubsection: SubsectionEntity[];
+    method: MethodologyData;
 
     constructor(data?: IMethodology) {
         if (data) {
@@ -30465,6 +30589,7 @@ export class Methodology implements IMethodology {
                 for (let item of _data["methodologySubsection"])
                     this.methodologySubsection.push(SubsectionEntity.fromJS(item));
             }
+            this.method = _data["method"] ? MethodologyData.fromJS(_data["method"]) : <any>undefined;
         }
     }
 
@@ -30525,6 +30650,7 @@ export class Methodology implements IMethodology {
             for (let item of this.methodologySubsection)
                 data["methodologySubsection"].push(item.toJSON());
         }
+        data["method"] = this.method ? this.method.toJSON() : <any>undefined;
         return data;
     }
 
@@ -30569,6 +30695,7 @@ export interface IMethodology {
     ndc: Ndc[];
     subNdc: SubNdc[];
     methodologySubsection: SubsectionEntity[];
+    method: MethodologyData;
 }
 
 export class GetManyEmissionReductioDraftDataEntityResponseDto implements IGetManyEmissionReductioDraftDataEntityResponseDto {

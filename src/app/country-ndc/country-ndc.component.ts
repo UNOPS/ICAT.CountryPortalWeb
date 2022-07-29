@@ -468,7 +468,7 @@ export class CountryNdcComponent implements OnInit {
   activate() {
     this.confirmationService.confirm({
       message:
-        'Please confirm you want to Activate selected NDC. you can’t modify NDC names after Activation',
+        'Please confirm you want to activate selected aggregated action. You can not modify aggregated action after activation.',
       accept: () => {
         this.active = true;
         // this.confirm1 = true;
@@ -524,7 +524,7 @@ export class CountryNdcComponent implements OnInit {
                     this.messageService.add( {
                       severity: 'success',
                       summary: 'Activated',
-                      detail: 'Selected NDC set Activated  successfully.',
+                      detail: 'Selected Aggregated Actions set Activated  successfully.',
                       // closable: true,
                     });
 
@@ -581,7 +581,7 @@ export class CountryNdcComponent implements OnInit {
         this.messageService.add( {
           severity: 'success',
           summary: 'Saved',
-          detail: ' NDC set saved  successfully.',
+          detail: ' Aggregated Actions set saved  successfully.',
           // closable: true,
         });
 

@@ -136,7 +136,7 @@ console.log('proj',res)
     // }
     // }
     console.log('tttt3')
-    this.messageService.add({severity:'success', summary:'Updated', detail:`${this.ndcname} NDC updated successfully`});
+    this.messageService.add({severity:'success', summary:'Updated', detail:`${this.ndcname} Aggregated Actions updated successfully`});
     // this.visibility3=true;
     //this.router.navigate(['/ndc']);
   }
@@ -158,7 +158,7 @@ console.log('proj',res)
 
   confirmDelet() {
     this.confirmationService.confirm({
-        message: `Are you sure that you want to ${this.Deactivate} this NDC?`,
+        message: `Are you sure that you want to ${this.Deactivate} this aggregated action?`,
         header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
@@ -200,20 +200,20 @@ console.log('proj',res)
 
         this.serviceproxy.deleteOneBaseNdcControllerNdc(this.ndcid).subscribe((res=>{
           console.log(res),'example';
-          this.messageService.add({severity:'info', summary:'Confirmed', detail:`successfully deleted NDC ${ndc.name} `});
+          this.messageService.add({severity:'info', summary:'Confirmed', detail:`successfully deleted Aggregated Action ${ndc.name} `});
         }),err=>{
 
-          this.messageService.add({severity:'error', summary:'try again', detail:`erro deleted NDC ${ndc.name} `});
+          this.messageService.add({severity:'error', summary:'try again', detail:`erro deleted Aggregated Action ${ndc.name} `});
 
         })
         
       }else {
         this.serviceproxy.deleteOneBaseNdcControllerNdc(this.ndcid).subscribe(res=>{
           console.log(res),'example';
-          this.messageService.add({severity:'info', summary:'Confirmed', detail:`successfully deleted NDC ${ndc.name} `});
+          this.messageService.add({severity:'info', summary:'Confirmed', detail:`successfully deleted Aggregated Action ${ndc.name} `});
         },err=>{
 
-          this.messageService.add({severity:'error', summary:'try again', detail:`erro deleted NDC ${ndc.name} `});
+          this.messageService.add({severity:'error', summary:'try again', detail:`erro deleted Aggregated Action ${ndc.name} `});
 
         })
       } 
@@ -273,7 +273,7 @@ console.log('proj',res)
   }
   confirmsubDelet() {
     this.confirmationService.confirm({
-        message: 'Are you sure that you want to delete this SUB NDC?',
+        message: 'Are you sure that you want to delete this Action Areas?',
         header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {

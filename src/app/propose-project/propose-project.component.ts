@@ -1226,7 +1226,7 @@ export class ProposeProjectComponent implements OnInit {
           severity: 'error',
           summary: 'Error',
           detail:
-            'Please check whether NDC and sub NDC is correctly mapped or not',
+            'Please check whether Aggregated Actions and Action Areas is correctly mapped or not',
           closable: true,
         });
       }
@@ -1357,7 +1357,7 @@ export class ProposeProjectComponent implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
-              detail: 'NDC and SubNdc  has updated successfully ',
+              detail: 'Aggregated Actions and SubNdc  has updated successfully ',
               closable: true,
             });
           },
