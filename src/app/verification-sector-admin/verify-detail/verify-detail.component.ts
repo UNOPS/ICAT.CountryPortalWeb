@@ -582,7 +582,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         //rederict to NC Report
        // alert('updates');
       
-       this.messageService.add({severity:'success', summary:'Confirmed', detail:'You have successfully Updated!'});
+       this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully sent to verification'});
       // window.location.reload();
       setTimeout(() => {
         window.location.reload();
