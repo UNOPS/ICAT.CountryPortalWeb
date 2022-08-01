@@ -2215,11 +2215,18 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   getAllParameters(jsonParam: any, sectionparam: SectionParameter, value: any) {
-    let params = this.createParameter(jsonParam);
-    sectionparam.parameters = params;
+    
 
-    if (value !== undefined) {
+    if (value !== undefined && value.name !="Common") {
+      let params = this.createParameter(jsonParam);
+      sectionparam.parameters = params;
+
       let valueParams = this.createParameter(value);
+      sectionparam.parameters.push(...valueParams);
+    }
+    else if(value.name =="Common"){
+      let valueParams = this.createParameter(value);
+      sectionparam.parameters = [];
       sectionparam.parameters.push(...valueParams);
     }
 
@@ -3063,7 +3070,7 @@ export class GhgAssessmentComponent implements OnInit {
           }
           else
           {
-            this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully Created an Assessment!'});
+            this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully created an assessment!'});
             
 
           this.savedAsessment = res;
@@ -3583,6 +3590,7 @@ export class GhgAssessmentComponent implements OnInit {
       common = value.find((a: any) => a.name === this.common);
     }
 
+    console.log("common",common)
     return common;
   }
 }

@@ -157,6 +157,7 @@ console.log('proj',res)
   
 
   confirmDelet() {
+    this.Deactivate="deactivate"
     this.confirmationService.confirm({
         message: `Are you sure that you want to ${this.Deactivate} this aggregated action?`,
         header: 'Confirmation',

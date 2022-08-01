@@ -75,6 +75,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
     climateaction: null,
     year: null,
   };
+  unit:any={ur_fromUnit:null,};
 
   first = 0;
   paraId: number;
@@ -281,6 +282,10 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
     console.log('parameterId++++', parameterId);
     this.unitTypesProxy.getUnitTypes(unit ? unit : '').subscribe((res: any) => {
       this.unitTypeList = res;
+      if(this.unitTypeList.length <1){
+        this.unit.ur_fromUnit=unit;
+        this.unitTypeList.push( this.unit)
+      }
       console.log(' this.unitTypeList', this.unitTypeList);
     });
     this.selectedUnit.ur_fromUnit = unit;
