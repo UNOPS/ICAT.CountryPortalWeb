@@ -39,12 +39,12 @@ export class VerifyCaComponent implements OnInit {
 
   verificationStatus: string[] = [
     VerificationStatus[VerificationStatus.Pending],
-    VerificationStatus[VerificationStatus.PreAssessment],
-    VerificationStatus[VerificationStatus.NCRecieved],
-    VerificationStatus[VerificationStatus.InitialAssessment],
-    VerificationStatus[VerificationStatus.FinalAssessment],
+    VerificationStatus[VerificationStatus['Pre Assessment']],
+    VerificationStatus[VerificationStatus['NC Recieved']],
+    VerificationStatus[VerificationStatus['Initial Assessment']],
+    VerificationStatus[VerificationStatus['Final Assessment']],
     VerificationStatus[VerificationStatus.Fail],
-    VerificationStatus[VerificationStatus.Pass],
+    VerificationStatus[VerificationStatus['Pass']],
   ];
 
   searchBy: any = {

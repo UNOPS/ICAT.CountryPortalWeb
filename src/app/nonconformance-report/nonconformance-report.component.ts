@@ -95,9 +95,9 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
 
   verificationStatus: string[] = [
    
-    VerificationStatus[VerificationStatus.PreAssessment],
-    VerificationStatus[VerificationStatus.InitialAssessment],
-    VerificationStatus[VerificationStatus.FinalAssessment],
+    VerificationStatus[VerificationStatus['Pre Assessment']],
+    VerificationStatus[VerificationStatus['Initial Assessment']],
+    VerificationStatus[VerificationStatus['Final Assessment']],
 
   ];
  
