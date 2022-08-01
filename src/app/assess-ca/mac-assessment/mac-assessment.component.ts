@@ -712,7 +712,7 @@ onStatusChangexxDiscountRate(event:any)
             undefined,
             ["editedOn,DESC"],
             undefined,
-            1000,
+            1,
             0,
             0,
             0
@@ -731,7 +731,7 @@ onStatusChangexxDiscountRate(event:any)
               undefined,
               ["id,DESC"],
               undefined,
-              1000,
+              1,
               0,
               0,
               0
@@ -774,7 +774,7 @@ onStatusChangexxDiscountRate(event:any)
                     undefined,
                     ["editedOn,DESC"],
                     undefined,
-                    1000,
+                    1,
                     0,
                     0,
                     0
