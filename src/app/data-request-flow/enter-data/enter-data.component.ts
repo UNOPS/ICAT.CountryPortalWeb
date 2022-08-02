@@ -475,7 +475,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Successfully rejected the data',
+          detail: 'Data was rejected successfully',
         });
         this.confirm2 = false;
 

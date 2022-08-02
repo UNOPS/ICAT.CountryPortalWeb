@@ -441,7 +441,7 @@ export class ReviewDataComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'successfully sent to data collection team',
+          detail: 'Successfully rejected the data',
         });
         this.selectedParameters = [];
         this.onSearch();
