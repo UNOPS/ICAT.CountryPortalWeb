@@ -21,6 +21,9 @@ export class AuditComponent implements OnInit {
   rows: number = 10;
   last: number;
   event: any;
+  Date =new Date();
+  status: string[] = [];
+  activitie:any[]=[];
   searchText: string;
   activityList1: string[] = [];
   activityList: string[] = [];
@@ -44,97 +47,43 @@ export class AuditComponent implements OnInit {
     private serviceProxy: ServiceProxy,
     private auditproxy: AuditControllerServiceProxy,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
-    // this.serviceProxy
-    //   .getManyBaseAuditControllerAudit(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['editedOn,DESC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
+    // this.serviceProxy.getManyBaseAuditControllerAudit(
+    //   undefined,
+    //   undefined,
+    //   undefined,
+    //   undefined,
+    //   undefined,
+    //   undefined,
+    //   100000,
+    //   0,
+    //   0,
+    //   0
     //   )
-   
-    let userName = localStorage.getItem('user_name')!;
-
-    let filter1: string[] = [];
-    filter1.push('username||$eq||' + userName);
-    // lmFilter.push('LearningMaterial.isPublish||$eq||' + 1);
-
-    // this.serviceProxy
-    //   .getManyBaseUsersControllerUser(
-    //     undefined,
-    //     undefined,
-    //     filter1,
-    //     undefined,
-    //     ['editedOn,DESC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    //   .subscribe((res: any) => {   
+    //   .subscribe((res) => {
 
 
-    //   this.loggedUser = res.data[0];
+    //     this.activitie = res.data;
+    //     console.log('this.activities', this.activitie)
 
-      
-    //   this.insitutionId = this.loggedUser.institution.id
+    //     for (let d of res.data) {
+    //       this.activityList.push(d.action);
+    //       // this.dateList.push(d.editedOn.toDate());
+    //       if (!this.userTypeList.includes(d.userType)) {
+    //         this.userTypeList.push(d.userType);
+    //       }
+    //       if (!this.status.includes(d.actionStatus)) {
+    //         this.status.push(d.actionStatus);
+    //       }
+    //       console.log(this.dateList);
+    //     }
+    //     console.log('activities', this.activityList);
     //   });
-
-
-    // this.serviceProxy
-    //   .getManyBaseAuditControllerAudit(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['editedOn,DESC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    this.auditproxy
-    .getAuditDetails(
-      1,
-      this.rows,
-      '',
-      '',
-      '',
-      ''
-    )
-      .subscribe((res) => {
-
-
-        this.activities = res.items;
-        console.log('this.activities',this.activities)
-        
-        // this.totalRecords = res.totalRecords;
-        // if (res.totalRecords !== null) {
-        //   this.last = res.count;
-        // } else {
-        //   this.last = 0;
-        // }
-        for (let d of res.items) {
-          this.activityList.push(d.action);
-          // this.dateList.push(d.editedOn.toDate());
-          this.userTypeList.push(d.userType);
-          console.log(this.dateList);
-        }
-        console.log('activities', this.activityList);
-      });
   }
 
   onactivityChange(event: any) {
@@ -188,7 +137,20 @@ export class AuditComponent implements OnInit {
           filtertext
         )
         .subscribe((a) => {
+          
           this.activities = a.items;
+          console.log("+++++++", this.activities.length)
+          for (let d of a.items) {
+            this.activityList.push(d.action);
+            // this.dateList.push(d.editedOn.toDate());
+            if (!this.userTypeList.includes(d.userType)) {
+              this.userTypeList.push(d.userType);
+            }
+            if (!this.status.includes(d.actionStatus)) {
+              this.status.push(d.actionStatus);
+            }
+            console.log(this.dateList);
+          }
 
           console.log(a, 'kk');
           this.totalRecords = a.meta.totalItems;
