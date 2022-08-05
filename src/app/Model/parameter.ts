@@ -20,6 +20,9 @@ class Parameter {
   public defaultValues: DefaultValue[] = [];
   public defaultValue: DefaultValue;
 
+  public historicalValues: any[] = [];
+  public historicalValue: any;
+
   // public isRootLevel: boolean = false;
   // public isDimentionLevel: boolean = false;
   // public isDimensionValueLevel: boolean = false;

@@ -38,7 +38,7 @@
         </div>
         <div class="col-12 col-md-6">
           <div *ngIf="!IsProposal">
-            <div *ngIf="p.isDefaultValue">
+            <div *ngIf="p.isDefaultValue  && !checked.includes(i)">
               <p-dropdown
                 placeholder="Select Default value"
                 name="{{ 'p' + i }}"
@@ -50,7 +50,18 @@
                 optionLabel="name"
               ></p-dropdown>
             </div>
-            <div *ngIf="!p.isDefaultValue">
+            <div *ngIf="checked.includes(i) && !p.isDefaultValue">
+              <p-dropdown
+                placeholder="Select historical value"
+                [(ngModel)]="p.historicalValue"
+                [disabled]="isDisableforSubmitButton"
+                [autoDisplayFirst]="false"
+                [options]="p.historicalValues"
+                (onChange) = "onSelectHistoricalVal($event, spi, i)"
+                optionLabel="label"
+              ></p-dropdown>
+            </div>
+            <div *ngIf="!p.isDefaultValue && !checked.includes(i)">
               <p-dropdown
                 placeholder="Select Institution"
                 name="{{ 'lvp' + i }}"
@@ -64,7 +75,7 @@
             </div>
           </div>
           <div *ngIf="IsProposal">
-            <div *ngIf="p.isDefaultValue">
+            <div *ngIf="p.isDefaultValue && !checked.includes(i)">
               <p-dropdown
                 placeholder="Select Default value"
                 name="{{ 'p' + i }}"
@@ -76,7 +87,18 @@
                 optionLabel="name"
               ></p-dropdown>
             </div>
-            <div *ngIf="!p.isDefaultValue">
+            <div *ngIf="checked.includes(i) && !p.isDefaultValue">
+              <p-dropdown
+                placeholder="Select historical value"
+                [(ngModel)]="p.historicalValue"
+                [disabled]="isDisableforSubmitButton"
+                [autoDisplayFirst]="false"
+                [options]="p.historicalValues"
+                (onChange) = "onSelectHistoricalVal($event, spi, i)"
+                optionLabel="label"
+              ></p-dropdown>
+            </div>
+            <div *ngIf="!p.isDefaultValue && !checked.includes(i)">
               <input
                 type="text"
                 name="{{ 'vp' + i }}"
@@ -95,12 +117,23 @@
               <p-checkbox
                 [(ngModel)]="p.isDefaultValue"
                 [binary]="true"
-                [disabled]="isDisableforSubmitButton"
+                [disabled]="isDisableforSubmitButton || checked.includes(i)"
                 inputId="binary"
                 label="Default Values"
               ></p-checkbox>
               <!-- <label for="binary">Default Values</label> -->
             </div>
+          </div>
+          <div class="p-field-checkbox">
+            <p-checkbox
+              [binary]="true"
+              [disabled]="isDisableforSubmitButton || p.isDefaultValue"
+              inputId="binary"
+              label="Historical Values"
+              value="i"
+              (onChange)="onChangeIshistorical($event, i)"
+            ></p-checkbox>
+            <!-- <label for="binary">Default Values</label> -->
           </div>
         </div>
       </div>
