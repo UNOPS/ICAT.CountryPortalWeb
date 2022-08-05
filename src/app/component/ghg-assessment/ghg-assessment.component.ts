@@ -2251,6 +2251,11 @@ export class GhgAssessmentComponent implements OnInit {
           if (sectionparam.fuel) filter.push('parameter.fuelType||$eq||'+ sectionparam.fuel)
           if (sectionparam.powerPlant) filter.push('parameter.powerPlant||$eq||'+ sectionparam.powerPlant)
           if (sectionparam.route) filter.push('parameter.route||$eq||'+ sectionparam.route)
+          if (sectionparam.feedstock) filter.push('parameter.feedstock||$eq||'+ sectionparam.feedstock)
+          if (sectionparam.residue) filter.push('parameter.residue||$eq||'+ sectionparam.residue)
+          if (sectionparam.soil) filter.push('parameter.soil||$eq||'+ sectionparam.soil)
+          if (sectionparam.stratum) filter.push('parameter.stratum||$eq||'+ sectionparam.stratum)
+          if (sectionparam.landClearance) filter.push('parameter.landClearance||$eq||'+ sectionparam.landClearance)
           
           this.serviceProxy
               .getManyBaseParameterControllerParameter(

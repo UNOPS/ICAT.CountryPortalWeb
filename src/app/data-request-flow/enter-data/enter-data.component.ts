@@ -53,12 +53,15 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
   reasonForReject: string;
   selectedDataRequestId: number;
   selectedParameters: any[];
+  selectedPara: any;
+  selectedHistoricalValue: any;
 
   cols: any;
   columns: any;
   options: any;
   confirm1: boolean = false;
   confirm2: boolean = false;
+  isHistorical: boolean = false;
   uploadFile: boolean = false;
   yearList: any[] = [];
   // sectorList: string[] = new Array();
@@ -189,6 +192,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
 
   onCancel() {
     this.confirm1 = false;
+    this.isHistorical = false;
   }
 
   onCAChange(event: any) {
@@ -266,19 +270,65 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
           if (a) {
             this.parameterList = a.items;
             this.totalRecords = a.meta.totalItems;
+            this.getHistoricalParameters(a.items)
           }
           this.loading = false;
         });
     }, 1);
   };
 
+  getHistoricalParameters(parameters: any[]) {
+    let methodologyCodes: any[] = [];
+    let parameterCodes: any[] = [];
+    let assessmentIds: any[] = [];
+    parameters.forEach((para: any) => {
+      if (para.parameterId?.methodologyCode) methodologyCodes.push(para.parameterId.methodologyCode)
+      if (para.parameterId?.code) parameterCodes.push(para.parameterId.code)
+    });
+    let paras = new Set(parameterCodes)
+
+    let filter = ['methodologyCode||$in||' + [...new Set(methodologyCodes)],
+    'code||$in||' + [...new Set(parameterCodes)]]
+
+    this.serviceProxy
+      .getManyBaseParameterControllerParameter(
+        undefined,
+        undefined,
+        filter,
+        undefined,
+        undefined,
+        undefined,
+        1000,
+        0,
+        0,
+        0
+      ).subscribe(res => {
+        if (res.data.length > 0) {
+          this.parameterList = this.parameterList.map((para: any) =>{
+            let parameters = res.data.filter((p:any) => (p.code == para.parameterId.code) && p.value )
+            para.parameterId.historicalValues = parameters.map((p: any) => {
+              return {
+                label: p.assessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
+                value: p.value
+              }
+            })
+            return para
+          })
+          console.log(this.parameterList)
+        }
+      })
+      // return [];
+  }
+
   onClickUpdateValue(
+    parameterList: any,
     parameterValue: string,
     dataRequestId: number,
     parameterId: number,
     unit: string,
     year: string
   ) {
+    this.selectedPara = parameterList
     console.log('parameterId++++', parameterId);
     this.unitTypesProxy.getUnitTypes(unit ? unit : '').subscribe((res: any) => {
       this.unitTypeList = res;
@@ -304,6 +354,9 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
     inputValues.value = this.selectedValue;
     inputValues.unitType = this.selectedUnit.ur_fromUnit;
     inputValues.assumptionParameter = this.selectedAssumption;
+    if(this.isHistorical){
+        inputValues.value = this.selectedHistoricalValue.value
+    }
     console.log('inputValues', inputValues);
     this.parameterProxy.updateDeadline(inputValues).subscribe(
       (res) => {
@@ -326,6 +379,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
         this.selectedParameter = [];
         this.onSearch();
         this.confirm1 = false;
+        this.isHistorical = false;
       },
       (err) => {
         this.messageService.add({
@@ -364,6 +418,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
       this.projectProxy.acceptReviewData(inputParameters).subscribe(
         (res) => {
           this.confirm1 = false;
+          this.isHistorical = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -685,5 +740,9 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
 
     /* save to file */
     //  XLSX.writeFile(wb, this.fileName);
+  }
+
+  onHideDialog(){
+    this.isHistorical = false
   }
 }
