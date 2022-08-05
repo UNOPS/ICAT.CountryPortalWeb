@@ -285,7 +285,6 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
       if (para.parameterId?.methodologyCode) methodologyCodes.push(para.parameterId.methodologyCode)
       if (para.parameterId?.code) parameterCodes.push(para.parameterId.code)
     });
-    let paras = new Set(parameterCodes)
 
     let filter = ['methodologyCode||$in||' + [...new Set(methodologyCodes)],
     'code||$in||' + [...new Set(parameterCodes)]]
@@ -306,7 +305,18 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
         if (res.data.length > 0) {
           this.parameterList = this.parameterList.map((para: any) =>{
             let parameters = res.data.filter((p:any) => (p.code == para.parameterId.code) && p.value )
+            if(para.parameterId.vehical) parameters = this.filterParameters(parameters, 'vehical', para.parameterId.vehical)
+            if(para.parameterId.fuelType) parameters = this.filterParameters(parameters, 'fuelType', para.parameterId.fuelType)
+            if(para.parameterId.powerPlant) parameters = this.filterParameters(parameters, 'powerPlant', para.parameterId.powerPlant)
+            if(para.parameterId.route) parameters = this.filterParameters(parameters, 'route', para.parameterId.route)
+            if(para.parameterId.feedstock) parameters = this.filterParameters(parameters, 'feedstock', para.parameterId.feedstock)
+            if(para.parameterId.soil) parameters = this.filterParameters(parameters, 'soil', para.parameterId.soil)
+            if(para.parameterId.stratum) parameters = this.filterParameters(parameters, 'stratum', para.parameterId.stratum)
+            if(para.parameterId.residue) parameters = this.filterParameters(parameters, 'residue', para.parameterId.residue)
+            if(para.parameterId.landClearance) parameters = this.filterParameters(parameters, 'landClearance', para.parameterId.landClearance)
+            if(para.parameterId.methodologyCode) parameters = this.filterParameters(parameters, 'methodologyCode', para.parameterId.methodologyCode)
             para.parameterId.historicalValues = parameters.map((p: any) => {
+              
               return {
                 label: p.assessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
                 value: p.value
@@ -314,10 +324,14 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
             })
             return para
           })
-          console.log(this.parameterList)
+          // console.log(this.parameterList)
         }
       })
       // return [];
+  }
+
+  filterParameters(parameters: any[], attr: string, value: any){
+    return parameters.filter((p:any) => p[attr] === value)
   }
 
   onClickUpdateValue(
