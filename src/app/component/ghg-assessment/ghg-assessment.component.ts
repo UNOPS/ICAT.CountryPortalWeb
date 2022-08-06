@@ -312,6 +312,8 @@ export class GhgAssessmentComponent implements OnInit {
   selectProjectFuel:boolean=true;
   isDisableAfterSubmit:boolean = false;
 
+  methodAssessments: any[];
+  methodParaCodes: any[];
 
   constructor(
     private methodologyProxy: MethodologyControllerServiceProxy,
@@ -2217,20 +2219,71 @@ export class GhgAssessmentComponent implements OnInit {
   getAllParameters(jsonParam: any, sectionparam: SectionParameter, value: any) {
     
 
-    if (value !== undefined && value.name !="Common") {
-      let params = this.createParameter(jsonParam);
-      sectionparam.parameters = params;
-
-      let valueParams = this.createParameter(value);
-      sectionparam.parameters.push(...valueParams);
+    if (value !== undefined) {
+      if (value.name !="Common"){
+        let params = this.createParameter(jsonParam);
+        sectionparam.parameters = params;
+  
+        let valueParams = this.createParameter(value);
+        sectionparam.parameters.push(...valueParams);
+      }
+      else if(value.name =="Common"){
+        let valueParams = this.createParameter(value);
+        sectionparam.parameters = [];
+        sectionparam.parameters.push(...valueParams);
+      }
     }
-    else if(value.name =="Common"){
-      let valueParams = this.createParameter(value);
-      sectionparam.parameters = [];
-      sectionparam.parameters.push(...valueParams);
-    }
 
+    this.suggestValues(sectionparam)
+    
     console.log(sectionparam);
+  }
+
+  suggestValues(sectionparam:SectionParameter) {
+    this.methodParaCodes = sectionparam.parameters.map(para => {return para.Code});
+    let assessmentIds = this.methodAssessments.map(ass => {return ass.id});
+    let filter: string[] | undefined = []
+    if (this.methodParaCodes && this.methodParaCodes.length > 0 && 
+        assessmentIds && assessmentIds.length > 0){
+          filter.push('assessment.id||$in||' + assessmentIds) &
+          filter.push('parameter.code||$in||'+ this.methodParaCodes)
+          if (sectionparam.vehical) filter.push('parameter.vehical||$eq||'+ sectionparam.vehical)
+          if (sectionparam.fuel) filter.push('parameter.fuelType||$eq||'+ sectionparam.fuel)
+          if (sectionparam.powerPlant) filter.push('parameter.powerPlant||$eq||'+ sectionparam.powerPlant)
+          if (sectionparam.route) filter.push('parameter.route||$eq||'+ sectionparam.route)
+          if (sectionparam.feedstock) filter.push('parameter.feedstock||$eq||'+ sectionparam.feedstock)
+          if (sectionparam.residue) filter.push('parameter.residue||$eq||'+ sectionparam.residue)
+          if (sectionparam.soil) filter.push('parameter.soil||$eq||'+ sectionparam.soil)
+          if (sectionparam.stratum) filter.push('parameter.stratum||$eq||'+ sectionparam.stratum)
+          if (sectionparam.landClearance) filter.push('parameter.landClearance||$eq||'+ sectionparam.landClearance)
+          
+          this.serviceProxy
+              .getManyBaseParameterControllerParameter(
+                undefined,
+                undefined,
+                filter,
+                undefined,
+                undefined,
+                undefined,
+                1000,
+                0,
+                0,
+                0
+              ).subscribe((res: any) => {
+
+                sectionparam.parameters = sectionparam.parameters.map(para =>{
+                  let parameters = res.data.filter((p:any) => (p.code == para.Code) && p.value )
+                  para.historicalValues = parameters.map((p: any) => {
+                    return {
+                      label: p.assessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
+                      value: p.value
+                    }
+                  })
+                  return para
+                })
+              })
+        }
+
   }
 
   createParameter(jsonParam: any) {
@@ -3272,6 +3325,7 @@ export class GhgAssessmentComponent implements OnInit {
     this.isClimateActionListDisabled = true;
     this.clear();
     this.loadJson();
+    this.methodAssessments = this.selectedMethodology.assessments
   }
 
   onBaselineScenarioChange(event: any){

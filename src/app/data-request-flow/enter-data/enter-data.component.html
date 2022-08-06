@@ -184,6 +184,7 @@
                     style="background-color: #c6cfd7; border-color: transparent"
                     (click)="
                       onClickUpdateValue(
+                        parameterList,
                         parameterList.parameterId?.value,
                         parameterList.id,
                         parameterList.parameterId?.id,
@@ -265,10 +266,10 @@
     </div>
   </div>
 </div>
-<p-dialog [(visible)]="confirm1" header="Add Data">
+<p-dialog [(visible)]="confirm1" header="Add Data" (onHide)="onHideDialog()">
   <div
     class="container"
-    style="width: 700px; height: 200px; margin-left: 50px; margin-top: 20px"
+    style="width: 700px; height: 225px; margin-left: 50px; margin-top: 0px"
   >
     <table>
       <tr>
@@ -280,9 +281,6 @@
         </td>
         <td style="width: 100px">
           <div class="p-field mb-2">Value</div>
-        </td>
-        <td>
-          <div class="p-field mb-2">Assumption</div>
         </td>
       </tr>
       <tr>
@@ -308,7 +306,7 @@
           </div>
         </td>
         <td>
-          <div class="p-field mb-2">
+          <div class="p-field mb-2" *ngIf="!isHistorical">
             <input
               placeholder="Type Your Value"
               type="text"
@@ -317,10 +315,36 @@
               pInputText
             />
           </div>
+          <div *ngIf="isHistorical">
+            <p-dropdown
+              placeholder="Select historical value"
+              [(ngModel)]="selectedHistoricalValue"
+              [autoDisplayFirst]="false"
+              [options]="selectedPara.parameterId.historicalValues"
+              optionLabel="label"
+              appendTo="body"
+            >
+            </p-dropdown>
+          </div>
+        </td>
+        <td>
+          <p-checkbox
+              [(ngModel)]="isHistorical"
+              [binary]="true"
+              inputId="binary"
+              label="Historical Values"
+            >
+          </p-checkbox>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="p-field mb-2">Assumption</div>
         </td>
         <td>
           <div class="p-field mb-2">
             <input
+              style="width: 322%; height: 55px;"
               placeholder="Type Your Assumption"
               type="text"
               class="p-inputtext"

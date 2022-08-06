@@ -25,6 +25,8 @@ export class FuelParameterComponent implements OnInit {
   userSectorId:number = 0;
 
   instiTutionList: Institution[];
+  isHistoricalValue: boolean = false;
+  checked: number[] = [];
 
   constructor(
     private serviceProxy: ServiceProxy,
@@ -45,5 +47,18 @@ export class FuelParameterComponent implements OnInit {
         this.instiTutionList = res;
         //this.instiTutionList = this.instiTutionList.filter((o)=>o.country?.id == this.userCountryId);
       });
+  }
+
+  onSelectHistoricalVal(event:any, idxSec:any, idxPara:any){
+    console.log(event.value.value)
+    this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
+  }
+
+  onChangeIshistorical(e: any, i: number){
+    if (e.checked){
+      this.checked.push(i)
+    } else {
+      this.checked.splice(this.checked.indexOf(i), 1)
+    }
   }
 }
