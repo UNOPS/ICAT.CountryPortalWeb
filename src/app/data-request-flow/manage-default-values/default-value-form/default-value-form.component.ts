@@ -11,7 +11,9 @@ import decode from 'jwt-decode';
 })
 export class DefaultValueFormComponent implements OnInit,AfterViewInit {
   Years:any[] = []
+  paraYear:any[]=[];
   parentParametersList:any[] = [];
+  uniqName:any[] = [];
   parentParameter:any;
   parameterName:string;
   adminLevel:string
@@ -22,6 +24,7 @@ export class DefaultValueFormComponent implements OnInit,AfterViewInit {
   userCountry:string;
   userCountryId :number;
   countryObj:any;
+  Date =new Date()
 
 
   sendDefaultValueDtos : any = new DefaultValueDtos();
@@ -58,7 +61,11 @@ export class DefaultValueFormComponent implements OnInit,AfterViewInit {
 
     for(let x = 2000; x<= 2050;x++)
     {
+      console.log
+      if(!this.paraYear.includes(x)){
         this.Years.push(x)
+      }
+       
     }
 
     //this.filter2.push('mrvInstitution||$notnull||'+'')
@@ -79,7 +86,17 @@ export class DefaultValueFormComponent implements OnInit,AfterViewInit {
         0
       )
       .subscribe((a: any) => {
-        this.parentParametersList = a.data;
+        let List:DefaultValue[] = a.data;
+        List.forEach((a)=>{
+          let name=a.parameterName+ " - "+ a.administrationLevel;
+          if(!this.uniqName.includes(name)){
+            a.parameterName=name
+            this.uniqName.push(name);
+            this.parentParametersList.push(a);
+            
+          }
+          
+        })
 //parentId
          console.log('this.parentParametersList..', this.parentParametersList);
       });
@@ -112,6 +129,32 @@ export class DefaultValueFormComponent implements OnInit,AfterViewInit {
 
   getSelectedParentParameter()
   {
+    let filter: string[] = new Array();
+        filter.push('parameterName||$eq||' + this.parentParameter.parameterName.split(" - ",1)[0]);
+        filter.push('administrationLevel||$eq||' + this.parentParameter.administrationLevel);
+        this.serviceProxy.getManyBaseDefaultValueControllerDefaultValue(
+          undefined,
+          undefined,
+          filter,
+          undefined,
+          undefined,
+          undefined,
+          1000,
+          0,
+          0,
+          0
+        ).subscribe((res)=>{
+          console.log("res",res)
+          res.data.forEach((a)=>{
+            if(a.value!=null || a.value!=undefined){
+              this.paraYear.push(a.year);
+              const index = this.Years.indexOf(a.year);
+              if (index > -1) { // only splice array when item is found
+                this.Years.splice(index, 1); // 2nd parameter means remove one item only
+              }
+            }
+          })
+        })
     console.log('this.parameter..', this.parentParameter);
   }
 
@@ -128,55 +171,49 @@ export class DefaultValueFormComponent implements OnInit,AfterViewInit {
       if (formData.valid) {
 
         
-
-        this.sendDefaultValueDtos.parameterName = this.parameterName;
+        let name=this.parentParameter.parameterName;
+        console.log("++++++++++",name)
+        this.sendDefaultValueDtos.parameterName = name.split(" - ",1)[0];
         this.sendDefaultValueDtos.parentId = this.parentParameter.id;
-        this.sendDefaultValueDtos.administrationLevel = this.adminLevel;
+        this.sendDefaultValueDtos.administrationLevel =name.split(" - ",2)[1];;
         this.sendDefaultValueDtos.source = this.institution;
         this.sendDefaultValueDtos.deadLine = this.deadLine;
         this.sendDefaultValueDtos.year = this.selectedYears;
         this.sendDefaultValueDtos.country = this.countryObj;
 
-        console.log("this.sendDefaultValueDtos.year..",this.sendDefaultValueDtos.year)
+        console.log("this.sendDefaultValueDtos.year..",this.sendDefaultValueDtos)
+        // let filter: string[] = new Array();
+        // filter.push('parameterName||$eq||' + this.sendDefaultValueDtos.parameterName);
+        // filter.push('administrationLevel||$eq||' + this.sendDefaultValueDtos.administrationLevel);
+        // this.serviceProxy.getManyBaseDefaultValueControllerDefaultValue(
+        //   undefined,
+        //   undefined,
+        //   filter,
+        //   undefined,
+        //   ['ASC'],
+        //   undefined,
+        //   1000,
+        //   0,
+        //   0,
+        //   0
+        // ).subscribe((res)=>{
+          
+        // })
         
 
-        this.defaultProxy.sendDefaultValue(this.sendDefaultValueDtos)
-        .subscribe((a) => {
-          console.log("my response..",a)
+        // this.defaultProxy.sendDefaultValue(this.sendDefaultValueDtos)
+        // .subscribe((a) => {
+        //   console.log("my response..",a)
           
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Default value added successfully ',
-            closable: true,
-          });
-        });
+        //   this.messageService.add({
+        //     severity: 'success',
+        //     summary: 'Success',
+        //     detail: 'Default value added successfully ',
+        //     closable: true,
+        //   });
+        // });
 
        
-        // this.serviceProxy
-        //   .createOneBaseProjectControllerProject(this.project)
-        //   .subscribe(
-        //     (res) => {
-        //       console.log('save', res);
-        //       this.messageService.add({
-        //         severity: 'success',
-        //         summary: 'Success',
-        //         detail: 'project  has save successfully',
-        //         closable: true,
-        //       });
-        //     },
-
-        //     (err) => {
-        //       this.messageService.add({
-        //         severity: 'error',
-        //         summary: 'Error.',
-        //         detail: 'Internal server error, please try again.',
-        //         sticky: true,
-        //       });
-        //     }
-        //   );
-
-       // console.log(formData);
       }
     
   }

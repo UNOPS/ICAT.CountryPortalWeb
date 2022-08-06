@@ -27,7 +27,7 @@
           </div>
         </div>
 
-        <div class="row p-2">
+        <!-- <div class="row p-2">
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="contatname">Generic Name*</label>
@@ -43,7 +43,7 @@
 
             </div>
           </div>
-        </div>
+        </div> -->
 
 
 
@@ -60,7 +60,7 @@
         </div>
 
 
-        <div class="row p-2">
+        <!-- <div class="row p-2">
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="contatname">Description</label>
@@ -70,7 +70,7 @@
 
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="row p-2">
           <div class="col-12 col-md-6">
@@ -94,7 +94,7 @@
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="projectownership">Years*</label>
-              <p-multiSelect name="multiYear" #multiYear="ngModel" [options]="Years" [(ngModel)]="selectedYears">
+              <p-multiSelect appendTo="body" name="multiYear" #multiYear="ngModel" [options]="Years" [(ngModel)]="selectedYears">
               </p-multiSelect>
               <p class="info-message text-danger" *ngIf="
                 !selectedYears &&
@@ -111,8 +111,8 @@
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="deadline">Data Request Deadline*</label>
-              <p-calendar placeholder="DD/MM/YYYY" dateFormat="dd/mm/yy" name="propsedDate" #propsedDate="ngModel"
-                [(ngModel)]="deadLine"></p-calendar>
+              <p-calendar appendTo="body" placeholder="DD/MM/YYYY" dateFormat="dd/mm/yy" name="propsedDate" #propsedDate="ngModel"
+                [(ngModel)]="deadLine" [minDate]="Date"></p-calendar>
               <p class="info-message text-danger" *ngIf="
                 !deadLine &&
                 (fData.submitted || propsedDate.touched || propsedDate.dirty)
@@ -149,6 +149,7 @@
 
       </div>
     </div>
-<!-- </div> -->
-</form>
-<p-toast position="top-right"></p-toast>
+    <!-- </div> -->
+  </form>
+</div>
+  <p-toast position="top-right"></p-toast>
