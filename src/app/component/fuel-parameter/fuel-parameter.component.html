@@ -15,7 +15,7 @@
   >
     <h6>{{ sp.parameterHeader }}</h6>
     <!-- Main Param -->
-    <div class="row p-2" *ngFor="let p of sp.parameters; let i = index">
+    <div class="row p-2" *ngFor="let p of sp.parameters; let i = index; ">
       <!-- Alternavtive Param -->
       <div class="row p-2">
         <div class="col-12 col-md-3">
@@ -38,7 +38,7 @@
         </div>
         <div class="col-12 col-md-4">
           <div *ngIf="!IsProposal">
-            <div *ngIf="p.isDefaultValue">
+            <div *ngIf="p.isDefaultValue  && !checked.includes(((spi+i)/2)*(spi+i+1)+i)">
               <p-dropdown
                 placeholder="Select Default value"
                 name="{{ 'p' + i }}"
@@ -50,7 +50,18 @@
                 optionLabel="name"
               ></p-dropdown>
             </div>
-            <div *ngIf="!p.isDefaultValue">
+            <div *ngIf="checked.includes(((spi+i)/2)*(spi+i+1)+i) && !p.isDefaultValue">
+              <p-dropdown
+                placeholder="Select historical value"
+                [(ngModel)]="p.historicalValue"
+                [disabled]="isDisableforSubmitButton"
+                [autoDisplayFirst]="false"
+                [options]="p.historicalValues"
+                (onChange) = "onSelectHistoricalVal($event, spi, i)"
+                optionLabel="label"
+              ></p-dropdown>
+            </div>
+            <div *ngIf="!p.isDefaultValue && !checked.includes(((spi+i)/2)*(spi+i+1)+i)">
               <p-dropdown
                 placeholder="Select Institution"
                 name="{{ 'vp' + i }}"
@@ -64,7 +75,7 @@
             </div>
           </div>
           <div *ngIf="IsProposal">
-            <div *ngIf="p.isDefaultValue">
+            <div *ngIf="p.isDefaultValue && !checked.includes(((spi+i)/2)*(spi+i+1)+i)">
               <p-dropdown
                 placeholder="Select Default value"
                 name="{{ 'p' + i }}"
@@ -76,7 +87,18 @@
                 optionLabel="name"
               ></p-dropdown>
             </div>
-            <div *ngIf="!p.isDefaultValue">
+            <div *ngIf="checked.includes(((spi+i)/2)*(spi+i+1)+i) && !p.isDefaultValue">
+              <p-dropdown
+                placeholder="Select historical value"
+                [(ngModel)]="p.historicalValue"
+                [disabled]="isDisableforSubmitButton"
+                [autoDisplayFirst]="false"
+                [options]="p.historicalValues"
+                (onChange) = "onSelectHistoricalVal($event, spi, i)"
+                optionLabel="label"
+              ></p-dropdown>
+            </div>
+            <div *ngIf="!p.isDefaultValue && !checked.includes(((spi+i)/2)*(spi+i+1)+i)">
               <input
                 type="text"
                 name="{{ 'vp' + i }}"
@@ -94,12 +116,23 @@
               <p-checkbox
                 [(ngModel)]="p.isDefaultValue"
                 [binary]="true"
-                [disabled]="isDisableforSubmitButton"
+                [disabled]="isDisableforSubmitButton || checked.includes(((spi+i)/2)*(spi+i+1)+i)"
                 inputId="binary"
                 label="Default Values"
               ></p-checkbox>
               <!-- <label for="binary">Default Values</label> -->
             </div>
+          </div>
+          <div class="p-field-checkbox">
+            <p-checkbox
+              [binary]="true"
+              [disabled]="isDisableforSubmitButton || p.isDefaultValue"
+              inputId="binary"
+              label="Historical Values"
+              value="i"
+              (onChange)="onChangeIshistorical($event, ((spi+i)/2)*(spi+i+1)+i)"
+            ></p-checkbox>
+            <!-- <label for="binary">Default Values</label> -->
           </div>
         </div>
       </div>
