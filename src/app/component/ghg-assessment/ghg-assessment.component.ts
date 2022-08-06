@@ -27,7 +27,9 @@ import {
   ProjectApprovalStatus,
   AssesmentControllerServiceProxy,
   ApplicabilityControllerServiceProxy,
+  DefaultValueControllerServiceProxy,
   User,
+  Country,
 } from 'shared/service-proxies/service-proxies';
 import Parameter from 'app/Model/parameter';
 import ParameterSections from 'app/Model/parameter-sections';
@@ -38,7 +40,7 @@ import { ProjectIndicaters } from 'app/Model/projection-indicaters.enum';
 import { EasyofuseDatacollection } from 'app/Model/easy-of-use-data-Collection.enum';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
+import { empty, Observable } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { MethodologyControllerServiceProxy,  } from 'shared/service-proxies/service-proxies';
@@ -208,6 +210,8 @@ export class GhgAssessmentComponent implements OnInit {
 
   defaultValues: DefaultValue[] = [];
 
+  uniqdefaultValues: DefaultValue[] = [];
+  uniqdeParaName:any[] = [];
   ndcList: Ndc[];
   selectedNdc: Ndc;
   selctedSubNdc: SubNdc;
@@ -319,6 +323,7 @@ export class GhgAssessmentComponent implements OnInit {
     private serviceProxy: ServiceProxy,
     private parameterProxy: ParameterControllerServiceProxy,
     private http: HttpClient,
+    private defaultValueControllerServiceProxy: DefaultValueControllerServiceProxy,
     private messageService: MessageService,
     private assesmentResaultProxy: AssesmentResaultControllerServiceProxy,
     private assesmentYearProxy: AssessmentYearControllerServiceProxy,
@@ -392,6 +397,13 @@ export class GhgAssessmentComponent implements OnInit {
       .subscribe((res: any) => {
        // this.methodologys = this.methodologys.filter((o)=>o.country.id == this.userCountryId);
         this.defaultValues = res.data;
+        this.defaultValues.forEach((a)=>{
+          let name= a.parameterName+" " +a.administrationLevel
+          if(!this.uniqdeParaName.includes(name)){
+            this.uniqdeParaName.push(name)
+          }
+        })
+
         //this.defaultValues = this.defaultValues.filter((o)=>o.country.id == this.userCountryId || o.country.id == null);
         console.log("my default values..",this.defaultValues);
         this.defaultValues.map(
@@ -599,6 +611,7 @@ export class GhgAssessmentComponent implements OnInit {
         this.ProjectParam = this.getParam('project', methParam.methodology);
         this.lekageParam = this.getParam('leakage', methParam.methodology);
 
+        console.log("+++++++++++++++",this.baslineParam);
        [ this.blHasVehicale,this.blHasVehicaleMulti] = this.isHaveDiminsionType(
           this.vehicle,
           this.baslineParam
@@ -607,7 +620,7 @@ export class GhgAssessmentComponent implements OnInit {
           this.vehicle,
           this.baslineParam
         );
-
+        console.log("+++++++++++++++",this.blVehicalValue);
         [this.blHasFuel,this.blHasFuelMulti] = this.isHaveDiminsionType(this.fuel, this.baslineParam);
         this.blFuelValue = this.getDiminsionTypeValue(
           this.fuel,
@@ -821,7 +834,7 @@ export class GhgAssessmentComponent implements OnInit {
         this.useStratum =
           this.isHaveDiminsionType(this.stratum, this.baslineParam)[0] ||
           this.isHaveDiminsionType(this.stratum, this.ProjectParam)[0];
-
+          console.log("+++++++++++++++",this.useRoute);
 
 
       } else {
@@ -1836,6 +1849,7 @@ export class GhgAssessmentComponent implements OnInit {
         sectionparam.fuel = '';
         sectionparam.vehical = v.vehical.name;
         sectionparam.parameterHeader = `${v.vehical.name}`;
+        // console.log("+++++++++++++++++",sectionparam)
         this.getAllParameters(vehicalParam, sectionparam, v.vehical);
         vehicalSection.sectionparameters.push(sectionparam);
       }
@@ -1845,6 +1859,7 @@ export class GhgAssessmentComponent implements OnInit {
             sectionparam.vehical = v.vehical.name;
             sectionparam.route = '';
             sectionparam.parameterHeader = `${v.vehical.name}`;
+            // console.log("+++++++++++++++++",sectionparam)
             this.getAllParameters(vehicalParam, sectionparam, v.vehical);
             vehicalSection.sectionparameters.push(sectionparam);
       }
@@ -1854,6 +1869,7 @@ export class GhgAssessmentComponent implements OnInit {
         if (v.route.length === 0) {
           sectionparam.fuel = f.name;
           sectionparam.vehical = v.vehical.name;
+          // console.log("+++++++++++++++++",sectionparam)
           sectionparam.parameterHeader = `${f.name}-${v.vehical.name}`;
           this.getAllParameters(vehicalParam, sectionparam, v.vehical);
         } else {
@@ -1871,8 +1887,76 @@ export class GhgAssessmentComponent implements OnInit {
         vehicalSection.sectionparameters.push(sectionparam);
       });
     });
-
+    console.log("++++++++++++vehical",vehicalSection)
+    this.checkDefaultValue(vehicalSection,"vehical");
     return vehicalSection;
+  }
+
+  checkBool(useDefaultValue:any){
+    if(useDefaultValue=="true" || useDefaultValue==true){
+      return true
+    }
+      else return false
+  }
+
+  checkDefaultValue(pa:ParameterSection,type:string){
+   pa.sectionparameters.forEach((a)=>{
+      let name="";
+      if(type=="vehical"){
+        name=a.vehical
+      }
+      else if(type=="fuel"){
+        name=a.fuel
+      }
+      else if(type=="vehicla"){
+        name=a.vehical
+      }
+      else if(type=="route"){
+        name=a.route
+      }
+      else if(type=="powerPlant"){
+        name=a.powerPlant
+      }
+      else if(type=="landClearance"){
+        name=a.landClearance
+      }
+      else if(type=="residue"){
+        name=a.residue
+      }
+      else if(type=="stratum"){
+        name=a.stratum
+      }
+      else if(type=="soil"){
+        name=a.soil
+      }
+      a.parameters.forEach((para)=>{
+        let name1 = para.parameterName +" "+name;
+        let bool1= this.checkBool( para.useDefaultValue);
+        if(!this.uniqdeParaName.includes(name1) && bool1==true){
+          let unitValues=new DefaultValue();
+          this.uniqdeParaName.push(name1);
+          unitValues.parameterName=para.parameterName;
+          unitValues.administrationLevel=name;
+          unitValues.unit=para.UOM;
+          this.uniqdefaultValues.push(unitValues);
+        }
+
+        if(para.alternativeParameters.length>0){
+          para.alternativeParameters.forEach((al)=>{
+            let name2 =al.parameterName+" "+ name;
+            let bool2= this.checkBool( para.useDefaultValue);
+            if(!this.uniqdeParaName.includes(name2) && bool2==true){
+              let unitValues2=new DefaultValue();
+              this.uniqdeParaName.push(name2);
+              unitValues2.parameterName=al.parameterName;
+              unitValues2.administrationLevel=name;
+              unitValues2.unit=para.UOM;
+              this.uniqdefaultValues.push(unitValues2);
+            }
+          })
+        }
+      })
+    })
   }
   genrateVehicalParameterSectionWhenHasFeedstock(
     parameterSelection: ParameterDimensionSelection[],
@@ -1910,8 +1994,8 @@ export class GhgAssessmentComponent implements OnInit {
       })
     
     });
-
-
+    console.log("++++++++++++genrateVehicalParameterSectionWhenHasFeedstock",vehicalSection)
+    this.checkDefaultValue(vehicalSection,"vehical");
     return vehicalSection;
   }
   
@@ -1942,7 +2026,8 @@ export class GhgAssessmentComponent implements OnInit {
       this.getAllParameters(fuelParam, fuelsectionparam, f);
       fuelSection.sectionparameters.push(fuelsectionparam);
     });
-
+    console.log("++++++++++++fuel",fuelSection)
+    this.checkDefaultValue(fuelSection,"fuel");
     return fuelSection;
   }
   genrateFuelParameterSectionWhenHasFeedstock(
@@ -1980,6 +2065,8 @@ export class GhgAssessmentComponent implements OnInit {
       })
     
     });
+    console.log("++++++++++++ genrateFuelParameterSectionWhenHasFeedstock",fuelSection)
+    this.checkDefaultValue(fuelSection,"fuel");
     return fuelSection;
   }
   genrateFeedstockParameterSection(
@@ -2017,8 +2104,8 @@ export class GhgAssessmentComponent implements OnInit {
 
 
 
-
-
+    console.log("++++++++++++feedstock",feedstockSection)
+    this.checkDefaultValue(feedstockSection,"feedstock");
     return feedstockSection;
   }
   genrateSoilParameterSection(
@@ -2054,7 +2141,8 @@ export class GhgAssessmentComponent implements OnInit {
       })
     
     });
-
+    console.log("++++++++++++soil",soilSection)
+    this.checkDefaultValue(soilSection,"soil");
     return soilSection;
   }
 
@@ -2085,7 +2173,8 @@ export class GhgAssessmentComponent implements OnInit {
       this.getAllParameters(residueParam, residueSectionparam, f);
       residueSection.sectionparameters.push(residueSectionparam);
     });
-
+    console.log("++++++++++++residue",residueSection)
+    this.checkDefaultValue(residueSection,"residue");
     return residueSection;
   }
   genrateLandClearanceParameterSection(
@@ -2115,7 +2204,8 @@ export class GhgAssessmentComponent implements OnInit {
       this.getAllParameters(landClearanceParam, landClearancesectionparam, f);
       landClearanceSection.sectionparameters.push(landClearancesectionparam);
     });
-
+    console.log("++++++++++++landClearance",landClearanceSection)
+    this.checkDefaultValue(landClearanceSection,"landClearance");
     return landClearanceSection;
   }
 
@@ -2145,6 +2235,8 @@ export class GhgAssessmentComponent implements OnInit {
         }
       }
     });
+    console.log("++++++++++++route",fuelSection)
+    this.checkDefaultValue(fuelSection,"route");
     return fuelSection;
   }
   genrateStratumParameterSection(
@@ -2181,6 +2273,8 @@ export class GhgAssessmentComponent implements OnInit {
       })
     
     });
+    console.log("++++++++++++stratum",stratumSection)
+    this.checkDefaultValue(stratumSection,"stratum");
     return stratumSection;
   }
 
@@ -2211,6 +2305,8 @@ export class GhgAssessmentComponent implements OnInit {
         }
       }
     });
+    console.log("++++++++++++powerPlant",fuelSection)
+    this.checkDefaultValue(fuelSection,"powerPlant");
     return fuelSection;
   }
 
@@ -3467,13 +3563,22 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   ViewResultClick() {
-   // console.log(this.savedAsessment);
+   console.log("++++++++++++++++++final",this.uniqdefaultValues);
+   for(let num in this.uniqdefaultValues){
+    this.defaultValueControllerServiceProxy.createValue(this.uniqdefaultValues[num]).subscribe((res:any)=>{
+          console.log("+++++++++++++++++++upload uniqdefaultValues",res);
+        });
+   }
+   setTimeout(() => {
+     
     this.router.navigate(['/result'], {
       queryParams: {
         id: this.savedAsessment.id,
         yr: this.assesmentYear.getFullYear(),
       },
-    });
+    });           
+    },2000);
+    
   }
 
   async onAssesmentYearChange(event: any) {

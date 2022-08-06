@@ -100,7 +100,7 @@ export class LearningMaterialComponent implements OnInit,AfterViewInit {
     let filtertext = this.searchBy.text ? this.searchBy.text : '';
 
     let pageNumber = 1;
-    let rows = 10;
+    let rows = 1000;
     setTimeout(() => {
       this.LearningMaterialProxy.getLearningMaterialDetails(
           pageNumber,

@@ -23411,6 +23411,59 @@ export class DefaultValueControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
+    createValue(body: DefaultValue): Observable<any> {
+        let url_ = this.baseUrl + "/default-value/update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateValue(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateValue(<any>response_);
+                } catch (e) {
+                    return <Observable<any>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<any>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateValue(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result201 = resultData201 !== undefined ? resultData201 : <any>null;
+    
+            return _observableOf(result201);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
     getDefaultvalueInfo(page: number, limit: number, filterText: string, source: string, year: string, status: string): Observable<any> {
         let url_ = this.baseUrl + "/default-value/Defaultvalues/info/{page}/{limit}/{filterText}/{source}/{year}/{status}?";
         if (page === undefined || page === null)
@@ -30389,6 +30442,11 @@ export class MethodologyData implements IMethodologyData {
     sector: Sector;
     mitigationActionType: MitigationActionType;
     applicability: ApplicabilityEntity;
+    baselineImage: string;
+    projectImage: string;
+    projectionImage: string;
+    leakageImage: string;
+    resultImage: string;
 
     constructor(data?: IMethodologyData) {
         if (data) {
@@ -30422,6 +30480,11 @@ export class MethodologyData implements IMethodologyData {
             this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : <any>undefined;
             this.mitigationActionType = _data["mitigationActionType"] ? MitigationActionType.fromJS(_data["mitigationActionType"]) : <any>undefined;
             this.applicability = _data["applicability"] ? ApplicabilityEntity.fromJS(_data["applicability"]) : <any>undefined;
+            this.baselineImage = _data["baselineImage"];
+            this.projectImage = _data["projectImage"];
+            this.projectionImage = _data["projectionImage"];
+            this.leakageImage = _data["leakageImage"];
+            this.resultImage = _data["resultImage"];
         }
     }
 
@@ -30455,6 +30518,11 @@ export class MethodologyData implements IMethodologyData {
         data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
         data["mitigationActionType"] = this.mitigationActionType ? this.mitigationActionType.toJSON() : <any>undefined;
         data["applicability"] = this.applicability ? this.applicability.toJSON() : <any>undefined;
+        data["baselineImage"] = this.baselineImage;
+        data["projectImage"] = this.projectImage;
+        data["projectionImage"] = this.projectionImage;
+        data["leakageImage"] = this.leakageImage;
+        data["resultImage"] = this.resultImage;
         return data;
     }
 
@@ -30488,6 +30556,11 @@ export interface IMethodologyData {
     sector: Sector;
     mitigationActionType: MitigationActionType;
     applicability: ApplicabilityEntity;
+    baselineImage: string;
+    projectImage: string;
+    projectionImage: string;
+    leakageImage: string;
+    resultImage: string;
 }
 
 export class Methodology implements IMethodology {
