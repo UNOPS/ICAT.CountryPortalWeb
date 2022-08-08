@@ -80,13 +80,11 @@ export class AppComponent implements OnInit {
           return;
         }
         if (event.url == '/landing-page') {
-         
           this.showLeftMenu = false;
           this.showTopMenu = false;
           return;
         }
         if (event.url == '/') {
-          
           this.showLeftMenu = false;
           this.showTopMenu = false;
           return;
@@ -97,7 +95,6 @@ export class AppComponent implements OnInit {
           return;
         }
         if (event.url == '/loard-more') {
-       
           this.showLeftMenu = false;
           this.showTopMenu = false;
         //Sub pages from Landing Page
@@ -112,7 +109,6 @@ export class AppComponent implements OnInit {
           return;
         }
         if (event.url == '/landing-page#Case-studies') {
-         
           this.showLeftMenu = false;
           this.showTopMenu = false;
           return;
@@ -135,6 +131,9 @@ export class AppComponent implements OnInit {
         }
 
       
+      }else{
+        this.showLeftMenu = false;
+        this.showTopMenu = false;
       }
       
     }
