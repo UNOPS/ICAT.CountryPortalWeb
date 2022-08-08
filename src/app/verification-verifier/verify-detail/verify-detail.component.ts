@@ -559,7 +559,7 @@ export class VerifyDetailComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Successfully Save.',
+          detail: 'Successfully updated',
           closable: true,
         });
       });
