@@ -67,6 +67,10 @@ export class GhgAssessmentComponent implements OnInit {
   selectedApproch: string;
   isGuidedSelection: boolean = false;
 
+  hasCommonBaseline: boolean = false;
+  hasCommonProject: boolean = false;
+  hasCommonLeakage: boolean = false;
+
   routes: any[] = [];
   powerPlants: any[] = [];
   stratums: any[] = [];
@@ -946,6 +950,7 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   addBaselineParam() {
+    this.hasCommonBaseline = false;
     this.basllineSelection.push(new ParameterDimensionSelection().createNew());
   }
 
@@ -954,6 +959,7 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   addProjectParam() {
+    this.hasCommonProject = false;
     this.projectSelection.push(new ParameterDimensionSelection().createNew());
   }
 
@@ -962,6 +968,7 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   addLekageParam() {
+    this.hasCommonLeakage = false;
     this.lekageSelection.push(new ParameterDimensionSelection().createNew());
   }
 
@@ -1301,9 +1308,13 @@ export class GhgAssessmentComponent implements OnInit {
           let vehicalCommon = this.getCommon(this.blVehicalValue);
           console.log("fuelCommon",vehicalCommon)
           if (vehicalCommon) {
-            var tempCommon = new ParameterDimensionSelection().createNew();
-            tempCommon.vehical = vehicalCommon;
-            this.basllineSelection.push(tempCommon);
+            let commonEntered = this.basllineSelection.filter(b => b.vehical.id === vehicalCommon.id )
+            if (commonEntered.length === 0){
+              var tempCommon = new ParameterDimensionSelection().createNew();
+              tempCommon.vehical = vehicalCommon;
+              this.basllineSelection.push(tempCommon);
+              this.hasCommonBaseline = true;
+            }
           }
           console.log("fuelCommon",this.basllineSelection)
           let vehicalSection = this.genrateVehicalParameterSection(
@@ -1376,9 +1387,13 @@ export class GhgAssessmentComponent implements OnInit {
 
           let feedstockCommon = this.getCommon(this.blFeedstockValue);
           if (feedstockCommon) {
-            var tempCommon = new ParameterDimensionSelection().createNew();
-            tempCommon.feedstock = feedstockCommon;
-            this.basllineSelection.push(tempCommon);
+            let commonEntered = this.basllineSelection.filter(b => b.feedstock.id === feedstockCommon.id)
+            if (commonEntered.length === 0) {
+              var tempCommon = new ParameterDimensionSelection().createNew();
+              tempCommon.feedstock = feedstockCommon;
+              this.basllineSelection.push(tempCommon);
+              this.hasCommonBaseline = true;
+            }
           }
 
           let feedstockSection = this.genrateFeedstockParameterSection(
@@ -1489,12 +1504,16 @@ export class GhgAssessmentComponent implements OnInit {
           
         if( !this.prHasFeedstock) {
         let vehicalParam = this.getDiminsion(this.vehicle, this.ProjectParam);
-        let fuelCommon = this.getCommon(this.prVehicalValue);
+        let vehicleCommon = this.getCommon(this.prVehicalValue);
 
-        if (fuelCommon) {
-          var tempCommon = new ParameterDimensionSelection().createNew();
-          tempCommon.vehical = fuelCommon;
-          this.projectSelection.push(tempCommon);
+        if (vehicleCommon) {
+          let commonEntered = this.projectSelection.filter(p => p.vehical.id === vehicleCommon.id)
+          if (commonEntered.length === 0) {
+            var tempCommon = new ParameterDimensionSelection().createNew();
+            tempCommon.vehical = vehicleCommon;
+            this.hasCommonProject = true;
+            this.projectSelection.push(tempCommon);
+          }
         }
         let vehicalSection = this.genrateVehicalParameterSection(
           this.projectSelection,
@@ -1527,33 +1546,35 @@ export class GhgAssessmentComponent implements OnInit {
       }}
 
       if (this.prHasFuel) {
-      if(!this.prHasFeedstock){  let fuelParam = this.getDiminsion(this.fuel, this.ProjectParam);
+        if (!this.prHasFeedstock) {
+          let fuelParam = this.getDiminsion(this.fuel, this.ProjectParam);
 
-        let fuelCommon = this.getCommon(this.prFuelValue);
-        if (fuelCommon) {
-          this.projectSelection[0].fuel.unshift(fuelCommon);
+          let fuelCommon = this.getCommon(this.prFuelValue);
+          if (fuelCommon) {
+            this.projectSelection[0].fuel.unshift(fuelCommon);
+          }
+
+          let fuelSection = this.genrateFuelParameterSection(
+            this.projectSelection,
+            fuelParam,
+            'Fuel Info'
+          );
+          this.prParameters.fuelSection = fuelSection;
         }
-
-        let fuelSection = this.genrateFuelParameterSection(
-          this.projectSelection,
-          fuelParam,
-          'Fuel Info'
-        );
-        this.prParameters.fuelSection = fuelSection;}
-        else{
+        else {
           let fuelParam = this.getDiminsion(this.fuel, this.ProjectParam);
           let fuelCommon = this.getCommon(this.prFuelValue);
           if (fuelCommon) {
             this.projectSelection[0].fuel.unshift(fuelCommon);
           }
-         
-         
-            let fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
-              this.projectSelection,
-              fuelParam,
-              'Fuel Info'
-            );
-            this.prParameters.fuelSection = fuelSection;
+
+
+          let fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
+            this.projectSelection,
+            fuelParam,
+            'Fuel Info'
+          );
+          this.prParameters.fuelSection = fuelSection;
 
 
 
@@ -1565,9 +1586,13 @@ export class GhgAssessmentComponent implements OnInit {
 
         let feedstockCommon = this.getCommon(this.prFeedstockValue);
         if (feedstockCommon) {
-          var tempCommon = new ParameterDimensionSelection().createNew();
-          tempCommon.feedstock = feedstockCommon;
-          this.projectSelection.push(tempCommon);
+          let commonEntered = this.projectSelection.filter(p => p.feedstock.id === feedstockCommon.id)
+          if (commonEntered.length === 0) {
+            var tempCommon = new ParameterDimensionSelection().createNew();
+            tempCommon.feedstock = feedstockCommon;
+            this.hasCommonProject = true;
+            this.projectSelection.push(tempCommon);
+          }
         }
 
         let feedstockSection = this.genrateFeedstockParameterSection(
@@ -1673,11 +1698,15 @@ export class GhgAssessmentComponent implements OnInit {
           
           if( !this.lkHasFeedstock) {
           let vehicalParam = this.getDiminsion(this.vehicle, this.lekageParam);
-          let fuelCommon = this.getCommon(this.lkVehicalValue);
-          if (fuelCommon) {
-            var tempCommon = new ParameterDimensionSelection().createNew();
-            tempCommon.vehical = fuelCommon;
-            this.lekageSelection.push(tempCommon);
+          let vehicalCommon = this.getCommon(this.lkVehicalValue);
+          if (vehicalCommon) {
+            let commonEntered = this.lekageSelection.filter(l => l.vehical.id === vehicalCommon.id)
+            if (commonEntered.length === 0) {
+              var tempCommon = new ParameterDimensionSelection().createNew();
+              tempCommon.vehical = vehicalCommon;
+              this.hasCommonLeakage = true;
+              this.lekageSelection.push(tempCommon);
+            }
           }
           let vehicalSection = this.genrateVehicalParameterSection(
             this.lekageSelection,
@@ -1748,9 +1777,13 @@ export class GhgAssessmentComponent implements OnInit {
   
           let feedstockCommon = this.getCommon(this.lkFeedstockValue);
           if (feedstockCommon) {
-            var tempCommon = new ParameterDimensionSelection().createNew();
-            tempCommon.feedstock = feedstockCommon;
-            this.lekageSelection.push(tempCommon);
+            let commonEntered = this.lekageSelection.filter(l => l.feedstock.id === feedstockCommon.id)
+            if (commonEntered.length === 0) {
+              var tempCommon = new ParameterDimensionSelection().createNew();
+              tempCommon.feedstock = feedstockCommon;
+              this.hasCommonLeakage = true;
+              this.lekageSelection.push(tempCommon);
+            }
           }
   
           let feedstockSection = this.genrateFeedstockParameterSection(
