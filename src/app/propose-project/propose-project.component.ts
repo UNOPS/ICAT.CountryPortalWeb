@@ -1278,6 +1278,7 @@ export class ProposeProjectComponent implements OnInit {
 
     let sector = new Sector();
     sector.id = this.project.sector.id;
+    sector.name = this.project.sector.name;
     this.project.sector = sector;
 
     this.project.proposeDateofCommence = moment(this.proposeDateofCommence);
@@ -1295,6 +1296,7 @@ export class ProposeProjectComponent implements OnInit {
 
       let ndc = new Ndc();
       ndc.id = this.project.ndc?.id;
+      ndc.name = this.project.ndc?.name;
       this.project.ndc = ndc;
     }
 
@@ -1305,6 +1307,7 @@ export class ProposeProjectComponent implements OnInit {
 
       let subned = new SubNdc();
       subned.id = this.project.subNdc?.id;
+      subned.name = this.project.subNdc?.name;
       this.project.subNdc = subned;
     }
 
@@ -1313,6 +1316,7 @@ export class ProposeProjectComponent implements OnInit {
       insti.id = this.project.mappedInstitution?.id;
       this.project.mappedInstitution = insti;
     }
+
 
     if (this.project.id > 0) {
       this.serviceProxy
@@ -1353,7 +1357,8 @@ export class ProposeProjectComponent implements OnInit {
                 // }
               );
 
-            console.log('update....', res);
+            console.log('update....', res, this.project);
+            this.isMapped = this.project.isMappedCorrectly
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
