@@ -1077,7 +1077,8 @@
               <div
                 class="p-2 d-flex align-items-center"
                 *ngIf="
-                  baselineShowMaintain && basllineSelection!.length - 1 === i
+                  baselineShowMaintain && ((basllineSelection!.length - 1 === i && !hasCommonBaseline) ||
+                  (basllineSelection!.length - 2 === i && hasCommonBaseline))
                 "
               >
                 <div class="p-field">
@@ -1094,7 +1095,8 @@
               <div
                 class="p-2"
                 *ngIf="
-                  baselineShowMaintain && basllineSelection!.length - 1 !== i
+                  baselineShowMaintain && ((basllineSelection!.length - 1 !== i && !hasCommonBaseline) ||
+                  (basllineSelection!.length - 2 !== i && hasCommonBaseline))
                 "
               >
                 <div class="p-field">
@@ -1557,7 +1559,8 @@
               <div
                 class="p-2 d-flex align-items-center"
                 *ngIf="
-                  projectShowMaintain && projectSelection!.length - 1 === i
+                  projectShowMaintain && ((projectSelection!.length - 1 === i && !hasCommonProject) ||
+                  (projectSelection!.length - 2 === i && hasCommonProject))
                 "
               >
                 <div class="p-field">
@@ -1574,7 +1577,8 @@
               <div
                 class="p-2"
                 *ngIf="
-                  projectShowMaintain && projectSelection!.length - 1 !== i
+                  projectShowMaintain && ((projectSelection!.length - 1 !== i && !hasCommonProject) ||
+                  (projectSelection!.length - 2 !== i && hasCommonProject))
                 "
               >
                 <div class="p-field">
@@ -2021,7 +2025,8 @@
             <div class="d-flex flex-wrap p-2 col-md-3">
               <div
                 class="p-2 d-flex align-items-center"
-                *ngIf="lekageShowMaintain && lekageSelection!.length - 1 === i"
+                *ngIf="lekageShowMaintain && ((lekageSelection!.length - 1 === i && !hasCommonLeakage) ||
+                (lekageSelection!.length - 2 === i && hasCommonLeakage))"
               >
                 <div class="p-field">
                   <button
@@ -2036,7 +2041,8 @@
               </div>
               <div
                 class="p-2"
-                *ngIf="lekageShowMaintain && lekageSelection!.length - 1 !== i"
+                *ngIf="lekageShowMaintain && ((lekageSelection!.length - 1 !== i && !hasCommonLeakage) ||
+                (lekageSelection!.length - 2 !== i && hasCommonLeakage))"
               >
                 <div class="p-field">
                   <button

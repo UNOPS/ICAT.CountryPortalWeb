@@ -254,25 +254,27 @@ export class ApproveDataComponent implements OnInit {
   }
   onRejectClick() {
     this.selectedParameters.push(...this.selectedBaselineParameters, ...this.selectedProjectParameters,
-                                  ...this.selectedLeakageParameters, ...this.selectedProjectParameters)
+                                  ...this.selectedLeakageParameters, ...this.selectedProjectionParameters)
     if (this.selectedParameters.length > 1) {
       this.messageService.add({
         severity: 'error',
         summary: 'Warning',
         detail: 'Only one Parameter can be selected at a time for Rejection!',
       });
+      this.clearParameters()
       return;
     }
 
     if (this.selectedParameters.length > 0) {
       this.confirm1 = true;
+    } else {
+      this.clearParameters();
     }
-    this.selectedParameters = [];
   }
 
   onRejectConfirm() {
     this.selectedParameters.push(...this.selectedBaselineParameters, ...this.selectedProjectParameters,
-                                  ...this.selectedLeakageParameters, this.selectedProjectParameters)
+                                  ...this.selectedLeakageParameters, ...this.selectedProjectionParameters)
     let idList = new Array<number>();
     for (let index = 0; index < this.selectedParameters.length; index++) {
       const element = this.selectedParameters[index];
@@ -302,7 +304,7 @@ export class ApproveDataComponent implements OnInit {
           this.parameterControlProxy
             .updateInstitution(updateInstitutionDto)
             .subscribe();
-          this.selectedParameters = [];
+          this.clearParameters();
           this.getAssesment();
         },
         (err) => {
@@ -315,7 +317,7 @@ export class ApproveDataComponent implements OnInit {
       );
     }
     this.confirm1 = false;
-    this.selectedParameters = [];
+    this.clearParameters();
   }
 
   onClickQC() {
@@ -433,7 +435,7 @@ export class ApproveDataComponent implements OnInit {
               summary: 'Success',
               detail: 'Data is approved successfully',
             });
-            this.selectedParameters = [];
+            this.clearParameters();
             this.getAssesment();
             this.checkQC();
           },
@@ -448,5 +450,13 @@ export class ApproveDataComponent implements OnInit {
       }
     }
     this.selectedParameters = []
+  }
+
+  clearParameters(){
+    this.selectedParameters = [];
+    this.selectedBaselineParameters = [];
+    this.selectedLeakageParameters = [];
+    this.selectedProjectParameters = [];
+    this.selectedProjectionParameters = [];
   }
 }

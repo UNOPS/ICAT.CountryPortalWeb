@@ -67,7 +67,8 @@ export class AppComponent implements OnInit {
     ];
 
     
-    this.router.events.subscribe((event: any) => {
+    this.router.events
+    .subscribe((event: any) => {
       if (event && event.url) {
         console.log('event.url', event.url);
         this.showLeftMenu = true;
@@ -80,13 +81,11 @@ export class AppComponent implements OnInit {
           return;
         }
         if (event.url == '/landing-page') {
-         
           this.showLeftMenu = false;
           this.showTopMenu = false;
           return;
         }
         if (event.url == '/') {
-          
           this.showLeftMenu = false;
           this.showTopMenu = false;
           return;
@@ -97,9 +96,9 @@ export class AppComponent implements OnInit {
           return;
         }
         if (event.url == '/loard-more') {
-       
           this.showLeftMenu = false;
           this.showTopMenu = false;
+        }
         //Sub pages from Landing Page
         if (event.url == '/landing-page#about-tool') {
           this.showLeftMenu = false;
@@ -112,7 +111,6 @@ export class AppComponent implements OnInit {
           return;
         }
         if (event.url == '/landing-page#Case-studies') {
-         
           this.showLeftMenu = false;
           this.showTopMenu = false;
           return;
@@ -134,8 +132,6 @@ export class AppComponent implements OnInit {
           return;
         }
 
-      
-      }
       
     }
     });
