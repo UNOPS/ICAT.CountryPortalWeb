@@ -67,7 +67,8 @@ export class AppComponent implements OnInit {
     ];
 
     
-    this.router.events.subscribe((event: any) => {
+    this.router.events
+    .subscribe((event: any) => {
       if (event && event.url) {
         console.log('event.url', event.url);
         this.showLeftMenu = true;
@@ -97,6 +98,7 @@ export class AppComponent implements OnInit {
         if (event.url == '/loard-more') {
           this.showLeftMenu = false;
           this.showTopMenu = false;
+        }
         //Sub pages from Landing Page
         if (event.url == '/landing-page#about-tool') {
           this.showLeftMenu = false;
@@ -129,12 +131,6 @@ export class AppComponent implements OnInit {
           this.showTopMenu = false;
           return;
         }
-
-      
-      }else{
-        this.showLeftMenu = false;
-        this.showTopMenu = false;
-      }
       
     }
     });
