@@ -131,6 +131,7 @@ export class AppComponent implements OnInit {
           this.showTopMenu = false;
           return;
         }
+
       
     }
     });
