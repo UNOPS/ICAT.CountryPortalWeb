@@ -1291,12 +1291,13 @@ export class GhgAssessmentComponent implements OnInit {
       ) {
         if (this.blHasRoute) {
           let routeParam = this.getDiminsion(this.route, this.baslineParam);
+          
           let routeSection = this.genrateRouteParameterSection(
             this.basllineSelection,
             routeParam,
             'Route Info'
           );
-
+          console.log("+++++++",routeSection)
           this.blParameters.routeSection = routeSection;
         }
         if (this.blHasVehicale){
@@ -2246,11 +2247,11 @@ export class GhgAssessmentComponent implements OnInit {
 
   genrateRouteParameterSection(
     parameterSelection: ParameterDimensionSelection[], //selcted all basline vlues (vehucal,fuel,....)
-    fuelParam: any,  // fuel dimention data in basline paramiter
+    routParam: any,  // fuel dimention data in basline paramiter
     sectionHeader: string
   ) {
-    let fuelSection = new ParameterSection();
-    fuelSection.sectionHeader = sectionHeader;
+    let routSection = new ParameterSection();
+    routSection.sectionHeader = sectionHeader;
    
     let routeList: any[] = [];
     parameterSelection.map((v: any) => routeList.push(...v.route));
@@ -2261,18 +2262,17 @@ export class GhgAssessmentComponent implements OnInit {
     
     uniqueItem.map((v) => {
       if (v.name !== '' && v.name !== undefined && v.name !== null) {
-        let fuelsectionparam = new SectionParameter();
-        fuelsectionparam.route = v.name;
-        fuelsectionparam.parameterHeader = v.name;
-        this.getAllParameters(fuelParam, fuelsectionparam, v.route);
-        if (fuelsectionparam.parameters.length > 0) {
-          fuelSection.sectionparameters.push(fuelsectionparam);
+        let routsectionparam = new SectionParameter();
+        routsectionparam.route = v.name;
+        routsectionparam.parameterHeader = v.name;
+        this.getAllParameters(routParam, routsectionparam, v);
+        if (routsectionparam.parameters.length > 0) {
+          routSection.sectionparameters.push(routsectionparam);
         }
       }
     });
-    console.log("++++++++++++route",fuelSection)
-    this.checkDefaultValue(fuelSection,"route");
-    return fuelSection;
+    this.checkDefaultValue(routSection,"route");
+    return routSection;
   }
   genrateStratumParameterSection(
     parameterSelection: ParameterDimensionSelection[], //selcted all basline vlues (vehucal,fuel,....)
