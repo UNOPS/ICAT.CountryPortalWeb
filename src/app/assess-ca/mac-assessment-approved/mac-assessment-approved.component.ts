@@ -3,7 +3,7 @@ import { ORIENTATION_BREAKPOINTS } from '@angular/flex-layout';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { MessageService } from 'primeng/api';
+import { MessageService, SelectItem } from 'primeng/api';
 import { Assessment, AssessmentObjective, AssessmentYear, Institution, Project, ServiceProxy, Parameter as Parameter_Server, ProjectApprovalStatus, } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 @Component({
@@ -24,7 +24,7 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
   projectStartDate:any='';
   asseYear: string='';
   details: any[]=[];
-  uniqueYears: any[]=[];
+  uniqueYears: SelectItem[]=[];
   years: number[] = [];
   selectYears: any;
   slectedProject: Project = new Project();
@@ -315,6 +315,8 @@ getYears()
    // console.log('asse year',this.details)
      }
      this.uniqueYears = [...new Set(this.details)];
+     this.uniqueYears = this.uniqueYears.map(year => {return {label: year.toString(), value: year}})
+     this.uniqueYears = this.uniqueYears.sort((a,b)=>a.value-b.value)
      if(this.uniqueYears.length === 0){
       this.noUniqueYears = true
      } else {

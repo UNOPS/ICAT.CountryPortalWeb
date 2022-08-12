@@ -41,7 +41,7 @@ import { EasyofuseDatacollection } from 'app/Model/easy-of-use-data-Collection.e
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { empty, Observable } from 'rxjs';
-import { MessageService } from 'primeng/api';
+import { MessageService, SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { MethodologyControllerServiceProxy,  } from 'shared/service-proxies/service-proxies';
 
@@ -60,7 +60,7 @@ export class GhgAssessmentComponent implements OnInit {
   selectedClimateAction: Project;
   baseYear: Date;
   assesmentYear: Date;
-  years: number[] = [];
+  years: SelectItem[] = new Array();
   selectYears: number[];
   selectedObjective: AssessmentObjective[] = [];
   approachList: string[] = ['Ex-ante', 'Ex-post'];
@@ -346,10 +346,10 @@ export class GhgAssessmentComponent implements OnInit {
     this.userSectorId = tokenPayload.sectorId;
 
     var year = moment().year();
-    this.years.push(year);
+    this.years.push({label: year.toString(),value: year });
     for (let i = 1; i < 30; i++) {
-      this.years.push(year - i);
-      this.years.push(year + i);
+      this.years.push({label: (year - i).toString(),value: year - i });
+      this.years.push({label: (year + i).toString(),value: year + i });
     }
 
     this.userName = localStorage.getItem('user_name')!;
@@ -380,7 +380,7 @@ export class GhgAssessmentComponent implements OnInit {
      
       });
 
-    this.years = this.years.sort();
+    this.years = this.years.sort(function(a,b) {return a.value - b.value});
 
     this.addRoute();
     this.addPowerPlant();
