@@ -438,7 +438,13 @@ createAssessments(data: NgForm)
    // this.updateProject();
     for(let x=0; x<this.selectedApproch.length; x++)
     {
-      console.log("hi....3")
+      console.log("hi....3", this.selectedApproch)
+      console.log("selectYears", this.selectYears)
+      console.log("objectiveOfAsse", this.objectiveOfAsse)
+      console.log("bsTotalInvestment", this.bsTotalInvestment)
+      console.log("bsProjectLife", this.bsProjectLife)
+      console.log("bsAnnualOM", this.bsAnnualOM)
+      console.log("bsAnnualFuel", this.bsAnnualFuel)
     // console.log("reduction....",this.selectedApproachLi[x]);
     let assessment = new Assessment();
    // assessment.baseYear = this.baseYear.getFullYear();  
@@ -448,6 +454,17 @@ createAssessments(data: NgForm)
    // subndc.id = this.selctedSubNdc.id;   
    // assessment.subNdc = subndc;
    // assessment.ndc = ndc;
+
+   if (this.selectedApproch[x]?.assessmentResult.length === 0){
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'There is no result for selected assessment. ',
+      closable: true,
+    });
+    return;
+   }
+
     assessment.projectDuration = this.slectedProject.duration;
     assessment.projectStartDate = moment(this.slectedProject.proposeDateofCommence);
     assessment.emmisionReductionValue = this.selectedApproch[x]?.assessmentResult[0].totalEmission;
