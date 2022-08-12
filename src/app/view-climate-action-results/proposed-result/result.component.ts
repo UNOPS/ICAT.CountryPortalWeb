@@ -41,6 +41,7 @@ export class ResultComponent implements OnInit {
   allParameter: Parameter[];
   baseParameter: Parameter[] = new Array();
   proParameter: Parameter[] = new Array();
+  projectionParameter: Parameter[] = new Array();
   leakageParameter: Parameter[] = new Array();
   allResualt: AssessmentResault[];
   lParameter: AssessmentResault[];
@@ -175,6 +176,9 @@ export class ResultComponent implements OnInit {
               if(this.allParameter[a].isProject == true){
                 this.proParameter.push(this.allParameter[a])
               }
+              if(this.allParameter[a].isProjection == true){
+                this.projectionParameter.push(this.allParameter[a])
+              }
               if (this.assement.lekageScenario != null) {
                 this.isShown == true;
                 if( this.allParameter[a].isLekage == true){
@@ -213,6 +217,9 @@ export class ResultComponent implements OnInit {
             }
             if(this.allParameter[a].isProject == true){
               this.proParameter.push(this.allParameter[a])
+            }
+            if(this.allParameter[a].isProjection == true){
+              this.projectionParameter.push(this.allParameter[a])
             }
             if (this.assement.lekageScenario != null) {
               this.isShown == true;
@@ -409,7 +416,7 @@ export class ResultComponent implements OnInit {
       )
       .subscribe((res) => {
         this.projectionData = res.data;
-        // console.log('projection', this.projectionData);
+        console.log('projection', this.projectionData);
 
         let yr = 0;
         // for(var i=0; i<this.projectionData.length;i++){
