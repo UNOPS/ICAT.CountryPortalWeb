@@ -15,6 +15,7 @@ import {
 import {
   AssesmentControllerServiceProxy,
   Assessment,
+  AssessmentYear,
   MitigationActionType,
   Project,
   ProjectApprovalStatus,
@@ -96,10 +97,11 @@ export class AllResultComponent implements OnInit, AfterViewInit {
   //   this.router.navigate(['']); //should insert summery page
   // }
 
-  toDetails(assessments: Assessment)
+  toDetails(assessments: Assessment,assYr:AssessmentYear)
   {
     this.router.navigate(['/result'],{ 
-      queryParams: { id: assessments.id, yr: assessments.assessmentYear[0]?.assessmentYear  } // need to add yr after list is done
+      // queryParams: { id: assessments.id, yr: assessments.assessmentYear[0]?.assessmentYear  } // need to add yr after list is done
+      queryParams: { id: assessments.id, yr: assYr.assessmentYear  } // need to add yr after list is done
     });  //should insert summery page link
   
   }
