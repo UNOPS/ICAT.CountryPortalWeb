@@ -44,10 +44,13 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   verificationStatus:number;
 
   @Input()
-  ResultValue: number | undefined;
+  ResultValue: any | undefined;
 
   @Input()
   ResultLabel: string;
+
+  @Input()
+  multiResult: boolean;
 
   @Input()
   isBaseline: boolean;
@@ -89,6 +92,8 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   requestHistoryList: any[] = [];
   displayHistory:boolean = false;
 
+  isProjectionResult = false;
+
   constructor(
     private qaServiceProxy: QualityCheckControllerServiceProxy,
     private messageService: MessageService,
@@ -102,6 +107,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.loadUser();
+    if (this.multiResult) this.isProjectionResult = true;
 
     console.log("verify parameters...",this.parameters)
   }
