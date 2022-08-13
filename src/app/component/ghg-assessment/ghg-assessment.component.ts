@@ -44,6 +44,9 @@ import { empty, Observable } from 'rxjs';
 import { MessageService, SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { MethodologyControllerServiceProxy,  } from 'shared/service-proxies/service-proxies';
+import { ParameterInfo } from '../parameter-info.enum';
+
+declare type ParaInfoType = keyof typeof ParameterInfo;
 
 
 @Component({
@@ -322,6 +325,8 @@ export class GhgAssessmentComponent implements OnInit {
 
   methodAssessments: any[];
   methodParaCodes: any[];
+
+  infos: any = {};
 
   constructor(
     private methodologyProxy: MethodologyControllerServiceProxy,
@@ -977,6 +982,7 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   getMethodologyParam(): Observable<any> {
+    console.log(this.selectedMethodology)
     let Url = environment.baseUrlJsonFile + '/' + this.selectedMethodology.name;
     var headers = new HttpHeaders().set('api-key','1234');
     let file = undefined;
@@ -1277,6 +1283,17 @@ export class GhgAssessmentComponent implements OnInit {
     this.routePowerPlantMaintain = !this.routePowerPlantMaintain;
   }
 
+  getParameterInfo(parameterSection: any) {
+    for (let sp of parameterSection.vehicalSection.sectionparameters){
+      for (let para of sp.parameters){
+        let str = this.selectedMethodology.name + "_" + para.Code;
+        if (ParameterInfo[str as ParaInfoType]){
+          this.infos[para.Code] = ParameterInfo[str as ParaInfoType];
+        }
+      }
+    }
+  }
+
   baslineGenrate() {
     this.showBaslineGenrate = !this.showBaslineGenrate;
     this.baselineShowMaintain = !this.baselineShowMaintain;
@@ -1476,6 +1493,7 @@ export class GhgAssessmentComponent implements OnInit {
     } else {
       this.blParameters = new ParameterSections();
     }
+    this.getParameterInfo(this.blParameters)
   }
 
   projectGenrate() {
@@ -1671,6 +1689,7 @@ export class GhgAssessmentComponent implements OnInit {
         this.prParameters.powerPlantSection = powerSection;
       }
     }
+    this.getParameterInfo(this.prParameters)
   }
 
   lekageGenrate() {
@@ -1868,6 +1887,7 @@ export class GhgAssessmentComponent implements OnInit {
     } else {
       this.lkParameters = new ParameterSections();
     }
+    this.getParameterInfo(this.lkParameters)
   }
 
   genrateVehicalParameterSection(

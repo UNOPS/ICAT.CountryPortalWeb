@@ -21,6 +21,9 @@
         <div class="col-12 col-md-3">
           <div>
             <label for="projectownership">{{ p.parameterName }} </label>
+            <i *ngIf="infos[p.Code] !== undefined"
+            class="pi pi-info-circle" pTooltip="{{infos[p.Code]}}">
+            </i>
           </div>
         </div>
         <div class="col-12 col-md-3" *ngIf="IsProposal">

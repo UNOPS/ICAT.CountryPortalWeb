@@ -21,6 +21,8 @@ export class PowerPlantParameterComponent implements OnInit {
 
   @Input()
   isDisableforSubmitButton:boolean;
+  @Input()
+  infos: any;
 
   instiTutionList: Institution[];
   isHistoricalValue: boolean = false;
