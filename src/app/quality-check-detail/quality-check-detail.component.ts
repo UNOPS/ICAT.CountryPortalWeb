@@ -108,6 +108,8 @@ export class QualityCheckDetailComponent implements OnInit {
 
   isSubmitButtondisable:boolean=false;
 
+  isApproveAllAssesmentResult:boolean=false;
+  verificationStatusIsNull:boolean=false;
   @ViewChild('opDRPro') overlayDRPro: any;
   @ViewChild('opDRAss') overlayDRAssemnet: any;
 
@@ -145,7 +147,9 @@ export class QualityCheckDetailComponent implements OnInit {
           this.asseYearId = this.assementYear.id;
           this.asseId = this.assementYear.assessment.id;
 
-
+            if(this.assementYear.verificationStatus && this.assementYear.verificationStatus === null ){
+              this.verificationStatusIsNull=true;
+            }
          
 
 
@@ -168,7 +172,7 @@ export class QualityCheckDetailComponent implements OnInit {
             0,
             0
           )
-          .subscribe((res: any) => {
+          .subscribe(async (res: any) => {
             this.asseResult = res.data;
            console.log('this.asseResult...', this.asseResult);
 
@@ -265,6 +269,8 @@ export class QualityCheckDetailComponent implements OnInit {
               //this.isbstacResultButtonsDisable = true;
               this. isbstacResultButtonsDisableReject = true;
              }
+
+             this.isApproveAllAssesmentResult= await this.assesmentResaultProxy.checkAllQCApprovmentAssessmentResult(this.asseResult[0].id).toPromise();
            }
            else{
             this.assesmentProxy
@@ -791,8 +797,8 @@ export class QualityCheckDetailComponent implements OnInit {
         this.assesmentResultComment
       )
       .subscribe(
-        (res:any) => {
-          
+        async (res:any) => {
+
           console.log("result...fr",res)
           if(res.qcStatusBaselineResult == 4)
           {
@@ -933,6 +939,7 @@ export class QualityCheckDetailComponent implements OnInit {
           //this.assessmentResult.qcStatus = this.isApprove ? 4 : 3;
 
           // this.parameters.splice(index, 0, this.selectdParameter);
+          this.isApproveAllAssesmentResult= await this.assesmentResaultProxy.checkAllQCApprovmentAssessmentResult(this.asseResult[0].id).toPromise();
 
           this.overlayDRAssemnet.hide();
         },
