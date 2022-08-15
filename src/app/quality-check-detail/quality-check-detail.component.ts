@@ -146,9 +146,11 @@ export class QualityCheckDetailComponent implements OnInit {
           }
           this.asseYearId = this.assementYear.id;
           this.asseId = this.assementYear.assessment.id;
-
-            if(this.assementYear.verificationStatus && this.assementYear.verificationStatus === null ){
+         
+          
+            if(this.assementYear.verificationStatus==undefined || this.assementYear.verificationStatus == null ){
               this.verificationStatusIsNull=true;
+             
             }
          
 
