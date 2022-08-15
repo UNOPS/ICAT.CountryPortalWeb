@@ -396,7 +396,7 @@ export class GhgAssessmentComponent implements OnInit {
       .getManyBaseDefaultValueControllerDefaultValue(
         undefined,
         undefined,
-        undefined,
+        ['country.id||$eq||'+this.userCountryId],
         undefined,
         undefined,
         undefined,
