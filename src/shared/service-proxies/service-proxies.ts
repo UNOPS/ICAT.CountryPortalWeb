@@ -21987,6 +21987,59 @@ export class AssesmentResaultControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
+    checkAllQCApprovmentAssessmentResult(assersltId: number): Observable<boolean> {
+        let url_ = this.baseUrl + "/assesment-resault/checkAllQCApprovmentAssessmentResult?";
+        if (assersltId === undefined || assersltId === null)
+            throw new Error("The parameter 'assersltId' must be defined and cannot be null.");
+        else
+            url_ += "assersltId=" + encodeURIComponent("" + assersltId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCheckAllQCApprovmentAssessmentResult(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCheckAllQCApprovmentAssessmentResult(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCheckAllQCApprovmentAssessmentResult(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
     updateVRStatusForMac(yearId: number, vRStatus: number): Observable<number> {
         let url_ = this.baseUrl + "/assesment-resault/macassesment-resault/verificationupdate/{yearId}/{VRStatus}?";
         if (yearId === undefined || yearId === null)
@@ -26692,6 +26745,7 @@ export class Parameter implements IParameter {
     methodologyVersion: string;
     countryCodeExtended: string;
     isAcceptedByVerifier: number;
+    defaultValueId: number;
     institution: Institution;
     assessment: Assessment;
     defaultValue: DefaultValue;
@@ -26754,6 +26808,7 @@ export class Parameter implements IParameter {
             this.methodologyVersion = _data["methodologyVersion"];
             this.countryCodeExtended = _data["countryCodeExtended"];
             this.isAcceptedByVerifier = _data["isAcceptedByVerifier"];
+            this.defaultValueId = _data["defaultValueId"];
             this.institution = _data["institution"] ? Institution.fromJS(_data["institution"]) : <any>undefined;
             this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : <any>undefined;
             this.defaultValue = _data["defaultValue"] ? DefaultValue.fromJS(_data["defaultValue"]) : <any>undefined;
@@ -26817,6 +26872,7 @@ export class Parameter implements IParameter {
         data["methodologyVersion"] = this.methodologyVersion;
         data["countryCodeExtended"] = this.countryCodeExtended;
         data["isAcceptedByVerifier"] = this.isAcceptedByVerifier;
+        data["defaultValueId"] = this.defaultValueId;
         data["institution"] = this.institution ? this.institution.toJSON() : <any>undefined;
         data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
         data["defaultValue"] = this.defaultValue ? this.defaultValue.toJSON() : <any>undefined;
@@ -26880,6 +26936,7 @@ export interface IParameter {
     methodologyVersion: string;
     countryCodeExtended: string;
     isAcceptedByVerifier: number;
+    defaultValueId: number;
     institution: Institution;
     assessment: Assessment;
     defaultValue: DefaultValue;

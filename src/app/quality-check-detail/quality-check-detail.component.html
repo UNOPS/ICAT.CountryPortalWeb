@@ -821,15 +821,27 @@
       <div
         class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
       >
-        <button *ngIf="flag != 4 && flag != 3"
+        <!-- <button 
+        *ngIf="flag != 4 && flag != 3"
           class="btn btn-primary text-uppercase ml-5"
           type="submit"
           [disabled]="isSubmitButtondisable"
           (click)="submitStatus()"
         >
           Submit
+         
+        </button> -->
+        <button 
+        *ngIf=" verificationStatusIsNull && flag != 3"
+          class="btn btn-primary text-uppercase ml-5"
+          type="submit"
+          [disabled]="!isApproveAllAssesmentResult && isSubmitButtondisable"
+          (click)="submitStatus()"
+        >
+          Submit
           <!-- {{parameters.find(m => m.parameterRequest.qaStatus !== 4) === undefined ? 'Calculate' :  'Submit'}} -->
         </button>
+        
       </div>
     </div>
 
