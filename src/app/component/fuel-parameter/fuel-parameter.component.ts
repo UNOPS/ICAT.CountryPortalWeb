@@ -23,6 +23,8 @@ export class FuelParameterComponent implements OnInit {
   IsProposal: boolean;
   userCountryId:number = 0;
   userSectorId:number = 0;
+  @Input()
+  infos: any;
 
   instiTutionList: Institution[];
   isHistoricalValue: boolean = false;

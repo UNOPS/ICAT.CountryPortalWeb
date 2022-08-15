@@ -20,6 +20,8 @@ export class RouteParameterComponent implements OnInit {
   IsProposal: boolean;
   @Input()
   isDisableforSubmitButton:boolean;
+  @Input()
+  infos: any;
 
   instiTutionList: Institution[];
   isHistoricalValue: boolean = false;

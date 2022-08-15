@@ -22,6 +22,9 @@ export class VehicalParameterComponent implements OnInit {
   @Input()
   isDisableforSubmitButton:boolean;
 
+  @Input()
+  infos: any;
+
   userCountryId:number = 0;
   userSectorId:number = 0;
 
