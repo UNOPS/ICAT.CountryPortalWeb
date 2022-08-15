@@ -396,7 +396,7 @@ export class GhgAssessmentComponent implements OnInit {
       .getManyBaseDefaultValueControllerDefaultValue(
         undefined,
         undefined,
-        undefined,
+        ['country.id||$eq||'+this.userCountryId],
         undefined,
         undefined,
         undefined,
@@ -1284,11 +1284,13 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   getParameterInfo(parameterSection: any) {
-    for (let sp of parameterSection.vehicalSection.sectionparameters){
-      for (let para of sp.parameters){
-        let str = this.selectedMethodology.name + "_" + para.Code;
-        if (ParameterInfo[str as ParaInfoType]){
-          this.infos[para.Code] = ParameterInfo[str as ParaInfoType];
+    for (let section of Object.keys(parameterSection)){
+      for (let sp of parameterSection[section].sectionparameters){
+        for (let para of sp.parameters){
+          let str = this.selectedMethodology.name + "_" + para.Code;
+          if (ParameterInfo[str as ParaInfoType]){
+            this.infos[para.Code] = ParameterInfo[str as ParaInfoType];
+          }
         }
       }
     }
@@ -2701,7 +2703,7 @@ export class GhgAssessmentComponent implements OnInit {
       this.selectYears = [];
     }
 
-    if (data.form.valid && this.selectYears !== undefined && !this.isSave) {
+    if (data.form.valid && this.selectYears !== undefined && !this.isSave && !data.form.dirty) {
       let assessment = new Assessment();
       assessment.baseYear = this.baseYear.getFullYear();
       if (this.selectedNdc) {
