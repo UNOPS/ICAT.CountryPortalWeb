@@ -604,7 +604,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       undefined,
       undefined,
       undefined).toPromise()
-
+     
       let ndc = new Ndc();
       ndc.id = this.selectedNdc.id;
       project.ndc = ndc;
@@ -657,8 +657,11 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
     let vd = new VerificationDetail();
 
-    if (currentVerification) {
+    if (currentVerification) {     
       vd = currentVerification;
+      let assesmentYear = new AssessmentYear();
+      assesmentYear.id = this.assementYear.id;  
+     vd.assessmentYear=assesmentYear;
       vd.updatedDate = moment();
     } else {
       vd.createdOn = moment();
@@ -682,7 +685,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     vd.verificationStage = this.getverificationStage();
 
     verificationDetails.push(vd);
-
+    
     this.verificationProxy
       .saveVerificationDetails(verificationDetails)
       .subscribe((a) => {
