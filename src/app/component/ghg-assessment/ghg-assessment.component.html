@@ -875,6 +875,7 @@
                     [(ngModel)]="item.fuel"
                     [options]="getOptions(blFuelValue)"
                     optionLabel="name"
+                    appendTo="body"
                     [disabled]="!baselineShowMaintain"
                     (onFilter)="
                       ChangeDimensionFuelType($event, blFuelValue, item)
@@ -1365,6 +1366,7 @@
                     [(ngModel)]="item.fuel"
                     [options]="getOptions(prFuelValue)"
                     optionLabel="name"
+                    appendTo="body"
                     [disabled]="!projectShowMaintain"
                     (onFilter)="
                       ChangeDimensionFuelType($event, prFuelValue, item)
@@ -1837,6 +1839,7 @@
                     [(ngModel)]="item.fuel"
                     [options]="getOptions(lkFuelValue)"
                     optionLabel="name"
+                    appendTo="body"
                     [disabled]="!lekageShowMaintain"
                     (onFilter)="
                       ChangeDimensionFuelType($event, lkFuelValue, item)

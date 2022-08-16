@@ -3672,12 +3672,11 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   ViewResultClick() {
-   console.log("++++++++++++++++++final",this.uniqdefaultValues);
-   for(let num in this.uniqdefaultValues){
-    this.defaultValueControllerServiceProxy.createValue(this.uniqdefaultValues[num]).subscribe((res:any)=>{
-          console.log("+++++++++++++++++++upload uniqdefaultValues",res);
-        });
-   }
+  //  for(let num in this.uniqdefaultValues){
+  //   this.serviceProxy.createOneBaseDefaultValueControllerDefaultValue(this.uniqdefaultValues[num]).subscribe((res:any)=>{
+  //         console.log("+++++++++++++++++++upload uniqdefaultValues",res);
+  //       });
+  //  }
    setTimeout(() => {
      
     this.router.navigate(['/result'], {
