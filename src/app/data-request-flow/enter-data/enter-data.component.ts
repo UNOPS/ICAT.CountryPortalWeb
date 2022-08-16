@@ -344,14 +344,18 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
   ) {
     this.selectedPara = parameterList
     console.log('parameterId++++', parameterId);
-    this.unitTypesProxy.getUnitTypes(unit ? unit : '').subscribe((res: any) => {
-      this.unitTypeList = res;
-      if(this.unitTypeList.length <1){
-        this.unit.ur_fromUnit=unit;
-        this.unitTypeList.push( this.unit)
-      }
-      console.log(' this.unitTypeList', this.unitTypeList);
-    });
+    if (unit){
+      this.unitTypesProxy.getUnitTypes(unit ? unit : '').subscribe((res: any) => {
+        this.unitTypeList = res;
+        if(this.unitTypeList.length <1){
+          this.unit.ur_fromUnit=unit;
+          this.unitTypeList.push( this.unit)
+        }
+        console.log(' this.unitTypeList', this.unitTypeList);
+      });
+    } else {
+      this.unitTypeList = []
+    }
     this.selectedUnit.ur_fromUnit = unit;
     this.selectedId = dataRequestId;
     this.selectedValue = parameterValue;

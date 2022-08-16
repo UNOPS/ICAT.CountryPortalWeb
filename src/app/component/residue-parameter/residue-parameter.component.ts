@@ -12,6 +12,8 @@ export class ResidueParameterComponent implements OnInit {
   @Input() parameterSection: ParameterSections;
   @Input() isDisableforSubmitButton:boolean;
   @Input() IsProposal: boolean;
+  @Input()
+  infos: any;
   
   userCountryId:number = 0;
   userSectorId:number = 0;

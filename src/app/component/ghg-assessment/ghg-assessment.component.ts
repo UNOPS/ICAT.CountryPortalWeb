@@ -41,9 +41,12 @@ import { EasyofuseDatacollection } from 'app/Model/easy-of-use-data-Collection.e
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { empty, Observable } from 'rxjs';
-import { MessageService } from 'primeng/api';
+import { MessageService, SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { MethodologyControllerServiceProxy,  } from 'shared/service-proxies/service-proxies';
+import { ParameterInfo } from '../parameter-info.enum';
+
+declare type ParaInfoType = keyof typeof ParameterInfo;
 
 
 @Component({
@@ -60,7 +63,7 @@ export class GhgAssessmentComponent implements OnInit {
   selectedClimateAction: Project;
   baseYear: Date;
   assesmentYear: Date;
-  years: number[] = [];
+  years: SelectItem[] = new Array();
   selectYears: number[];
   selectedObjective: AssessmentObjective[] = [];
   approachList: string[] = ['Ex-ante', 'Ex-post'];
@@ -323,6 +326,8 @@ export class GhgAssessmentComponent implements OnInit {
   methodAssessments: any[];
   methodParaCodes: any[];
 
+  infos: any = {};
+
   constructor(
     private methodologyProxy: MethodologyControllerServiceProxy,
     private router: Router,
@@ -346,10 +351,10 @@ export class GhgAssessmentComponent implements OnInit {
     this.userSectorId = tokenPayload.sectorId;
 
     var year = moment().year();
-    this.years.push(year);
+    this.years.push({label: year.toString(),value: year });
     for (let i = 1; i < 30; i++) {
-      this.years.push(year - i);
-      this.years.push(year + i);
+      this.years.push({label: (year - i).toString(),value: year - i });
+      this.years.push({label: (year + i).toString(),value: year + i });
     }
 
     this.userName = localStorage.getItem('user_name')!;
@@ -380,7 +385,7 @@ export class GhgAssessmentComponent implements OnInit {
      
       });
 
-    this.years = this.years.sort();
+    this.years = this.years.sort(function(a,b) {return a.value - b.value});
 
     this.addRoute();
     this.addPowerPlant();
@@ -391,7 +396,7 @@ export class GhgAssessmentComponent implements OnInit {
       .getManyBaseDefaultValueControllerDefaultValue(
         undefined,
         undefined,
-        undefined,
+        ['country.id||$eq||'+this.userCountryId],
         undefined,
         undefined,
         undefined,
@@ -977,6 +982,7 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   getMethodologyParam(): Observable<any> {
+    console.log(this.selectedMethodology)
     let Url = environment.baseUrlJsonFile + '/' + this.selectedMethodology.name;
     var headers = new HttpHeaders().set('api-key','1234');
     let file = undefined;
@@ -1277,6 +1283,19 @@ export class GhgAssessmentComponent implements OnInit {
     this.routePowerPlantMaintain = !this.routePowerPlantMaintain;
   }
 
+  getParameterInfo(parameterSection: any) {
+    for (let section of Object.keys(parameterSection)){
+      for (let sp of parameterSection[section].sectionparameters){
+        for (let para of sp.parameters){
+          let str = this.selectedMethodology.name + "_" + para.Code;
+          if (ParameterInfo[str as ParaInfoType]){
+            this.infos[para.Code] = ParameterInfo[str as ParaInfoType];
+          }
+        }
+      }
+    }
+  }
+
   baslineGenrate() {
     this.showBaslineGenrate = !this.showBaslineGenrate;
     this.baselineShowMaintain = !this.baselineShowMaintain;
@@ -1476,6 +1495,7 @@ export class GhgAssessmentComponent implements OnInit {
     } else {
       this.blParameters = new ParameterSections();
     }
+    this.getParameterInfo(this.blParameters)
   }
 
   projectGenrate() {
@@ -1671,6 +1691,7 @@ export class GhgAssessmentComponent implements OnInit {
         this.prParameters.powerPlantSection = powerSection;
       }
     }
+    this.getParameterInfo(this.prParameters)
   }
 
   lekageGenrate() {
@@ -1868,6 +1889,7 @@ export class GhgAssessmentComponent implements OnInit {
     } else {
       this.lkParameters = new ParameterSections();
     }
+    this.getParameterInfo(this.lkParameters)
   }
 
   genrateVehicalParameterSection(
@@ -2681,7 +2703,7 @@ export class GhgAssessmentComponent implements OnInit {
       this.selectYears = [];
     }
 
-    if (data.form.valid && this.selectYears !== undefined && !this.isSave) {
+    if (data.form.valid && this.selectYears !== undefined && !this.isSave && !data.form.dirty) {
       let assessment = new Assessment();
       assessment.baseYear = this.baseYear.getFullYear();
       if (this.selectedNdc) {

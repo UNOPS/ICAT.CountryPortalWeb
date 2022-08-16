@@ -143,7 +143,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-ase>   
             <ng-container>
-              <tr>
+              <tr *ngFor="let asseYer of ase.assessmentYear">
                 
                   
                   <ng-container *ngIf="ase.isProposal == false; else elseBlock11">
@@ -162,7 +162,7 @@
                         <i
                           class="pi pi-eye"
                           style="font-size: 1.5rem; color: #000; margin-left: 17%"
-                          (click)="toDetails(ase)"
+                          (click)="toDetails(ase,asseYer)"
                         ></i>
                       </td>
                     </ng-template>
@@ -195,7 +195,7 @@
                         <i
                           class="pi pi-eye"
                           style="font-size: 1.5rem; color: #000; margin-left: 17%"
-                          (click)="toDetails(ase)"
+                          (click)="toDetails(ase,asseYer)"
                         ></i>
                       </td>
                     </ng-template>
@@ -225,7 +225,7 @@
                 
 
                 <td>{{ ase.project?.climateActionName }}</td>
-                  <td>{{ ase.assessmentYear[0]?.assessmentYear }}</td>
+                  <td>{{ asseYer.assessmentYear }}</td>
                 
 
 
