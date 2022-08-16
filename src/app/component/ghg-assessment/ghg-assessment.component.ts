@@ -2699,11 +2699,12 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   createAssementCA(data: NgForm) {
+    console.log("proprose")
     if (this.IsProposal) {
       this.selectYears = [];
     }
 
-    if (data.form.valid && this.selectYears !== undefined && !this.isSave && !data.form.dirty) {
+    if (data.form.valid && this.selectYears !== undefined && !this.isSave ) {
       let assessment = new Assessment();
       assessment.baseYear = this.baseYear.getFullYear();
       if (this.selectedNdc) {
@@ -3671,12 +3672,11 @@ export class GhgAssessmentComponent implements OnInit {
     this.filterMethodology();
   }
 
-  ViewResultClick() {
+  async ViewResultClick() {
    console.log("++++++++++++++++++final",this.uniqdefaultValues);
-   for(let num in this.uniqdefaultValues){
-    this.defaultValueControllerServiceProxy.createValue(this.uniqdefaultValues[num]).subscribe((res:any)=>{
-          console.log("+++++++++++++++++++upload uniqdefaultValues",res);
-        });
+   for await  (let num of this.uniqdefaultValues){
+   let result= await this.defaultValueControllerServiceProxy.createValue(num).toPromise();
+   
    }
    setTimeout(() => {
      
