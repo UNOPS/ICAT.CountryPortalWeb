@@ -2703,7 +2703,7 @@ export class GhgAssessmentComponent implements OnInit {
       this.selectYears = [];
     }
 
-    if (data.form.valid && this.selectYears !== undefined && !this.isSave && !data.form.dirty) {
+    if (data.form.valid && this.selectYears !== undefined && !this.isSave ) {
       let assessment = new Assessment();
       assessment.baseYear = this.baseYear.getFullYear();
       if (this.selectedNdc) {
