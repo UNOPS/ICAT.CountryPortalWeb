@@ -14,6 +14,7 @@ import {
   AssessmentYearVerificationStatus,
   Ndc,
   Parameter,
+  Project,
   ProjectionResault,
   ProjectionResaultControllerServiceProxy,
   ServiceProxy,
@@ -76,7 +77,6 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private proxy: ServiceProxy,
     private assesmentProxy: AssesmentControllerServiceProxy,
     private assesmentResaultProxy: AssesmentResaultControllerServiceProxy,
     private projectionResultProxy: ProjectionResaultControllerServiceProxy,
@@ -92,7 +92,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       this.assesMentYearId = params['id'];
       this.verificationStatus = params['verificationStatus'];
 
-      this.proxy
+      this.serviceProxy
         .getManyBaseNdcControllerNdc(
           undefined,
           undefined,
@@ -110,7 +110,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
           this.ndcList = res.data;
         });
 
-      this.proxy
+      this.serviceProxy
         .getOneBaseAssessmentYearControllerAssessmentYear(
           this.assesMentYearId,
           undefined,
@@ -206,7 +206,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     filter.push('assessment.id||$eq||' + asessmentYear.assessment.id);
     filter.push('projectionYear||$eq||' + asessmentYear.assessmentYear);
 
-    this.proxy
+    this.serviceProxy
       .getManyBaseParameterControllerParameter(
         undefined,
         undefined,
@@ -573,7 +573,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     let assessment = new Assessment();
     assessment.id = this.assementYear.assessment.id;
     this.assementYear.assessment = assessment;
-    this.proxy
+    this.serviceProxy
       .updateOneBaseAssessmentYearControllerAssessmentYear(
         this.assementYear.id,
         this.assementYear
@@ -590,20 +590,37 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       });
   }
 
-  ndcAction() {
+  async ndcAction() {
     let action = `Ndc changed  Original Value : ${this.assementYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n
       Sub Ndc changed  Original Value : ${this.assementYear.assessment.project.subNdc.name} New Value : ${this.selectedSubNdc.name} \n`;
 
     this.assementYear.assessment.project.ndc = this.selectedNdc;
     this.assementYear.assessment.project.subNdc = this.selectedSubNdc;
 
-    this.proxy
+    console.log("ndcAction", this.assementYear.assessment)
+
+    let project: Project  = await this.serviceProxy.getOneBaseProjectControllerProject(
+      this.assementYear.assessment.project.id,
+      undefined,
+      undefined,
+      undefined).toPromise()
+     
+      let ndc = new Ndc();
+      ndc.id = this.selectedNdc.id;
+      project.ndc = ndc;
+
+      let subNdc = new SubNdc();
+      subNdc.id = this.selectedSubNdc.id;
+      project.subNdc = subNdc;
+
+    this.serviceProxy
       .updateOneBaseProjectControllerProject(
-        this.assementYear.assessment.project.id,
-        this.assementYear.assessment.project
+        project.id,
+        project
       )
       .subscribe(
         (res) => {
+          console.log(res)
           this.saveVerificationDetails(true, false, action);
         },
         (error) => {
@@ -640,8 +657,11 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
     let vd = new VerificationDetail();
 
-    if (currentVerification) {
+    if (currentVerification) {     
       vd = currentVerification;
+      let assesmentYear = new AssessmentYear();
+      assesmentYear.id = this.assementYear.id;  
+     vd.assessmentYear=assesmentYear;
       vd.updatedDate = moment();
     } else {
       vd.createdOn = moment();
@@ -665,7 +685,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     vd.verificationStage = this.getverificationStage();
 
     verificationDetails.push(vd);
-
+    
     this.verificationProxy
       .saveVerificationDetails(verificationDetails)
       .subscribe((a) => {
