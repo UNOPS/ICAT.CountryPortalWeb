@@ -2703,7 +2703,7 @@ export class GhgAssessmentComponent implements OnInit {
       this.selectYears = [];
     }
 
-    if (data.form.valid && this.selectYears !== undefined && !this.isSave && !data.form.dirty) {
+    if (data.form.valid && this.selectYears !== undefined && !this.isSave ) {
       let assessment = new Assessment();
       assessment.baseYear = this.baseYear.getFullYear();
       if (this.selectedNdc) {
@@ -3672,11 +3672,12 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   ViewResultClick() {
-  //  for(let num in this.uniqdefaultValues){
-  //   this.serviceProxy.createOneBaseDefaultValueControllerDefaultValue(this.uniqdefaultValues[num]).subscribe((res:any)=>{
-  //         console.log("+++++++++++++++++++upload uniqdefaultValues",res);
-  //       });
-  //  }
+   for(let num of this.uniqdefaultValues){
+    console.log("+++++++++++++++++++upload uniqdefaultValues",num)
+    this.defaultValueControllerServiceProxy.createValue(num).subscribe((res:any)=>{
+          console.log("+++++++++++++++++++upload uniqdefaultValues",res);
+        });
+   }
    setTimeout(() => {
      
     this.router.navigate(['/result'], {
