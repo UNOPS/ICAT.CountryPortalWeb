@@ -234,6 +234,7 @@ const routes: Routes = [
         UserRoles.COUNTRY_ADMIN,
         UserRoles.SECTOR_ADMIN,
         UserRoles.MRV_ADMIN,
+        UserRoles.VERIFIER,
         UserRoles.TT,
         UserRoles.DCT,
         UserRoles.QC,
