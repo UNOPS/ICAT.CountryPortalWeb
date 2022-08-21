@@ -512,13 +512,13 @@ let s=new String("23")
     this.emmissionProxy.getEmissionEeductionDraftDataForCountry()
     .subscribe((res: any)=>{
       this.emissionReduction = res;
-      console.log('eeeee',this.emissionReduction)
+      // console.log('eeeee',this.emissionReduction)
       this.unconditionalValue = this.emissionReduction.targetYearEmission - this.emissionReduction.unconditionaltco2;
-      console.log('unconditional',this.unconditionalValue)
+      // console.log('unconditional',this.unconditionalValue)
       this.conditionalValue = this.emissionReduction.targetYearEmission - this.emissionReduction.conditionaltco2;
 
-      console.log('baseyr...',this.emissionReduction.baseYear);
-      console.log('targetyr...',this.emissionReduction.targetYear);
+      // console.log('baseyr...',this.emissionReduction.baseYear);
+      // console.log('targetyr...',this.emissionReduction.targetYear);
 
       this.yrGap = parseInt(this.emissionReduction.targetYear) - parseInt(this.emissionReduction.baseYear)
       // console.log('gap..',this.yrGap)
@@ -560,11 +560,11 @@ let s=new String("23")
       
       this.climateactionserviceproxy.getProjectsForCountryAndSectorAdmins(0,0,0,[],0,0)
       .subscribe((res: any)=>{
-        console.log('projects by sector',res);
+        // console.log('projects by sector',res);
         this.cliamteActionsBySector = res.items;
         // console.log("testqqqsdfffffsdfsfsd");
         
-        console.log('projects by sector',this.cliamteActionsBySector);
+        // console.log('projects by sector',this.cliamteActionsBySector);
         for(let a=0;a<this.cliamteActionsBySector.length;a++){
        
           for(let b=0;b<this.cliamteActionsBySector[a].assessments.length;b++){
@@ -573,7 +573,7 @@ let s=new String("23")
 
           }
         }
-       console.log('assessment ListId...',this.assessmentListId)
+      //  console.log('assessment ListId...',this.assessmentListId)
 
           // if(this.assessmentListBySector[a]?.assessmentType == 'Ex-Post'){
     
@@ -582,7 +582,7 @@ let s=new String("23")
        
 
     for(let x=0; x<yearlstLength;x++){
-            console.log("work testay")
+            // console.log("work testay")
             let total = 0;
 
             let bauValue:number=((this.emissionReduction.targetYearEmission-this.emissionReduction.baseYearEmission)/yearlstLength)*x +this.emissionReduction.baseYearEmission;
@@ -593,9 +593,11 @@ let s=new String("23")
 
 
         let filter1: string[] = new Array();
-        console.log('this.yrList[x]',this.yrList[x]);
+        // console.log('this.yrList[x]',this.yrList[x]);
         // console.log('tasses',this.assessmentListId);
-        filter1.push('assessmentYear.assessmentYear||$in||'+ this.yrList[x])  
+        // filter1.push('assessmentYear.assessmentYear||$in||'+ this.yrList[x])  
+        filter1.push('assessmentYear.assessmentYear||$eq||'+ this.yrList[x])  
+
         &
         filter1.push('assement.assessmentType||$eq||Ex-post') 
         & 
@@ -614,15 +616,16 @@ let s=new String("23")
         0,
         0,
         0,
-        ).subscribe((res: any) =>{
+        )
+        .subscribe((res: any) =>{
           this.assessmentList = res.data
-          console.log('aaaaaaaaaaa1111111',this.assessmentList);
+          // console.log('aaaaaaaaaaa1111111',this.assessmentList);
           // console.log("work testay2")
           // console.log(res.data)
 
           
           for(let assement of this.assessmentList){
-            console.log("totalemition",assement.totalEmission)
+            // console.log("totalemition",assement.totalEmission)
             total += assement.totalEmission?assement.totalEmission:0;
             console.log(total)
 
@@ -636,7 +639,8 @@ let s=new String("23")
           if(this.yrList[x]<=this.currentYear){this.actualValLst.push(0);}
 
 
-        }); 
+        }
+        ); 
         
          
     
@@ -1578,10 +1582,10 @@ this.getNDC(0);
       // console.log('event Date', event);
       // this.loading = true;
       // this.totalRecords = 0;
-      console.log('getNdcForDashboard');
+      // console.log('getNdcForDashboard');
       let sectorId = this.searchBy1.sector ? this.searchBy1.sector.id : 0;
     
-      console.log('fsectorId',sectorId)
+      // console.log('fsectorId',sectorId)
      
       // let pageNumber =
       //   event.first === 0 || event.first === undefined
@@ -1627,8 +1631,8 @@ this.getNDC(0);
 
             }
             this.isNDCdata=ndcNames.length>0?true:false;
-            console.log('getNdcForDashboardndcNames',ndcNames);
-            console.log('getNdcForDashboardndcReduction',ndcReduction);
+            // console.log('getNdcForDashboardndcNames',ndcNames);
+            // console.log('getNdcForDashboardndcReduction',ndcReduction);
             this.basicData = {
     
               // labels: this.ndcnameForChart,
