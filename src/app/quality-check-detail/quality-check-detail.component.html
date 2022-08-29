@@ -359,122 +359,126 @@
       </div>
 
         <div class="row mb-3" *ngIf="assessmentResult?.lekageResult! != undefined">
-          <div class="col-md-8">
-            <div class="col-12">
-              <div class="p-field">
-                <label for="arBaseline">Leakage Result</label>
-                <input
-                  [disabled]="true"
-                  type="text"
-                  name="arBaseline"
-                  #arBaseline="ngModel"
-                  [(ngModel)]="assessmentResult?.lekageResult!"
-                  class="p-inputtext"
-                  pInputText
-                />
+          <div class="row mb-3">
+            <div class="col-md-8">
+              <div class="col-12">
+                <div class="p-field">
+                  <label for="arBaseline">Leakage Result</label>
+                  <input
+                    [disabled]="true"
+                    type="text"
+                    name="arBaseline"
+                    #arBaseline="ngModel"
+                    [(ngModel)]="assessmentResult?.lekageResult!"
+                    class="p-inputtext"
+                    pInputText
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-2 d-flex align-items-end">
-            <div class="col-12">
-              <div class="p-field">
-                <button
-                  type="button"
-                  [disabled]="islkResultButtonsDisable"
-                  pButton
-                  pRipple
-                  (click)="
-                    opDRAss.toggle($event); onRowSelectAssessment(3, true)
-                  "
-                >
-                  {{
-                    assessmentResult.qcStatusLekageResult === 4
-                      ? "Approved"
-                      : "Approve"
-                  }}
-                </button>
+            <div class="col-md-2 d-flex align-items-end">
+              <div class="col-12">
+                <div class="p-field">
+                  <button
+                    type="button"
+                    [disabled]="islkResultButtonsDisable"
+                    pButton
+                    pRipple
+                    (click)="
+                      opDRAss.toggle($event); onRowSelectAssessment(3, true)
+                    "
+                  >
+                    {{
+                      assessmentResult.qcStatusLekageResult === 4
+                        ? "Approved"
+                        : "Approve"
+                    }}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-2 d-flex align-items-end">
-            <div class="col-12">
-              <div class="p-field">
-                <button
-                  type="button"
-                  [disabled]=" islkResultButtonsDisableReject"
-                  pButton
-                  pRipple
-                  (click)="
-                    opDRAss.toggle($event); onRowSelectAssessment(3, false)
-                  "
-                >
-                  {{
-                    assessmentResult.qcStatusLekageResult === 3
-                      ? "Rejected"
-                      : "Reject"
-                  }}
-                </button>
+            <div class="col-md-2 d-flex align-items-end">
+              <div class="col-12">
+                <div class="p-field">
+                  <button
+                    type="button"
+                    [disabled]=" islkResultButtonsDisableReject"
+                    pButton
+                    pRipple
+                    (click)="
+                      opDRAss.toggle($event); onRowSelectAssessment(3, false)
+                    "
+                  >
+                    {{
+                      assessmentResult.qcStatusLekageResult === 3
+                        ? "Rejected"
+                        : "Reject"
+                    }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <div class="row mb-3" *ngIf="assessmentResult?.totalEmission! != undefined">
-          <div class="col-md-8">
-            <div class="col-12">
-              <div class="p-field">
-                <label for="arBaseline">Final Result</label>
-                <input
-                  [disabled]="true"
-                  type="text"
-                  name="arBaseline"
-                  #arBaseline="ngModel"
-                  [(ngModel)]="assessmentResult?.totalEmission!"
-                  class="p-inputtext"
-                  pInputText
-                />
+          <div class="row mb-3">
+            <div class="col-md-8">
+              <div class="col-12">
+                <div class="p-field">
+                  <label for="arBaseline">Final Result</label>
+                  <input
+                    [disabled]="true"
+                    type="text"
+                    name="arBaseline"
+                    #arBaseline="ngModel"
+                    [(ngModel)]="assessmentResult?.totalEmission!"
+                    class="p-inputtext"
+                    pInputText
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-2 d-flex align-items-end">
-            <div class="col-12">
-              <div class="p-field">
-                <button
-                  type="button"
-                  [disabled]="isteResultButtonsDisable"
-                  pButton
-                  pRipple
-                  (click)="
-                    opDRAss.toggle($event); onRowSelectAssessment(5, true)
-                  "
-                >
-                  {{
-                    assessmentResult.qcStatusTotalEmission === 4
-                      ? "Approved"
-                      : "Approve"
-                  }}
-                </button>
+            <div class="col-md-2 d-flex align-items-end">
+              <div class="col-12">
+                <div class="p-field">
+                  <button
+                    type="button"
+                    [disabled]="isteResultButtonsDisable"
+                    pButton
+                    pRipple
+                    (click)="
+                      opDRAss.toggle($event); onRowSelectAssessment(5, true)
+                    "
+                  >
+                    {{
+                      assessmentResult.qcStatusTotalEmission === 4
+                        ? "Approved"
+                        : "Approve"
+                    }}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-2 d-flex align-items-end">
-            <div class="col-12">
-              <div class="p-field">
-                <button
-                  type="button"
-                  [disabled]="isteResultButtonsDisableReject"
-                  pButton
-                  pRipple
-                  (click)="
-                    opDRAss.toggle($event); onRowSelectAssessment(5, false)
-                  "
-                >
-                  {{
-                    assessmentResult.qcStatusTotalEmission === 3
-                      ? "Rejected"
-                      : "Reject"
-                  }}
-                </button>
+            <div class="col-md-2 d-flex align-items-end">
+              <div class="col-12">
+                <div class="p-field">
+                  <button
+                    type="button"
+                    [disabled]="isteResultButtonsDisableReject"
+                    pButton
+                    pRipple
+                    (click)="
+                      opDRAss.toggle($event); onRowSelectAssessment(5, false)
+                    "
+                  >
+                    {{
+                      assessmentResult.qcStatusTotalEmission === 3
+                        ? "Rejected"
+                        : "Reject"
+                    }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
