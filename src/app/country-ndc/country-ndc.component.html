@@ -26,7 +26,8 @@
           </p-dialog> -->
           <!-- <p-confirmDialog header="Activation" icon="pi pi-exclamation-triangle"></p-confirmDialog> -->
         </div>
-        <h6>{{ test }} Sector</h6><br /><br />
+        <br />
+        <h6>{{ test }} Sector</h6><br />
         <button pRipple (click)="activate()" pButton icon="pi pi-check" label="Activate Selected Aggregated Actions"
           [disabled]="selectedndc"></button>
         <p-table [value]="data"
@@ -57,7 +58,7 @@
                 </div>
               </th>
               <th>Aggregated Actions</th>
-              <th>Agregrated Action Name</th>
+              <th>Aggregated Action Name</th>
               <th>No of Action Areas</th>
               <th>Edit Aggregated Actions</th>
             </tr>
@@ -105,7 +106,7 @@
           <i class="pi pi-plus" style="font-size: 1rem; color: #000"></i>
         </button>
       </div> -->
-      <p-dialog header="Set Of Aggregated Actions" [(visible)]="display">
+      <p-dialog header="Set of Aggregated Actions" [(visible)]="display">
         <p-table [value]="setno">
           <ng-template pTemplate="header">
             <tr>
@@ -132,7 +133,7 @@
           pInputText
           [ngModelOptions]="{ standalone: true }"
           required
-          placeholder="Please enter the same name as Aggregated Actions submition" />
+          placeholder="Please enter the same name as Aggregated Actions submission" />
           <p
           class="info-message text-danger"
           *ngIf="
@@ -156,7 +157,7 @@
            pInputText
            [ngModelOptions]="{ standalone: true }"
            required
-           placeholder="Please Enter the same Date as Aggregated Actions submit" />
+           placeholder="Please enter the same date as Aggregated Actions submission" />
          
               <p
               class="info-message text-danger"
@@ -169,6 +170,7 @@
             </p>
         </div>
         
+        <br />
         <button pButton type="button" (click)="saveSetofNDcs()" label="Save" class="mt-10"
           onClick="window.location.reload();"></button>
       </p-dialog>
@@ -197,7 +199,7 @@
           pInputText
           [ngModelOptions]="{ standalone: true }"
          
-          placeholder="Please enter the Base Year" />
+          placeholder="Please enter the base year" />
           <p
           class="info-message text-danger"
           *ngIf="
@@ -221,7 +223,7 @@
           pInputText
           [ngModelOptions]="{ standalone: true }"
           
-          placeholder="Please enter the Base Year Emission" />
+          placeholder="Please enter the base year emission" />
           <p
           class="info-message text-danger"
           *ngIf="
@@ -249,7 +251,7 @@
           pInputText
           [ngModelOptions]="{ standalone: true }"
           
-          placeholder="Please enter the Base Year Emission" />
+          placeholder="Please enter the base year emission" />
           <p
           class="info-message text-danger"
           *ngIf="
@@ -275,7 +277,7 @@
           pInputText
           [ngModelOptions]="{ standalone: true }"
          
-          placeholder="Please enter the Base Year Emission" />
+          placeholder="Please enter the base year emission" />
           <p
           class="info-message text-danger"
           *ngIf="
@@ -306,7 +308,7 @@
           pInputText
           [ngModelOptions]="{ standalone: true }"
          
-          placeholder="Please enter the Base Year" />
+          placeholder="Please enter the base year" />
           <!-- <p
           class="info-message text-danger"
           *ngIf="
@@ -333,7 +335,7 @@
           pInputText
           [ngModelOptions]="{ standalone: true }"
           
-          placeholder="Please enter the Base Year" />
+          placeholder="Please enter the base year" />
           <p
           class="info-message text-danger"
           *ngIf="

@@ -218,6 +218,11 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
     let projectApprovalStatusId = this.searchBy.ApprovalStatus ? this.searchBy.ApprovalStatus.id : 0;
     let asseType = this.searchBy.assessmentType1?this.searchBy.assessmentType1:'';
     console.log("asseType...",asseType)
+    if (this.searchBy.status !== null){
+      this.searchBy.text = this.searchBy.status.name
+    } else {
+      this.searchBy.text = null
+    }
     let filtertext = this.searchBy.text ? this.searchBy.text : '';
     let pageNumber =
       event.first === 0 || event.first === undefined
