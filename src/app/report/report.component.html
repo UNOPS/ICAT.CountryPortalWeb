@@ -22,7 +22,7 @@
         <div class="col-12">
           <div class="p-field">
             <label for="projNdc">Aggregated Actions</label>
-            <p-dropdown name="ndc" [options]="ndcList" placeholder="Select .." [(ngModel)]="searchBy.ndc"
+            <p-dropdown appendTo="body" name="ndc" [options]="ndcList" placeholder="Select .." [(ngModel)]="searchBy.ndc"
               #fndc="ngModel" [showClear]="true" [filter]="true" optionLabel="name" (onChange)="onNdcChange($event)">
             </p-dropdown>
           </div>
@@ -31,7 +31,7 @@
       <div class="col-md-4">
         <div class="p-field">
           <label for="proj">Specific Climate Action</label>
-          <p-dropdown name="ca" [options]="climateActionList" placeholder="Select .." [(ngModel)]="searchBy.ca"
+          <p-dropdown  appendTo="body" name="ca" [options]="climateActionList" placeholder="Select .." [(ngModel)]="searchBy.ca"
             #fca="ngModel" [showClear]="true" [filter]="true" optionLabel="climateActionName"
             (onChange)="onCAChange($event)">
           </p-dropdown>
@@ -40,7 +40,7 @@
       <div *ngIf="isShown" class="col-md-4">
         <div class="p-field">
           <label for="projsector">Sector</label>
-          <p-dropdown name="sector" [options]="sectorList" placeholder="Select .." [(ngModel)]="searchBy.sector"
+          <p-dropdown  appendTo="body" name="sector" [options]="sectorList" placeholder="Select .." [(ngModel)]="searchBy.sector"
             #fsector="ngModel" [showClear]="true" [filter]="true" optionLabel="name"
             (onChange)="onStatusChange($event)">
           </p-dropdown>
@@ -174,7 +174,7 @@
       </div>
       <div class="col-10">
         <div>
-          <p-multiSelect [style]="{ width: '75%' }" placeholder="Select Aggregated Actions " name="ndc" #ndc="ngModel"
+          <p-multiSelect appendTo="body" [style]="{ width: '75%' }" placeholder="Select Aggregated Actions " name="ndc" #ndc="ngModel"
             [options]="selectedNdc1" [(ngModel)]="selectedNdc" optionLabel="name"
             (onChange)="onselectedNdcChange(selectedNdc)"></p-multiSelect>
         </div>
@@ -189,7 +189,7 @@
       </div>
       <div class="col-10">
         <div>
-          <p-multiSelect [style]="{ width: '75%' }" placeholder="Select Specific Climate Actions" name="project"
+          <p-multiSelect  appendTo="body" [style]="{ width: '75%' }" placeholder="Select Specific Climate Actions" name="project"
             #project="ngModel" [options]="popUpProject" [(ngModel)]="selectedproject" optionLabel="climateActionName"
             (onChange)="onClimateActionChange()"></p-multiSelect>
 
@@ -214,7 +214,7 @@
       </div>
       <div class="col-10">
         <div>
-          <p-multiSelect [style]="{ width: '75%' }" placeholder="Select assessment Type" name="atype" #atype="ngModel"
+          <p-multiSelect   appendTo="body"[style]="{ width: '75%' }" placeholder="Select assessment Type" name="atype" #atype="ngModel"
             [options]="typePair" [(ngModel)]="selecetedType" optionLabel="name"></p-multiSelect>
         </div>
       </div>
@@ -228,7 +228,7 @@
       </div>
       <div class="col-10">
         <div>
-          <p-multiSelect [style]="{ width: '75%' }" placeholder="Select Assessment Years" name="ayr" #ayr="ngModel"
+          <p-multiSelect  appendTo="body" [style]="{ width: '75%' }" placeholder="Select Assessment Years" name="ayr" #ayr="ngModel"
             [options]="uniquePopYrList" [(ngModel)]="selectedYr" optionLabel="assessmentYear"></p-multiSelect>
         </div>
       </div>

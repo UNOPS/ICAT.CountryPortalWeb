@@ -16,7 +16,7 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
   @Input() IsProposal: boolean;
   climateActions: Project[] = [];  
   assessments: Assessment[] = [];
-  assessmentsByYear: Assessment[] = [];
+  assessmentsByYear: Assessment[][] = [];
   filteredAssessments: any[] = [];
   ndc :any = '';
   instiTutionList: Institution[];
@@ -304,13 +304,24 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
 
 
 getYears()
-  {
+  {  
+    this.selectedApproch=[]
     if(this.details.length==0)
     {
     for (let x =0; x<this.assessments.length;x++)
     {
      // console.log('your ass',this.assessments[x])
+
+    //  for (let j =0; j<this.assessments[x].assessmentYear.length;x++)
+    // {
+    //  // console.log('your ass',this.assessments[x])
+    //   this.details.push(this.assessments[x].assessmentYear[j].assessmentYear);
+    // }
+
+
       this.details.push(this.assessments[x].assessmentYear[0].assessmentYear);
+
+
     }
    // console.log('asse year',this.details)
      }
@@ -326,7 +337,7 @@ getYears()
   }
 
 
-  getAssessmentApproachesForAYear(yr:any)
+  getAssessmentApproachesForAYear(yr:any,index:number)
   {
     console.log("hiii.....")
     //isProposal
@@ -350,7 +361,7 @@ getYears()
       0
     )
     .subscribe((res: any) => {
-      this.assessmentsByYear = res.data;
+      this.assessmentsByYear[index] = res.data;
       console.log('assessmentsByYear....', res.data);
      // this.asseYear = this.assessments[0].assessmentYear[0].assessmentYear;
      // console.log('asse year',this.asseYear)
@@ -438,6 +449,20 @@ createAssessments(data: NgForm)
   if (data.form.valid) {
     console.log("hi....2")
    // this.updateProject();
+for(let ass of this.selectedApproch){
+  if (ass?.assessmentResult.length === 0){
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: `There is no result for selected assessment in assesment year ${ass.assessmentYear[0].assessmentYear}. `,
+      closable: true,
+    });
+    return;
+   }
+
+}
+
+
     for(let x=0; x<this.selectedApproch.length; x++)
     {
       console.log("hi....3", this.selectedApproch)
@@ -457,15 +482,15 @@ createAssessments(data: NgForm)
    // assessment.subNdc = subndc;
    // assessment.ndc = ndc;
 
-   if (this.selectedApproch[x]?.assessmentResult.length === 0){
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: 'There is no result for selected assessment. ',
-      closable: true,
-    });
-    return;
-   }
+  //  if (this.selectedApproch[x]?.assessmentResult.length === 0){
+  //   this.messageService.add({
+  //     severity: 'error',
+  //     summary: 'Error',
+  //     detail: `There is no result for selected assessment in assesment year ${this.selectedApproch[x].assessmentYear[0].assessmentYear}. `,
+  //     closable: true,
+  //   });
+  //   return;
+  //  }
 
     assessment.projectDuration = this.slectedProject.duration;
     assessment.projectStartDate = moment(this.slectedProject.proposeDateofCommence);

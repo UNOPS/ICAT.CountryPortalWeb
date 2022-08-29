@@ -2698,6 +2698,57 @@ export class GhgAssessmentComponent implements OnInit {
     }
   }
 
+  // checkFormValidity():boolean{
+
+  //       if(this.selectedClimateAction== undefined || this.selectedClimateAction==null){
+
+  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Specific Climate Action before submit'});
+  //         return false;
+  //       }
+  //       if(this.baseYear== undefined || this.baseYear==null){
+
+  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select base year before submit'});
+  //         return false;
+  //       }
+  //       if(!this.IsProposal && (this.selectYears== undefined || this.selectYears.length==0)){
+
+  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Assessment Years before submit'});
+  //         return false;
+  //       }
+  //       if(this.IsProposal && (this.assesmentYear== undefined || this.assesmentYear==null)){
+
+  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Assessment Year before submit'});
+  //         return false;
+  //       }
+  //       if(this.projectDuration== undefined || this.projectDuration==null){
+
+  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Project Duration before submit'});
+  //         return false;
+  //       }
+  //       if(this.proposeDateofCommence== undefined || this.proposeDateofCommence==null){
+
+  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Date of Commence before submit'});
+  //         return false;
+  //       }
+  //       if(this.selectedApproch== undefined || this.selectedApproch==null){
+
+  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Assessment Approach before submit'});
+  //         return false;
+  //       }
+  //       // if(this.proposeDateofCommence== undefined || this.proposeDateofCommence==null){
+
+  //       //   this.messageService.add({severity:'error', summary:'Fill Emplty Space', detail:'Please select Date of Commence before submit'});
+  //       //   return false;
+  //       // }
+  //       // if(this.proposeDateofCommence== undefined || this.proposeDateofCommence==null){
+
+  //       //   this.messageService.add({severity:'error', summary:'Fill Emplty Space', detail:'Please select Date of Commence before submit'});
+  //       //   return false;
+  //       // }
+
+  //   return true
+  // }
+
   createAssementCA(data: NgForm) {
     console.log("proprose")
     if (this.IsProposal) {

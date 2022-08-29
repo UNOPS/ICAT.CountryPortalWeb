@@ -519,7 +519,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     // let projIds: string[] = [];
     // let assessType: string[] = [];
     // let yearIds: string[] = [];
-
+   this.summeryReport = new ExcecutiveSummeryReport();
     //Sector
     for (let index = 0; index < this.selectedSector.length; index++) {
       const element = this.selectedSector[index].name;
@@ -527,8 +527,9 @@ export class ReportComponent implements OnInit, AfterViewInit {
       this.summeryReport.sectors.push(element);
     }
     //Projects - climate Actions
-
+    
     for (let index = 0; index < this.selectedproject.length; index++) {
+     
       const element = this.selectedproject[index];
       this.summeryReport.country = element.country.name;
       this.summeryReport.projIds.push(element.id.toString());
@@ -548,6 +549,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
 
       }
     }
+
+   
     //Assessment Types
     this.summeryReport.macAssecmentType = []
     this.summeryReport.assessType = []
