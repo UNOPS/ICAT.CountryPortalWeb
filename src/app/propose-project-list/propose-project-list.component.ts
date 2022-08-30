@@ -220,7 +220,7 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
         undefined,
         undefined,
         undefined,
-        undefined,
+        ["name,ASC"],
         undefined,
         1000,
         0,
@@ -229,6 +229,8 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
       )
       .subscribe((res: any) => {
         this.projectApprovalStatus = res.data;
+        
+
       });
   }
 

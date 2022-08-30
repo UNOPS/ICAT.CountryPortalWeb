@@ -192,7 +192,7 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
 //  climateaction.assessement.find(o=>o.assessementType === 'Ex-Ante'
 
   loadgridData = (event: LazyLoadEvent) => {
-   
+   console.log("works")
     //this.loading = true;
     this.totalRecords = 0;
     
@@ -236,6 +236,7 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
           this.rows, 
           filtertext, 
           projectApprovalStatusId,  
+          statusId,
           this.asseStatus,
           this.sectorId,
           asseType,

@@ -18437,7 +18437,7 @@ export class ProjectControllerServiceProxy {
     /**
      * @param api_key (optional) A Custom Header
      */
-    getActiveClimateActionList(page: number, limit: number, filterText: string, projectApprovalStatusId: number, isProposal: number, sectorId: number, asseType: string, api_key: string | undefined): Observable<any> {
+    getActiveClimateActionList(page: number, limit: number, filterText: string, projectApprovalStatusId: number, projectStatus: number, isProposal: number, sectorId: number, asseType: string, api_key: string | undefined): Observable<any> {
         let url_ = this.baseUrl + "/project/ActiveClimateActions/projectinfo/{page}/{limit}/{filterText}/{projectApprovalStatusId}/{isProposal}/{sectorId}/{asseType}?";
         if (page === undefined || page === null)
             throw new Error("The parameter 'page' must be defined and cannot be null.");
@@ -18455,6 +18455,10 @@ export class ProjectControllerServiceProxy {
             throw new Error("The parameter 'projectApprovalStatusId' must be defined and cannot be null.");
         else
             url_ += "projectApprovalStatusId=" + encodeURIComponent("" + projectApprovalStatusId) + "&";
+        if (projectStatus === undefined || projectStatus === null)
+            throw new Error("The parameter 'projectStatus' must be defined and cannot be null.");
+        else
+            url_ += "projectStatus=" + encodeURIComponent("" + projectStatus) + "&";
         if (isProposal === undefined || isProposal === null)
             throw new Error("The parameter 'isProposal' must be defined and cannot be null.");
         else

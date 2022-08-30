@@ -14,7 +14,7 @@
                 <p-dropdown
                 placeholder="Select Specific Climate Actions"
                 name="Climate Action"
-                
+                appendTo="body"
                 [(ngModel)]="slectedProject"
                 [autoDisplayFirst]="false"
                 [options]="climateActions"
@@ -115,6 +115,7 @@
               <div class="col-12 col-md-7">
                  <div>
                     <p-multiSelect
+                      appendTo="body"
                       name="multiYear"
                       [options]="uniqueYears"
                       [(ngModel)]="selectYears" 
@@ -201,14 +202,15 @@
           <div class="col-12 col-md-7">
               <div>
                   <p-dropdown
+                  appendTo="body"
                   placeholder="Select Approach"
                   name= "{{'yr'+i}}"
                   [(ngModel)]="selectedApproch[+i]"
                   [autoDisplayFirst]="false"
-                  [options]="assessmentsByYear"
+                  [options]="assessmentsByYear[i]"
                   optionLabel="assessmentType"
                   (ngModelChange)="getSelectedApproach()"
-                  (click)="getAssessmentApproachesForAYear(yr)"
+                  (click)="getAssessmentApproachesForAYear(yr,i)"
                 ></p-dropdown>
               </div>
           </div>
@@ -225,6 +227,7 @@
             <div class="col-12 col-md-4">
               <div>
                   <p-dropdown
+                  appendTo="body"
                   placeholder="Select Data Provider"
                   name="DiscountRate"
                   [(ngModel)] ="discountrate"
