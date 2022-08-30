@@ -141,12 +141,18 @@
                 else elseBlockYear
               "
             >
-              <td>
+              <td *ngIf="parameterList?.parameterId?.Assessment">
                 {{
                   parameterList?.parameterId!?.Assessment!?.AssessmentYear!
                     ?.assessmentYear!
                 }}
               </td>
+              <td *ngIf="!parameterList?.parameterId?.Assessment">
+                {{
+                  parameterList.parameterId.AssessmentYear
+                }}
+              </td>
+
             </ng-container>
             <ng-template #elseBlockYear>
               <td>

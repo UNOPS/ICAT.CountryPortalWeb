@@ -409,7 +409,7 @@ export class GhgAssessmentComponent implements OnInit {
        // this.methodologys = this.methodologys.filter((o)=>o.country.id == this.userCountryId);
         this.defaultValues = res.data;
         this.defaultValues.forEach((a)=>{
-          let name= a.parameterName+" " +a.administrationLevel
+          let name= a.parameterName+" " +a.administrationLevel +" "+a.country.id;
           if(!this.uniqdeParaName.includes(name)){
             this.uniqdeParaName.push(name)
           }
@@ -1988,7 +1988,7 @@ export class GhgAssessmentComponent implements OnInit {
         name=a.soil
       }
       a.parameters.forEach((para)=>{
-        let name1 = para.parameterName +" "+name;
+        let name1 = para.parameterName +" "+name+ " "+ this.loggedUser.country.id;
         let bool1= this.checkBool( para.useDefaultValue);
         if(!this.uniqdeParaName.includes(name1) && bool1==true){
           let unitValues=new DefaultValue();
@@ -1996,12 +1996,15 @@ export class GhgAssessmentComponent implements OnInit {
           unitValues.parameterName=para.parameterName;
           unitValues.administrationLevel=name;
           unitValues.unit=para.UOM;
+          let co= new Country();
+          co.id = this.loggedUser.country.id;
+          unitValues.country=co;
           this.uniqdefaultValues.push(unitValues);
         }
 
         if(para.alternativeParameters.length>0){
           para.alternativeParameters.forEach((al)=>{
-            let name2 =al.parameterName+" "+ name;
+            let name2 =al.parameterName+" "+ name+ " "+ this.loggedUser.country.id;
             let bool2= this.checkBool( para.useDefaultValue);
             if(!this.uniqdeParaName.includes(name2) && bool2==true){
               let unitValues2=new DefaultValue();
@@ -2009,6 +2012,9 @@ export class GhgAssessmentComponent implements OnInit {
               unitValues2.parameterName=al.parameterName;
               unitValues2.administrationLevel=name;
               unitValues2.unit=para.UOM;
+              let co= new Country();
+          co.id = this.loggedUser.country.id;
+          unitValues2.country=co;
               this.uniqdefaultValues.push(unitValues2);
             }
           })
@@ -3725,8 +3731,8 @@ export class GhgAssessmentComponent implements OnInit {
 
   async ViewResultClick() {
    console.log("++++++++++++++++++final",this.uniqdefaultValues);
-   for await  (let num of this.uniqdefaultValues){
-   let result= await this.defaultValueControllerServiceProxy.createValue(num).toPromise();
+   for (let num of this.uniqdefaultValues){
+   let result= await this.defaultValueControllerServiceProxy.createValue(num) .subscribe((res) => {});;
    
    }
    setTimeout(() => {

@@ -66,6 +66,7 @@
     </div>
 
     <h6 class="mt-4" style="color: #1a4f7b">Reports</h6>
+    <br />
     <div class="row" >
         <div *ngFor="let file of pdfFiles" class="col col-md-6" style="margin: auto;"  >
             <a href="{{SERVER_URL}}/{{file.generateReportName}}"  >{{file.reportName}}</a>

@@ -160,7 +160,7 @@ let s=new String("23")
                 let baulst=context.chart._metasets[3]._dataset.data;
                 let label = context.dataset.label || '';
                 
-                let prsntge= 'emision reduction of '+context.dataset.label+ ' over BAU - '+((context.raw/baulst[ context.dataIndex])*100).toFixed(2) +'%'
+                let prsntge= 'Emission reduction of '+context.dataset.label+ ' over BAU - '+((context.raw/baulst[ context.dataIndex])*100).toFixed(2) +'%'
                 if (label) {
                     label += ': ';
                 }

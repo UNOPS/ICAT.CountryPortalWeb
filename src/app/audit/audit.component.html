@@ -47,7 +47,7 @@
 
       <div class="col-md-4">
         <div class="p-field">
-          <label for="projStatus">Activity</label>
+          <label for="projStatus">Status</label>
           <p-dropdown name="activitytype" [options]="status" [(ngModel)]="searchBy.activity" #fsector="ngModel"
             [showClear]="true" [filter]="true" placeholder="Select .." appendTo="body"
             (ngModelChange)="onactivityChange($event)">

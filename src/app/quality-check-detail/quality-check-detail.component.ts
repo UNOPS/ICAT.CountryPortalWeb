@@ -941,7 +941,7 @@ export class QualityCheckDetailComponent implements OnInit {
           //this.assessmentResult.qcStatus = this.isApprove ? 4 : 3;
 
           // this.parameters.splice(index, 0, this.selectdParameter);
-          this.isApproveAllAssesmentResult= await this.assesmentResaultProxy.checkAllQCApprovmentAssessmentResult(this.asseResult[0].id).toPromise();
+          this.isApproveAllAssesmentResult= await this.assesmentResaultProxy.checkAllQCApprovmentAssessmentResult(this.assessmentResult.id).toPromise();
 
           this.overlayDRAssemnet.hide();
         },

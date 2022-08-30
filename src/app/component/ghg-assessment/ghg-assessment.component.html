@@ -1,4 +1,4 @@
-<form #fData="ngForm" (ngSubmit)="createAssementCA(fData)" novalidate>
+<form #fData="ngForm" (ngSubmit)="createAssementCA(fData)" >
   <div class="p-grid p-fluid col-sm-12">
     <div class="row p-2 mt-4">
       <div class="col-12 col-md-3">
@@ -18,6 +18,7 @@
             optionLabel="climateActionName"
             [disabled]="isClimateActionListDisabled"
             (ngModelChange)="onCAChange($event)"
+            [required]="true"
           ></p-dropdown>
         </div>
         <p
@@ -122,6 +123,7 @@
             view="year"
             dateFormat="yy"
             [disabled]="isDisableforSubmitButton"
+            [required]="true"
           ></p-calendar>
           <!-- <p-calendar
                   placeholder="DD/MM/YYYY"
@@ -156,6 +158,7 @@
             [disabled]="isDisableforSubmitButton"
             [(ngModel)]="selectYears"
             (ngModelChange)="onAssesmentYearChange($event)"
+            [required]="true"
           ></p-multiSelect>
         </div>
         <p
@@ -178,6 +181,7 @@
             dateFormat="yy"
             [disabled]="isDisableforSubmitButton"
             (ngModelChange)="onAssesmentYearChange($event)"
+            [required]="true"
           ></p-calendar>
         </div>
         <p
@@ -210,6 +214,7 @@
             [max]="99"
             [minFractionDigits]="1"
             [maxFractionDigits]="1"
+            [required]="true"
           >
           </p-inputNumber>
         </div>
@@ -239,6 +244,7 @@
             #propsedDate="ngModel"
             [disabled]="isDisableforSubmitButton"
             [(ngModel)]="proposeDateofCommence"
+            [required]="true"
           ></p-calendar>
         </div>
         <p
@@ -305,7 +311,7 @@
             [options]="approachList"
             [disabled]="isDisableforSubmitButton"
             (ngModelChange)="onChangeAssessmentType()"
-            
+            [required]="true"
           ></p-dropdown>
         </div>
         <p
@@ -382,7 +388,7 @@
             [disabled]="isDisableforSubmitButton"
             optionLabel="name"
             (ngModelChange)="onMitigationActionChange($event)"
-            
+            [required]="true"
           ></p-dropdown>
         </div>
         <p
@@ -413,7 +419,7 @@
             [disabled]="isDisableforSubmitButton"
             optionLabel="name"
             (ngModelChange)="onApplicationAssesmentChange($event)"
-            
+            [required]="true"
           ></p-multiSelect>
         </div>
         <p
@@ -444,6 +450,7 @@
             [disabled]="isDisableforSubmitButton"
             [(ngModel)]="selectedEasyofdataCollection"
             (ngModelChange)="onEasyOFdataCollectionChange($event)"
+            [required]="true"
           ></p-dropdown>
         </div>
         <p
@@ -477,6 +484,7 @@
             optionLabel="displayName"
             [disabled]="isMethodologyDisabled"
             (ngModelChange)="onMethodologyChange($event)"
+            [required]="true"
           ></p-dropdown>
         </div>
       </div>
@@ -867,6 +875,7 @@
                     [(ngModel)]="item.fuel"
                     [options]="getOptions(blFuelValue)"
                     optionLabel="name"
+                    appendTo="body"
                     [disabled]="!baselineShowMaintain"
                     (onFilter)="
                       ChangeDimensionFuelType($event, blFuelValue, item)
@@ -1357,6 +1366,7 @@
                     [(ngModel)]="item.fuel"
                     [options]="getOptions(prFuelValue)"
                     optionLabel="name"
+                    appendTo="body"
                     [disabled]="!projectShowMaintain"
                     (onFilter)="
                       ChangeDimensionFuelType($event, prFuelValue, item)
@@ -1829,6 +1839,7 @@
                     [(ngModel)]="item.fuel"
                     [options]="getOptions(lkFuelValue)"
                     optionLabel="name"
+                    appendTo="body"
                     [disabled]="!lekageShowMaintain"
                     (onFilter)="
                       ChangeDimensionFuelType($event, lkFuelValue, item)

@@ -180,11 +180,12 @@ export class DefaultValueFormComponent implements OnInit,AfterViewInit {
         this.sendDefaultValueDtos.deadLine = this.deadLine;
         this.sendDefaultValueDtos.year = this.selectedYears;
         this.sendDefaultValueDtos.country = this.countryObj;
+        this.sendDefaultValueDtos.unit= this.parentParameter.unit;
 
         console.log("this.sendDefaultValueDtos.year..",this.sendDefaultValueDtos)
-        // let filter: string[] = new Array();
-        // filter.push('parameterName||$eq||' + this.sendDefaultValueDtos.parameterName);
-        // filter.push('administrationLevel||$eq||' + this.sendDefaultValueDtos.administrationLevel);
+        let filter: string[] = new Array();
+        filter.push('parameterName||$eq||' + this.sendDefaultValueDtos.parameterName);
+        filter.push('administrationLevel||$eq||' + this.sendDefaultValueDtos.administrationLevel);
         // this.serviceProxy.getManyBaseDefaultValueControllerDefaultValue(
         //   undefined,
         //   undefined,
@@ -201,18 +202,20 @@ export class DefaultValueFormComponent implements OnInit,AfterViewInit {
         // })
         
 
-        // this.defaultProxy.sendDefaultValue(this.sendDefaultValueDtos)
-        // .subscribe((a) => {
-        //   console.log("my response..",a)
+        this.defaultProxy.sendDefaultValue(this.sendDefaultValueDtos)
+        .subscribe((a) => {
+          console.log("my response..",a)
           
-        //   this.messageService.add({
-        //     severity: 'success',
-        //     summary: 'Success',
-        //     detail: 'Default value added successfully ',
-        //     closable: true,
-        //   });
-        // });
-
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Default value added successfully ',
+            closable: true,
+          });
+        });
+        setTimeout(() => {
+          this.onBackClick()
+        }, 1);
        
       }
     

@@ -250,7 +250,7 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
 
   historyClick(param: Parameter) {
     this.ref = this.dialogService.open(QcHistoryComponent, {
-      header: 'History Of ' + param.name,
+      header: 'History of ' + param.name.toLowerCase(),
       width: '70%',
       contentStyle: { 'max-height': '500px', overflow: 'auto' },
       baseZIndex: 10000,
