@@ -71,44 +71,61 @@
     >
       <ng-template pTemplate="header">
         <tr>
-          <th class="has-details">Name
-            <span class="details">
+          <th class="has-details"
+          pTooltip="Parties may indicate whether a measure is included in the ‘with measures’ projections."
+          tooltipPosition="bottom">Name
+            <!-- <span class="details">
               <ul>Parties may indicate whether a measure is included in the ‘with measures’ projections.</ul>
-         </span>
+         </span> -->
           </th>
-          <th class="has-details">Description
-            <span class="details">
+          <th class="has-details"
+            pTooltip="Additional information may also be provided on the cost of the mitigation actions, non-GHG mitigation benefits, and how the mitigation action interacts with other mitigation actions, as appropriate (para. 83(a–c) of the MPGs)
+                    Parties should identify actions, policies and measures that influence GHG emissions from international transport (para. 88 of the MPGs).
+                    Parties should, to the extent possible, provide information about how actions, policies and measures are modifying longer-term trends in GHG emissions and removals (para. 89 of the MPGs)."
+            tooltipPosition="bottom"        
+          >Description
+            <!-- <span class="details">
               <ul>Additional information may also be provided on the cost of the mitigation actions, non-GHG mitigation benefits, and how the mitigation action interacts with other mitigation actions, as appropriate (para. 83(a–c) of the MPGs)</ul>
               <ul> Parties should identify actions, policies and measures that influence GHG emissions from international transport (para. 88 of the MPGs).</ul>
             <ul>Parties should, to the extent possible, provide information about how actions, policies and measures are modifying longer-term trends in GHG emissions and removals (para. 89 of the MPGs).</ul>
-         </span>
+         </span> -->
           </th>
           <th>Objectives</th>
           <th>Type of Instrument</th>
-          <th class="has-details">Status
-            <span class="details">
+          <th class="has-details" pTooltip="Parties shall, to the extent possible, use the following descriptive terms to report on status of implementation: planned, adopted or implemented (para. 82(e) of the MPGs)."
+          tooltipPosition="bottom" tooltipStyleClass="tooltip">Status
+            <!-- <span class="details">
               <ul>Parties shall, to the extent possible, use the following descriptive terms to report on status of implementation: planned, adopted or implemented (para. 82(e) of the MPGs).</ul>
-         </span>
+         </span> -->
           </th>
-          <th class="has-details">Sector(s) Affected
-            <span class="details">
+          <th class="has-details"
+              pTooltip="Parties shall, to the extent possible, provide information on sector(s) affected: energy, transport, industrial processes and product use, agriculture, LULUCF, waste management or other (paras. 81 and 82(f) of the MPGs)."
+              tooltipPosition="bottom"
+            >Sector(s) Affected
+            <!-- <span class="details">
               <ul>Parties shall, to the extent possible, provide information on sector(s) affected: energy, transport, industrial processes and product use, agriculture, LULUCF, waste management or other (paras. 81 and 82(f) of the MPGs).</ul>
-         </span>
+         </span> -->
           </th>
           <th>Gasses Affected</th>
           <th>Start Year of Implementation</th>
           <th>Implementing Entity or Entities</th>
-          <th class="has-details">Estimate of GHG Emission Reduction (ktCO₂ e)  
-            <span class="details">
+          <th 
+            pTooltip="Each Party shall provide, to the extent possible, estimates of expected and achieved GHG emission reductions for its actions, policies and measures in the tabular format; those developing country Parties that need flexibility in the light of their capacities with respect to this provision are instead encouraged to report this information (para. 85 of the MPGs).</ul>
+                      To the extent available, each Party shall describe the methodologies and assumptions used to estimate the GHG emission reductions or removals due to each action, policy and measure. This information may be presented in an annex to the biennial transparency report (para. 86 of the MPGs)." 
+            tooltipStyleClass="tooltip"
+            tooltipPosition="bottom"
+            appenTo="body"
+          >Estimate of GHG Emission Reduction (ktCO₂ e)  
+            <!-- <span class="details">
               <ul>Each Party shall provide, to the extent possible, estimates of expected and achieved GHG emission reductions for its actions, policies and measures in the tabular format; those developing country Parties that need flexibility in the light of their capacities with respect to this provision are instead encouraged to report this information (para. 85 of the MPGs).</ul>
               <ul>To the extent available, each Party shall describe the methodologies and assumptions used to estimate the GHG emission reductions or removals due to each action, policy and measure. This information may be presented in an annex to the biennial transparency report (para. 86 of the MPGs).</ul>
-         </span>
+            </span> -->
             <tr>
             <th>Achieved</th>
             <th>|Expected</th>
             </tr> </th>
            
-        </tr>
+          </tr>
        
    
       </ng-template>

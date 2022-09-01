@@ -55,7 +55,7 @@ obj = {
     ))
     );
     this.methologies=this.allmethologies.slice(0,6);
-    this.totalRecords=res.total
+    this.totalRecords=this.allmethologies.length
     console.log('this.methologies',this.allmethologies)
     
         })     

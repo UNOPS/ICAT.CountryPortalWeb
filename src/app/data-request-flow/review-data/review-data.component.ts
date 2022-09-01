@@ -231,7 +231,7 @@ export class ReviewDataComponent implements OnInit {
     console.log('onAcceptClick');
     if (this.selectedParameters) {
       this.confirmationService.confirm({
-        message: 'Are you sure you want to accept all the Selected parameters?',
+        message: 'Are you sure you want to accept all the selected parameters?',
         accept: () => {
           ////////Inside Accept////////
           console.log('Inside Accept');
