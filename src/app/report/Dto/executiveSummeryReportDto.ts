@@ -5,9 +5,11 @@ export class ExcecutiveSummeryReport {
   // projects: string[] = [];
   // types: string[] = [];
   sectors: string[] = [];
+  
   climateActionIds: number[] = [];
   country: string = '';
-
+  selectAllSectors: boolean=false;
+  sectorIds:number[]=[];
   //Report Parameters
   projIds: string[] = [];
   assessType: string[] = [];

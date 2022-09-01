@@ -9,6 +9,7 @@ import {
   AssessmentYear,
   AssessmentYearControllerServiceProxy,
   EmissionReductioDraftDataEntity,
+  EmissionReductionDraftdataControllerServiceProxy,
   Project,
   ReportControllerServiceProxy,
   ServiceProxy,
@@ -71,6 +72,8 @@ export class FinalReportComponent implements OnInit {
   reportParameterFilterValueExcel: any[] = [];
   SERVER_URL = environment.baseUrlAPIDocReportChartDownloadAPI; 
 
+  allsectorSelect:boolean=false;
+  sectorIdList:number[]=[];
   /////End Graph2 Data
   currentYear: number = (new Date()).getFullYear();
 
@@ -80,6 +83,7 @@ export class FinalReportComponent implements OnInit {
     //  private reportSelection: ReportComponent,
     private cdr: ChangeDetectorRef,
     private assessmentYearProxy: AssessmentYearControllerServiceProxy,
+    private emissionReductionDraftDataProxy:EmissionReductionDraftdataControllerServiceProxy,
     private reportProxy: ReportControllerServiceProxy,
     private http: HttpClient,
   ) { }
@@ -97,6 +101,8 @@ export class FinalReportComponent implements OnInit {
     console.log('this.report', this.report);
     if (this.report) {
       //  this.executiveSummery = this.report.executiveSummery;
+      this.allsectorSelect=this.report.selectAllSectors;
+      this.sectorIdList=this.report.sectorIds
       this.sectorList = this.report.sectors.join(', ');
       this.climetActionIdList = this.report.climateActionIds;
       this.sortedYearList = this.report.years.sort((a, b) => a - b).join(', ');
@@ -113,7 +119,15 @@ export class FinalReportComponent implements OnInit {
         .subscribe((res: any) => {
           this.executiveSummery = res;
           console.log("========this.executiveSummery++++++", this.executiveSummery);
-          this.mappingGraphData();
+          for(let sum of this.executiveSummery){
+            if (sum.Type == 'Ex-post') {
+              console.log("========this.executiveSummery++++++", Number(sum.Result));
+              this.totalExPost = this.totalExPost + Number(sum.Result);
+            }
+          }
+
+          this.mappingGraph2Data();
+          // this.mappingGraphData();
         });
 
 
@@ -126,8 +140,9 @@ export class FinalReportComponent implements OnInit {
         )
         .subscribe((res: any) => {
           this.parameterExecutiveSummery = res;
-          console.log("========this.parameterExecutiveSummery++++++", this.parameterExecutiveSummery);
-          this.mappingGraphData();
+          // console.log("========this.parameterExecutiveSummery++++++", this.parameterExecutiveSummery);
+        
+          // this.mappingGraphData();
         });
     }
 
@@ -135,67 +150,67 @@ export class FinalReportComponent implements OnInit {
 
     // Graph Data Mapping
 
-    this.basicData = {
-      labels: this.lebals, //['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [
-        // {
-        //   label: 'MAC',
-        //   backgroundColor: '#42A5F5',
-        //   data: this.dataSetMac, //[65, 59, 80, 81, 56, 55, 40],
-        // },
-        {
-          label: 'Ex Anth',
-          backgroundColor: '#00a800',
-          data: this.dataSetAnth, //[28, 48, 40, 19, 86, 27, 90],
-        },
-        {
-          label: 'Ex-post',
-          backgroundColor: '#FFA326',
-          data: this.dataSetPost, //[28, 48, 40, 19, 86, 27, 90],
-        },
-      ],
-    };
+    // this.basicData = {
+    //   labels: this.lebals, //['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    //   datasets: [
+    //     // {
+    //     //   label: 'MAC',
+    //     //   backgroundColor: '#42A5F5',
+    //     //   data: this.dataSetMac, //[65, 59, 80, 81, 56, 55, 40],
+    //     // },
+    //     {
+    //       label: 'Ex Anth',
+    //       backgroundColor: '#00a800',
+    //       data: this.dataSetAnth, //[28, 48, 40, 19, 86, 27, 90],
+    //     },
+    //     {
+    //       label: 'Ex-post',
+    //       backgroundColor: '#FFA326',
+    //       data: this.dataSetPost, //[28, 48, 40, 19, 86, 27, 90],
+    //     },
+    //   ],
+    // };
     this.applyLightTheme();
-    this.mappingGraph2Data();
+   
   }
 
   printPage() {
     window.print();
   }
-  mappingGraphData() {
-    for (let index = 0; index < this.report.years.length; index++) {
-      let graphItem = new ExcecutiveSummaryGraph();
-      graphItem.year = this.report.years[index].toString();
+  // mappingGraphData() {
+  //   for (let index = 0; index < this.report.years.length; index++) {
+  //     let graphItem = new ExcecutiveSummaryGraph();
+  //     graphItem.year = this.report.years[index].toString();
 
-      for (let index2 = 0; index2 < this.executiveSummery.length; index2++) {
-        let element = this.executiveSummery[index2];
-        console.log('element', element);
-        if (element) {
-          if (element.Type == 'Ex-ante' && element.Year == graphItem.year) {
-            graphItem.anth = element.Result;
-            this.totalExAnthe = this.totalExAnthe + Number(element.Result);
-          }
-          if (element.Type == 'Ex-post' && element.Year == graphItem.year) {
-            graphItem.post = element.Result;
-            this.totalExPost = this.totalExPost + Number(element.Result);
-          }
-          if (element.Type == 'MAC' && element.Year == graphItem.year) {
-            graphItem.mac = element.MACResult;
-            this.totalMac = this.totalMac + Number(element.MACResult);
-          }
-        }
-      }
-      this.graphData.push(graphItem);
-    }
+  //     for (let index2 = 0; index2 < this.executiveSummery.length; index2++) {
+  //       let element = this.executiveSummery[index2];
+  //       console.log('element', element);
+  //       if (element) {
+  //         if (element.Type == 'Ex-ante' && element.Year == graphItem.year) {
+  //           graphItem.anth = element.Result;
+  //           this.totalExAnthe = this.totalExAnthe + Number(element.Result);
+  //         }
+  //         if (element.Type == 'Ex-post' && element.Year == graphItem.year) {
+  //           graphItem.post = element.Result;
+  //           this.totalExPost = this.totalExPost + Number(element.Result);
+  //         }
+  //         if (element.Type == 'MAC' && element.Year == graphItem.year) {
+  //           graphItem.mac = element.MACResult;
+  //           this.totalMac = this.totalMac + Number(element.MACResult);
+  //         }
+  //       }
+  //     }
+  //     this.graphData.push(graphItem);
+  //   }
 
-    for (let index3 = 0; index3 < this.graphData.length; index3++) {
-      this.lebals.push(this.graphData[index3].year);
-      this.dataSetMac.push(this.graphData[index3].mac);
-      this.dataSetAnth.push(this.graphData[index3].anth);
-      this.dataSetPost.push(this.graphData[index3].post);
-    }
-    console.log('graphData', this.graphData);
-  }
+  //   for (let index3 = 0; index3 < this.graphData.length; index3++) {
+  //     this.lebals.push(this.graphData[index3].year);
+  //     this.dataSetMac.push(this.graphData[index3].mac);
+  //     this.dataSetAnth.push(this.graphData[index3].anth);
+  //     this.dataSetPost.push(this.graphData[index3].post);
+  //   }
+  //   console.log('graphData', this.graphData);
+  // }
 
   applyLightTheme() {
     // this.basicOptions = {
@@ -263,7 +278,7 @@ export class FinalReportComponent implements OnInit {
           display: true,
           title: {
             display: true,
-            text: 'Emmision(tCO' + '\u2082' + 'e)',
+            text: 'Emmision(MtCO' + '\u2082' + 'e)',
             font: {
               size: 12,
             },
@@ -281,15 +296,23 @@ export class FinalReportComponent implements OnInit {
   }
 
   mappingGraph2Data() {
-    this.serviceproxy
-      .getOneBaseEmissionReductionDraftdataControllerEmissionReductioDraftDataEntity(
-        1,
-        undefined,
-        undefined,
-        undefined
-      )
+    // this.serviceproxy
+    //   .getOneBaseEmissionReductionDraftdataControllerEmissionReductioDraftDataEntity(
+    //     1,
+    //     undefined,
+    //     undefined,
+    //     undefined
+    //   )
+    
+    let setSectorId:number=this.sectorIdList[0];
+    if(this.allsectorSelect){
+      setSectorId=0;
+    }
+    this.emissionReductionDraftDataProxy.getEmissionReductionDraftDataForReport(setSectorId)
       .subscribe((res: any) => {
         this.emissionReduction = res;
+        let baseYear:number=Number(this.emissionReduction.baseYear)
+        let targetYear:number = Number(this.emissionReduction.targetYear);
         this.targetYear = this.emissionReduction.targetYear;
         console.log('this.emissionReduction', this.emissionReduction);
         this.unconditionalValue =
@@ -301,153 +324,229 @@ export class FinalReportComponent implements OnInit {
           this.emissionReduction.conditionaltco2;
         //   });
 
-        let filterBySector: string[] = new Array();
+        // this.yrList = this.report.years;
+        // console.log('yr list for final', this.yrList)
+        // let yearlstLength = this.report.years.length;
 
-        filterBySector.push('id||$in||' + this.climetActionIdList);
+         for(let year = baseYear;year<=targetYear;year++ )
+          {
+            this.yrList.push(year)
+          }
 
-        this.serviceproxy
-          .getManyBaseProjectControllerProject(
-            undefined,
-            undefined,
-            filterBySector,
-            undefined,
-            ['editedOn,DESC'],
-            undefined,
-            1000,
-            0,
-            0,
-            0
-          )
-          .subscribe((res: any) => {
-            this.cliamteActionsBySector = res.data;
-            console.log(
-              'this.cliamteActionsBySector',
-              this.cliamteActionsBySector
-            );
+          let yearlstLength = targetYear-baseYear;
+        for (let x = 0; x <= yearlstLength; x++) {
 
-            // console.log('projects by sector',this.cliamteActionsBySector);
-            for (let a = 0; a < this.cliamteActionsBySector.length; a++) {
-              // console.log('proId....',this.cliamteActionsBySector[a]?.id)
-              for (
-                let b = 0;
-                b < this.cliamteActionsBySector[a]?.assessments.length;
-                b++
-              ) {
-                this.assessmentListId.push(
-                  this.cliamteActionsBySector[a]?.assessments[b]?.id
-                );
-              }
+          let bauValue: number = ((this.emissionReduction.targetYearEmission - this.emissionReduction.baseYearEmission) / yearlstLength) * x + this.emissionReduction.baseYearEmission;
+          this.conValLst.push(this.emissionReduction.conditionaltco2 && this.emissionReduction.conditionaltco2 != 0 ?  ((this.conditionalValue - this.emissionReduction.baseYearEmission) / yearlstLength) * x + this.emissionReduction.baseYearEmission:0);
+          this.unconValLst.push(this.emissionReduction.unconditionaltco2 && this.emissionReduction.unconditionaltco2 != 0 ? ((this.unconditionalValue - this.emissionReduction.baseYearEmission) / yearlstLength) * x + this.emissionReduction.baseYearEmission:0);
+          this.bauValLst.push(bauValue);
+          // console.log("work testay")
+          let total = 0;
+
+          for(let sum of this.executiveSummery){
+            if (sum.Type == 'Ex-post' && Number(sum.Year)==this.yrList[x]) {
+              console.log("========this.executiveSummery++++++", Number(sum.Result));
+              total = total + Number(sum.Result);
             }
-            //  console.log('assessment ListId...',this.assessmentListId)
+          }
+          if (this.yrList[x] <= this.currentYear) { this.actualValLst.push(bauValue - total/1000000); }
+     
+        }
+    
 
-            // if(this.assessmentListBySector[a]?.assessmentType == 'Ex-Post'){
-            this.yrList = this.report.years;
-            console.log('yr list for final', this.yrList)
-            let yearlstLength = this.report.years.length;
-            for (let x = 0; x < yearlstLength; x++) {
+        this.lineStylesData = {
+          // labels: [this.emissionReduction.baseYear, this.emissionReduction.targetYear],
+          labels: this.yrList,
 
-              let bauValue: number = ((this.emissionReduction.targetYearEmission - this.emissionReduction.baseYearEmission) / yearlstLength) * x + this.emissionReduction.baseYearEmission;
-              this.conValLst.push(!this.emissionReduction.conditionaltco2 && this.emissionReduction.conditionaltco2 == 0 ? 0 : ((this.conditionalValue - this.emissionReduction.baseYearEmission) / yearlstLength) * x + this.emissionReduction.baseYearEmission);
-              this.unconValLst.push(!this.emissionReduction.unconditionaltco2 && this.emissionReduction.unconditionaltco2 == 0 ? 0 : ((this.unconditionalValue - this.emissionReduction.baseYearEmission) / yearlstLength) * x + this.emissionReduction.baseYearEmission);
-              this.bauValLst.push(bauValue);
-              // console.log("work testay")
-              let total = 0;
+          datasets: [
+            {
+              label: 'Actual',
+              data: this.actualValLst,
+              fill: false,
+              borderColor: '#533440',
+              tension: 0.4,
+            },
+            {
+              label: 'NDC-Conditional',
+              // data: [this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.conditionalValue,this.conditionalValue,this.conditionalValue,this.conditionalValue,this.conditionalValue],
+              data: this.conValLst,
+              fill: true,
+              borderColor: '#81B622',
+              tension: 0.4,
+              backgroundColor: '#81B622',
+            },
+            {
+              label: 'NDC-Unconditional',
+              // data: [this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.unconditionalValue,this.unconditionalValue,this.unconditionalValue,this.unconditionalValue,this.unconditionalValue],
+              data: this.unconValLst,
+              fill: true,
+              tension: 0.4,
+              borderColor: '#FFDB58',
+              backgroundColor: '#FFDB58',
+            },
+            {
+              label: 'BAU',
+              // data: [this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission],
+              data: this.bauValLst,
+              fill: true,
+              tension: 0.4,
+              borderColor: '#FFA726',
+              backgroundColor: '#FFA726',
+            },
+          ],
+        };
+        // let filterBySector: string[] = new Array();
+
+        // filterBySector.push('id||$in||' + this.climetActionIdList);
+
+        // this.serviceproxy
+        //   .getManyBaseProjectControllerProject(
+        //     undefined,
+        //     undefined,
+        //     filterBySector,
+        //     undefined,
+        //     ['editedOn,DESC'],
+        //     undefined,
+        //     1000,
+        //     0,
+        //     0,
+        //     0
+        //   )
+        //   .subscribe((res: any) => {
+        //     this.cliamteActionsBySector = res.data;
+        //     console.log(
+        //       'this.cliamteActionsBySector',
+        //       this.cliamteActionsBySector
+        //     );
+
+        //     // console.log('projects by sector',this.cliamteActionsBySector);
+        //     for (let a = 0; a < this.cliamteActionsBySector.length; a++) {
+        //       // console.log('proId....',this.cliamteActionsBySector[a]?.id)
+        //       for (
+        //         let b = 0;
+        //         b < this.cliamteActionsBySector[a]?.assessments.length;
+        //         b++
+        //       ) {
+        //         this.assessmentListId.push(
+        //           this.cliamteActionsBySector[a]?.assessments[b]?.id
+        //         );
+        //       }
+        //     }
+        //     //  console.log('assessment ListId...',this.assessmentListId)
+
+        //     // if(this.assessmentListBySector[a]?.assessmentType == 'Ex-Post'){
+        //     this.yrList = this.report.years;
+        //     console.log('yr list for final', this.yrList)
+        //     let yearlstLength = this.report.years.length;
+        //     for (let x = 0; x < yearlstLength; x++) {
+
+        //       let bauValue: number = ((this.emissionReduction.targetYearEmission - this.emissionReduction.baseYearEmission) / yearlstLength) * x + this.emissionReduction.baseYearEmission;
+        //       this.conValLst.push(!this.emissionReduction.conditionaltco2 && this.emissionReduction.conditionaltco2 == 0 ? 0 : ((this.conditionalValue - this.emissionReduction.baseYearEmission) / yearlstLength) * x + this.emissionReduction.baseYearEmission);
+        //       this.unconValLst.push(!this.emissionReduction.unconditionaltco2 && this.emissionReduction.unconditionaltco2 == 0 ? 0 : ((this.unconditionalValue - this.emissionReduction.baseYearEmission) / yearlstLength) * x + this.emissionReduction.baseYearEmission);
+        //       this.bauValLst.push(bauValue);
+        //       // console.log("work testay")
+        //       let total = 0;
+
+        //       for(let sum of this.executiveSummery){
+        //         if (sum.Type == 'Ex-post' && Number(sum.Year)==this.yrList[x]) {
+        //           console.log("========this.executiveSummery++++++", Number(sum.Result));
+        //           total = total + Number(sum.Result);
+        //         }
+        //       }
+        //       if (this.yrList[x] <= this.currentYear) { this.actualValLst.push(bauValue - total); }
+        //       // let filter1: string[] = new Array();
+        //       // console.log('this.yrList[x]', this.yrList[x]);
+        //       // console.log('tasses', this.assessmentListId);
+        //       // filter1.push(
+        //       //   'assessmentYear.assessmentYear||$in||' + this.yrList[x]
+        //       // ) &
+        //       //   filter1.push('assement.assessmentType||$eq||Ex-post') &
+        //       //   filter1.push('assement.id||$in||' + this.assessmentListId);
+        //       // // console.log('filter1',filter1);
+
+        //       // this.serviceproxy
+        //       //   .getManyBaseAssesmentResaultControllerAssessmentResault(
+        //       //     undefined,
+        //       //     undefined,
+        //       //     filter1,
+        //       //     undefined,
+        //       //     ['assessmentYear.assessmentYear,ASC'],
+        //       //     undefined,
+        //       //     1000,
+        //       //     0,
+        //       //     0,
+        //       //     0
+        //       //   )
+        //       //   .subscribe((res: any) => {
+        //       //     this.assessmentList = res.data;
+        //       //     console.log('aaaaaaaaaaa1111111', this.assessmentList);
+        //       //     // console.log("work testay2")
+        //       //     // console.log(res.data)
+
+        //       //     for (let assement of this.assessmentList) {
+        //       //       console.log('totalemition', assement.totalEmission);
+        //       //       total += assement.totalEmission
+        //       //         ? assement.totalEmission
+        //       //         : 0;
+        //       //       console.log(total);
+        //       //     }
+        //       //     // this.postYrList.push(total);
+        //       //     if (this.yrList[x] <= this.currentYear) { this.actualValLst.push(bauValue - total); }
+        //       //     // this.actualValLst.push(total);
+        //       //   });
 
 
 
-              let filter1: string[] = new Array();
-              console.log('this.yrList[x]', this.yrList[x]);
-              console.log('tasses', this.assessmentListId);
-              filter1.push(
-                'assessmentYear.assessmentYear||$in||' + this.yrList[x]
-              ) &
-                filter1.push('assement.assessmentType||$eq||Ex-post') &
-                filter1.push('assement.id||$in||' + this.assessmentListId);
-              // console.log('filter1',filter1);
+        //       //  noncon-
+        //       //  con-
+        //       //  bau-
+        //     }
+        //     console.log('ac', this.actualValLst);
+        //     // console.log('con',this.conValLst)
+        //     // console.log('un',this.unconValLst)
 
-              this.serviceproxy
-                .getManyBaseAssesmentResaultControllerAssessmentResault(
-                  undefined,
-                  undefined,
-                  filter1,
-                  undefined,
-                  ['assessmentYear.assessmentYear,ASC'],
-                  undefined,
-                  1000,
-                  0,
-                  0,
-                  0
-                )
-                .subscribe((res: any) => {
-                  this.assessmentList = res.data;
-                  console.log('aaaaaaaaaaa1111111', this.assessmentList);
-                  // console.log("work testay2")
-                  // console.log(res.data)
+        //     this.lineStylesData = {
+        //       // labels: [this.emissionReduction.baseYear, this.emissionReduction.targetYear],
+        //       labels: this.yrList,
 
-                  for (let assement of this.assessmentList) {
-                    console.log('totalemition', assement.totalEmission);
-                    total += assement.totalEmission
-                      ? assement.totalEmission
-                      : 0;
-                    console.log(total);
-                  }
-                  // this.postYrList.push(total);
-                  if (this.yrList[x] <= this.currentYear) { this.actualValLst.push(bauValue - total); }
-                  // this.actualValLst.push(total);
-                });
-
-
-
-              //  noncon-
-              //  con-
-              //  bau-
-            }
-            console.log('ac', this.actualValLst);
-            // console.log('con',this.conValLst)
-            // console.log('un',this.unconValLst)
-
-            this.lineStylesData = {
-              // labels: [this.emissionReduction.baseYear, this.emissionReduction.targetYear],
-              labels: this.yrList,
-
-              datasets: [
-                {
-                  label: 'Actual',
-                  data: this.actualValLst,
-                  fill: false,
-                  borderColor: '#533440',
-                  tension: 0.4,
-                },
-                {
-                  label: 'NDC-Conditional',
-                  // data: [this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.conditionalValue,this.conditionalValue,this.conditionalValue,this.conditionalValue,this.conditionalValue],
-                  data: this.conValLst,
-                  fill: true,
-                  borderColor: '#81B622',
-                  tension: 0.4,
-                  backgroundColor: '#81B622',
-                },
-                {
-                  label: 'NDC-Unconditional',
-                  // data: [this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.unconditionalValue,this.unconditionalValue,this.unconditionalValue,this.unconditionalValue,this.unconditionalValue],
-                  data: this.unconValLst,
-                  fill: true,
-                  tension: 0.4,
-                  borderColor: '#FFDB58',
-                  backgroundColor: '#FFDB58',
-                },
-                {
-                  label: 'BAU',
-                  // data: [this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission],
-                  data: this.bauValLst,
-                  fill: true,
-                  tension: 0.4,
-                  borderColor: '#FFA726',
-                  backgroundColor: '#FFA726',
-                },
-              ],
-            };
-          });
+        //       datasets: [
+        //         {
+        //           label: 'Actual',
+        //           data: this.actualValLst,
+        //           fill: false,
+        //           borderColor: '#533440',
+        //           tension: 0.4,
+        //         },
+        //         {
+        //           label: 'NDC-Conditional',
+        //           // data: [this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.conditionalValue,this.conditionalValue,this.conditionalValue,this.conditionalValue,this.conditionalValue],
+        //           data: this.conValLst,
+        //           fill: true,
+        //           borderColor: '#81B622',
+        //           tension: 0.4,
+        //           backgroundColor: '#81B622',
+        //         },
+        //         {
+        //           label: 'NDC-Unconditional',
+        //           // data: [this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.unconditionalValue,this.unconditionalValue,this.unconditionalValue,this.unconditionalValue,this.unconditionalValue],
+        //           data: this.unconValLst,
+        //           fill: true,
+        //           tension: 0.4,
+        //           borderColor: '#FFDB58',
+        //           backgroundColor: '#FFDB58',
+        //         },
+        //         {
+        //           label: 'BAU',
+        //           // data: [this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.baseYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission,this.emissionReduction.targetYearEmission],
+        //           data: this.bauValLst,
+        //           fill: true,
+        //           tension: 0.4,
+        //           borderColor: '#FFA726',
+        //           backgroundColor: '#FFA726',
+        //         },
+        //       ],
+        //     };
+        //   });
       });
   }
 

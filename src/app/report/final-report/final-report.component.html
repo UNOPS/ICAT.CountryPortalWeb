@@ -91,7 +91,7 @@
           </td>
 
           <td style="vertical-align: top">
-            {{ executiveSummery.Result ?  executiveSummery.Result : executiveSummery.EmmisionValue ? executiveSummery.EmmisionValue: "N/A"}}
+            {{ executiveSummery.Type != "MAC" ?  executiveSummery.Result : executiveSummery.EmmisionValue ? executiveSummery.EmmisionValue: "N/A"}}
           </td>
           <td style="vertical-align: top">
             {{ executiveSummery.MACResult ? executiveSummery.MACResult : "N/A" }}
@@ -136,8 +136,8 @@
         Figure 1 illustrates the status of achieving emissions reduction targets
         of {{ sectorList }} sector of {{ country }}. The expected emission
         reduction of the {{ sectorList }} sector by {{ targetYear }} year is
-        {{ conditionalValue | number: "1.0":"en-US" }} tCO₂e conditionally, and
-        {{ unconditionalValue | number: "1.0":"en-US" }} tCO₂e unconditionally.
+        {{ conditionalValue | number: "1.0":"en-US" }} MtCO₂e conditionally, and
+        {{ unconditionalValue | number: "1.0":"en-US" }} MtCO₂e unconditionally.
         Mitigation actions implemented by year {{ maxYear }} were able to reduce
         {{ sectorList }} sector emissions from
         {{ totalExPost | number: "1.0":"en-US" }} tCO₂e.
@@ -150,7 +150,7 @@
         Figure 1 illustrates the status of achieving emissions reduction targets
         of {{ sectorList }} sector of {{ country }}. The expected emission
         reduction of the {{ sectorList }} sector by {{ targetYear }} year is
-        {{ conditionalValue | number: "1.0":"en-US" }} tCO₂e. Mitigation actions
+        {{ conditionalValue | number: "1.0":"en-US" }} MtCO₂e. Mitigation actions
         implemented by year {{ maxYear }} were able to reduce
         {{ sectorList }} sector emissions from
         {{ totalExPost | number: "1.0":"en-US" }} tCO₂e.
