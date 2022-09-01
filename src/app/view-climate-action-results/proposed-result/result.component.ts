@@ -64,7 +64,7 @@ export class ResultComponent implements OnInit {
   isShown: boolean = false;
   title: string;
   fileName: string='GHGparameters.xlsx';
-  excellist:excelGhgParameter[] = [];
+  excellist:any[] = [];
   methodologies:any[]=[];  
   constructor(
     private serviceProxy: ServiceProxy,
@@ -504,7 +504,7 @@ export class ResultComponent implements OnInit {
     // });
 
 
-    var data = document.getElementById('content')!;
+    var data = document.getElementById('download-content')!;
 
     html2canvas(data).then((canvas) => {
     const componentWidth = data.offsetWidth
@@ -583,6 +583,8 @@ export class ResultComponent implements OnInit {
   
         }
 
+  
+
 
   obj.Methodology=methodName;
   obj.Version_of_The_Methodology=x.methodologyVersion;
@@ -614,6 +616,13 @@ export class ResultComponent implements OnInit {
 
   this.excellist.push(obj);
       }
+
+    this.excellist.push({},{
+      Baseline_Parameter: this.baselineEmission,
+      Project_Parameter: this.projectEmission,
+      Leakage_Parameter: this.leakageEmission,
+      Emission_Reduction: this.totalEmission
+    })
 
   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.excellist);
   const wb: XLSX.WorkBook = XLSX.utils.book_new();
