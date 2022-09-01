@@ -633,9 +633,14 @@ export class FinalReportComponent implements OnInit {
     // let chartName = `chart_${datetime}`;
 
  let namechart= await this.reportProxy.getChartDownlordData(
-      this.report.years.map(String),
+      // this.report.years.map(String),
       this.report.projIds,
       this.report.assessType,
+      this.report.yearIds,
+      this.report.selectAllSectors,
+      this.report.sectorIds.map(String),
+
+
     ).toPromise();
     console.log("imah", namechart.name);
     console.log("===this.report.years==",this.report.years);

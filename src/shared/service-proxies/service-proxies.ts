@@ -17454,12 +17454,8 @@ export class ReportControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    getChartDownlordData(years: string[], projIds: string[], assessType: string[]): Observable<any> {
+    getChartDownlordData(projIds: string[], assessType: string[], yearsId: string[], selectAllSectors: boolean, sectorIds: string[]): Observable<any> {
         let url_ = this.baseUrl + "/report/chartData/{years}/{projIds}/{assessType}/{chartName}?";
-        if (years === undefined || years === null)
-            throw new Error("The parameter 'years' must be defined and cannot be null.");
-        else
-            years && years.forEach(item => { url_ += "years=" + encodeURIComponent("" + item) + "&"; });
         if (projIds === undefined || projIds === null)
             throw new Error("The parameter 'projIds' must be defined and cannot be null.");
         else
@@ -17468,6 +17464,18 @@ export class ReportControllerServiceProxy {
             throw new Error("The parameter 'assessType' must be defined and cannot be null.");
         else
             assessType && assessType.forEach(item => { url_ += "assessType=" + encodeURIComponent("" + item) + "&"; });
+        if (yearsId === undefined || yearsId === null)
+            throw new Error("The parameter 'yearsId' must be defined and cannot be null.");
+        else
+            yearsId && yearsId.forEach(item => { url_ += "yearsId=" + encodeURIComponent("" + item) + "&"; });
+        if (selectAllSectors === undefined || selectAllSectors === null)
+            throw new Error("The parameter 'selectAllSectors' must be defined and cannot be null.");
+        else
+            url_ += "selectAllSectors=" + encodeURIComponent("" + selectAllSectors) + "&";
+        if (sectorIds === undefined || sectorIds === null)
+            throw new Error("The parameter 'sectorIds' must be defined and cannot be null.");
+        else
+            sectorIds && sectorIds.forEach(item => { url_ += "sectorIds=" + encodeURIComponent("" + item) + "&"; });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
