@@ -5,3 +5,6 @@
     width: 150px;
 }
 
+.alternative {
+    pointer-events: none;
+  }
