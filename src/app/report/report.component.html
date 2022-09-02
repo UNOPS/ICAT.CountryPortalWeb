@@ -152,19 +152,46 @@
 </div>
 <p-dialog [(visible)]="display">
   <div class="container" style="width: 1200px; height: 700px">
-    <div class="row p-2">
+    <div *ngIf="isCountryLevel" class="row p-2">
       <div class="col-2">
         <div>
           <label for="sector">Select Sector/(s)</label>
         </div>
       </div>
-      <div class="col-10">
+      <div  class="col-6">
         <div>
-          <p-multiSelect [style]="{ width: '75%' }" placeholder="Select Sectors" name="sector" #sector="ngModel"
+          <p-multiSelect [disabled]="allSelect" [style]="{ width: '100%' }" placeholder="Select Sectors" name="sector" #sector="ngModel"
             [options]="sectorList" [(ngModel)]="selectedSector" optionLabel="name"
             (onChange)="onSectorChange(selectedSector)"></p-multiSelect>
         </div>
       </div>
+      <div class="col-2">
+        <div class="p-field-checkbox">
+          <p-checkbox name="selectAllSectors" 
+          [binary]="true" inputId="selectAllSectors" 
+          [(ngModel)]="allSelect" 
+          (onChange)="selectAllSectors(allSelect)"
+          [ngModelOptions]="{standalone: true}"
+          label="Select All Sectors"
+          ></p-checkbox>
+          
+        </div>
+      </div>
+      
+    </div>
+    <div *ngIf="!isCountryLevel"  class="row p-2">
+      <div class="col-2">
+        <div>
+          <label for="sector">Sector</label>
+        </div>
+      </div>
+      <div class="col-10">
+        <div>
+          <input disabled="true" [style]="{ width: '75%' }" type="text" name="reportName" class="p-inputtext" [value]="selectedSector.length>0?selectedSector[0].name:''"
+            pInputText />
+        </div>
+      </div>
+
     </div>
 
     <div class="row p-2">
@@ -215,8 +242,16 @@
       </div>
       <div class="col-10">
         <div>
-          <p-multiSelect   appendTo="body"[style]="{ width: '75%' }" placeholder="Select Assessment Type" name="atype" #atype="ngModel"
-            [options]="typePair" [(ngModel)]="selecetedType" optionLabel="name"></p-multiSelect>
+          <p-multiSelect   appendTo="body"
+          [style]="{ width: '75%' }" 
+          placeholder="Select assessment Type" 
+          name="atype" 
+          #atype="ngModel"
+          [options]="typePair" 
+          [(ngModel)]="selecetedType" 
+          optionLabel="name"
+          (onChange)="onselectedAssesmentType(selecetedType)" 
+          ></p-multiSelect>
         </div>
       </div>
     </div>

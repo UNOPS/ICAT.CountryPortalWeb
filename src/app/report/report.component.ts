@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
+import {CheckboxModule} from 'primeng/checkbox';
 import { filter } from 'rxjs/operators';
 import {
   Assessment,
@@ -27,6 +28,7 @@ import {
 import decode from 'jwt-decode';
 import { ExcecutiveSummeryReport } from './Dto/executiveSummeryReportDto';
 import { ClimateActionComponent } from 'app/climate-action/climate-action/climate-action.component';
+import { ThrowStmt } from '@angular/compiler';
 // import { FinalReportComponent } from './final-report/final-report.component';
 
 @Component({
@@ -51,7 +53,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   display1: boolean = false;
 
   sectorListSelection: Sector[] = [];
-  selectedSector: Sector[];
+  selectedSector: Sector[]=[];
   selectedNdc: Ndc[];
   selectedNdc1: Ndc[];
   selectedproject: Project[];
@@ -102,6 +104,10 @@ export class ReportComponent implements OnInit, AfterViewInit {
   SERVER_URL = environment.baseUrlAPI;
   countryId = 1;
 
+  allSelect:boolean=false;
+  isCountryLevel:boolean=true;
+
+
   searchBy: any = {
     sector: null,
     ndc: null,
@@ -126,6 +132,23 @@ export class ReportComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+
+    const token = localStorage.getItem('access_token')!;
+    const tokenPayload = decode<any>(token);
+    
+
+    if(tokenPayload.sectorId){   //because this page only shows CA,SA,MRV,TT.this also can be don by using user roles from tocken
+    this.isCountryLevel=false;
+    this.serviceProxy.getOneBaseSectorControllerSector(tokenPayload.sectorId,undefined,undefined,undefined)
+    .subscribe(res=>{
+      this.selectedSector.push(res);
+      // console.log("reporttokenPayload",res);
+    this.onSectorChange( this.selectedSector);
+
+    })
+
+    }
+
     // ****update base on loggin details -- get user id from logging details
     // this.route.queryParams.subscribe((params) =>{
     //   this.userId = params['id'];
@@ -274,6 +297,38 @@ export class ReportComponent implements OnInit, AfterViewInit {
     this.filterReportData()
 
   }
+  selectAllSectors(selectAllSectors:boolean){
+    this.selectedSector=[]
+    this.selectedNdc=[];
+    this.popUpProject=[];
+    this.selecetedType=[];
+    this.selectedYr=[];
+    if(selectAllSectors){
+      this.selectedSector=[];
+      this.selectedSector=this.sectorList;
+      this.onSectorChange(this.selectedSector);
+      // console.log(" this.selectedSector",  this.selectedSector);
+    }
+
+ 
+  }
+  onselectedAssesmentType(selectedType:any){
+    // console.log("selectedType", selectedType);
+    if(selectedType.includes(this.typePair[3])&&!selectedType.includes(this.typePair[1])){
+      
+      selectedType.push(this.typePair[1]);
+     
+    }
+    if(selectedType.includes(this.typePair[2])&&!selectedType.includes(this.typePair[0])){
+     
+      selectedType.push(this.typePair[0]);
+   
+
+    }
+    // console.log("type", selectedType);
+
+
+  }
 
 
   filterReportData() {
@@ -389,6 +444,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   }
 
   onClimateActionChange() {
+    this.selectedYr=[];
     for (let a = 0; a < this.selectedproject.length; a++) {
       for (let b = 0; b < this.selectedproject[a].assessments.length; b++) {
         if (
@@ -404,15 +460,16 @@ export class ReportComponent implements OnInit, AfterViewInit {
     this.assessmentYrFilter = [];
     this.popUpYrList = [];
 
-    this.assessmentYrFilter.push('assessment.id||$in||' + this.yrIdList);
+    this.assessmentYrFilter.push('assessment.id||$in||' + this.yrIdList)&
+    this.assessmentYrFilter.push('verificationStatus||$eq||' + 7);
     console.log('assessmentId', this.assessmentYrFilter);
 
     this.serviceProxy
       .getManyBaseAssessmentYearControllerAssessmentYear(
         undefined,
         undefined,
-        undefined,
         this.assessmentYrFilter,
+        undefined,
         ['editedOn,DESC'],
         undefined,
         1000,
@@ -423,14 +480,18 @@ export class ReportComponent implements OnInit, AfterViewInit {
       .subscribe((res: any) => {
         this.popUpYrList = res.data;
         this.uniquePopYrList = [...new Map(this.popUpYrList.map(item => [item.assessmentYear, item])).values()];
-        console.log('this.uniquePopYrList...', this.uniquePopYrList);
+        console.log('this.uniquePopYrList...', this.popUpYrList);
         this.uniquePopYrList.sort(function (a, b) {
           return a.assessmentYear - b.assessmentYear
         })
         //console.log('pop up yrs...', this.popUpYrList);
       });
   }
+ 
   onselectedNdcChange(ndc: Ndc[]) {
+    this.selectedproject=[];
+    this.uniquePopYrList=[];
+    this.selectedYr=[];
     for (let a = 0; a < ndc.length; a++) {
       this.ndcIdList.push(ndc[a].id);
     }
@@ -520,10 +581,12 @@ export class ReportComponent implements OnInit, AfterViewInit {
     // let assessType: string[] = [];
     // let yearIds: string[] = [];
    this.summeryReport = new ExcecutiveSummeryReport();
+   this.summeryReport.selectAllSectors=this.allSelect
     //Sector
     for (let index = 0; index < this.selectedSector.length; index++) {
       const element = this.selectedSector[index].name;
-
+      
+      this.summeryReport.sectorIds.push(this.selectedSector[index].id);
       this.summeryReport.sectors.push(element);
     }
     //Projects - climate Actions
@@ -709,9 +772,13 @@ export class ReportComponent implements OnInit, AfterViewInit {
     // let yearIds: string[] = [];
 
     //Sector
+
+    this.summeryReportPDF.selectAllSectors=this.allSelect;
     for (let index = 0; index < this.selectedSector.length; index++) {
       const element = this.selectedSector[index].name;
       if (this.summeryReportPDF.sectors.indexOf(element) == -1) {
+        
+        this.summeryReportPDF.sectorIds.push(this.selectedSector[index].id);
         this.summeryReportPDF.sectors.push(element);
       }
     }
