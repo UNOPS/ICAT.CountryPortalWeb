@@ -643,7 +643,7 @@ export class FinalReportComponent implements OnInit {
 
     ).toPromise();
     console.log("imah", namechart.name);
-    console.log("===this.report.years==",this.report.years);
+    // console.log("===this.report.years==",this.report.years);
     
 
       const link = document.createElement('a');

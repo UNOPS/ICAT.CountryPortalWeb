@@ -492,7 +492,10 @@ let s=new String("23")
 
 
     }
-   
+    let event: any = {};
+  event.rows = this.rows;
+  event.first = 0;
+  this.loadgridData2(event)
 
 
     this.onSearch1();
@@ -1125,10 +1128,7 @@ this.getNDC(0);
 //   }
 // }
   })
-  let event: any = {};
-  event.rows = this.rows;
-  event.first = 0;
-  this.loadgridData2(event)
+ 
 
 }
   // show(){
