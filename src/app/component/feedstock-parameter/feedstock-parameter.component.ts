@@ -56,4 +56,13 @@ export class FeedstockParameterComponent implements OnInit {
     }
   }
 
+  changeUnit(e: any, idxSec:any, idxPara:any ){
+    console.log(e.value)
+    let values = this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].historicalValues.filter(
+      (val) => val.unit === this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].UOM
+    )
+    this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].displayhisValues = values
+
+  }
+
 }
