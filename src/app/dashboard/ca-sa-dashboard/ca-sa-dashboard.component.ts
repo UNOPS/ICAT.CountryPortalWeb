@@ -492,7 +492,10 @@ let s=new String("23")
 
 
     }
-   
+    let event: any = {};
+  event.rows = this.rows;
+  event.first = 0;
+  this.loadgridData2(event)
 
 
     this.onSearch1();
@@ -1052,26 +1055,26 @@ this.getNDC(0);
 
 
 
-        let i =0;
-          for(let y of this.projectemreduct){
-            console.log('rtrtrtrtrrtrt',this.projectemreduct[i]);
-            this.data3.push(this.projectemreduct[i]);
-            i++;
+  //       let i =0;
+  //         for(let y of this.projectemreduct){
+  //           console.log('rtrtrtrtrrtrt',this.projectemreduct[i]);
+  //           this.data3.push(this.projectemreduct[i]);
+  //           i++;
             
-          }
-    this.data1 = {
+  //         }
+  //   this.data1 = {
     
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [
-          {
-              label: 'First Dataset',
-              data: this.data3,
-              fill: false,
-              borderColor: '#4bc0c0'
-          },
+  //     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  //     datasets: [
+  //         {
+  //             label: 'First Dataset',
+  //             data: this.data3,
+  //             fill: false,
+  //             borderColor: '#4bc0c0'
+  //         },
          
-      ]
-  }
+  //     ]
+  // }
 
 
 
@@ -1125,10 +1128,7 @@ this.getNDC(0);
 //   }
 // }
   })
-  let event: any = {};
-  event.rows = this.rows;
-  event.first = 0;
-  this.loadgridData2(event)
+ 
 
 }
   // show(){
@@ -1255,7 +1255,7 @@ this.getNDC(0);
           let sum=0;
           let targettotalemission = 0;
           let tarchievmenttotalem = 0;
-          let minyear="2050";
+          let minyear="0";
           let maxyear="0";
           let targetyearrange = "-";
           let archiveyearrange = "-";
@@ -1263,8 +1263,8 @@ this.getNDC(0);
           if(res.data.length!=0){
             
             for(let dt of res.data){
-              let filter2: string[] = new Array();
-              filter2.push('assement.id||$eq||' + dt.id);
+              // let filter2: string[] = new Array();
+              // filter2.push('assement.id||$eq||' + dt.id);
       
               for(let year of dt.assessmentYear){
                 // console.log("hhhhhhh",year.assessmentYear)
@@ -1272,57 +1272,75 @@ this.getNDC(0);
                       
                   maxyear = year.assessmentYear;
                 }
-                if(Number(year.assessmentYear)<Number(minyear) ){
+                if(Number(minyear)!=0 && Number(year.assessmentYear)<Number(minyear) ){
+                  minyear = year.assessmentYear;
+                }else if(Number(minyear)==0){
                   minyear = year.assessmentYear;
                 }
               }
 
-              if(dt.assessmentType=='Ex-ante'){
+              // if(dt.assessmentType=='Ex-ante'){
                
+              //   targetyearrange = minyear+"-"+maxyear
+              // }
+              // if(dt.assessmentType=='Ex-post'){
+               
+              //   archiveyearrange = minyear+"-"+maxyear
+              // }
+             
+              // activeproject1.targetyear = targetyearrange;
+              // activeproject1.archivmentyear = archiveyearrange;
+              // this.serviceproxy.getManyBaseAssesmentResaultControllerAssessmentResault(
+              //   undefined,
+              //   undefined,
+              //   filter2,
+              //   undefined,
+              //   ['id,ASC'],
+              //   undefined,
+              //   1000,
+              //   0,
+              //   0,
+              //   0
+              // ).subscribe((response=>{
+              //     for(let d of response.data){
+              //       sum=sum+ d.totalEmission; 
+              //       // console.log('kkkkkkkkkkkkkkkkkkkkkkkkk',d)
+                    
+              //     }
+                
+              //     if(dt.assessmentType=='Ex-ante'){
+              //       targettotalemission = sum;
+              //       targetyearrange = minyear+"-"+maxyear
+              //     }
+              //     if(dt.assessmentType=='Ex-post'){
+              //       tarchievmenttotalem = sum;
+              //       archiveyearrange = minyear+"-"+maxyear
+              //     }
+                 
+              // }))
+              for(let d of dt.assessmentResult){
+                sum=sum + d.totalEmission?Number(d.totalEmission):0; 
+                // console.log('kkkkkkkkkkkkkkkkkkkkkkkkk',sum)
+                
+              }
+            
+              if(dt.assessmentType=='Ex-ante'){
+                targettotalemission = sum;
                 targetyearrange = minyear+"-"+maxyear
               }
               if(dt.assessmentType=='Ex-post'){
-               
+                tarchievmenttotalem = sum;
                 archiveyearrange = minyear+"-"+maxyear
               }
-             
-              activeproject1.targetyear = targetyearrange;
-              activeproject1.archivmentyear = archiveyearrange;
-              this.serviceproxy.getManyBaseAssesmentResaultControllerAssessmentResault(
-                undefined,
-                undefined,
-                filter2,
-                undefined,
-                ['id,ASC'],
-                undefined,
-                1000,
-                0,
-                0,
-                0
-              ).subscribe((response=>{
-                  for(let d of response.data){
-                    sum=sum+ d.totalEmission; 
-                    // console.log('kkkkkkkkkkkkkkkkkkkkkkkkk',d)
-                    
-                  }
-                
-                  if(dt.assessmentType=='Ex-ante'){
-                    targettotalemission = sum;
-                    targetyearrange = minyear+"-"+maxyear
-                  }
-                  if(dt.assessmentType=='Ex-post'){
-                    tarchievmenttotalem = sum;
-                    archiveyearrange = minyear+"-"+maxyear
-                  }
-                  activeproject1.erarchievment = tarchievmenttotalem;
-                  activeproject1.ertarget = targettotalemission;
-                  activeproject1.targetyear = targetyearrange;
-                  activeproject1.archivmentyear = archiveyearrange;
-              }))
 
              // this.serviceproxy.getmanybaseasse
              
             }
+            activeproject1.erarchievment = tarchievmenttotalem;
+            activeproject1.ertarget = targettotalemission;
+            activeproject1.targetyear = targetyearrange;
+            activeproject1.archivmentyear = archiveyearrange;
+
           }
        
         }))
@@ -1612,14 +1630,15 @@ this.getNDC(0);
 
 
                for(let assesrslt of assement.assessmentResult){
-
-                  totalRduction=totalRduction+assesrslt.totalEmission;
+                // console.log('totalRduction123',assement.id,totalRduction)
+                  totalRduction=totalRduction+assesrslt.totalEmission?Number(assesrslt.totalEmission):0;
 
                }
 
 
 
              }
+             console.log('totalRduction',totalRduction)
              if(totalRduction!=0){
               
               ndcNames.push(ndc.name);

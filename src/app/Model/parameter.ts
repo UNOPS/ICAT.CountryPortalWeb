@@ -21,6 +21,7 @@ class Parameter {
   public defaultValue: DefaultValue;
 
   public historicalValues: any[] = [];
+  public displayhisValues: any[] = [];
   public historicalValue: any;
 
   // public isRootLevel: boolean = false;

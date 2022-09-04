@@ -72,4 +72,14 @@ export class VehicalParameterComponent implements OnInit {
       this.checked.splice(this.checked.indexOf(i), 1)
     }
   }
+
+  changeUnit(e: any, idxSec:any, idxPara:any ){
+    console.log(e.value)
+    let values = this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].historicalValues.filter(
+      (val) => val.unit === this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].UOM
+    )
+    this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].displayhisValues = values
+
+  }
+
 }

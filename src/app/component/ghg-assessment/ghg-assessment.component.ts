@@ -2433,9 +2433,11 @@ export class GhgAssessmentComponent implements OnInit {
                   para.historicalValues = parameters.map((p: any) => {
                     return {
                       label: p.assessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
-                      value: p.value
+                      value: p.value,
+                      unit: p.uomDataEntry
                     }
                   })
+                  para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
                   return para
                 })
               })

@@ -10,7 +10,7 @@ export const environment = {
   baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
   baseUrlMac: 'https://icat-ca-tool.climatesi.com/cal-engine/mac',
   baseUrlExcelUpload:  'https://icat-ca-tool.climatesi.com/web-api/parameter/upload',
-  baseUrlAPIDocReportChartDownloadAPI: 'http://icat-ca-tool.climatesi.com/web-api/report/chartDataImage',
+  baseUrlAPIDocReportChartDownloadAPI: 'https://icat-ca-tool.climatesi.com/web-api/report/chartDataImage',
   // baseUrlAPIDocUploadAPI: 'http://35.154.205.109:7080/document/upload2',
   // baseUrlJsonFile: 'http://35.154.205.109:3600/filename',
   // baseUrlMac: 'http://35.154.205.109:3600/mac',
