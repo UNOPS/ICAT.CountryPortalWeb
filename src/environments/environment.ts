@@ -9,10 +9,10 @@ export const environment = {
   baseUrlAPIDocUploadAnonymousAPI: 'http://localhost:7080/document/uploadFileAnonymous',
   baseUrlAPIDocdownloadAPI: 'http://localhost:7080/document/downloadDocument',
   baseUrlAPIDocReportChartDownloadAPI: 'http://localhost:7080/report/chartDataImage',
- baseUrlJsonFile: 'http://localhost:3600/filename',
+//  baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
   baseUrlExcelUpload: 'http://localhost:7080/parameter/upload',
   baseUrlMac: 'https://icat-ca-tool.climatesi.com/cal-engine/mac',
-  // baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
+  baseUrlJsonFile: 'http://localhost:3600/filename',
   // baseUrlMac: 'https://icat-ca-tool.climatesi.com/cal-engine/mac',
 };
 

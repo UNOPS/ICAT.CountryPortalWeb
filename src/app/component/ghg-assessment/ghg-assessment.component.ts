@@ -2608,7 +2608,8 @@ export class GhgAssessmentComponent implements OnInit {
    let idArray:any[] = [];
    let arr:any[] = [];
    
-   arr = this.defaultValues.filter((a) => a.parameterName === name && a.parentId === null);
+   arr = this.defaultValues.filter((a) => a.parameterName === name && a.value !== null);
+  //  arr = this.defaultValues.filter((a) => a.parameterName === name && a.parentId === null);
   // console.log('arrname...',arr)
    for(let item of arr)
    {
