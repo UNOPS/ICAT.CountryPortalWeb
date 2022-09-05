@@ -5,14 +5,15 @@
 export const environment = {
   production: false,
   baseUrlAPI: 'http://localhost:7080',
+  // baseUrlAPI: 'https://icat-ca-tool.climatesi.com/web-api',
   baseUrlAPIDocUploadAPI: 'http://localhost:7080/document/upload2',
   baseUrlAPIDocUploadAnonymousAPI: 'http://localhost:7080/document/uploadFileAnonymous',
   baseUrlAPIDocdownloadAPI: 'http://localhost:7080/document/downloadDocument',
   baseUrlAPIDocReportChartDownloadAPI: 'http://localhost:7080/report/chartDataImage',
- baseUrlJsonFile: 'http://localhost:3600/filename',
+//  baseUrlJsonFile: 'http://localhost:3600/filename',
   baseUrlExcelUpload: 'http://localhost:7080/parameter/upload',
   baseUrlMac: 'https://icat-ca-tool.climatesi.com/cal-engine/mac',
-  // baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
+  baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
   // baseUrlMac: 'https://icat-ca-tool.climatesi.com/cal-engine/mac',
 };
 
