@@ -2437,6 +2437,13 @@ export class GhgAssessmentComponent implements OnInit {
                       unit: p.uomDataEntry
                     }
                   })
+                  let answer: any[] = [];
+                  para.historicalValues.forEach((x: any) => {
+                    if (!answer.some(y => JSON.stringify(y) === JSON.stringify(x))) {
+                      answer.push(x)
+                    }
+                  })
+                  para.historicalValues = answer
                   para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
                   return para
                 })

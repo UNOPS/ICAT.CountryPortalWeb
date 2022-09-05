@@ -319,11 +319,20 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
             para.parameterId.historicalValues = parameters.map((p: any) => {
               
               return {
-                label: p.assessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
+                label: p.assessmentYear + ' - ' + p.value + ' ' + p.uomDataEntry,
                 value: p.value,
                 unit: p.uomDataEntry
               }
             })
+            let answer: any[] = [];
+            para.parameterId.historicalValues.forEach((x: any) => {
+              if (!answer.some(y => JSON.stringify(y) === JSON.stringify(x))) {
+                answer.push(x)
+              }
+            })
+            para.parameterId.historicalValues = answer
+
+
             para.parameterId.displayhisValues = para.parameterId.historicalValues.filter((val: { unit: any; }) => val.unit === para.parameterId.uomDataRequest)
             return para
           })
