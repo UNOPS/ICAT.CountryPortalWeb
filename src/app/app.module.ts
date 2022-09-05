@@ -278,6 +278,7 @@ export function getRemoteServiceBaseUrl(): string {
     SoilParameterComponent,
     StratumParameterComponent,
     ResidueParameterComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -358,6 +359,7 @@ export function getRemoteServiceBaseUrl(): string {
     UnitConversionControllerServiceProxy,
     UserTypeControllerServiceProxy,
     TrackClimateControllerServiceProxy,
+    ProjectControllerServiceProxy,
     DatePipe,
     { provide: API_BASE_URL, useFactory: getRemoteServiceBaseUrl },
     HttpClientModule,

@@ -114,7 +114,7 @@
   
               <div class="col-12 col-md-7">
                  <div>
-                    <p-multiSelect
+                    <!-- <p-multiSelect
                       appendTo="body"
                       name="multiYear"
                       [options]="uniqueYears"
@@ -122,7 +122,16 @@
                       (mouseenter) ="getYears()"
                       #assyesrw="ngModel" 
                       
-                    ></p-multiSelect>
+                    ></p-multiSelect> -->
+                    <p-multiSelect
+                    appendTo="body"
+                    name="multiYear"
+                    [options]="uniqueYears"
+                    [(ngModel)]="selectYears" 
+          
+                    #assyesrw="ngModel" 
+                    
+                  ></p-multiSelect>
                     <p
                     class="info-message text-danger"
                     *ngIf="
