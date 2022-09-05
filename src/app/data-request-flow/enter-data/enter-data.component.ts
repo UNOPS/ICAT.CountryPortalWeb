@@ -26,6 +26,7 @@ import {
 } from 'shared/service-proxies/service-proxies';
 import * as XLSX from 'xlsx';
 import { DataRequestStatus } from 'app/Model/DataRequestStatus.enum';
+import Parameter from 'app/Model/parameter';
 
 @Component({
   selector: 'app-enter-data',
@@ -319,12 +320,14 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
               
               return {
                 label: p.assessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
-                value: p.value
+                value: p.value,
+                unit: p.uomDataEntry
               }
             })
+            para.parameterId.displayhisValues = para.parameterId.historicalValues.filter((val: { unit: any; }) => val.unit === para.parameterId.uomDataRequest)
             return para
           })
-          // console.log(this.parameterList)
+          console.log(this.parameterList)
         }
       })
       // return [];
@@ -763,4 +766,16 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
   onHideDialog(){
     this.isHistorical = false
   }
+
+  changeUnit(e: any, para: any, parameterId: any){
+    console.log(e.value.ur_fromUnit)
+    console.log(para, parameterId)
+    let values = parameterId.historicalValues.filter(
+      (val: any) => val.unit === e.value.ur_fromUnit
+    )
+    parameterId.displayhisValues = values
+    this.selectedPara.parameterId = parameterId
+
+  }
+
 }
