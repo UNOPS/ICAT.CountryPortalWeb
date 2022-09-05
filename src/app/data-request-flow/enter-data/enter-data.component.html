@@ -307,6 +307,7 @@
               placeholder="Select .."
               optionLabel="ur_fromUnit"
               width="100px"
+              (onChange)="changeUnit($event, selectedPara, selectedPara.parameterId)"
             >
             </p-dropdown>
           </div>
@@ -326,7 +327,7 @@
               placeholder="Select historical value"
               [(ngModel)]="selectedHistoricalValue"
               [autoDisplayFirst]="false"
-              [options]="selectedPara.parameterId.historicalValues"
+              [options]="selectedPara.parameterId.displayhisValues"
               optionLabel="label"
               appendTo="body"
             >
