@@ -2433,9 +2433,18 @@ export class GhgAssessmentComponent implements OnInit {
                   para.historicalValues = parameters.map((p: any) => {
                     return {
                       label: p.assessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
-                      value: p.value
+                      value: p.value,
+                      unit: p.uomDataEntry
                     }
                   })
+                  let answer: any[] = [];
+                  para.historicalValues.forEach((x: any) => {
+                    if (!answer.some(y => JSON.stringify(y) === JSON.stringify(x))) {
+                      answer.push(x)
+                    }
+                  })
+                  para.historicalValues = answer
+                  para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
                   return para
                 })
               })
@@ -2606,7 +2615,8 @@ export class GhgAssessmentComponent implements OnInit {
    let idArray:any[] = [];
    let arr:any[] = [];
    
-   arr = this.defaultValues.filter((a) => a.parameterName === name && a.parentId === null);
+   arr = this.defaultValues.filter((a) => a.parameterName === name && a.value !== null);
+  //  arr = this.defaultValues.filter((a) => a.parameterName === name && a.parentId === null);
   // console.log('arrname...',arr)
    for(let item of arr)
    {

@@ -36,6 +36,7 @@
               [disabled]="isDisableforSubmitButton"
               [autoDisplayFirst]="false"
               [options]="p.UOMList"
+              (onChange)="changeUnit($event, spi, i)"
             ></p-dropdown>
           </div>
         </div>
@@ -59,7 +60,7 @@
                 [(ngModel)]="p.historicalValue"
                 [disabled]="isDisableforSubmitButton"
                 [autoDisplayFirst]="false"
-                [options]="p.historicalValues"
+                [options]="p.displayhisValues"
                 (onChange) = "onSelectHistoricalVal($event, spi, i)"
                 optionLabel="label"
               ></p-dropdown>
@@ -96,7 +97,7 @@
                 [(ngModel)]="p.historicalValue"
                 [disabled]="isDisableforSubmitButton"
                 [autoDisplayFirst]="false"
-                [options]="p.historicalValues"
+                [options]="p.displayhisValues"
                 (onChange) = "onSelectHistoricalVal($event, spi, i)"
                 optionLabel="label"
               ></p-dropdown>
