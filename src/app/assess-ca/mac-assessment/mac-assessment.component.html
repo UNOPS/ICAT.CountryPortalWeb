@@ -226,6 +226,13 @@
         >
           This is a mandatory field
         </p>
+        <p
+        class="info-message text-danger"
+        *ngIf="
+            reduction < 0
+          ">
+          MAC calculation is not possible as there is no emission reduction
+        </p>
       </div>
       </div>
       
@@ -239,6 +246,7 @@
         <div class="col-12 col-md-4">
           <div>
               <input
+              [disabled]="reduction <0"
                (ngModelChange)="onDiscountChange($event)"
                 type="number"
                 
@@ -267,6 +275,7 @@
         <div class="col-12 col-md-4">
           <div>
             <p-dropdown   
+            [disabled]="reduction <0"
             name="disratexx" 
             [options]="discountRateList"
             [(ngModel)]= "bsAnnualFuelObject"
@@ -283,6 +292,7 @@
       <div class="col-12 col-md-3">
         <div class="p-field-checkbox">
           <p-checkbox
+          [disabled]="reduction <0"
             [(ngModel)]="checkedDiscountRate"
             [binary]="true"
             inputId="binary"
@@ -325,6 +335,7 @@
         >
         </p-inputNumber> -->
         <input
+        [disabled]="reduction <0"
         name="bsTotalInvestment"   
         [(ngModel)] ="bsTotalInvestment"
         #TotalInvestment_bs="ngModel"
@@ -360,6 +371,7 @@
       <div class="col-12 col-md-4">
         <div>
           <input
+          [disabled]="reduction <0"
           name="bsProjectLife"
             [(ngModel)]= "bsProjectLife"
             #projectlife_bs="ngModel"
@@ -384,6 +396,7 @@
       <div class="col-12 col-md-4">
         <div>
           <p-dropdown   
+          [disabled]="reduction <0"
           name="def1" 
           [options]="bsProjectLifeList"
           [(ngModel)]= "bsAnnualFuelObject"
@@ -400,6 +413,7 @@
     <div class="col-12 col-md-3">
       <div class="p-field-checkbox">
         <p-checkbox
+        [disabled]="reduction <0"
           [(ngModel)]="checkedbsProjectLife"
           [binary]="true"
           inputId="binary"
@@ -423,6 +437,7 @@
           <div>
            
             <input
+            [disabled]="reduction <0"
             name="bsAnnualORM"
             [(ngModel)] ="bsAnnualOM"
             #annualOrm_bs="ngModel"
@@ -447,6 +462,7 @@
         <div class="col-12 col-md-4">
           <div>
             <p-dropdown   
+            [disabled]="reduction <0"
             name="bsannuabsxlom1" 
             [options]="bsAnnualOMlist"
             [(ngModel)]= "bsAnnualFuelObject"
@@ -463,6 +479,7 @@
       <div class="col-12 col-md-3">
         <div class="p-field-checkbox">
           <p-checkbox
+          [disabled]="reduction <0"
             [(ngModel)]="checkedbsOM"
             [binary]="true"
             inputId="binary"
@@ -485,6 +502,7 @@
         <div class="col-12 col-md-4">
           <div>
             <input
+            [disabled]="reduction <0"
             name="bsAnnualFuelCost"
             [(ngModel)]= "bsAnnualFuel"
             #annualFule_bs="ngModel"
@@ -510,6 +528,7 @@
         <div class="col-12 col-md-4">
           <div>
             <p-dropdown   
+            [disabled]="reduction <0"
             name="def1" 
             [options]="bsAnnualFuelCostList"
             [(ngModel)]= "bsAnnualFuelObject"
@@ -527,6 +546,7 @@
       <div class="col-12 col-md-3">
         <div class="p-field-checkbox">
           <p-checkbox
+          [disabled]="reduction <0"
             [(ngModel)]="checkedbsAnnualfuelCost"
             [binary]="true"
             inputId="binary"
@@ -555,6 +575,7 @@
           >
           </p-inputNumber> -->
           <input
+          [disabled]="reduction <0"
           name="bsOtherAnnualCost"
           [(ngModel)]= "bsOtherAnnualCost"
           #otherAnnual_bs="ngModel"
@@ -600,6 +621,7 @@
           >
           </p-inputNumber> -->
           <input
+          [disabled]="reduction <0"
           name="psProjectLife"
           [(ngModel)] ="psTotalInvestment"
           #totalInvestment_ps="ngModel"
@@ -630,6 +652,7 @@
         <div class="col-12 col-md-4">
           <div>
             <input
+            [disabled]="reduction <0"
             name="psProject Life"
               [(ngModel)]="psProjectLife"
               #projectlife_ps="ngModel"
@@ -654,6 +677,7 @@
         <div class="col-12 col-md-4">
           <div>
             <p-dropdown   
+            [disabled]="reduction <0"
             name="psdefpsprojetclife" 
             [options]="psProjectLifeList"
             [(ngModel)]= "bsAnnualFuelObject"
@@ -670,6 +694,7 @@
       <div class="col-12 col-md-3">
         <div class="p-field-checkbox">
           <p-checkbox
+          [disabled]="reduction <0"
             [(ngModel)]="checkedpsProjectLife"
             [binary]="true"
             inputId="binary"
@@ -693,6 +718,7 @@
         <div class="col-12 col-md-4">
           <div>
             <input
+            [disabled]="reduction <0"
             name="psAnnualOM"
               [(ngModel)]='psAnnualOM'
               #annualOrm_ps="ngModel"
@@ -717,6 +743,7 @@
         <div class="col-12 col-md-4">
           <div>
             <p-dropdown   
+            [disabled]="reduction <0"
             name="psannualom1" 
             [options]="psAnnualOMlist"
             [(ngModel)]= "bsAnnualFuelObject"
@@ -733,6 +760,7 @@
       <div class="col-12 col-md-3">
         <div class="p-field-checkbox">
           <p-checkbox
+          [disabled]="reduction <0"
             [(ngModel)]="checkedpsOM"
             [binary]="true"
             inputId="binary"
@@ -756,6 +784,7 @@
           <div>
            
             <input
+            [disabled]="reduction <0"
             name="psAnnualFuel"
             [(ngModel)] ="psAnnualFuel"
             #annualFuel_ps="ngModel"
@@ -779,7 +808,8 @@
       <ng-template #elseBlockpsAnnualfule>
         <div class="col-12 col-md-4">
           <div>
-            <p-dropdown   
+            <p-dropdown 
+            [disabled]="reduction <0"  
             name="psannufulecos" 
             [options]="psAnnualFuelCostList"
             [(ngModel)]= "bsAnnualFuelObject"
@@ -796,6 +826,7 @@
       <div class="col-12 col-md-3">
         <div class="p-field-checkbox">
           <p-checkbox
+          [disabled]="reduction <0"
             [(ngModel)]="checkedpsAnnualfuelCost"
             [binary]="true"
             inputId="binary"
@@ -826,6 +857,7 @@
           >
           </p-inputNumber> -->
           <input
+          [disabled]="reduction <0"
           name="psOtherAnnualCosts"
             [(ngModel)] ="psOtherAnnualCost"
             #otherAnnual_ps="ngModel"
@@ -856,7 +888,7 @@
         label="View Results" 
         class="p-button-info" 
         type="submit" 
-        [disabled]="isDisableSaveButton"
+        [disabled]="isDisableSaveButton || reduction <0"
        
         ></button>
       </div>
