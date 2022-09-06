@@ -146,162 +146,7 @@ export class CASADashboardComponent implements OnInit {
 };
 
 let s=new String("23")
-    this.basicOptions = {
-      
-      plugins: {
-        tooltip: {
-               
 
-
-          callbacks: {
-            label: function(context: { chart:{_metasets:any;}; dataset: { label: string; }; parsed: { y: number | bigint | null; };dataIndex:number;raw:number; }) {
-              console.log(context)
-              console.log(context.chart._metasets[3]._dataset.data)
-                let baulst=context.chart._metasets[3]._dataset.data;
-                let label = context.dataset.label || '';
-                
-                let prsntge= 'Emission reduction of '+context.dataset.label+ ' over BAU - '+((context.raw/baulst[ context.dataIndex])*100).toFixed(2) +'%'
-                if (label) {
-                    label += ': ';
-                }
-                if (context.parsed.y !== null) {
-                    label += context.parsed.y;
-                }
-                return [label,prsntge];
-            }
-        }
-        },
-        
-        // tooltip: {
-        
-        //   // Disable the on-canvas tooltip
-        //   enabled: false,
-
-        //   external: function(context: { tooltip: any; chart: { canvas: { getBoundingClientRect: () => any; }; }; }) {
-        //       // Tooltip Element
-        //       let tooltipEl = document.getElementById('chartjs-tooltip');
-
-        //       // Create element on first render
-        //       if (!tooltipEl) {
-        //           tooltipEl = document.createElement('div');
-        //           tooltipEl.id = 'chartjs-tooltip';
-        //           tooltipEl.innerHTML = '<table></table>';
-        //           document.body.appendChild(tooltipEl);
-        //       }
-
-        //       // Hide if no tooltip
-        //       const tooltipModel = context.tooltip;
-        //       if (tooltipModel.opacity === 0) {
-        //           tooltipEl.style.opacity = '0';
-        //           return;
-        //       }
-
-        //         // Set caret Position
-        //         tooltipEl.classList.remove('above', 'below', 'no-transform');
-        //         if (tooltipModel.yAlign) {
-        //             tooltipEl.classList.add(tooltipModel.yAlign);
-        //         } else {
-        //             tooltipEl.classList.add('no-transform');
-        //         }
-
-        //         function getBody(bodyItem: { lines: any; }) {
-        //             return bodyItem.lines;
-        //         }
-
-        //         if (tooltipModel.body) {
-        //           console.log('title',tooltipModel);
-        //           const titleLines = tooltipModel.title || [];
-        //           const bodyLines = tooltipModel.body.map(getBody);
-
-        //           let innerHtml = '<thead>';
-
-        //           titleLines.forEach(function(title: string) {
-                   
-        //               innerHtml += '<tr><th>' + title + '</th></tr>';
-        //           });
-        //           innerHtml += '</thead><tbody>';
-
-        //           bodyLines.forEach(function(body: string, i: string | number) {
-        //               const colors = tooltipModel.labelColors[i];
-        //               let style = 'background:' + colors.backgroundColor;
-        //               style += '; border-color:' + colors.borderColor;
-        //               style += '; border-width: 2px';
-        //               const span = '<span style="' + style + '"></span>';
-        //               innerHtml += '<tr><td>' + span + body + '</td></tr>';
-        //           });
-        //           innerHtml += '</tbody>';
-
-        //           let tableRoot:any = tooltipEl.querySelector('table');
-        //           tableRoot.innerHTML = innerHtml;
-        //       }
-        //       const position = context.chart.canvas.getBoundingClientRect();
-        //       // const bodyFont = Chart.helpers.toFont(tooltipModel.options.bodyFont);
-
-        //       // Display, position, and set styles for font
-        //       tooltipEl.style.opacity = '1';
-        //       tooltipEl.style.position = 'absolute';
-        //       tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
-        //       tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
-        //       tooltipEl.style.font = '2';
-        //       tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
-        //       tooltipEl.style.pointerEvents = 'none';
-        //   }
-
-          
-
-        // },
-        title: {
-          
-          display: true,
-          text: 'Emission Reduction Targets',
-          
-          font:{
-            size:24
-          }
-      },
-          legend: {
-              labels: {
-                  color: '#495057'
-              }
-          }
-      },
-      scales: {
-          
-          x: {
-              display:true,
-              title:{
-                display:true,
-                text:'Years',
-                font:{
-                  size:12
-                }
-              },
-              ticks: {
-                  color: '#495057'
-              },
-              grid: {
-                  color: '#ebedef'
-              }
-          },
-          y: {
-            display:true,
-            title:{
-              display:true,
-              text:'Emissions (MtCO₂e)',
-              font:{
-                size:12
-              }
-            },
-            
-              ticks: {
-                  color: '#495057'
-              },
-              grid: {
-                  color: '#ebedef'
-              }
-          }
-      }
-  };
 
 
 
@@ -516,6 +361,7 @@ let s=new String("23")
     .subscribe((res: any)=>{
       this.emissionReduction = res;
       // console.log('eeeee',this.emissionReduction)
+      this.configEmissionTargetGraph();
       this.unconditionalValue = this.emissionReduction.targetYearEmission - this.emissionReduction.unconditionaltco2;
       // console.log('unconditional',this.unconditionalValue)
       this.conditionalValue = this.emissionReduction.targetYearEmission - this.emissionReduction.conditionaltco2;
@@ -531,7 +377,7 @@ let s=new String("23")
         this.yrList.push(this.newYr);
         
       };
-      let yearlstLength=this.yrList.length
+      let yearlstLength=this.yrList.length -1;
       
       // for(let x=0;x<=this.yrList.length;x++){
         
@@ -584,11 +430,11 @@ let s=new String("23")
 
        
 
-    for(let x=0; x<yearlstLength;x++){
-            // console.log("work testay")
+    for(let x=0; x<=yearlstLength;x++){
+         
             let total = 0;
 
-            let bauValue:number=((this.emissionReduction.targetYearEmission-this.emissionReduction.baseYearEmission)/yearlstLength)*x +this.emissionReduction.baseYearEmission;
+            let bauValue:number=((this.emissionReduction.targetYearEmission-this.emissionReduction.baseYearEmission)/yearlstLength )*x +this.emissionReduction.baseYearEmission;
             this.conValLst.push( !this.emissionReduction.conditionaltco2 && this.emissionReduction.conditionaltco2==0?0:((this.conditionalValue-this.emissionReduction.baseYearEmission)/yearlstLength)*x +this.emissionReduction.baseYearEmission);
             this.unconValLst.push(!this.emissionReduction.unconditionaltco2 && this.emissionReduction.unconditionaltco2==0?0:((this.unconditionalValue-this.emissionReduction.baseYearEmission)/yearlstLength)*x +this.emissionReduction.baseYearEmission);
             this. bauValLst.push(bauValue);
@@ -605,6 +451,8 @@ let s=new String("23")
         filter1.push('assement.assessmentType||$eq||Ex-post') 
         & 
         filter1.push('assement.id||$in||'+ this.assessmentListId) 
+        filter1.push('assement.isProposal||$eq||' + 0);
+
         // console.log('filter1',filter1);
 
         this.serviceproxy
@@ -628,7 +476,7 @@ let s=new String("23")
 
           
           for(let assement of this.assessmentList){
-            // console.log("totalemition",assement.totalEmission)
+            console.log("totalemition",assement.assement.isProposal)
             total += assement.totalEmission?assement.totalEmission:0;
             console.log(total)
 
@@ -1143,6 +991,8 @@ this.getNDC(0);
           // console.log( this.screenWidth);
     }
 
+
+
  getNDC=(sectorID:number)=>{
 
   this.ndcserviceproxy.ndcSectorDetailsDashboard(0,0,sectorID)
@@ -1168,6 +1018,105 @@ this.getNDC(0);
 
 
  }
+
+configEmissionTargetGraph=()=>{
+  this.basicOptions = {
+      
+    plugins: {
+      tooltip: {
+             
+
+
+        callbacks: {
+          label: function(context: { chart:{_metasets:any;}; dataset: { label: string; }; parsed: { y: number | bigint | null; };dataIndex:number;raw:number; }) {
+            console.log(context)
+            // console.log(context.chart._metasets[3]._dataset.data)
+              let baulst=context.chart._metasets[3]._dataset.data;
+              let label = context.dataset.label || '';
+
+
+              if (label) {
+                label += ' Emission : ';
+            }
+            if (context.parsed.y !== null) {
+                label += Number(context.parsed.y).toFixed(2) +" MtCO₂e";
+            }
+
+              if(context.dataset.label=='Actual'){
+                // console.log("Actual")
+           let emissionReduction=  "Emission Reduction : " +  (baulst[ context.dataIndex]- Number(context.parsed.y)).toFixed(2) + " MtCO₂e" +" (" + ((baulst[ context.dataIndex]- Number(context.parsed.y))/baulst[ context.dataIndex]).toFixed(2) +"% of BAU Emission)";
+                return [label,emissionReduction];
+              }
+              if(context.dataset.label=='BAU'){
+                // console.log("BAU")
+                return [label];
+              }
+              
+
+
+              let prsntge= 'Emission reduction of '+context.dataset.label+ ' over BAU - '+((context.raw/baulst[ context.dataIndex])*100).toFixed(2) +'%'
+              
+              return [label,prsntge];
+          }
+      }
+      },
+      
+     
+      title: {
+        
+        display: true,
+        text: `Emission Reduction Targets of ${this.emissionReduction.sector? this.emissionReduction.sector.name + " sector" :this.emissionReduction.country.name}`,
+        
+        font:{
+          size:24
+        }
+    },
+        legend: {
+            labels: {
+                color: '#495057'
+            }
+        }
+    },
+    scales: {
+        
+        x: {
+            display:true,
+            title:{
+              display:true,
+              text:'Years',
+              font:{
+                size:12
+              }
+            },
+            ticks: {
+                color: '#495057'
+            },
+            grid: {
+                color: '#ebedef'
+            }
+        },
+        y: {
+          display:true,
+          title:{
+            display:true,
+            text:'Emissions (MtCO₂e)',
+            font:{
+              size:12
+            }
+          },
+          
+            ticks: {
+                color: '#495057'
+            },
+            grid: {
+                color: '#ebedef'
+            }
+        }
+    }
+};
+
+}
+
 
 
   loadgridData = (event: LazyLoadEvent) => {
@@ -1237,6 +1186,7 @@ this.getNDC(0);
 
         let filter1: string[] = new Array();
         filter1.push('project.id||$eq||' + project.id);
+        filter1.push('Assessment.isProposal||$eq||' + 0);
       
 
         this.serviceproxy.getManyBaseAssesmentControllerAssessment(
@@ -1263,6 +1213,7 @@ this.getNDC(0);
           if(res.data.length!=0){
             
             for(let dt of res.data){
+              console.log("hhhhhhh",dt.isProposal)
               // let filter2: string[] = new Array();
               // filter2.push('assement.id||$eq||' + dt.id);
       
@@ -1638,7 +1589,7 @@ this.getNDC(0);
 
 
              }
-             console.log('totalRduction',totalRduction)
+            //  console.log('totalRduction',totalRduction)
              if(totalRduction!=0){
               
               ndcNames.push(ndc.name);

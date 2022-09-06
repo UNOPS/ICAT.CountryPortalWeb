@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { MessageService, SelectItem } from 'primeng/api';
-import { Assessment, AssessmentObjective, AssessmentYear, Institution, Project, ServiceProxy, Parameter as Parameter_Server, ProjectApprovalStatus, } from 'shared/service-proxies/service-proxies';
+import { Assessment, AssessmentObjective, AssessmentYear, Institution, Project, ServiceProxy, Parameter as Parameter_Server, ProjectApprovalStatus, AssesmentControllerServiceProxy, } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 @Component({
   selector: 'app-mac-assessment-approved',
@@ -148,6 +148,7 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
 
 
   constructor(private serviceProxy: ServiceProxy,
+    private assesmentServiceProxy: AssesmentControllerServiceProxy,
      private cdr: ChangeDetectorRef,
      private messageService :MessageService,
      private router: Router,
@@ -166,7 +167,8 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
     
 
     let projfilter: string[] = new Array();
-    projfilter.push('projectApprovalStatus.id||$in||' +[1,5])
+    projfilter.push('projectApprovalStatus.id||$in||' +[1,5]);
+    projfilter.push('Country.id||$eq||' +this.userCountryId);
 
     this.serviceProxy
     .getManyBaseProjectControllerProject(
@@ -183,13 +185,14 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
     )
     .subscribe((res: any) => {
       this.climateActions = res.data;
-      this.climateActions = this.climateActions.filter((o)=>{
-        if (o.country !== undefined) {
-          return o.country.id == this.userCountryId
-        } else return false
-      })
+      // console.log('climateActions', res.data);
+      // this.climateActions = this.climateActions.filter((o)=>{
+      //   if (o.country !== undefined) {
+      //     return o.country.id == this.userCountryId
+      //   } else return false
+      // })
       //
-      console.log('climateActions', res.data);
+      // console.log('climateActions', this.climateActions );
      
     });
 
@@ -268,6 +271,7 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
     filter1.push('project.id||$eq||' +this.slectedProject.id)&
     filter1.push('Assessment.assessmentType||$in||' +this.approachList)&
     filter1.push('Assessment.isProposal||$eq||' +0);
+    filter1.push('assessmentYear.verificationStatus||$eq||' +7);
     
     this.ndc = this.slectedProject.ndc?.name;
     this.subNdc = this.slectedProject.subNdc?.name;
@@ -279,24 +283,26 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
     this.duration=this.slectedProject.duration;
     
     
-    this.serviceProxy.getManyBaseAssesmentControllerAssessment
-    (
-      undefined,
-      undefined,
-      filter1,
-      undefined,
-      undefined,
-      undefined,
-      1000,
-      0,
-      0,
-      0
-    )
+    // this.serviceProxy.getManyBaseAssesmentControllerAssessment
+    // (
+    //   undefined,
+    //   undefined,
+    //   filter1,
+    //   undefined,
+    //   undefined,
+    //   undefined,
+    //   1000,
+    //   0,
+    //   0,
+    //   0
+    // )
+    this.assesmentServiceProxy.assessmentForMAC(this.slectedProject.id)
     .subscribe((res: any) => {
-      this.assessments = res.data;
-      //console.log('assessments', this.assessments);
+      this.assessments = res;
+      console.log('assessments', res);
      // this.asseYear = this.assessments[0].assessmentYear[0].assessmentYear;
      // console.log('asse year',this.asseYear)
+     this.getYears()
     });
 
     
