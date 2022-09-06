@@ -159,15 +159,29 @@
       <div class="col-12">
         <div class="p-field">
           <label for="projStatus">{{ ResultLabel }}</label>
-          <input
-            [disabled]="true"
-            type="text"
-            name="meth"
-            #chgEmission="ngModel"
-            [(ngModel)]="ResultValue"
-            class="p-inputtext"
-            pInputText
-          />
+          <div class="row p-2 ">
+            <div class="col-12 col-md-9">
+              <div>
+                <input
+                [disabled]="true"
+                type="text"
+                name="meth"
+                #chgEmission="ngModel"
+                [(ngModel)]="ResultValue"
+                class="p-inputtext"
+                pInputText
+              />
+              </div>
+            </div>
+
+            <div class="col-12 col-md-3">
+              <div style="margin-top:5px">
+                <b >tCO₂e</b>
+              </div>
+             
+            </div>
+          </div>
+          
         </div>
       </div>
     </div>
