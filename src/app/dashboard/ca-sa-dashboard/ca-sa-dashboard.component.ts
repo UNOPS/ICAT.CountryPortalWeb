@@ -208,7 +208,7 @@ let s=new String("23")
             display:true,
             title:{
               display:true,
-              text:'Emissions (tCO' + '\u2082' +'e)',
+              text:'Emissions reduction (tCO' + '\u2082' +'e)',
               font:{
                 size:12
               }},
