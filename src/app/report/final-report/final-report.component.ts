@@ -241,58 +241,58 @@ export class FinalReportComponent implements OnInit {
     //   },
     // };
 
-    this.basicOptions = {
-      plugins: {
-        title: {
-          display: true,
-          text: 'Emission Reduction Targets',
+    // this.basicOptions = {
+    //   plugins: {
+    //     title: {
+    //       display: true,
+    //       text: 'Emission Reduction Targets',
 
-          font: {
-            size: 24,
-          },
-        },
-        legend: {
-          labels: {
-            color: '#495057',
-          },
-        },
-      },
-      scales: {
-        x: {
-          display: true,
-          title: {
-            display: true,
-            text: 'Year',
-            font: {
-              size: 12,
-            },
-          },
-          ticks: {
-            color: '#495057',
-          },
-          grid: {
-            color: '#ebedef',
-          },
-        },
-        y: {
-          display: true,
-          title: {
-            display: true,
-            text: 'Emmision(MtCO' + '\u2082' + 'e)',
-            font: {
-              size: 12,
-            },
-          },
+    //       font: {
+    //         size: 24,
+    //       },
+    //     },
+    //     legend: {
+    //       labels: {
+    //         color: '#495057',
+    //       },
+    //     },
+    //   },
+    //   scales: {
+    //     x: {
+    //       display: true,
+    //       title: {
+    //         display: true,
+    //         text: 'Year',
+    //         font: {
+    //           size: 12,
+    //         },
+    //       },
+    //       ticks: {
+    //         color: '#495057',
+    //       },
+    //       grid: {
+    //         color: '#ebedef',
+    //       },
+    //     },
+    //     y: {
+    //       display: true,
+    //       title: {
+    //         display: true,
+    //         text: 'Emmision(MtCO' + '\u2082' + 'e)',
+    //         font: {
+    //           size: 12,
+    //         },
+    //       },
 
-          ticks: {
-            color: '#495057',
-          },
-          grid: {
-            color: '#ebedef',
-          },
-        },
-      },
-    };
+    //       ticks: {
+    //         color: '#495057',
+    //       },
+    //       grid: {
+    //         color: '#ebedef',
+    //       },
+    //     },
+    //   },
+    // };
   }
 
   mappingGraph2Data() {
@@ -311,6 +311,7 @@ export class FinalReportComponent implements OnInit {
     this.emissionReductionDraftDataProxy.getEmissionReductionDraftDataForReport(setSectorId)
       .subscribe((res: any) => {
         this.emissionReduction = res;
+        this.configEmissionTargetGraph();
         let baseYear:number=Number(this.emissionReduction.baseYear)
         let targetYear:number = Number(this.emissionReduction.targetYear);
         this.targetYear = this.emissionReduction.targetYear;
@@ -548,6 +549,103 @@ export class FinalReportComponent implements OnInit {
         //     };
         //   });
       });
+  }
+  configEmissionTargetGraph=()=>{
+    this.basicOptions = {
+        
+      plugins: {
+        tooltip: {
+               
+  
+  
+          callbacks: {
+            label: function(context: { chart:{_metasets:any;}; dataset: { label: string; }; parsed: { y: number | bigint | null; };dataIndex:number;raw:number; }) {
+              console.log(context)
+              // console.log(context.chart._metasets[3]._dataset.data)
+                let baulst=context.chart._metasets[3]._dataset.data;
+                let label = context.dataset.label || '';
+  
+  
+                if (label) {
+                  label += ' Emission : ';
+              }
+              if (context.parsed.y !== null) {
+                  label += Number(context.parsed.y).toFixed(2) +" MtCO₂e";
+              }
+  
+                if(context.dataset.label=='Actual'){
+                  // console.log("Actual")
+             let emissionReduction=  "Emission Reduction : " +  (baulst[ context.dataIndex]- Number(context.parsed.y)).toFixed(2) + " MtCO₂e" +" (" + ((baulst[ context.dataIndex]- Number(context.parsed.y))/baulst[ context.dataIndex]).toFixed(2) +"% of BAU Emission)";
+                  return [label,emissionReduction];
+                }
+                if(context.dataset.label=='BAU'){
+                  // console.log("BAU")
+                  return [label];
+                }
+                
+  
+  
+                let prsntge= 'Emission reduction of '+context.dataset.label+ ' over BAU - '+((context.raw/baulst[ context.dataIndex])*100).toFixed(2) +'%'
+                
+                return [label,prsntge];
+            }
+        }
+        },
+        
+       
+        title: {
+          
+          display: true,
+          text: `Emission Reduction Targets of ${this.emissionReduction.sector? this.emissionReduction.sector.name + " sector" :this.emissionReduction.country.name}`,
+          
+          font:{
+            size:24
+          }
+      },
+          legend: {
+              labels: {
+                  color: '#495057'
+              }
+          }
+      },
+      scales: {
+          
+          x: {
+              display:true,
+              title:{
+                display:true,
+                text:'Years',
+                font:{
+                  size:12
+                }
+              },
+              ticks: {
+                  color: '#495057'
+              },
+              grid: {
+                  color: '#ebedef'
+              }
+          },
+          y: {
+            display:true,
+            title:{
+              display:true,
+              text:'Emissions (MtCO₂e)',
+              font:{
+                size:12
+              }
+            },
+            
+              ticks: {
+                  color: '#495057'
+              },
+              grid: {
+                  color: '#ebedef'
+              }
+          }
+      }
+  };
+  
   }
 
   async sendexecutiveSummeryData() {

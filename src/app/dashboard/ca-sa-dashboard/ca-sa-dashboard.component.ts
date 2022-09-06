@@ -208,7 +208,7 @@ let s=new String("23")
             display:true,
             title:{
               display:true,
-              text:'Emissions (tCO' + '\u2082' +'e)',
+              text:'Emissions reduction (tCO' + '\u2082' +'e)',
               font:{
                 size:12
               }},
@@ -451,7 +451,7 @@ let s=new String("23")
         filter1.push('assement.assessmentType||$eq||Ex-post') 
         & 
         filter1.push('assement.id||$in||'+ this.assessmentListId) 
-        filter1.push('assement.isProposal||$eq||' + 0);
+        // filter1.push('assement.isProposal||$eq||' + 0);
 
         // console.log('filter1',filter1);
 
@@ -476,7 +476,7 @@ let s=new String("23")
 
           
           for(let assement of this.assessmentList){
-            console.log("totalemition",assement.assement.isProposal)
+            // console.log("totalemition",assement.assement.isProposal)
             total += assement.totalEmission?assement.totalEmission:0;
             console.log(total)
 
@@ -1186,7 +1186,7 @@ configEmissionTargetGraph=()=>{
 
         let filter1: string[] = new Array();
         filter1.push('project.id||$eq||' + project.id);
-        filter1.push('Assessment.isProposal||$eq||' + 0);
+        // filter1.push('Assessment.isProposal||$eq||' + 0);
       
 
         this.serviceproxy.getManyBaseAssesmentControllerAssessment(
@@ -1213,7 +1213,7 @@ configEmissionTargetGraph=()=>{
           if(res.data.length!=0){
             
             for(let dt of res.data){
-              console.log("hhhhhhh",dt.isProposal)
+              // console.log("hhhhhhh",dt.isProposal)
               // let filter2: string[] = new Array();
               // filter2.push('assement.id||$eq||' + dt.id);
       

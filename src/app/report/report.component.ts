@@ -444,6 +444,9 @@ export class ReportComponent implements OnInit, AfterViewInit {
   }
 
   onClimateActionChange() {
+    this.uniquePopYrList=[];
+    this.yrIdList=[];
+    // console.log('this.uniquePopYrList...', this.selectedproject);
     this.selectedYr=[];
     for (let a = 0; a < this.selectedproject.length; a++) {
       for (let b = 0; b < this.selectedproject[a].assessments.length; b++) {
@@ -456,15 +459,15 @@ export class ReportComponent implements OnInit, AfterViewInit {
       }
     }
 
-    console.log('onClimateActionChange', this.yrIdList);
+    // console.log('onClimateActionChange', this.yrIdList);
     this.assessmentYrFilter = [];
     this.popUpYrList = [];
-
+    console.log('this.uniquePopYrList...', this.popUpYrList);
     this.assessmentYrFilter.push('assessment.id||$in||' + this.yrIdList)&
     this.assessmentYrFilter.push('verificationStatus||$eq||' + 7);
-    console.log('assessmentId', this.assessmentYrFilter);
+    // console.log('assessmentId', this.assessmentYrFilter);
 
-    this.serviceProxy
+   if(this.yrIdList.length>0){ this.serviceProxy
       .getManyBaseAssessmentYearControllerAssessmentYear(
         undefined,
         undefined,
@@ -485,10 +488,11 @@ export class ReportComponent implements OnInit, AfterViewInit {
           return a.assessmentYear - b.assessmentYear
         })
         //console.log('pop up yrs...', this.popUpYrList);
-      });
+      });}
   }
  
   onselectedNdcChange(ndc: Ndc[]) {
+    this.popUpProject=[];
     this.selectedproject=[];
     this.uniquePopYrList=[];
     this.selectedYr=[];
