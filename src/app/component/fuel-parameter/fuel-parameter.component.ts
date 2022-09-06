@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import ParameterSections from 'app/Model/parameter-sections';
 import decode from 'jwt-decode';
 import {
@@ -25,6 +25,9 @@ export class FuelParameterComponent implements OnInit {
   userSectorId:number = 0;
   @Input()
   infos: any;
+
+  @Input()
+  isSubmitted: boolean
 
   instiTutionList: Institution[];
   isHistoricalValue: boolean = false;
@@ -74,5 +77,5 @@ export class FuelParameterComponent implements OnInit {
 
   }
 
-  
+
 }

@@ -73,6 +73,11 @@
                 [options]="instiTutionList"
                 optionLabel="name"
               ></p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.institution && isSubmitted)">
+                This is a mandatory field
+              </p>
             </div>
           </div>
           <div *ngIf="IsProposal">
@@ -108,6 +113,11 @@
                 [(ngModel)]="p.value"
                 pInputText
               />
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.value && isSubmitted)">
+                This is a mandatory field
+              </p>
             </div>
           </div>
         </div>

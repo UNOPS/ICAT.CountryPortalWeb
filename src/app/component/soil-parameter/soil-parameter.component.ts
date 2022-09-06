@@ -14,6 +14,8 @@ export class SoilParameterComponent implements OnInit {
   @Input() IsProposal: boolean;
   @Input()
   infos: any;
+  @Input()
+  isSubmitted: boolean
   
   userCountryId:number = 0;
   userSectorId:number = 0;

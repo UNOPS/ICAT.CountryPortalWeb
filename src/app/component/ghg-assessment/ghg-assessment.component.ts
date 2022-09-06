@@ -312,6 +312,7 @@ export class GhgAssessmentComponent implements OnInit {
   assementYearAndTypeObjectList:any[] =[];
   warningMessage:any='';
   isDisableforSubmitButton:boolean = false;
+  isSubmitted:boolean = false;
   isClimateActionListDisabled:boolean = false;
   isMethodologyDisabled:boolean =false;
   isMitigationListDisabled:boolean =false;
@@ -334,6 +335,8 @@ export class GhgAssessmentComponent implements OnInit {
   methodParaCodes: any[];
 
   infos: any = {};
+
+  requiredParas: boolean = true;
 
   constructor(
     private methodologyProxy: MethodologyControllerServiceProxy,
@@ -2751,6 +2754,7 @@ export class GhgAssessmentComponent implements OnInit {
       if(result != undefined)
       {
         this.isDisableforSubmitButton = true;
+        this.isSubmitted = true;
         this.warningMessage = "You have done an "+result['assessmentType']+" assessment before in "+result['year']+" please select assessment years again!"
       }
       else
@@ -2831,6 +2835,7 @@ export class GhgAssessmentComponent implements OnInit {
 
   createAssementCA(data: NgForm) {
     console.log("proprose")
+    this.requiredParas = true
     if (this.IsProposal) {
       this.selectYears = [];
     }
@@ -3349,73 +3354,79 @@ export class GhgAssessmentComponent implements OnInit {
       //   this.isSave = true;
       // });
       console.log("my asse..",assessment);
-      this.serviceProxy
-        .createOneBaseAssesmentControllerAssessment(assessment)
-        .subscribe((res: any) => {
-          this.isDisableforSubmitButton = true;
-          
-          console.log('....Saved Assessment',assessment);
-          //console.log("assess..",res);
-
-          if (this.IsProposal == false) {
-            this.serviceProxy
-              .getManyBaseProjectApprovalStatusControllerProjectApprovalStatus(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1000,
-                0,
-                0,
-                0
-              )
-              .subscribe((res: any) => {
-                this.projectApprovalStatus = res.data;
-
-                let status = this.projectApprovalStatus.find((a) => a.id === 5);
-                this.selectedClimateAction.projectApprovalStatus =
-                  status === undefined ? (null as any) : status;
-
-                this.serviceProxy
-                  .getOneBaseProjectControllerProject(
-                    this.selectedClimateAction.id,
-                    undefined,
-                    undefined,
-                    undefined
-                  )
-                  .subscribe((res) => {
-                    res.projectApprovalStatus =
-                      status === undefined ? (null as any) : status;
-                    this.serviceProxy
-                      .updateOneBaseProjectControllerProject(res.id, res)
-                      .subscribe((res) => {});
-                  });
-              });
-          }
-
-          if(this.IsProposal == false)
-          {
-            this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully send to  DC team!'});
+      console.log("pasing", this.requiredParas)
+      if (this.requiredParas){
+        this.serviceProxy
+          .createOneBaseAssesmentControllerAssessment(assessment)
+          .subscribe((res: any) => {
+            this.isDisableforSubmitButton = true;
+            this.isSubmitted = true
             
-
+            console.log('....Saved Assessment',assessment);
+            //console.log("assess..",res);
+  
+            if (this.IsProposal == false) {
+              this.serviceProxy
+                .getManyBaseProjectApprovalStatusControllerProjectApprovalStatus(
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  1000,
+                  0,
+                  0,
+                  0
+                )
+                .subscribe((res: any) => {
+                  this.projectApprovalStatus = res.data;
+  
+                  let status = this.projectApprovalStatus.find((a) => a.id === 5);
+                  this.selectedClimateAction.projectApprovalStatus =
+                    status === undefined ? (null as any) : status;
+  
+                  this.serviceProxy
+                    .getOneBaseProjectControllerProject(
+                      this.selectedClimateAction.id,
+                      undefined,
+                      undefined,
+                      undefined
+                    )
+                    .subscribe((res) => {
+                      res.projectApprovalStatus =
+                        status === undefined ? (null as any) : status;
+                      this.serviceProxy
+                        .updateOneBaseProjectControllerProject(res.id, res)
+                        .subscribe((res) => {});
+                    });
+                });
+            }
+  
+            if(this.IsProposal == false)
+            {
+              this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully send to  DC team!'});
+              
+  
+              this.savedAsessment = res;
+              this.getAssesmentResult(res.id);
+              this.isSave = true;
+            }
+            else
+            {
+              this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully created an assessment!'});
+              
+  
             this.savedAsessment = res;
             this.getAssesmentResult(res.id);
             this.isSave = true;
-          }
-          else
-          {
-            this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully created an assessment!'});
-            
-
-          this.savedAsessment = res;
-          this.getAssesmentResult(res.id);
-          this.isSave = true;
-          }
-         // alert('Successfully Saved');
-         
-        });
+            }
+           // alert('Successfully Saved');
+           
+          });
+      } else {
+        this.isSubmitted = true;
+      }
     }
     
   }
@@ -3519,6 +3530,7 @@ export class GhgAssessmentComponent implements OnInit {
     isProjection: boolean,
     countryCode:string
   ) {
+    if (!p.value && !p.institution) this.requiredParas = false
     console.log(sp);
     let param = new Parameter_Server();
     param.name = `${p.parameterName} - ${sp.parameterHeader}`;
