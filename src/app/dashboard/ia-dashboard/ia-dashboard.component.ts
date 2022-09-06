@@ -74,6 +74,7 @@ export class IaDashboardComponent implements OnInit {
   conValLst:number[]=new Array();
   bauValLst:number[]=new Array();
   filter: string[] = new Array();
+  currentYear:number=(new Date()).getFullYear();
   
   searchBy: any = {
     sector: 0,
@@ -393,7 +394,7 @@ this.ndcProxy.getDateRequest(0,0,[])
       // ).subscribe((res: any)=>{
 
         this.climateactionserviceproxy.getProjectsForCountryAndSectorAdmins(0,0,0,[],0,0)
-        .subscribe((res: any)=>{
+        .subscribe(async (res: any)=>{
         this.cliamteActionsBySector = res.items;
         // console.log("testqqqsdfffffsdfsfsd");
         
@@ -419,6 +420,12 @@ this.ndcProxy.getDateRequest(0,0,[])
         let filter1: string[] = new Array();
         // console.log('this.yrList[x]',this.yrList[x]);
         // console.log('tasses',this.assessmentListId);
+
+        let bauValue:number=((this.emissionReduction.targetYearEmission-this.emissionReduction.baseYearEmission)/yearlstLength )*x +this.emissionReduction.baseYearEmission;
+        this.conValLst.push( !this.emissionReduction.conditionaltco2 && this.emissionReduction.conditionaltco2==0?0:((this.conditionalValue-this.emissionReduction.baseYearEmission)/yearlstLength)*x +this.emissionReduction.baseYearEmission);
+        this.unconValLst.push(!this.emissionReduction.unconditionaltco2 && this.emissionReduction.unconditionaltco2==0?0:((this.unconditionalValue-this.emissionReduction.baseYearEmission)/yearlstLength)*x +this.emissionReduction.baseYearEmission);
+        this. bauValLst.push(bauValue);
+
         filter1.push('assessmentYear.assessmentYear||$in||'+ this.yrList[x])  
         &
         filter1.push('assement.assessmentType||$eq||Ex-post') 
@@ -426,7 +433,7 @@ this.ndcProxy.getDateRequest(0,0,[])
         filter1.push('assement.id||$in||'+ this.assessmentListId) 
         // console.log('filter1',filter1);
 
-        this.serviceProxy
+       let res= await this.serviceProxy
         .getManyBaseAssesmentResaultControllerAssessmentResault(
         undefined,
         undefined,
@@ -438,28 +445,39 @@ this.ndcProxy.getDateRequest(0,0,[])
         0,
         0,
         0,
-        ).subscribe((res: any) =>{
-          this.assessmentList = res.data
-          console.log('aaaaaaaaaaa1111111',this.assessmentList);
-          // console.log("work testay2")
-          // console.log(res.data)
+        ).toPromise();
+        this.assessmentList = res.data
+        
+        for(let assement of this.assessmentList){
+         
+          total += assement.totalEmission?Number(assement.totalEmission):0;
+          console.log("total",total)
+
+        }
+        
+          
+          if(this.yrList[x]<=this.currentYear){this.actualValLst.push(bauValue-(total/1000000));}
+        
+        // .subscribe((res: any) =>{
+        //   this.assessmentList = res.data
+        //   console.log('aaaaaaaaaaa1111111',this.assessmentList);
+        //   // console.log("work testay2")
+        //   // console.log(res.data)
 
           
-          for(let assement of this.assessmentList){
-            console.log("totalemition",assement.totalEmission)
-            total += assement.totalEmission?assement.totalEmission:0;
-            console.log(total)
+        //   for(let assement of this.assessmentList){
+        //     // console.log("totalemition",assement.totalEmission)
+        //     total += assement.totalEmission?Number(assement.totalEmission):0;
+        //     // console.log(total)
 
-          }
-            // this.postYrList.push(total);
-            this.actualValLst.push(total);
-        }); 
+        //   }
+        //     // this.postYrList.push(total);
+        //     if(this.yrList[x]<=this.currentYear){this.actualValLst.push(bauValue-(total/1000000));}
+        //     this.actualValLst.push(total);
+        // }); 
         
          
-         this.conValLst.push(this.emissionReduction.conditionaltco2&& this.emissionReduction.conditionaltco2==0?0:((this.conditionalValue-this.emissionReduction.baseYearEmission)/yearlstLength)*x +this.emissionReduction.baseYearEmission);
-         this.unconValLst.push(this.emissionReduction.unconditionaltco2&& this.emissionReduction.unconditionaltco2==0?0:((this.unconditionalValue-this.emissionReduction.baseYearEmission)/yearlstLength)*x +this.emissionReduction.baseYearEmission);
-         this. bauValLst.push(((this.emissionReduction.targetYearEmission-this.emissionReduction.baseYearEmission)/yearlstLength)*x +this.emissionReduction.baseYearEmission);
- 
+
       //  noncon- 
       //  con- 
       //  bau- 

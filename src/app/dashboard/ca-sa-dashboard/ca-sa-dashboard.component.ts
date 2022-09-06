@@ -408,7 +408,7 @@ let s=new String("23")
       // )
       
       this.climateactionserviceproxy.getProjectsForCountryAndSectorAdmins(0,0,0,[],0,0)
-      .subscribe((res: any)=>{
+      .subscribe(async (res: any)=>{
         // console.log('projects by sector',res);
         this.cliamteActionsBySector = res.items;
         // console.log("testqqqsdfffffsdfsfsd");
@@ -455,7 +455,7 @@ let s=new String("23")
 
         // console.log('filter1',filter1);
 
-        this.serviceproxy
+      let res= await this.serviceproxy
         .getManyBaseAssesmentResaultControllerAssessmentResault(
         undefined,
         undefined,
@@ -467,38 +467,48 @@ let s=new String("23")
         0,
         0,
         0,
-        )
-        .subscribe((res: any) =>{
-          this.assessmentList = res.data
-          // console.log('aaaaaaaaaaa1111111',this.assessmentList);
-          // console.log("work testay2")
-          // console.log(res.data)
-
-          
-          for(let assement of this.assessmentList){
-            // console.log("totalemition",assement.assement.isProposal)
-            total += assement.totalEmission?assement.totalEmission:0;
-            console.log(total)
-
-          }
-            // this.postYrList.push(total);
-            
-            if(this.yrList[x]<=this.currentYear){this.actualValLst.push(bauValue-(total/1000000));}
-            
-        },(errr)=>{
-             console.log("error",errr)
-          if(this.yrList[x]<=this.currentYear){this.actualValLst.push(0);}
-
+        ).toPromise();
+        this.assessmentList = res.data
+        
+        for(let assement of this.assessmentList){
+         
+          total += assement.totalEmission?Number(assement.totalEmission):0;
+          console.log("total",total)
 
         }
-        ); 
+        
+          
+          if(this.yrList[x]<=this.currentYear){this.actualValLst.push(bauValue-(total/1000000));}
+
+        // .subscribe((res: any) =>{
+        //   this.assessmentList = res.data
+        //   // console.log('aaaaaaaaaaa1111111',this.assessmentList);
+        //   // console.log("work testay2")
+        //   // console.log(res.data)
+
+          
+        //   for(let assement of this.assessmentList){
+        //     // console.log("totalemition",assement.assement.isProposal)
+        //     total += assement.totalEmission?assement.totalEmission:0;
+        //     console.log(total)
+
+        //   }
+        //     // this.postYrList.push(total);
+            
+        //     if(this.yrList[x]<=this.currentYear){this.actualValLst.push(bauValue-(total/1000000));}
+            
+        // },(errr)=>{
+        //      console.log("error",errr)
+        //   if(this.yrList[x]<=this.currentYear){this.actualValLst.push(0);}
+
+
+        // }
+        // ); 
         
          
     
  
-      //  noncon- 
-      //  con- 
-      //  bau- 
+
 
        
 
