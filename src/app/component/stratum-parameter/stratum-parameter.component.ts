@@ -45,7 +45,7 @@ export class StratumParameterComponent implements OnInit {
 
   onSelectHistoricalVal(event:any, idxSec:any, idxPara:any){
     console.log(event.value.value)
-    this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
+    this.parameterSection.stratumSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
   }
 
   onChangeIshistorical(e: any, i: number){
@@ -57,10 +57,11 @@ export class StratumParameterComponent implements OnInit {
   }
   changeUnit(e: any, idxSec:any, idxPara:any ){
       console.log(e.value)
-      let values = this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].historicalValues.filter(
-        (val) => val.unit === this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].UOM
+      let values = this.parameterSection.stratumSection.sectionparameters[idxSec].parameters[idxPara].historicalValues.filter(
+        (val) => val.unit === this.parameterSection.stratumSection.sectionparameters[idxSec].parameters[idxPara].UOM
       )
-      this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].displayhisValues = values
+      values.sort((a: any,b: any) => b.year - a.year);
+      this.parameterSection.stratumSection.sectionparameters[idxSec].parameters[idxPara].displayhisValues = values
   
     }
 }

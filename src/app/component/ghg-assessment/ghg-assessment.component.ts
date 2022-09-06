@@ -1954,6 +1954,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++vehical",vehicalSection)
     this.checkDefaultValue(vehicalSection,"vehical");
+    vehicalSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return vehicalSection;
   }
 
@@ -2067,6 +2072,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++genrateVehicalParameterSectionWhenHasFeedstock",vehicalSection)
     this.checkDefaultValue(vehicalSection,"vehical");
+    vehicalSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return vehicalSection;
   }
   
@@ -2099,6 +2109,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++fuel",fuelSection)
     this.checkDefaultValue(fuelSection,"fuel");
+    fuelSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return fuelSection;
   }
   genrateFuelParameterSectionWhenHasFeedstock(
@@ -2138,6 +2153,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++ genrateFuelParameterSectionWhenHasFeedstock",fuelSection)
     this.checkDefaultValue(fuelSection,"fuel");
+    fuelSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return fuelSection;
   }
   genrateFeedstockParameterSection(
@@ -2177,6 +2197,11 @@ export class GhgAssessmentComponent implements OnInit {
 
     console.log("++++++++++++feedstock",feedstockSection)
     this.checkDefaultValue(feedstockSection,"feedstock");
+    feedstockSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return feedstockSection;
   }
   genrateSoilParameterSection(
@@ -2214,6 +2239,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++soil",soilSection)
     this.checkDefaultValue(soilSection,"soil");
+    soilSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return soilSection;
   }
 
@@ -2246,6 +2276,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++residue",residueSection)
     this.checkDefaultValue(residueSection,"residue");
+    residueSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return residueSection;
   }
   genrateLandClearanceParameterSection(
@@ -2277,6 +2312,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++landClearance",landClearanceSection)
     this.checkDefaultValue(landClearanceSection,"landClearance");
+    landClearanceSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return landClearanceSection;
   }
 
@@ -2307,6 +2347,11 @@ export class GhgAssessmentComponent implements OnInit {
       }
     });
     this.checkDefaultValue(routSection,"route");
+    routSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return routSection;
   }
   genrateStratumParameterSection(
@@ -2345,6 +2390,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++stratum",stratumSection)
     this.checkDefaultValue(stratumSection,"stratum");
+    stratumSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return stratumSection;
   }
 
@@ -2377,6 +2427,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++powerPlant",fuelSection)
     this.checkDefaultValue(fuelSection,"powerPlant");
+    fuelSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return fuelSection;
   }
 
@@ -2441,7 +2496,8 @@ export class GhgAssessmentComponent implements OnInit {
                     return {
                       label: p.assessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
                       value: p.value,
-                      unit: p.uomDataEntry
+                      unit: p.uomDataEntry,
+                      year: p.assessmentYear
                     }
                   })
                   let answer: any[] = [];
@@ -2452,6 +2508,7 @@ export class GhgAssessmentComponent implements OnInit {
                   })
                   para.historicalValues = answer
                   para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
+                  para.displayhisValues.sort((a: any,b: any) => b.year - a.year);
                   return para
                 })
               })
