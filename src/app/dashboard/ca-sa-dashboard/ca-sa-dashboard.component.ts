@@ -1099,7 +1099,7 @@ configEmissionTargetGraph=()=>{
           display:true,
           title:{
             display:true,
-            text:'Emissions Reduction (MtCO₂e)',
+            text:'Emissions (MtCO₂e)',
             font:{
               size:12
             }
