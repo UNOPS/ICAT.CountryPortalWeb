@@ -321,7 +321,8 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
               return {
                 label: p.assessmentYear + ' - ' + p.value + ' ' + p.uomDataEntry,
                 value: p.value,
-                unit: p.uomDataEntry
+                unit: p.uomDataEntry,
+                year: p.assessmentYear
               }
             })
             let answer: any[] = [];
@@ -334,6 +335,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
 
 
             para.parameterId.displayhisValues = para.parameterId.historicalValues.filter((val: { unit: any; }) => val.unit === para.parameterId.uomDataRequest)
+            para.parameterId.displayhisValues.sort((a: any,b: any) => b.year - a.year);
             return para
           })
           console.log(this.parameterList)
@@ -783,6 +785,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
       (val: any) => val.unit === e.value.ur_fromUnit
     )
     parameterId.displayhisValues = values
+    parameterId.displayhisValues.sort((a: any,b: any) => b.year - a.year);
     this.selectedPara.parameterId = parameterId
 
   }

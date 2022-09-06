@@ -69,6 +69,7 @@ export class FuelParameterComponent implements OnInit {
     let values = this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].historicalValues.filter(
       (val) => val.unit === this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].UOM
     )
+    values.sort((a: any,b: any) => b.year - a.year);
     this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].displayhisValues = values
 
   }
