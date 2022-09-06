@@ -24,6 +24,8 @@ export class VehicalParameterComponent implements OnInit {
 
   @Input()
   infos: any;
+  @Input()
+  isSubmitted: boolean
 
   userCountryId:number = 0;
   userSectorId:number = 0;

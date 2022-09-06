@@ -22,7 +22,9 @@ export class RouteParameterComponent implements OnInit {
   isDisableforSubmitButton:boolean;
   @Input()
   infos: any;
-
+  @Input()
+  isSubmitted: boolean
+  
   instiTutionList: Institution[];
   isHistoricalValue: boolean = false;
   checked: number[] = [];
