@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit,ViewChild  } from '@angular/core';
 // import {Headers} from 'angular2/http';
 import { HttpHeaders } from '@angular/common/http';
 import ParameterSection from 'app/Model/parameter-section';
@@ -45,6 +45,8 @@ import { MessageService, SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { MethodologyControllerServiceProxy,  } from 'shared/service-proxies/service-proxies';
 import { ParameterInfo } from '../parameter-info.enum';
+import { FuelParameterComponent } from '../fuel-parameter/fuel-parameter.component';
+import { VehicalParameterComponent } from '../vehical-parameter/vehical-parameter.component';
 
 declare type ParaInfoType = keyof typeof ParameterInfo;
 
@@ -55,6 +57,11 @@ declare type ParaInfoType = keyof typeof ParameterInfo;
   styleUrls: ['./ghg-assessment.component.css'],
 })
 export class GhgAssessmentComponent implements OnInit {
+
+  @ViewChild(FuelParameterComponent) child1Component: FuelParameterComponent; 
+  @ViewChild(VehicalParameterComponent) child2Component: VehicalParameterComponent;
+  // @ViewChild(Child3Component) child3Component: Child3Component;
+
   @Input()
   IsProposal: boolean;
 
@@ -505,7 +512,7 @@ export class GhgAssessmentComponent implements OnInit {
         undefined,
         filter,
         undefined,
-        undefined,
+        ['id,DESC'],
         undefined,
         1000,
         0,

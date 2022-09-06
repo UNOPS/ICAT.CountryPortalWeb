@@ -176,7 +176,7 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
       undefined,
       projfilter,
       undefined,
-      undefined,
+      ['id,DESC'],
       undefined,
       1000,
       0,

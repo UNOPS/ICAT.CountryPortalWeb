@@ -191,7 +191,7 @@ export class MacAssessmentComponent implements OnInit,AfterViewInit {
       undefined,
       undefined,
       undefined,
-      undefined,
+      ['id,DESC'],
       undefined,
       1000,
       0,
