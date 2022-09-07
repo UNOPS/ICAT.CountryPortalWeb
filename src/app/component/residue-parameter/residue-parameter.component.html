@@ -51,6 +51,11 @@
                 [options]="p.defaultValues"
                 optionLabel="name"
               ></p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.defaultValue && isSubmitted)">
+                This is a mandatory field
+              </p>
             </div>
             <div *ngIf="checked.includes(((spi+i)/2)*(spi+i+1)+i) && !p.isDefaultValue">
               <p-dropdown
@@ -62,6 +67,11 @@
                 (onChange) = "onSelectHistoricalVal($event, spi, i)"
                 optionLabel="label"
               ></p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.historicalValue && isSubmitted)">
+                This is a mandatory field
+              </p>
             </div>
             <div *ngIf="!p.isDefaultValue && !checked.includes(((spi+i)/2)*(spi+i+1)+i)">
               <p-dropdown
@@ -93,6 +103,11 @@
                 [options]="p.defaultValues"
                 optionLabel="name"
               ></p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.defaultValue && isSubmitted)">
+                This is a mandatory field
+              </p>
             </div>
             <div *ngIf="checked.includes(((spi+i)/2)*(spi+i+1)+i) && !p.isDefaultValue">
               <p-dropdown
@@ -104,6 +119,11 @@
                 (onChange) = "onSelectHistoricalVal($event, spi, i)"
                 optionLabel="label"
               ></p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.historicalValue && isSubmitted)">
+                This is a mandatory field
+              </p>
             </div>
             <div *ngIf="!p.isDefaultValue  && !checked.includes(((spi+i)/2)*(spi+i+1)+i)">
               <input
@@ -187,6 +207,11 @@
                   [options]="ap.defaultValues"
                   optionLabel="name"
                 ></p-dropdown>
+                <p
+                  class="info-message text-danger"
+                  *ngIf="(!ap.defaultValue && isSubmitted)">
+                  This is a mandatory field
+                </p>
               </div>
               <div *ngIf="!ap.isDefaultValue">
                 <p-dropdown
@@ -199,6 +224,11 @@
                   [options]="instiTutionList"
                   optionLabel="name"
                 ></p-dropdown>
+                <p
+                  class="info-message text-danger"
+                  *ngIf="(!ap.institution && isSubmitted)">
+                  This is a mandatory field
+                </p>
               </div>
             </div>
             <div *ngIf="IsProposal">
