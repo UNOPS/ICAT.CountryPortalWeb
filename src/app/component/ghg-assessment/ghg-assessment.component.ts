@@ -3530,17 +3530,27 @@ export class GhgAssessmentComponent implements OnInit {
     isProjection: boolean,
     countryCode:string
   ) {
-    
-    if (!p.value && !p.institution){
-      if((!p.defaultValue && p.isDefaultValue)){
-        this.requiredParas = false
-      }else if (!p.isDefaultValue && !p.institution){
-        this.requiredParas = false
-      } 
-      // else if (){
 
-      // }
-    } 
+    if (this.IsProposal){
+      if (!p.isAlternativeParameter){
+        if (!p.value && !p.institution){
+          if((!p.defaultValue && p.isDefaultValue)){
+            this.requiredParas = false
+          }else if (!p.isDefaultValue && (!p.institution)){
+            this.requiredParas = false
+          } 
+        }
+      }
+    } else {
+      if (!p.value && !p.institution){
+        if((!p.defaultValue && p.isDefaultValue)){
+          this.requiredParas = false
+        }else if (!p.isDefaultValue && (!p.institution)){
+          this.requiredParas = false
+        } 
+      } 
+    }
+
     console.log("#############", p, this.requiredParas)
     // console.log()
       
@@ -3573,7 +3583,7 @@ export class GhgAssessmentComponent implements OnInit {
     param.fuelType = sp.fuel;
     param.vehical = sp.vehical;
     param.value = p.value;
-    if (p.isDefaultValue) {
+    if (p.isDefaultValue && this.requiredParas) {
       param.value = p.defaultValue.value;
       // param.defaultValue = p.defaultValue;
       param.uomDataEntry = p.UOM;
