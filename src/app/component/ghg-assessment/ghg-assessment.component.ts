@@ -3530,7 +3530,20 @@ export class GhgAssessmentComponent implements OnInit {
     isProjection: boolean,
     countryCode:string
   ) {
-    if (!p.value && !p.institution) this.requiredParas = false
+    
+    if (!p.value && !p.institution){
+      if((!p.defaultValue && p.isDefaultValue)){
+        this.requiredParas = false
+      }else if (!p.isDefaultValue && !p.institution){
+        this.requiredParas = false
+      } 
+      // else if (){
+
+      // }
+    } 
+    console.log("#############", p, this.requiredParas)
+    // console.log()
+      
     console.log(sp);
     let param = new Parameter_Server();
     param.name = `${p.parameterName} - ${sp.parameterHeader}`;
