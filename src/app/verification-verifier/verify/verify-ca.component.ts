@@ -137,11 +137,11 @@ export class VerifyCaComponent implements OnInit {
     let Active = 0;
     setTimeout(() => {
       this.vrServiceProxy
-        .getVRParameters(pageNumber, this.rows, statusId, filtertext)
+        .getVerifierParameters(pageNumber, this.rows, statusId, filtertext)
         .subscribe((a) => {
-       //   console.log("hiii...hi")
-         // this.paras = a.items;
-          this.paras = a.items.filter((o: any)=>o.verificationStatus != 6 && o.verificationStatus != 7 && o.verificationUser == this.loggedUser[0]?.id );
+         console.log("hiii...hi",a.items)
+         this.paras = a.items;
+          // this.paras = a.items.filter((o: any)=>o.verificationStatus != 6 && o.verificationStatus != 7 && o.verificationUser == this.loggedUser[0]?.id );
           console.log('hey aassse year',this.paras)
           this.totalRecords = this.paras.length;
          // this.loading = false;
