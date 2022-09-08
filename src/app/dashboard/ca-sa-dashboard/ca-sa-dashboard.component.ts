@@ -1055,7 +1055,7 @@ configEmissionTargetGraph=()=>{
 
               if(context.dataset.label=='Actual'){
                 // console.log("Actual")
-           let emissionReduction=  "Emission Reduction : " +  (baulst[ context.dataIndex]- Number(context.parsed.y)).toFixed(2) + " MtCO₂e" +" (" + ((baulst[ context.dataIndex]- Number(context.parsed.y))/baulst[ context.dataIndex]).toFixed(2) +"% of BAU Emission)";
+           let emissionReduction=  "Emission Reduction : " +  (baulst[ context.dataIndex]- Number(context.parsed.y)).toFixed(2) + " MtCO₂e" +" (" + (((baulst[ context.dataIndex]- Number(context.parsed.y))/baulst[ context.dataIndex])*100).toFixed(2) +"% of BAU Emission)";
                 return [label,emissionReduction];
               }
               if(context.dataset.label=='BAU'){
