@@ -428,10 +428,10 @@ let s=new String("23")
     
         // console.log('yr list for final', this.yrList)
 
-       
-
+    
+    
     for(let x=0; x<=yearlstLength;x++){
-         
+     
             let total = 0;
 
             let bauValue:number=((this.emissionReduction.targetYearEmission-this.emissionReduction.baseYearEmission)/yearlstLength )*x +this.emissionReduction.baseYearEmission;
@@ -473,13 +473,14 @@ let s=new String("23")
         for(let assement of this.assessmentList){
          
           total += assement.totalEmission?Number(assement.totalEmission):0;
-          console.log("total",total)
+          // console.log("totalemi",assement.assessmentYear.assessmentYear,assement.totalEmission?Number(assement.totalEmission):0)
+          // console.log("total",total)
 
         }
         
           
           if(this.yrList[x]<=this.currentYear){this.actualValLst.push(bauValue-(total/1000000));}
-
+          // console.log("check",check)
         // .subscribe((res: any) =>{
         //   this.assessmentList = res.data
         //   // console.log('aaaaaaaaaaa1111111',this.assessmentList);
@@ -1054,7 +1055,7 @@ configEmissionTargetGraph=()=>{
 
               if(context.dataset.label=='Actual'){
                 // console.log("Actual")
-           let emissionReduction=  "Emission Reduction : " +  (baulst[ context.dataIndex]- Number(context.parsed.y)).toFixed(2) + " MtCO₂e" +" (" + ((baulst[ context.dataIndex]- Number(context.parsed.y))/baulst[ context.dataIndex]).toFixed(2) +"% of BAU Emission)";
+           let emissionReduction=  "Emission Reduction : " +  (baulst[ context.dataIndex]- Number(context.parsed.y)).toFixed(2) + " MtCO₂e" +" (" + (((baulst[ context.dataIndex]- Number(context.parsed.y))/baulst[ context.dataIndex])*100).toFixed(2) +"% of BAU Emission)";
                 return [label,emissionReduction];
               }
               if(context.dataset.label=='BAU'){

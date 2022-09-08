@@ -496,68 +496,73 @@ export class ReportComponent implements OnInit, AfterViewInit {
     this.selectedproject=[];
     this.uniquePopYrList=[];
     this.selectedYr=[];
-    for (let a = 0; a < ndc.length; a++) {
-      this.ndcIdList.push(ndc[a].id);
-    }
-    this.ndcFilter.push('ndc.id||$in||' + this.ndcIdList);
-
-    this.serviceProxy
-      .getManyBaseProjectControllerProject(
-        undefined,
-        undefined,
-        undefined,
-        this.ndcFilter,
-        ['editedOn,DESC'],
-        undefined,
-        1000,
-        0,
-        0,
-        0
-      )
-      .subscribe((res: any) => {
-        this.popUpProject = res.data;
-        console.log('this.popUpProject', this.popUpProject);
-        for (let c = 0; c < this.popUpProject.length; c++) {
-          if (this.popUpProject[c]?.assessments.length !== 0) {
-            // console.log('not null projects',this.popUpProject[c]);
-            for (let a = 0; a < this.popUpProject[c]?.assessments.length; a++) {
-              if (
-                !this.popUpAssessmentList.includes(
-                  this.popUpProject[c]?.assessments[a]
-                )
-              ) {
-                this.popUpAssessmentList.push(
-                  this.popUpProject[c]?.assessments[a]
-                );
-                // console.log('finale assessments',this.popUpAssessmentList);
+    this.ndcIdList=[];
+    let ndcFilter:string[]=[]
+    if(ndc.length>0){
+      for (let a = 0; a < ndc.length; a++) {
+        this.ndcIdList.push(ndc[a].id);
+      }
+      ndcFilter.push('ndc.id||$in||' + this.ndcIdList);
+     
+      this.serviceProxy
+        .getManyBaseProjectControllerProject(
+          undefined,
+          undefined,
+          undefined,
+          ndcFilter,
+          ['editedOn,DESC'],
+          undefined,
+          1000,
+          0,
+          0,
+          0
+        )
+        .subscribe((res: any) => {
+          this.popUpProject = res.data;
+          console.log('this.popUpProject', this.popUpProject);
+          for (let c = 0; c < this.popUpProject.length; c++) {
+            if (this.popUpProject[c]?.assessments.length !== 0) {
+              // console.log('not null projects',this.popUpProject[c]);
+              for (let a = 0; a < this.popUpProject[c]?.assessments.length; a++) {
+                if (
+                  !this.popUpAssessmentList.includes(
+                    this.popUpProject[c]?.assessments[a]
+                  )
+                ) {
+                  this.popUpAssessmentList.push(
+                    this.popUpProject[c]?.assessments[a]
+                  );
+                  // console.log('finale assessments',this.popUpAssessmentList);
+                }
               }
             }
           }
-        }
-        // for (let a = 0; a < this.popUpAssessmentList.length; a++) {
-        //   this.yrIdList.push(this.popUpAssessmentList[a]?.id);
-        // }
-        // this.assessmentYrFilter.push('assessment.id||$in||' + this.yrIdList);
-        // console.log('assessmentId', this.assessmentYrFilter);
-
-        // this.serviceProxy
-        //   .getManyBaseAssessmentYearControllerAssessmentYear(
-        //     undefined,
-        //     undefined,
-        //     undefined,
-        //     this.assessmentYrFilter,
-        //     ['editedOn,DESC'],
-        //     undefined,
-        //     1000,
-        //     0,
-        //     0,
-        //     0
-        //   )
-        //   .subscribe((res: any) => {
-        //     this.popUpYrList = res.data;
-        //     // console.log('pop up yrs...',this.popUpYrList);
-        //   });
-      });
+          // for (let a = 0; a < this.popUpAssessmentList.length; a++) {
+          //   this.yrIdList.push(this.popUpAssessmentList[a]?.id);
+          // }
+          // this.assessmentYrFilter.push('assessment.id||$in||' + this.yrIdList);
+          // console.log('assessmentId', this.assessmentYrFilter);
+  
+          // this.serviceProxy
+          //   .getManyBaseAssessmentYearControllerAssessmentYear(
+          //     undefined,
+          //     undefined,
+          //     undefined,
+          //     this.assessmentYrFilter,
+          //     ['editedOn,DESC'],
+          //     undefined,
+          //     1000,
+          //     0,
+          //     0,
+          //     0
+          //   )
+          //   .subscribe((res: any) => {
+          //     this.popUpYrList = res.data;
+          //     // console.log('pop up yrs...',this.popUpYrList);
+          //   });
+        });
+    }
+    
   }
 
   publish(reportName: string) {
