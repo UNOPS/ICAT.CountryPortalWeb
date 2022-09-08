@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit,ViewChild  } from '@angular/core';
 // import {Headers} from 'angular2/http';
 import { HttpHeaders } from '@angular/common/http';
 import ParameterSection from 'app/Model/parameter-section';
@@ -45,6 +45,8 @@ import { MessageService, SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { MethodologyControllerServiceProxy,  } from 'shared/service-proxies/service-proxies';
 import { ParameterInfo } from '../parameter-info.enum';
+import { FuelParameterComponent } from '../fuel-parameter/fuel-parameter.component';
+import { VehicalParameterComponent } from '../vehical-parameter/vehical-parameter.component';
 
 declare type ParaInfoType = keyof typeof ParameterInfo;
 
@@ -55,6 +57,11 @@ declare type ParaInfoType = keyof typeof ParameterInfo;
   styleUrls: ['./ghg-assessment.component.css'],
 })
 export class GhgAssessmentComponent implements OnInit {
+
+  @ViewChild(FuelParameterComponent) child1Component: FuelParameterComponent; 
+  @ViewChild(VehicalParameterComponent) child2Component: VehicalParameterComponent;
+  // @ViewChild(Child3Component) child3Component: Child3Component;
+
   @Input()
   IsProposal: boolean;
 
@@ -305,6 +312,7 @@ export class GhgAssessmentComponent implements OnInit {
   assementYearAndTypeObjectList:any[] =[];
   warningMessage:any='';
   isDisableforSubmitButton:boolean = false;
+  isSubmitted:boolean = false;
   isClimateActionListDisabled:boolean = false;
   isMethodologyDisabled:boolean =false;
   isMitigationListDisabled:boolean =false;
@@ -327,6 +335,8 @@ export class GhgAssessmentComponent implements OnInit {
   methodParaCodes: any[];
 
   infos: any = {};
+
+  requiredParas: boolean = true;
 
   constructor(
     private methodologyProxy: MethodologyControllerServiceProxy,
@@ -505,7 +515,7 @@ export class GhgAssessmentComponent implements OnInit {
         undefined,
         filter,
         undefined,
-        undefined,
+        ['id,DESC'],
         undefined,
         1000,
         0,
@@ -1947,6 +1957,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++vehical",vehicalSection)
     this.checkDefaultValue(vehicalSection,"vehical");
+    vehicalSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return vehicalSection;
   }
 
@@ -2060,6 +2075,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++genrateVehicalParameterSectionWhenHasFeedstock",vehicalSection)
     this.checkDefaultValue(vehicalSection,"vehical");
+    vehicalSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return vehicalSection;
   }
   
@@ -2092,6 +2112,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++fuel",fuelSection)
     this.checkDefaultValue(fuelSection,"fuel");
+    fuelSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return fuelSection;
   }
   genrateFuelParameterSectionWhenHasFeedstock(
@@ -2131,6 +2156,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++ genrateFuelParameterSectionWhenHasFeedstock",fuelSection)
     this.checkDefaultValue(fuelSection,"fuel");
+    fuelSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return fuelSection;
   }
   genrateFeedstockParameterSection(
@@ -2170,6 +2200,11 @@ export class GhgAssessmentComponent implements OnInit {
 
     console.log("++++++++++++feedstock",feedstockSection)
     this.checkDefaultValue(feedstockSection,"feedstock");
+    feedstockSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return feedstockSection;
   }
   genrateSoilParameterSection(
@@ -2207,6 +2242,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++soil",soilSection)
     this.checkDefaultValue(soilSection,"soil");
+    soilSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return soilSection;
   }
 
@@ -2239,6 +2279,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++residue",residueSection)
     this.checkDefaultValue(residueSection,"residue");
+    residueSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return residueSection;
   }
   genrateLandClearanceParameterSection(
@@ -2270,6 +2315,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++landClearance",landClearanceSection)
     this.checkDefaultValue(landClearanceSection,"landClearance");
+    landClearanceSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return landClearanceSection;
   }
 
@@ -2300,6 +2350,11 @@ export class GhgAssessmentComponent implements OnInit {
       }
     });
     this.checkDefaultValue(routSection,"route");
+    routSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return routSection;
   }
   genrateStratumParameterSection(
@@ -2338,6 +2393,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++stratum",stratumSection)
     this.checkDefaultValue(stratumSection,"stratum");
+    stratumSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return stratumSection;
   }
 
@@ -2370,6 +2430,11 @@ export class GhgAssessmentComponent implements OnInit {
     });
     console.log("++++++++++++powerPlant",fuelSection)
     this.checkDefaultValue(fuelSection,"powerPlant");
+    fuelSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
+      })
+    })
     return fuelSection;
   }
 
@@ -2434,7 +2499,8 @@ export class GhgAssessmentComponent implements OnInit {
                     return {
                       label: p.assessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
                       value: p.value,
-                      unit: p.uomDataEntry
+                      unit: p.uomDataEntry,
+                      year: p.assessmentYear
                     }
                   })
                   let answer: any[] = [];
@@ -2445,6 +2511,7 @@ export class GhgAssessmentComponent implements OnInit {
                   })
                   para.historicalValues = answer
                   para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
+                  para.displayhisValues.sort((a: any,b: any) => b.year - a.year);
                   return para
                 })
               })
@@ -2687,6 +2754,7 @@ export class GhgAssessmentComponent implements OnInit {
       if(result != undefined)
       {
         this.isDisableforSubmitButton = true;
+        this.isSubmitted = true;
         this.warningMessage = "You have done an "+result['assessmentType']+" assessment before in "+result['year']+" please select assessment years again!"
       }
       else
@@ -2767,6 +2835,7 @@ export class GhgAssessmentComponent implements OnInit {
 
   createAssementCA(data: NgForm) {
     console.log("proprose")
+    this.requiredParas = true
     if (this.IsProposal) {
       this.selectYears = [];
     }
@@ -3285,73 +3354,79 @@ export class GhgAssessmentComponent implements OnInit {
       //   this.isSave = true;
       // });
       console.log("my asse..",assessment);
-      this.serviceProxy
-        .createOneBaseAssesmentControllerAssessment(assessment)
-        .subscribe((res: any) => {
-          this.isDisableforSubmitButton = true;
-          
-          console.log('....Saved Assessment',assessment);
-          //console.log("assess..",res);
-
-          if (this.IsProposal == false) {
-            this.serviceProxy
-              .getManyBaseProjectApprovalStatusControllerProjectApprovalStatus(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1000,
-                0,
-                0,
-                0
-              )
-              .subscribe((res: any) => {
-                this.projectApprovalStatus = res.data;
-
-                let status = this.projectApprovalStatus.find((a) => a.id === 5);
-                this.selectedClimateAction.projectApprovalStatus =
-                  status === undefined ? (null as any) : status;
-
-                this.serviceProxy
-                  .getOneBaseProjectControllerProject(
-                    this.selectedClimateAction.id,
-                    undefined,
-                    undefined,
-                    undefined
-                  )
-                  .subscribe((res) => {
-                    res.projectApprovalStatus =
-                      status === undefined ? (null as any) : status;
-                    this.serviceProxy
-                      .updateOneBaseProjectControllerProject(res.id, res)
-                      .subscribe((res) => {});
-                  });
-              });
-          }
-
-          if(this.IsProposal == false)
-          {
-            this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully send to  DC team!'});
+      console.log("pasing", this.requiredParas)
+      if (this.requiredParas){
+        this.serviceProxy
+          .createOneBaseAssesmentControllerAssessment(assessment)
+          .subscribe((res: any) => {
+            this.isDisableforSubmitButton = true;
+            this.isSubmitted = true
             
-
+            console.log('....Saved Assessment',assessment);
+            //console.log("assess..",res);
+  
+            if (this.IsProposal == false) {
+              this.serviceProxy
+                .getManyBaseProjectApprovalStatusControllerProjectApprovalStatus(
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  1000,
+                  0,
+                  0,
+                  0
+                )
+                .subscribe((res: any) => {
+                  this.projectApprovalStatus = res.data;
+  
+                  let status = this.projectApprovalStatus.find((a) => a.id === 5);
+                  this.selectedClimateAction.projectApprovalStatus =
+                    status === undefined ? (null as any) : status;
+  
+                  this.serviceProxy
+                    .getOneBaseProjectControllerProject(
+                      this.selectedClimateAction.id,
+                      undefined,
+                      undefined,
+                      undefined
+                    )
+                    .subscribe((res) => {
+                      res.projectApprovalStatus =
+                        status === undefined ? (null as any) : status;
+                      this.serviceProxy
+                        .updateOneBaseProjectControllerProject(res.id, res)
+                        .subscribe((res) => {});
+                    });
+                });
+            }
+  
+            if(this.IsProposal == false)
+            {
+              this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully send to  DC team!'});
+              
+  
+              this.savedAsessment = res;
+              this.getAssesmentResult(res.id);
+              this.isSave = true;
+            }
+            else
+            {
+              this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully created an assessment!'});
+              
+  
             this.savedAsessment = res;
             this.getAssesmentResult(res.id);
             this.isSave = true;
-          }
-          else
-          {
-            this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully created an assessment!'});
-            
-
-          this.savedAsessment = res;
-          this.getAssesmentResult(res.id);
-          this.isSave = true;
-          }
-         // alert('Successfully Saved');
-         
-        });
+            }
+           // alert('Successfully Saved');
+           
+          });
+      } else {
+        this.isSubmitted = true;
+      }
     }
     
   }
@@ -3455,6 +3530,30 @@ export class GhgAssessmentComponent implements OnInit {
     isProjection: boolean,
     countryCode:string
   ) {
+
+    if (this.IsProposal){
+      if (!p.isAlternativeParameter){
+        if (!p.value && !p.institution){
+          if((!p.defaultValue && p.isDefaultValue)){
+            this.requiredParas = false
+          }else if (!p.isDefaultValue && (!p.institution)){
+            this.requiredParas = false
+          } 
+        }
+      }
+    } else {
+      if (!p.value && !p.institution){
+        if((!p.defaultValue && p.isDefaultValue)){
+          this.requiredParas = false
+        }else if (!p.isDefaultValue && (!p.institution)){
+          this.requiredParas = false
+        } 
+      } 
+    }
+
+    console.log("#############", p, this.requiredParas)
+    // console.log()
+      
     console.log(sp);
     let param = new Parameter_Server();
     param.name = `${p.parameterName} - ${sp.parameterHeader}`;
@@ -3484,7 +3583,7 @@ export class GhgAssessmentComponent implements OnInit {
     param.fuelType = sp.fuel;
     param.vehical = sp.vehical;
     param.value = p.value;
-    if (p.isDefaultValue) {
+    if (p.isDefaultValue && this.requiredParas) {
       param.value = p.defaultValue.value;
       // param.defaultValue = p.defaultValue;
       param.uomDataEntry = p.UOM;

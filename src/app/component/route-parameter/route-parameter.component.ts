@@ -22,7 +22,9 @@ export class RouteParameterComponent implements OnInit {
   isDisableforSubmitButton:boolean;
   @Input()
   infos: any;
-
+  @Input()
+  isSubmitted: boolean
+  
   instiTutionList: Institution[];
   isHistoricalValue: boolean = false;
   checked: number[] = [];
@@ -54,7 +56,7 @@ export class RouteParameterComponent implements OnInit {
 
   onSelectHistoricalVal(event:any, idxSec:any, idxPara:any){
     console.log(event.value.value)
-    this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
+    this.parameterSection.routeSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
   }
 
   onChangeIshistorical(e: any, i: number){
@@ -67,10 +69,11 @@ export class RouteParameterComponent implements OnInit {
 
   changeUnit(e: any, idxSec:any, idxPara:any ){
     console.log(e.value)
-    let values = this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].historicalValues.filter(
-      (val) => val.unit === this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].UOM
+    let values = this.parameterSection.routeSection.sectionparameters[idxSec].parameters[idxPara].historicalValues.filter(
+      (val) => val.unit === this.parameterSection.routeSection.sectionparameters[idxSec].parameters[idxPara].UOM
     )
-    this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara].displayhisValues = values
+    values.sort((a: any,b: any) => b.year - a.year);
+    this.parameterSection.routeSection.sectionparameters[idxSec].parameters[idxPara].displayhisValues = values
 
   }
 
