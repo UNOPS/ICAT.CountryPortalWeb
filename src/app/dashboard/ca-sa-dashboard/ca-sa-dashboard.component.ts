@@ -473,8 +473,8 @@ let s=new String("23")
         for(let assement of this.assessmentList){
          
           total += assement.totalEmission?Number(assement.totalEmission):0;
-          // console.log("totalemi",assement.assessmentYear.assessmentYear,assement.totalEmission?Number(assement.totalEmission):0)
-          // console.log("total",total)
+          console.log("totalemi",assement.assessmentYear.assessmentYear,assement.totalEmission?Number(assement.totalEmission):0)
+          console.log("total",total)
 
         }
         
@@ -1065,7 +1065,7 @@ configEmissionTargetGraph=()=>{
               
 
 
-              let prsntge= 'Emission reduction of '+context.dataset.label+ ' over BAU - '+((context.raw/baulst[ context.dataIndex])*100).toFixed(2) +'%'
+              let prsntge= 'Emission reduction of '+context.dataset.label+ ' over BAU : '+(((baulst[ context.dataIndex]-context.raw)/baulst[ context.dataIndex])*100).toFixed(2) +'%'
               
               return [label,prsntge];
           }

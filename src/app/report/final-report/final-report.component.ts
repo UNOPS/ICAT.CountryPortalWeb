@@ -585,7 +585,7 @@ export class FinalReportComponent implements OnInit {
                 
   
   
-                let prsntge= 'Emission reduction of '+context.dataset.label+ ' over BAU - '+((context.raw/baulst[ context.dataIndex])*100).toFixed(2) +'%'
+                let prsntge= 'Emission reduction of '+context.dataset.label+ ' over BAU : '+(((baulst[ context.dataIndex]-context.raw)/baulst[ context.dataIndex])*100).toFixed(2) +'%'
                 
                 return [label,prsntge];
             }

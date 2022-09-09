@@ -140,6 +140,7 @@ export class VerifyCaComponent implements OnInit {
         .getVRParameters(pageNumber, this.rows, statusId, filtertext)
         .subscribe((a) => {
        //   console.log("hiii...hi")
+       console.log('hey aassse year',a.items)
          // this.paras = a.items;
           this.paras = a.items.filter((o: any)=>o.verificationStatus != 6 && o.verificationStatus != 7 && o.verificationUser == this.loggedUser[0]?.id );
           console.log('hey aassse year',this.paras)

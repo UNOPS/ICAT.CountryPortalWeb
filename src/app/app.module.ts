@@ -184,7 +184,7 @@ import { FeedstockParameterComponent } from './component/feedstock-parameter/fee
 import { SoilParameterComponent } from './component/soil-parameter/soil-parameter.component';
 import { StratumParameterComponent } from './component/stratum-parameter/stratum-parameter.component';
 import { ResidueParameterComponent } from './component/residue-parameter/residue-parameter.component';
-
+import {PasswordModule} from 'primeng/password';
 
 export function getRemoteServiceBaseUrl(): string {
   return environment.baseUrlAPI;
@@ -332,6 +332,7 @@ export function getRemoteServiceBaseUrl(): string {
     PaginatorModule,
     CarouselModule,
     DynamicDialogModule,
+    PasswordModule
   ],
   providers: [
     LoginLayoutService,
