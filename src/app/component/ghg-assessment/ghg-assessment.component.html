@@ -240,6 +240,7 @@
           <p-calendar
             placeholder="DD/MM/YYYY"
             dateFormat="dd/mm/yy"
+            appendTo="body"
             name="propsedDate"
             #propsedDate="ngModel"
             [disabled]="isDisableforSubmitButton"
@@ -382,6 +383,7 @@
           <p-dropdown
             placeholder="Select Type of Mitigation Action"
             name="TMA"
+            appendTo="body"
             [autoDisplayFirst]="false"
             [options]="mitigationActionType"
             #mAtype="ngModel"
@@ -414,6 +416,7 @@
           <p-multiSelect
             placeholder="Application of Assessment"
             name="aoAssessment"
+            appendTo="body"
             [options]="applicability"
             #mAtype1="ngModel"
             [(ngModel)]="selectedApplicability"
@@ -446,6 +449,7 @@
             placeholder="Select Easy of Use / Data Collection"
             name="easofuse"
             [autoDisplayFirst]="false"
+            appendTo="body"
             [options]="this.arrEsy"
             #mAtype3="ngModel"
             [disabled]="isDisableforSubmitButton"

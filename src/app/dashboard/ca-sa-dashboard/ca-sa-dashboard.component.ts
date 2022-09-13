@@ -1,7 +1,7 @@
 import {HostListener, Component, OnInit, NgModule } from '@angular/core';
 import { LazyLoadEvent ,PrimeNGConfig,Message,MessageService } from 'primeng/api';
 import { from, Subscription } from 'rxjs';
-import { AssesmentControllerServiceProxy, Assessment, AssessmentResault, AssessmentYear, AssessmentYearControllerServiceProxy, EmissionReductioDraftDataEntity, EmissionReductionDraftdataControllerServiceProxy, GetManyProjectResponseDto, Ndc, NdcControllerServiceProxy, Project, ProjectControllerServiceProxy, Sector, ServiceProxy, SubNdc } from 'shared/service-proxies/service-proxies';
+import { AssesmentControllerServiceProxy, Assessment, AssessmentResault, AssessmentYear, AssessmentYearControllerServiceProxy, EmissionReductioDraftDataEntity, EmissionReductionDraftdataControllerServiceProxy, GetManyProjectResponseDto, Ndc, NdcControllerServiceProxy, Project, ProjectControllerServiceProxy, Sector, SectorControllerServiceProxy, ServiceProxy, SubNdc } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -121,6 +121,7 @@ export class CASADashboardComponent implements OnInit {
       private climateactionserviceproxy: ProjectControllerServiceProxy, 
       private ndcserviceproxy : NdcControllerServiceProxy,
       private asseyearproxy : AssessmentYearControllerServiceProxy,
+      private sectorProxy: SectorControllerServiceProxy,
       private messageService: MessageService) {
     this.getScreenSize();
     this.chartOptions= {
@@ -318,23 +319,30 @@ let s=new String("23")
     
     }else{
       this.isCountryAdmin=true;
-      this.serviceproxy.getManyBaseSectorControllerSector(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        ['id,DESC'],
-        undefined,
-        1000,
-        0,
-        0,
-        0
-        ).subscribe((res=>{
-          for(let d of res.data){
-            this.sectorList.push(d)
-          }
-        }))
-
+      this.sectorProxy.getCountrySector(currenyUser.countryId).subscribe((res: any) => {
+        for(let d of res){
+          this.sectorList.push(d)
+        }
+        console.log("++++" ,this.sectorList)
+      });
+      
+      // this.serviceproxy.getManyBaseSectorControllerSector(
+      //   undefined,
+      //   undefined,
+      //   undefined,
+      //   undefined,
+      //   ['id,DESC'],
+      //   undefined,
+      //   1000,
+      //   0,
+      //   0,
+      //   0
+      //   ).subscribe((res=>{
+      //     for(let d of res.data){
+      //       this.sectorList.push(d)
+      //     }
+      //   }))
+      //   console.log("++++" ,this.sectorList)
 
     }
     let event: any = {};
