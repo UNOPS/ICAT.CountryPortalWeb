@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
   userRole: any = { name: 'Guest', role: '-1' };
   //User Idle handle code
   userActivity: number;
+  countryId: number;
   userInactive: Subject<any> = new Subject();
 
   @HostListener('window:resize', ['$event'])
@@ -180,11 +181,12 @@ export class AppComponent implements OnInit {
 
     const tokenPayload = decode<any>(token);
 
-    // console.log('testload---------', tokenPayload);
+    console.log('testload---------', tokenPayload);
 
     this.fname = tokenPayload.fname;
     this.lname = tokenPayload.lname;
     this.urole = tokenPayload.roles[0];
+    this.countryId = tokenPayload.countryId;
     this.instName = tokenPayload.instName ? tokenPayload.instName : '';
     this.moduleLevels = this.roleGuardService.checkModels();
     [1, 2, 3].some(this.getModel);

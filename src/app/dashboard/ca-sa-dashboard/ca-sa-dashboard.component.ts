@@ -302,6 +302,7 @@ let s=new String("23")
     const token = localStorage.getItem('access_token')!;
     const currenyUser=decode<any>(token);
     this.userName = currenyUser.fname;
+    this.countryId = currenyUser.countryId;
     
     // this.userId = params['id'];
     // console.log( "this.userId");
