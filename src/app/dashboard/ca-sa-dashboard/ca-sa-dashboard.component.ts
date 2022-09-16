@@ -337,10 +337,10 @@ let s=new String("23")
 
 
     }
-    let event: any = {};
-  event.rows = this.rows;
-  event.first = 0;
-  this.loadgridData2(event)
+  //   let event: any = {};
+  // event.rows = this.rows;
+  // event.first = 0;
+  // this.loadgridData2(event)
 
 
     this.onSearch1();
@@ -407,7 +407,7 @@ let s=new String("23")
       //   0
       // )
       
-      this.climateactionserviceproxy.getProjectsForCountryAndSectorAdmins(0,0,0,[],0,0)
+      this.climateactionserviceproxy.getProjectsForCountryAndSectorAdmins(0,0,0,['5'],0,0)
       .subscribe(async (res: any)=>{
         // console.log('projects by sector',res);
         this.cliamteActionsBySector = res.items;
@@ -451,7 +451,7 @@ let s=new String("23")
         filter1.push('assement.assessmentType||$eq||Ex-post') 
         & 
         filter1.push('assement.id||$in||'+ this.assessmentListId) 
-        // filter1.push('assement.isProposal||$eq||' + 0);
+        filter1.push('assement.isProposal||$eq||' + 0);
 
         // console.log('filter1',filter1);
 
@@ -1137,7 +1137,7 @@ configEmissionTargetGraph=()=>{
     let sectorId = this.searchBy.sector ? this.searchBy.sector.id : 0;
     let ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
     let subNdcId = this.searchBy.subndc ? this.searchBy.subndc.id : 0;
-    let projectApprovalStatusId = ['','5'];
+    let projectApprovalStatusId = ['5'];
     // console.log('ffsectorId',sectorId)
     // console.log('fndcId',ndcId)
     // console.log('fsubNdcId',subNdcId)
@@ -1188,16 +1188,16 @@ configEmissionTargetGraph=()=>{
         let activeproject1:activeproject= {
           name : "",
           ertarget : 0,
-          targetyear : '0',
+          targetyear : '-',
           erarchievment : 0,
-          archivmentyear : ""
+          archivmentyear : "-"
         };
         activeproject1.name = project.climateActionName;
 
         let filter1: string[] = new Array();
         filter1.push('project.id||$eq||' + project.id);
-        // filter1.push('Assessment.isProposal||$eq||' + 0);
-      
+        filter1.push('assessment.isProposal||$eq||' + 0);
+        // filter1.push('ndc.id||$ne||' );
 
         this.serviceproxy.getManyBaseAssesmentControllerAssessment(
           undefined,
@@ -1211,7 +1211,7 @@ configEmissionTargetGraph=()=>{
           0,
           0
         ).subscribe((res=>{
-          // console.log("dddddd",res)
+          console.log("dddddd",res)
           let sum=0;
           let targettotalemission = 0;
           let tarchievmenttotalem = 0;
@@ -1223,7 +1223,7 @@ configEmissionTargetGraph=()=>{
           if(res.data.length!=0){
             
             for(let dt of res.data){
-              // console.log("hhhhhhh",dt.isProposal)
+              console.log("hhhhhhh",dt.isProposal)
               // let filter2: string[] = new Array();
               // filter2.push('assement.id||$eq||' + dt.id);
       
@@ -1281,7 +1281,7 @@ configEmissionTargetGraph=()=>{
               // }))
               for(let d of dt.assessmentResult){
                 sum=sum + d.totalEmission?Number(d.totalEmission):0; 
-                // console.log('kkkkkkkkkkkkkkkkkkkkkkkkk',sum)
+                
                 
               }
             
@@ -1584,16 +1584,17 @@ configEmissionTargetGraph=()=>{
               let ndcReduction:number[]=[]
               let xaxis:number[]=[];
             console.log('getNdcForDashboard',a);
+            console.log('totalRduction123ass',a)
             for(let ndc of a.items){
-             
+              console.log('totalRduction123ass',ndc.assesment.length)
              let totalRduction:number=0;
              for(let assement of ndc.assesment){
 
 
                for(let assesrslt of assement.assessmentResult){
-                // console.log('totalRduction123',assement.id,totalRduction)
+                
                   totalRduction=totalRduction+assesrslt.totalEmission?Number(assesrslt.totalEmission):0;
-
+                  console.log('totalRduction123',assement.isProposal,totalRduction)
                }
 
 
