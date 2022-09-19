@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Chart } from 'chart.js';
 import { LazyLoadEvent } from 'primeng/api';
 import { TableModule } from 'primeng/table';
-import { Assessment, AssessmentResault, AssessmentYear, EmissionReductioDraftDataEntity, EmissionReductionDraftdataControllerServiceProxy, Institution, Ndc, NdcControllerServiceProxy, Parameter, ParameterControllerServiceProxy, ParameterRequest, Project, ProjectControllerServiceProxy, Sector, ServiceProxy, SubNdc, User, UserType } from 'shared/service-proxies/service-proxies';
+import { AssesmentResaultControllerServiceProxy, Assessment, AssessmentResault, AssessmentYear, EmissionReductioDraftDataEntity, EmissionReductionDraftdataControllerServiceProxy, Institution, Ndc, NdcControllerServiceProxy, Parameter, ParameterControllerServiceProxy, ParameterRequest, Project, ProjectControllerServiceProxy, Sector, ServiceProxy, SubNdc, User, UserType } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 @Component({
   selector: 'app-ia-dashboard',
@@ -98,6 +98,7 @@ export class IaDashboardComponent implements OnInit {
     private climateactionserviceproxy: ProjectControllerServiceProxy,
     private emmissionProxy: EmissionReductionDraftdataControllerServiceProxy,
     private ndcProxy:NdcControllerServiceProxy,
+    private assesmentResultserviceproxy: AssesmentResaultControllerServiceProxy,
     private paraProxy:ParameterControllerServiceProxy
   ) {
 
@@ -349,7 +350,7 @@ this.ndcProxy.getDateRequest(0,0,[])
         //   0
         // )
         this.emmissionProxy.getEmissionEeductionDraftDataForCountry()
-        .subscribe((res: any)=>{
+        .subscribe(async (res: any)=>{
           this.emissionReduction = res;
       // console.log('eeeee',this.emissionReduction)
       this.configEmissionTargetGraph();
@@ -394,9 +395,9 @@ this.ndcProxy.getDateRequest(0,0,[])
       //   0
       // ).subscribe((res: any)=>{
 
-        this.climateactionserviceproxy.getProjectsForCountryAndSectorAdmins(0,0,0,[],0,0)
-        .subscribe(async (res: any)=>{
-        this.cliamteActionsBySector = res.items;
+        // this.climateactionserviceproxy.getProjectsForCountryAndSectorAdmins(0,0,0,[],0,0)
+        // .subscribe(async (res: any)=>{
+        // this.cliamteActionsBySector = res.items;
         // console.log("testqqqsdfffffsdfsfsd");
         
         // console.log('projects by sector',this.cliamteActionsBySector);
@@ -434,20 +435,21 @@ this.ndcProxy.getDateRequest(0,0,[])
         filter1.push('assement.id||$in||'+ this.assessmentListId) 
         // console.log('filter1',filter1);
 
-       let res= await this.serviceProxy
-        .getManyBaseAssesmentResaultControllerAssessmentResault(
-        undefined,
-        undefined,
-        filter1,
-        undefined,
-        ['assessmentYear.assessmentYear,ASC'],
-        undefined,
-        1000,
-        0,
-        0,
-        0,
-        ).toPromise();
-        this.assessmentList = res.data
+      //  let res= await this.serviceProxy
+      //   .getManyBaseAssesmentResaultControllerAssessmentResault(
+      //   undefined,
+      //   undefined,
+      //   filter1,
+      //   undefined,
+      //   ['assessmentYear.assessmentYear,ASC'],
+      //   undefined,
+      //   1000,
+      //   0,
+      //   0,
+      //   0,
+      //   ).toPromise();
+      let res= await this.assesmentResultserviceproxy.getAssessmentResultforDashboard(this.yrList[x]).toPromise();
+        this.assessmentList = res;
         
         for(let assement of this.assessmentList){
          
@@ -540,7 +542,7 @@ this.ndcProxy.getDateRequest(0,0,[])
         ]
     };
 
-      });
+      // });
 
           
         })

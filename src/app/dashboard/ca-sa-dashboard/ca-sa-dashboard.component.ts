@@ -1209,7 +1209,7 @@ configEmissionTargetGraph=()=>{
         let filter1: string[] = new Array();
         filter1.push('project.id||$eq||' + project.id);
         filter1.push('assessment.isProposal||$eq||' + 0);
-        // filter1.push('ndc.id||$ne||' );
+        // filter1.push('ndc.id||$ne|| NULL' );
 
         this.serviceproxy.getManyBaseAssesmentControllerAssessment(
           undefined,
