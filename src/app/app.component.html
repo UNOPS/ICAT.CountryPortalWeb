@@ -351,7 +351,7 @@
                       userRole.role == 5) &&
                     [models.MAC_MODULE, models.DATACOLLECTION_MODULE].some(
                       getModel
-                    )
+                    ) && (countryId !=30 && countryId !=26)
                   "
                   class="sidebar-items--link d-flex flex-column align-items-start ml-16"
                   [routerLink]="['/mac-tab']"

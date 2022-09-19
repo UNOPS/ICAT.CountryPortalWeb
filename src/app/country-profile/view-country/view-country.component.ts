@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'environments/environment';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
-import { Country, DocumentControllerServiceProxy, Documents, DocumentsDocumentOwner, EmissionReductioDraftDataEntity, Sector, ServiceProxy } from 'shared/service-proxies/service-proxies';
+import { Country, DocumentControllerServiceProxy, Documents, DocumentsDocumentOwner, EmissionReductioDraftDataEntity, Sector, SectorControllerServiceProxy, ServiceProxy } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 @Component({
   selector: 'app-view-country',
@@ -64,6 +64,7 @@ export class ViewCountryComponent implements OnInit {
     private activateroute: ActivatedRoute,
     private serviceProxy: ServiceProxy,
     private messageService: MessageService,
+    private sectorProxy: SectorControllerServiceProxy,
     private documentProxy:DocumentControllerServiceProxy) { }
 
   ngOnInit(): void {
@@ -318,25 +319,29 @@ export class ViewCountryComponent implements OnInit {
   // countryFilter.push(this.countryId);
 
   countryFilter.push('country.id||$eq||' + this.countryId);      // country id is the request
-
-  this.serviceProxy
-  .getManyBaseSectorControllerSector(
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    ['country'],
-    1000,
-    0,
-    0,
-    0
-  ).subscribe((res) => {
-    console.log("sec",res);
-    this.sectors=res.data;
-    // this.sectors = res.data;
-    // console.log(this.sectors);
+ 
+  this.sectorProxy.getCountrySector(this.countryId).subscribe((res: any) => {
+    this.sectors=res;
   });
+  
+  // this.serviceProxy
+  // .getManyBaseSectorControllerSector(
+  //   undefined,
+  //   undefined,
+  //   undefined,
+  //   undefined,
+  //   undefined,
+  //   ['country'],
+  //   1000,
+  //   0,
+  //   0,
+  //   0
+  // ).subscribe((res) => {
+  //   console.log("sec",res);
+  //   this.sectors=res.data;
+  //   // this.sectors = res.data;
+  //   // console.log(this.sectors);
+  // });
 
 
 

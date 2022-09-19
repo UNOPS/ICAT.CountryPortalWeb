@@ -35,6 +35,7 @@
         (onLazyLoad)="loadGridData($event)"
         [paginator]="true"
         [rows]="rows"
+        paginatorDropdownAppendTo="body"
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [rowsPerPageOptions]="[ 10, 25, 50]"

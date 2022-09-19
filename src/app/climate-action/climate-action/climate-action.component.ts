@@ -15,6 +15,7 @@ import {
   ProjectOwner,
   ProjectStatus,
   Sector,
+  SectorControllerServiceProxy,
   ServiceProxy,
   User,
 } from 'shared/service-proxies/service-proxies';
@@ -84,6 +85,7 @@ export class ClimateActionComponent implements OnInit, AfterViewInit {
     private router: Router,
     private serviceProxy: ServiceProxy,
     private projectProxy: ProjectControllerServiceProxy,
+    private sectorProxy: SectorControllerServiceProxy,
     private cdr: ChangeDetectorRef
   ) {}
   ngAfterViewInit(): void {
@@ -161,26 +163,30 @@ export class ClimateActionComponent implements OnInit, AfterViewInit {
 
     this.loadgridData(event);
 
-    this.serviceProxy
-      .getManyBaseSectorControllerSector(
-        ['name'],
-        undefined,
-        undefined,
-        undefined,
-        ['name,ASC'],
-        undefined,
-        1000,
-        0,
-        0,
-        0
-      )
-      .subscribe((res: any) => {
-        // for(let x of res.data){
-        //   console.log("sectornames"+x)
-        // }
-        this.sectorList = res.data;
-        console.log('sectorList', this.sectorList);
-      });
+    this.sectorProxy.getCountrySector(currenyUser.countryId).subscribe((res: any) => {
+      this.sectorList =res;
+    });
+
+    // this.serviceProxy
+    //   .getManyBaseSectorControllerSector(
+    //     ['name'],
+    //     undefined,
+    //     undefined,
+    //     undefined,
+    //     ['name,ASC'],
+    //     undefined,
+    //     1000,
+    //     0,
+    //     0,
+    //     0
+    //   )
+    //   .subscribe((res: any) => {
+    //     // for(let x of res.data){
+    //     //   console.log("sectornames"+x)
+    //     // }
+    //     this.sectorList = res.data;
+    //     console.log('sectorList', this.sectorList);
+    //   });
 
     this.serviceProxy
       .getManyBaseProjectStatusControllerProjectStatus(

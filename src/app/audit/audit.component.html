@@ -60,6 +60,7 @@
       <p-table #table [value]="activities" [lazy]="true" (onLazyLoad)="loadgridData($event)" [paginator]="true"
         [rows]="rows" [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        paginatorDropdownAppendTo="body"
         [rowsPerPageOptions]="[ 10, 25, 50]" [totalRecords]="totalRecords" [loading]="loading" [responsive]="true">
         <!-- Table header start search -->
 

@@ -259,42 +259,38 @@
               </div>
              
             </div> -->
-            <div *ngIf="macGrapsForPosts.length==0" class="p-grid p-fluid card"  style="width: 100%;">
-              <p-messages severity="warn" >
-                <ng-template pTemplate>
-                    <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
-                    <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
-                    <div class="ml-2">There are no mac data to show.</div>
-                </ng-template>
-            </p-messages>
-
-            </div>
-            <div *ngIf="macGrapsForPosts.length>0" class="p-grid p-fluid card"  style="width: 100%;">
-
-              <p-carousel [value]="macGrapsForPosts" [numVisible]="1" [numScroll]="1" [style]="{'max-width':'1000px', 'margin-top':'2em'}" [circular]="false" >
-            
-                <ng-template let-macGrapsForPost pTemplate="item" style="width: 500px;">
-        
-                      <div class="row justify-content-center" >
-                        <div class="col-lg-6 col-md-8 col-sm-4 col-6 " >
-                          <h6>MAC Curve Year(Ex-post) {{macGrapsForPost[0]}}</h6>
-                        </div>
-                              
+            <div *ngIf="countryId !=30 && countryId !=26 " >
+              <div *ngIf="macGrapsForPosts.length==0" class="p-grid p-fluid card"  style="width: 100%;">
+                <p-messages severity="warn" >
+                  <ng-template pTemplate>
+                      <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
+                      <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
+                      <div class="ml-2">There are no mac data to show.</div>
+                  </ng-template>
+              </p-messages>
+  
+              </div>
+              <div *ngIf="macGrapsForPosts.length>0" class="p-grid p-fluid card"  style="width: 100%;">
+  
+                <p-carousel [value]="macGrapsForPosts" [numVisible]="1" [numScroll]="1" [style]="{'max-width':'1000px', 'margin-top':'2em'}" [circular]="false" >
+              
+                  <ng-template let-macGrapsForPost pTemplate="item" style="width: 500px;">
+          
+                        <div class="row justify-content-center" >
+                          <div class="col-lg-6 col-md-8 col-sm-4 col-6 " >
+                            <h6>MAC Curve Year(Ex-post) {{macGrapsForPost[0]}}</h6>
                           </div>
-                        
-                    
-                   
+                                
+                            </div>                     
                       
-                      <img [src]="macGrapsForPost[1]"  width="100%" />
-                   
-                    
-    
-                  
-               
-                </ng-template>
-             </p-carousel>
-
+                        <img [src]="macGrapsForPost[1]"  width="100%" />                
+                     
+                  </ng-template>
+               </p-carousel>
+  
+              </div>
             </div>
+          
             <div *ngIf="macGrapsForAntes.length>0" class="p-grid p-fluid card"  style="width: 100%;">
 
               <p-carousel [value]="macGrapsForAntes" [numVisible]="1" [numScroll]="1" [style]="{'max-width':'1000px', 'margin-top':'2em'}" [circular]="false" >
