@@ -21,23 +21,35 @@
   </div>
   <div class="form-group mb-15 inner-addon right-addon">
     <label class="font-weight-bold">Password</label>
-    <div class="input-group col-6 mx-auto">
-      <input [type]="showPassword ? 'text' : 'password'" class="form-control pwd-control" name="password"
+    <div class="input-group  mx-auto">
+      <p-password 
+      [(ngModel)]="logiLayoutService.authCredentialDot.password"
+      name="password"
+      #password="ngModel"
+      [ngClass]="{ 'form-control--error':(password.errors && (password.touched || password.dirty)) ||(password.errors?.['required'] && isSubmitLogin) }" 
+      placeholder="Enter the Password"
+      [feedback]="false"
+      [toggleMask]="true"
+      (onFocus)="resetError()"
+      required
+      [style]="{'width':'100%'}"
+      ></p-password>
+      <!-- <input [type]="showPassword ? 'text' : 'password'" class="form-control pwd-control" name="password"
         #passowrd="ngModel" [(ngModel)]="logiLayoutService.authCredentialDot.password" (input)="resetError()" [ngClass]="{
         'form-control--error':
           (passowrd.errors && (passowrd.touched || passowrd.dirty)) ||
           (passowrd.errors?.['required'] && isSubmitLogin)
-      }" placeholder="Enter the Password" required />
-      <div>
+      }" placeholder="Enter the Password" required /> -->
+      <!-- <div>
         <i alt="show" class="pi pi-eye eye-show" (click)="showPassword = !showPassword" [class.hide]="showPassword"></i>
         <i alt="hide" class="pi pi-eye-slash eye-hide" (click)="showPassword = !showPassword"
           [class.hide]="!showPassword"></i>
-      </div>
+      </div> -->
 
     </div>
     <p class="info-message text-danger" *ngIf="
-        (passowrd.errors?.['required'] && (passowrd.touched || passowrd.dirty)) ||
-        (passowrd.errors?.['required'] && isSubmitLogin)
+        (password.errors?.['required'] && (password.touched || password.dirty)) ||
+        (password.errors?.['required'] && isSubmitLogin)
       ">
       Password is required
     </p>

@@ -5,7 +5,7 @@
   <form #fData="ngForm" (ngSubmit)="saveForm(fData)" >
     <div id="content" #content>
     <div class="mb-12">
-      <h4 class="mt-4">{{ project.projectApprovalStatus?.id! == 1 ?'Accepted':project.projectApprovalStatus?.id! == 5 ?'Accepted':'Propose'}} a Specific Climate Action</h4>
+      <h4 class="mt-4">{{ project?.projectApprovalStatus?.id! == 1 ?'Accepted':project?.projectApprovalStatus?.id! == 5 ?'Accepted':'Propose'}} a Specific Climate Action</h4>
     </div>
     <div class="card">
       <div class="p-grid p-fluid col-sm-12">
@@ -92,6 +92,7 @@
                 [ngModelOptions]="{ standalone: false }"
                 pattern="^[a-zA-Z0-9 ]{1,64}$"
                 pInputText
+                required
               />
               <p
                 class="info-message text-danger"
@@ -118,6 +119,7 @@
               [ngModelOptions]="{ standalone: false }"
               #telephoneNumber="ngModel"
               [styleClass]="'form-control'"
+              [required]="true"
             ></p-inputMask>
               <p
                 class="info-message text-danger"
@@ -150,6 +152,7 @@
                 [ngModelOptions]="{ standalone: false }"
                 pattern="^[a-zA-Z0-9 ]{1,64}$"
                 pInputText
+                required
               />
               <p
                 class="info-message text-danger"
@@ -274,6 +277,7 @@
                 class="p-inputtext"
                 pInputText
                 (ngModelChange)="onnameKeyDown($event)"
+                required
               />
               <p
                 class="info-message text-danger"
@@ -340,6 +344,7 @@
                 [options]="countryList"
                 optionLabel="name"
                 (ngModelChange)="onCountryChnage()"
+                [required]="true"
               ></p-dropdown>
             </div>
               <p
@@ -365,6 +370,7 @@
               [ngModelOptions]="{ standalone: true }"
               pattern="^[a-zA-Z0-9 ]{1,64}$"
               pInputText
+              required
             />
 
             </ng-template>
@@ -388,6 +394,7 @@
                 [autoDisplayFirst]="false"
                 [options]="projectStatusList"
                 optionLabel="name"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
@@ -411,6 +418,7 @@
               [ngModelOptions]="{ standalone: true }"
               pattern="^[a-zA-Z0-9 ]{1,64}$"
               pInputText
+              
             />
             </ng-template>
             </div>
@@ -427,11 +435,12 @@
                 name="sector"
                 #sector="ngModel"
                 [(ngModel)]="project.sector"
-                [ngModelOptions]="{ standalone: false }"
+               
                 [autoDisplayFirst]="false"
                 [options]="sectorList"
                 optionLabel="name"
                 (ngModelChange)="onSectorChange($event)"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
@@ -664,6 +673,7 @@
                 pInputTextarea
                 autoResize="autoResize"
                 class="p-inputtext"
+                required
               ></textarea>
               <p
                 class="info-message text-danger"
@@ -694,7 +704,7 @@
               <p-dropdown
                 [disabled]="editEntytyId > 0"
                 placeholder="Ownership"
-                name="Climate Action"
+                name="projectownership"
                 #projectownership="ngModel"
                 [(ngModel)]="project.projectOwner"
                 [ngModelOptions]="{ standalone: true }"
@@ -735,6 +745,7 @@
                 [max]="99"
                 [minFractionDigits]="1"
                 [maxFractionDigits]="1"
+                [required]="true"
               >
               </p-inputNumber>
               <p
@@ -755,7 +766,7 @@
         <div class="row p-2">
           <div class="col-12 col-md-6">
             <div class="p-field">
-              <label for="propsedDate">Proposed Date of Commence*</label>
+              <label for="propsedDate">Proposed Date of Commencement*</label>
               <div>
               
               <p-calendar
@@ -765,6 +776,7 @@
                 name="propsedDate"
                 #propsedDate="ngModel"
                 [(ngModel)]="proposeDateofCommence"
+                [required]="true"
               ></p-calendar>
             </div>
               <p
@@ -792,6 +804,7 @@
               name="endDate"
               #endDate="ngModel"
               [(ngModel)]="endDateofCommence"
+              [required]="true"
             ></p-calendar>
              </div>
              <p
@@ -1965,21 +1978,10 @@
         pButton
         pRipple
         type="button"
-        label="Back"
+        [label]="isSaving?'back':'cancel'"
         class="p-button-raised"
-        (click)="back()"
+        (click)="confirmBack(isSaving?'back':'cancel')"
       ></button>
-      <div *ngIf="flag !=1">
-      <button
-        pButton
-        pRipple
-        label="Submit"
-        style="margin-right: 10px"
-        [disabled]="isSaving"
-        class="p-button-raised"
-        type="submit"
-      ></button>
-      </div>
       <!-- <div *ngIf="isDownloading == false">    [disabled]="isSaving || !fData.form.valid" -->
       <button
         pButton
@@ -1987,10 +1989,22 @@
         label="Download PDF"
         type="button"
         style="margin-right: 10px"
-        
+        [disabled]="!isSaving"
         class="p-button-raised"
         (click)="toDownload()"
       ></button>
+      <div *ngIf="flag !=1">
+        <button
+          pButton
+          pRipple
+          label="Submit"
+          style="margin-right: 10px"
+         [disabled]="!fData.form.valid || isSaving"
+          class="p-button-raised"
+          type="submit"
+        >
+      </button>
+        </div>
     <!-- </div> -->
     </div>
 
