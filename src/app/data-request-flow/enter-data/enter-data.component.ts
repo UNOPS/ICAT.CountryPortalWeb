@@ -628,8 +628,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
     }
     else {
 
-      this.parameterListFilterData = [];
-
+      let n=0;
       this.parameterList.map((e) => {
         let id = e.parameterId.id;
         let climateAction = e.parameterId.Assessment?.Prject?.climateActionName;
@@ -650,6 +649,26 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
         let value = e.parameterId.value;
         let unit = e.parameterId.uomDataRequest;
         let deadline = e.deadline;
+
+        
+        // if(n==0){
+        //   let obj1={
+        //     " " :"Name",
+        //     "":e.parameterId.Assessment?.Prject?.climateActionName,
+        //   };
+        //   let obj2={
+        //     " " :"Year",
+        //     "":e.parameterId.AssessmentYear,
+        //   };
+        //   let obj3={
+        //     " " :"Scenario",
+        //     "":e.parameterId.Assessment?.assessmentType,
+        //   };
+        //   this.parameterListFilterData.push(obj1);
+        //   this.parameterListFilterData.push(obj2);
+        //   this.parameterListFilterData.push(obj3);
+        // }
+        // n++;
   
         let obj = {
           id,
@@ -750,10 +769,15 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
     //  const wb: XLSX.WorkBook = XLSX.utils.book_new();
     //  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
+    console.log(this.parameterListFilterData)
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
       this.parameterListFilterData
     );
+   
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    
+    console.log(ws)
+    console.log(wb)
     XLSX.utils.book_append_sheet(wb, ws, 'sheet1');
 
     XLSX.writeFile(wb, 'data_entry_template_' + reportTime + '.xlsx');
