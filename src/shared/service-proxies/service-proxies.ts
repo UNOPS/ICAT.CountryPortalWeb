@@ -2397,7 +2397,7 @@ export class ServiceProxy {
     /**
      * Update a single AssessmentYear
      */
-    updateOneBaseAssessmentYearControllerAssessmentYear(id: number, body: AssessmentYear): Observable<void> {
+    updateOneBaseAssessmentYearControllerAssessmentYear(id: number, body: AssessmentYear): Observable<any> {
         let url_ = this.baseUrl + "/assessment-year/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2412,6 +2412,7 @@ export class ServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -2422,14 +2423,14 @@ export class ServiceProxy {
                 try {
                     return this.processUpdateOneBaseAssessmentYearControllerAssessmentYear(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<any>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<any>><any>_observableThrow(response_);
         }));
     }
 
-    protected processUpdateOneBaseAssessmentYearControllerAssessmentYear(response: HttpResponseBase): Observable<void> {
+    protected processUpdateOneBaseAssessmentYearControllerAssessmentYear(response: HttpResponseBase): Observable<any> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2438,7 +2439,11 @@ export class ServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(<any>null);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -12982,7 +12987,7 @@ export class ServiceProxy {
     /**
      * Create a single Assessment
      */
-    createOneBaseAssesmentControllerAssessment(body: Assessment): Observable<Assessment> {
+    createOneBaseAssesmentControllerAssessment(body: Assessment): Observable<any> {
         let url_ = this.baseUrl + "/assesment";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -13005,14 +13010,14 @@ export class ServiceProxy {
                 try {
                     return this.processCreateOneBaseAssesmentControllerAssessment(<any>response_);
                 } catch (e) {
-                    return <Observable<Assessment>><any>_observableThrow(e);
+                    return <Observable<any>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<Assessment>><any>_observableThrow(response_);
+                return <Observable<any>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateOneBaseAssesmentControllerAssessment(response: HttpResponseBase): Observable<Assessment> {
+    protected processCreateOneBaseAssesmentControllerAssessment(response: HttpResponseBase): Observable<any> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -13023,7 +13028,8 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Assessment.fromJS(resultData200);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
             return _observableOf(result200);
             }));
         } else if (status === 201) {
@@ -13031,7 +13037,7 @@ export class ServiceProxy {
             let result201: any = null;
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result201 = Assessment.fromJS(resultData201);
-            return _observableOf(result201);
+            return throwException("Get create one base response", status, _responseText, _headers, result201);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -21881,6 +21887,55 @@ export class AssesmentControllerServiceProxy {
         }
         return _observableOf(<any>null);
     }
+
+    testTransaction(): Observable<any> {
+        let url_ = this.baseUrl + "/assesment/testTransaction";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processTestTransaction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTestTransaction(<any>response_);
+                } catch (e) {
+                    return <Observable<any>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<any>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processTestTransaction(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
 }
 
 @Injectable()
@@ -22367,6 +22422,59 @@ export class AssesmentResaultControllerServiceProxy {
     }
 
     protected processGetAssessmentResultBYAssessmentId(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    getAssessmentResultforDashboard(assesYear: number): Observable<any> {
+        let url_ = this.baseUrl + "/assesment-resault/dashboaremission?";
+        if (assesYear === undefined || assesYear === null)
+            throw new Error("The parameter 'assesYear' must be defined and cannot be null.");
+        else
+            url_ += "assesYear=" + encodeURIComponent("" + assesYear) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAssessmentResultforDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAssessmentResultforDashboard(<any>response_);
+                } catch (e) {
+                    return <Observable<any>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<any>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAssessmentResultforDashboard(response: HttpResponseBase): Observable<any> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -30482,6 +30590,7 @@ export class CountrySector implements ICountrySector {
     sector: Sector;
     countryId: number;
     sectorId: number;
+    uniqueIdentification: string;
 
     constructor(data?: ICountrySector) {
         if (data) {
@@ -30508,6 +30617,7 @@ export class CountrySector implements ICountrySector {
             this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
             this.countryId = _data["countryId"];
             this.sectorId = _data["sectorId"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
         }
     }
 
@@ -30530,6 +30640,7 @@ export class CountrySector implements ICountrySector {
         data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
         data["countryId"] = this.countryId;
         data["sectorId"] = this.sectorId;
+        data["uniqueIdentification"] = this.uniqueIdentification;
         return data;
     }
 
@@ -30552,6 +30663,7 @@ export interface ICountrySector {
     sector: Sector;
     countryId: number;
     sectorId: number;
+    uniqueIdentification: string;
 }
 
 export class Country implements ICountry {
