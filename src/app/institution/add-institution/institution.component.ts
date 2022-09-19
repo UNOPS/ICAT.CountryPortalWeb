@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Country, Institution, InstitutionCategory, InstitutionControllerServiceProxy, InstitutionType, Sector, ServiceProxy, User, UserType } from 'shared/service-proxies/service-proxies';
+import { Country,  Institution, InstitutionCategory, InstitutionControllerServiceProxy, InstitutionType, Sector, SectorControllerServiceProxy, ServiceProxy, User, UserType } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 @Component({
   selector: 'app-institution',
@@ -67,6 +67,7 @@ export class InstitutionComponent implements OnInit {
     private institutionProxy: InstitutionControllerServiceProxy,
     private router: Router,
     private messageService: MessageService,
+    private sectorProxy: SectorControllerServiceProxy,
     private cdr: ChangeDetectorRef) { }
 
   ngAfterViewInit(): void {
@@ -253,27 +254,33 @@ export class InstitutionComponent implements OnInit {
 
     }
 
-    this.serviceProxy
-      .getManyBaseSectorControllerSector(
-        undefined,
-        undefined,
-        filter,
-        undefined,
-        undefined,
-        undefined,
-        1000,
-        0,
-        0,
-        0
-      ).subscribe((res: any) => {
-        this.sectorList = res.data;
-        console.log("seclist------",res.data)
-       // this.sectorList = this.sectorList.filter((o)=>o.id == this.sectorId);
-        console.log('sector........', this.sectorList);
-      //  this.insector = this.sectorList[0];
+    this.sectorProxy.getCountrySector(this.countryId).subscribe((res: any) => {
+      this.sectorList = res;
+      console.log("++++" ,this.sectorList)
+    });
 
 
-      });
+    // this.serviceProxy
+    //   .getManyBaseSectorControllerSector(
+    //     undefined,
+    //     undefined,
+    //     filter,
+    //     undefined,
+    //     undefined,
+    //     undefined,
+    //     1000,
+    //     0,
+    //     0,
+    //     0
+    //   ).subscribe((res: any) => {
+    //     this.sectorList = res.data;
+    //     console.log("seclist------",res.data)
+    //    // this.sectorList = this.sectorList.filter((o)=>o.id == this.sectorId);
+    //     console.log('sector........', this.sectorList);
+    //   //  this.insector = this.sectorList[0];
+
+
+    //   });
 
   }
 

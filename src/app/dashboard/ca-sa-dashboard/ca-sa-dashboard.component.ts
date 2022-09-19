@@ -1,7 +1,7 @@
 import {HostListener, Component, OnInit, NgModule } from '@angular/core';
 import { LazyLoadEvent ,PrimeNGConfig,Message,MessageService } from 'primeng/api';
 import { from, Subscription } from 'rxjs';
-import { AssesmentControllerServiceProxy, Assessment, AssessmentResault, AssessmentYear, AssessmentYearControllerServiceProxy, EmissionReductioDraftDataEntity, EmissionReductionDraftdataControllerServiceProxy, GetManyProjectResponseDto, Ndc, NdcControllerServiceProxy, Project, ProjectControllerServiceProxy, Sector, ServiceProxy, SubNdc } from 'shared/service-proxies/service-proxies';
+import { AssesmentControllerServiceProxy, Assessment, AssessmentResault, AssessmentYear, AssessmentYearControllerServiceProxy, EmissionReductioDraftDataEntity, EmissionReductionDraftdataControllerServiceProxy, GetManyProjectResponseDto, Ndc, NdcControllerServiceProxy, Project, ProjectControllerServiceProxy, Sector, SectorControllerServiceProxy, ServiceProxy, SubNdc } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -121,6 +121,7 @@ export class CASADashboardComponent implements OnInit {
       private climateactionserviceproxy: ProjectControllerServiceProxy, 
       private ndcserviceproxy : NdcControllerServiceProxy,
       private asseyearproxy : AssessmentYearControllerServiceProxy,
+      private sectorProxy: SectorControllerServiceProxy,
       private messageService: MessageService) {
     this.getScreenSize();
     this.chartOptions= {
@@ -301,6 +302,7 @@ let s=new String("23")
     const token = localStorage.getItem('access_token')!;
     const currenyUser=decode<any>(token);
     this.userName = currenyUser.fname;
+    this.countryId = currenyUser.countryId;
     
     // this.userId = params['id'];
     // console.log( "this.userId");
@@ -318,23 +320,30 @@ let s=new String("23")
     
     }else{
       this.isCountryAdmin=true;
-      this.serviceproxy.getManyBaseSectorControllerSector(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        ['id,DESC'],
-        undefined,
-        1000,
-        0,
-        0,
-        0
-        ).subscribe((res=>{
-          for(let d of res.data){
-            this.sectorList.push(d)
-          }
-        }))
-
+      this.sectorProxy.getCountrySector(currenyUser.countryId).subscribe((res: any) => {
+        for(let d of res){
+          this.sectorList.push(d)
+        }
+        console.log("++++" ,this.sectorList)
+      });
+      
+      // this.serviceproxy.getManyBaseSectorControllerSector(
+      //   undefined,
+      //   undefined,
+      //   undefined,
+      //   undefined,
+      //   ['id,DESC'],
+      //   undefined,
+      //   1000,
+      //   0,
+      //   0,
+      //   0
+      //   ).subscribe((res=>{
+      //     for(let d of res.data){
+      //       this.sectorList.push(d)
+      //     }
+      //   }))
+      //   console.log("++++" ,this.sectorList)
 
     }
   //   let event: any = {};
@@ -428,10 +437,10 @@ let s=new String("23")
     
         // console.log('yr list for final', this.yrList)
 
-       
-
+    
+    
     for(let x=0; x<=yearlstLength;x++){
-         
+     
             let total = 0;
 
             let bauValue:number=((this.emissionReduction.targetYearEmission-this.emissionReduction.baseYearEmission)/yearlstLength )*x +this.emissionReduction.baseYearEmission;
@@ -473,13 +482,14 @@ let s=new String("23")
         for(let assement of this.assessmentList){
          
           total += assement.totalEmission?Number(assement.totalEmission):0;
+          console.log("totalemi",assement.assessmentYear.assessmentYear,assement.totalEmission?Number(assement.totalEmission):0)
           console.log("total",total)
 
         }
         
           
           if(this.yrList[x]<=this.currentYear){this.actualValLst.push(bauValue-(total/1000000));}
-
+          // console.log("check",check)
         // .subscribe((res: any) =>{
         //   this.assessmentList = res.data
         //   // console.log('aaaaaaaaaaa1111111',this.assessmentList);
@@ -1054,7 +1064,7 @@ configEmissionTargetGraph=()=>{
 
               if(context.dataset.label=='Actual'){
                 // console.log("Actual")
-           let emissionReduction=  "Emission Reduction : " +  (baulst[ context.dataIndex]- Number(context.parsed.y)).toFixed(2) + " MtCO₂e" +" (" + ((baulst[ context.dataIndex]- Number(context.parsed.y))/baulst[ context.dataIndex]).toFixed(2) +"% of BAU Emission)";
+           let emissionReduction=  "Emission Reduction : " +  (baulst[ context.dataIndex]- Number(context.parsed.y)).toFixed(2) + " MtCO₂e" +" (" + (((baulst[ context.dataIndex]- Number(context.parsed.y))/baulst[ context.dataIndex])*100).toFixed(2) +"% of BAU Emission)";
                 return [label,emissionReduction];
               }
               if(context.dataset.label=='BAU'){
@@ -1064,7 +1074,7 @@ configEmissionTargetGraph=()=>{
               
 
 
-              let prsntge= 'Emission reduction of '+context.dataset.label+ ' over BAU - '+((context.raw/baulst[ context.dataIndex])*100).toFixed(2) +'%'
+              let prsntge= 'Emission reduction of '+context.dataset.label+ ' over BAU : '+(((baulst[ context.dataIndex]-context.raw)/baulst[ context.dataIndex])*100).toFixed(2) +'%'
               
               return [label,prsntge];
           }

@@ -22,7 +22,7 @@ import {
   User,
   UsersControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import jspdf from 'jspdf';
@@ -604,12 +604,17 @@ export class ProposeProjectComponent implements OnInit {
   //
   saveForm(formData: NgForm) {
     console.log('hii');
+    console.log(formData.form.valid)
+    console.log(formData)
     if (this.exsistingPrpject) {
       return;
     }
-    let sector = new Sector();
-    sector.id = this.project.sector.id;
-    this.project.sector = sector;
+    if (this.project.sector) {
+      let sector = new Sector();
+      sector.id = this.project.sector.id;
+      this.project.sector = sector;
+    }
+   
 
     this.project.proposeDateofCommence = moment(this.proposeDateofCommence);
     this.project.endDateofCommence = moment(this.endDateofCommence);
@@ -677,7 +682,7 @@ export class ProposeProjectComponent implements OnInit {
           }
         );
       } else {
-        console.log('formData.form.valid', formData.form.valid);
+        // console.log('formData.form.valid', formData.form.valid);
         this.serviceProxy
           .updateOneBaseProjectControllerProject(this.project.id, this.project)
           .subscribe(
@@ -1017,7 +1022,19 @@ export class ProposeProjectComponent implements OnInit {
   back() {
     this.location.back();
   }
-
+  confirmBack(label:string) {
+    this.confirmationService.confirm({
+        message:(label=='cancel'?'Your filled data will be lost. ':'') + 'Are you sure that you want to proceed?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.location.back();
+        },
+        reject: (type: any) => {
+           
+        }
+    });
+}
   onRowSelect(event: any) {
     this.selectedProject = event;
   }

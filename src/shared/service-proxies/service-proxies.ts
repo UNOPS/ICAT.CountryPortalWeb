@@ -17705,6 +17705,71 @@ export class VerificationControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
+    getVerifierParameters(page: number, limit: number, statusId: number, filterText: string): Observable<any> {
+        let url_ = this.baseUrl + "/verification/verification/GetVerifierParameters/{page}/{limit}/{statusId}/{filterText}?";
+        if (page === undefined || page === null)
+            throw new Error("The parameter 'page' must be defined and cannot be null.");
+        else
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (limit === undefined || limit === null)
+            throw new Error("The parameter 'limit' must be defined and cannot be null.");
+        else
+            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+        if (statusId === undefined || statusId === null)
+            throw new Error("The parameter 'statusId' must be defined and cannot be null.");
+        else
+            url_ += "statusId=" + encodeURIComponent("" + statusId) + "&";
+        if (filterText === undefined || filterText === null)
+            throw new Error("The parameter 'filterText' must be defined and cannot be null.");
+        else
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetVerifierParameters(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetVerifierParameters(<any>response_);
+                } catch (e) {
+                    return <Observable<any>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<any>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetVerifierParameters(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
     getVerificationDetails(assesmentYearId: number): Observable<VerificationDetail[]> {
         let url_ = this.baseUrl + "/verification/verification/GetVerificationDetails/{assesmentYearId}?";
         if (assesmentYearId === undefined || assesmentYearId === null)
@@ -19361,6 +19426,59 @@ export class SectorControllerServiceProxy {
     }
 
     protected processGetSectorDetails(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    getCountrySector(countryId: number): Observable<any> {
+        let url_ = this.baseUrl + "/sector/sector/{countryId}?";
+        if (countryId === undefined || countryId === null)
+            throw new Error("The parameter 'countryId' must be defined and cannot be null.");
+        else
+            url_ += "countryId=" + encodeURIComponent("" + countryId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCountrySector(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCountrySector(<any>response_);
+                } catch (e) {
+                    return <Observable<any>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<any>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCountrySector(response: HttpResponseBase): Observable<any> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -30222,7 +30340,7 @@ export class Sector implements ISector {
     name: string;
     description: string;
     sortOrder: number;
-    country: Country;
+    countrysector: CountrySector[];
     learningMaterialsector: LearningMaterialSector[];
     reportSector: ReportSector[];
     subSector: SubSector[];
@@ -30238,7 +30356,7 @@ export class Sector implements ISector {
             }
         }
         if (!data) {
-            this.country = new Country();
+            this.countrysector = [];
             this.learningMaterialsector = [];
             this.reportSector = [];
             this.subSector = [];
@@ -30256,7 +30374,11 @@ export class Sector implements ISector {
             this.name = _data["name"];
             this.description = _data["description"];
             this.sortOrder = _data["sortOrder"];
-            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
+            if (Array.isArray(_data["countrysector"])) {
+                this.countrysector = [] as any;
+                for (let item of _data["countrysector"])
+                    this.countrysector.push(CountrySector.fromJS(item));
+            }
             if (Array.isArray(_data["learningMaterialsector"])) {
                 this.learningMaterialsector = [] as any;
                 for (let item of _data["learningMaterialsector"])
@@ -30296,7 +30418,11 @@ export class Sector implements ISector {
         data["name"] = this.name;
         data["description"] = this.description;
         data["sortOrder"] = this.sortOrder;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        if (Array.isArray(this.countrysector)) {
+            data["countrysector"] = [];
+            for (let item of this.countrysector)
+                data["countrysector"].push(item.toJSON());
+        }
         if (Array.isArray(this.learningMaterialsector)) {
             data["learningMaterialsector"] = [];
             for (let item of this.learningMaterialsector)
@@ -30336,13 +30462,96 @@ export interface ISector {
     name: string;
     description: string;
     sortOrder: number;
-    country: Country;
+    countrysector: CountrySector[];
     learningMaterialsector: LearningMaterialSector[];
     reportSector: ReportSector[];
     subSector: SubSector[];
     emissionSummary: string;
     ndcDocuments: string;
     uniqueIdentification: string;
+}
+
+export class CountrySector implements ICountrySector {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    country: Country;
+    sector: Sector;
+    countryId: number;
+    sectorId: number;
+
+    constructor(data?: ICountrySector) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.country = new Country();
+            this.sector = new Sector();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
+            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
+            this.countryId = _data["countryId"];
+            this.sectorId = _data["sectorId"];
+        }
+    }
+
+    static fromJS(data: any): CountrySector {
+        data = typeof data === 'object' ? data : {};
+        let result = new CountrySector();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
+        data["countryId"] = this.countryId;
+        data["sectorId"] = this.sectorId;
+        return data;
+    }
+
+    clone(): CountrySector {
+        const json = this.toJSON();
+        let result = new CountrySector();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICountrySector {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    country: Country;
+    sector: Sector;
+    countryId: number;
+    sectorId: number;
 }
 
 export class Country implements ICountry {
@@ -30372,7 +30581,7 @@ export class Country implements ICountry {
     dataCollectionModule: boolean;
     uniqueIdentification: string;
     defaultValue: DefaultValue[];
-    sector: Sector[];
+    countrysector: CountrySector[];
 
     constructor(data?: ICountry) {
         if (data) {
@@ -30383,6 +30592,7 @@ export class Country implements ICountry {
         }
         if (!data) {
             this.defaultValue = [];
+            this.countrysector = [];
         }
     }
 
@@ -30418,10 +30628,10 @@ export class Country implements ICountry {
                 for (let item of _data["defaultValue"])
                     this.defaultValue.push(DefaultValue.fromJS(item));
             }
-            if (Array.isArray(_data["Sector"])) {
-                this.sector = [] as any;
-                for (let item of _data["Sector"])
-                    this.sector.push(Sector.fromJS(item));
+            if (Array.isArray(_data["countrysector"])) {
+                this.countrysector = [] as any;
+                for (let item of _data["countrysector"])
+                    this.countrysector.push(CountrySector.fromJS(item));
             }
         }
     }
@@ -30465,10 +30675,10 @@ export class Country implements ICountry {
             for (let item of this.defaultValue)
                 data["defaultValue"].push(item.toJSON());
         }
-        if (Array.isArray(this.sector)) {
-            data["Sector"] = [];
-            for (let item of this.sector)
-                data["Sector"].push(item.toJSON());
+        if (Array.isArray(this.countrysector)) {
+            data["countrysector"] = [];
+            for (let item of this.countrysector)
+                data["countrysector"].push(item.toJSON());
         }
         return data;
     }
@@ -30508,7 +30718,7 @@ export interface ICountry {
     dataCollectionModule: boolean;
     uniqueIdentification: string;
     defaultValue: DefaultValue[];
-    sector: Sector[];
+    countrysector: CountrySector[];
 }
 
 export class SubsectionEntity implements ISubsectionEntity {
