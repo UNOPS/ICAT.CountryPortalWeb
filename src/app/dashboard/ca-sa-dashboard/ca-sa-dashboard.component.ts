@@ -1,7 +1,7 @@
 import {HostListener, Component, OnInit, NgModule } from '@angular/core';
 import { LazyLoadEvent ,PrimeNGConfig,Message,MessageService } from 'primeng/api';
 import { from, Subscription } from 'rxjs';
-import { AssesmentControllerServiceProxy, Assessment, AssessmentResault, AssessmentYear, AssessmentYearControllerServiceProxy, EmissionReductioDraftDataEntity, EmissionReductionDraftdataControllerServiceProxy, GetManyProjectResponseDto, Ndc, NdcControllerServiceProxy, Project, ProjectControllerServiceProxy, Sector, SectorControllerServiceProxy, ServiceProxy, SubNdc } from 'shared/service-proxies/service-proxies';
+import { AssesmentControllerServiceProxy, AssesmentResaultControllerServiceProxy, Assessment, AssessmentResault, AssessmentYear, AssessmentYearControllerServiceProxy, EmissionReductioDraftDataEntity, EmissionReductionDraftdataControllerServiceProxy, GetManyProjectResponseDto, Ndc, NdcControllerServiceProxy, Project, ProjectControllerServiceProxy, Sector, SectorControllerServiceProxy, ServiceProxy, SubNdc } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -102,7 +102,7 @@ export class CASADashboardComponent implements OnInit {
   postresaultList: number[] = new Array();
   postIdLisst: number[] = new Array();
   cliamteActionsBySector: Project[];
-  assessmentList: AssessmentResault[];
+  assessmenResulytList: AssessmentResault[];
   actualValLst:number[]=new Array();
   unconValLst:number[]=new Array();
   conValLst:number[]=new Array();
@@ -118,6 +118,7 @@ export class CASADashboardComponent implements OnInit {
     private emmissionProxy: EmissionReductionDraftdataControllerServiceProxy,
      private serviceproxy: ServiceProxy, 
      private assesmentserviceproxy: AssesmentControllerServiceProxy,
+     private assesmentResultserviceproxy: AssesmentResaultControllerServiceProxy,
       private climateactionserviceproxy: ProjectControllerServiceProxy, 
       private ndcserviceproxy : NdcControllerServiceProxy,
       private asseyearproxy : AssessmentYearControllerServiceProxy,
@@ -367,7 +368,7 @@ let s=new String("23")
     // )
     
     this.emmissionProxy.getEmissionEeductionDraftDataForCountry()
-    .subscribe((res: any)=>{
+    .subscribe(async (res: any)=>{
       this.emissionReduction = res;
       // console.log('eeeee',this.emissionReduction)
       this.configEmissionTargetGraph();
@@ -416,21 +417,21 @@ let s=new String("23")
       //   0
       // )
       
-      this.climateactionserviceproxy.getProjectsForCountryAndSectorAdmins(0,0,0,['5'],0,0)
-      .subscribe(async (res: any)=>{
-        // console.log('projects by sector',res);
-        this.cliamteActionsBySector = res.items;
-        // console.log("testqqqsdfffffsdfsfsd");
-        
-        // console.log('projects by sector',this.cliamteActionsBySector);
-        for(let a=0;a<this.cliamteActionsBySector.length;a++){
+      // this.climateactionserviceproxy.getProjectsForCountryAndSectorAdmins(0,0,0,['5'],0,0)
+      // .subscribe(async (res: any)=>{
+      //   console.log('projects by sector',res);
+      //   this.cliamteActionsBySector = res.items;
+      //   // console.log("testqqqsdfffffsdfsfsd");
+      //   console.log('assessment ListId...',this.cliamteActionsBySector)
+      //   // console.log('projects by sector',this.cliamteActionsBySector);
+      //   for(let a=0;a<this.cliamteActionsBySector.length;a++){
        
-          for(let b=0;b<this.cliamteActionsBySector[a].assessments.length;b++){
+      //     for(let b=0;b<this.cliamteActionsBySector[a].assessments.length;b++){
             
-            this.assessmentListId.push(this.cliamteActionsBySector[a].assessments[b]?.id)
+      //       this.assessmentListId.push(this.cliamteActionsBySector[a].assessments[b]?.id)
 
-          }
-        }
+      //     }
+      //   }
       //  console.log('assessment ListId...',this.assessmentListId)
 
           // if(this.assessmentListBySector[a]?.assessmentType == 'Ex-Post'){
@@ -439,7 +440,7 @@ let s=new String("23")
 
     
     
-    for(let x=0; x<=yearlstLength;x++){
+    for (let x=0; x<=yearlstLength;x++){
      
             let total = 0;
 
@@ -450,39 +451,40 @@ let s=new String("23")
 
 
 
-        let filter1: string[] = new Array();
-        // console.log('this.yrList[x]',this.yrList[x]);
-        // console.log('tasses',this.assessmentListId);
-        // filter1.push('assessmentYear.assessmentYear||$in||'+ this.yrList[x])  
-        filter1.push('assessmentYear.assessmentYear||$eq||'+ this.yrList[x])  
+        // let filter1: string[] = new Array();
+        // // console.log('this.yrList[x]',this.yrList[x]);
+        // // console.log('tasses',this.assessmentListId);
+        // // filter1.push('assessmentYear.assessmentYear||$in||'+ this.yrList[x])  
+        // filter1.push('assessmentYear.assessmentYear||$eq||'+ this.yrList[x])  
 
-        &
-        filter1.push('assement.assessmentType||$eq||Ex-post') 
-        & 
-        filter1.push('assement.id||$in||'+ this.assessmentListId) 
-        filter1.push('assement.isProposal||$eq||' + 0);
+        // &
+        // filter1.push('assement.assessmentType||$eq||Ex-post') 
+        // & 
+        // filter1.push('assement.id||$in||'+ this.assessmentListId) 
+        // filter1.push('assement.isProposal||$eq||' + 0);
 
         // console.log('filter1',filter1);
-
-      let res= await this.serviceproxy
-        .getManyBaseAssesmentResaultControllerAssessmentResault(
-        undefined,
-        undefined,
-        filter1,
-        undefined,
-        ['assessmentYear.assessmentYear,ASC'],
-        undefined,
-        1000,
-        0,
-        0,
-        0,
-        ).toPromise();
-        this.assessmentList = res.data
+        let res= await this.assesmentResultserviceproxy.getAssessmentResultforDashboard(this.yrList[x]).toPromise();
+       
+      // let res= await this.serviceproxy
+      //   .getManyBaseAssesmentResaultControllerAssessmentResault(
+      //   undefined,
+      //   undefined,
+      //   filter1,
+      //   undefined,
+      //   ['assessmentYear.assessmentYear,ASC'],
+      //   undefined,
+      //   1000,
+      //   0,
+      //   0,
+      //   0,
+      //   ).toPromise();
+        this.assessmenResulytList = res
         
-        for(let assement of this.assessmentList){
-         
-          total += assement.totalEmission?Number(assement.totalEmission):0;
-          console.log("totalemi",assement.assessmentYear.assessmentYear,assement.totalEmission?Number(assement.totalEmission):0)
+        for(let assementResult of this.assessmenResulytList){
+          console.log("assesdfs",assementResult.totalEmission)
+          total += assementResult.totalEmission?Number(assementResult.totalEmission):0;
+          console.log("totalemi",assementResult.assessmentYear.assessmentYear,assementResult.totalEmission?Number(assementResult.totalEmission):0)
           console.log("total",total)
 
         }
@@ -590,7 +592,7 @@ let s=new String("23")
         ]
     };
 
-      });
+      // });
      
   
 
@@ -1231,9 +1233,9 @@ configEmissionTargetGraph=()=>{
           let archiveyearrange = "-";
        
           if(res.data.length!=0){
-            
+            // console.log("hhhhhhh",res.data)
             for(let dt of res.data){
-              console.log("hhhhhhh",dt.isProposal)
+              
               // let filter2: string[] = new Array();
               // filter2.push('assement.id||$eq||' + dt.id);
       
