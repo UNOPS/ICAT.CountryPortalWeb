@@ -1208,8 +1208,8 @@ configEmissionTargetGraph=()=>{
 
         let filter1: string[] = new Array();
         filter1.push('project.id||$eq||' + project.id);
-        filter1.push('assessment.isProposal||$eq||' + 0);
-        // filter1.push('ndc.id||$ne||' );
+        filter1.push('isProposal||$eq||' + 0);
+        // filter1.push('ndc.id||$ne|| NULL' );
 
         this.serviceproxy.getManyBaseAssesmentControllerAssessment(
           undefined,
@@ -1595,28 +1595,30 @@ configEmissionTargetGraph=()=>{
               let ndcNames:string[]=[]
               let ndcReduction:number[]=[]
               let xaxis:number[]=[];
-            console.log('getNdcForDashboard',a);
-            console.log('totalRduction123ass',a)
+            // console.log('getNdcForDashboard',a);
+            console.log('ndc for aggretion actions',a)
             for(let ndc of a.items){
-              console.log('totalRduction123ass',ndc.assesment.length)
-             let totalRduction:number=0;
+              // console.log('totalRduction123ass2',ndc.assesment)
+             let totalemissionRduction:number=0;
              for(let assement of ndc.assesment){
-
+              // console.log('totalRduction123ass',assement.assessmentResult)
 
                for(let assesrslt of assement.assessmentResult){
-                
-                  totalRduction=totalRduction+assesrslt.totalEmission?Number(assesrslt.totalEmission):0;
-                  console.log('totalRduction123',assement.isProposal,totalRduction)
+             
+                totalemissionRduction = totalemissionRduction + (assesrslt.totalEmission?Number(assesrslt.totalEmission):0);
+                  // console.log('totalRduction123asstot',Number(assesrslt.totalEmission))
+                  // console.log('totalRduction123asstot',totalemissionRduction)
+                  // console.log('totalRduction123',assement.isProposal,totalRduction)
                }
 
 
 
              }
             //  console.log('totalRduction',totalRduction)
-             if(totalRduction!=0){
+             if(totalemissionRduction!=0){
               
               ndcNames.push(ndc.name);
-              ndcReduction.push(totalRduction);
+              ndcReduction.push(totalemissionRduction);
               xaxis.push(ndcNames.length)
              }
              
