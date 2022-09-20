@@ -1978,9 +1978,9 @@
         pButton
         pRipple
         type="button"
-        [label]="isSaving?'back':'cancel'"
+        [label]="editEntytyId>0?'back':(isSaving?'back':'cancel')"
         class="p-button-raised"
-        (click)="confirmBack(isSaving?'back':'cancel')"
+        (click)="confirmBack(editEntytyId>0?'back':(isSaving?'back':'cancel'))"
       ></button>
       <!-- <div *ngIf="isDownloading == false">    [disabled]="isSaving || !fData.form.valid" -->
       <button
@@ -1989,7 +1989,7 @@
         label="Download PDF"
         type="button"
         style="margin-right: 10px"
-        [disabled]="!isSaving"
+        [disabled]="!(editEntytyId>0) &&  !isSaving"
         class="p-button-raised"
         (click)="toDownload()"
       ></button>
