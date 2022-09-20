@@ -12987,7 +12987,7 @@ export class ServiceProxy {
     /**
      * Create a single Assessment
      */
-    createOneBaseAssesmentControllerAssessment(body: Assessment): Observable<any> {
+    createOneBaseAssesmentControllerAssessment(body: Assessment): Observable<Assessment> {
         let url_ = this.baseUrl + "/assesment";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -13010,14 +13010,14 @@ export class ServiceProxy {
                 try {
                     return this.processCreateOneBaseAssesmentControllerAssessment(<any>response_);
                 } catch (e) {
-                    return <Observable<any>><any>_observableThrow(e);
+                    return <Observable<Assessment>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<any>><any>_observableThrow(response_);
+                return <Observable<Assessment>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateOneBaseAssesmentControllerAssessment(response: HttpResponseBase): Observable<any> {
+    protected processCreateOneBaseAssesmentControllerAssessment(response: HttpResponseBase): Observable<Assessment> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -13028,8 +13028,7 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            result200 = Assessment.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status === 201) {
@@ -13037,7 +13036,7 @@ export class ServiceProxy {
             let result201: any = null;
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result201 = Assessment.fromJS(resultData201);
-            return throwException("Get create one base response", status, _responseText, _headers, result201);
+            return _observableOf(result201);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {

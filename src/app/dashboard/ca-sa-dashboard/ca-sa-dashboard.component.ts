@@ -1584,7 +1584,6 @@ configEmissionTargetGraph=()=>{
       //     : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
       // this.rows = event.rows === undefined ? 10 : event.rows;
       // this.rows=1000
-      setTimeout(() => {
         this.ndcserviceproxy
           .getNdcForDashboard(
             0,
@@ -1645,7 +1644,7 @@ configEmissionTargetGraph=()=>{
   
           });
   
-      })}
+    }
 
 
 }

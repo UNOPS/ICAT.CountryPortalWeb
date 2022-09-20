@@ -3362,8 +3362,8 @@ export class GhgAssessmentComponent implements OnInit {
             this.isDisableforSubmitButton = true;
             this.isSubmitted = true
             
-            console.log('....Saved Assessment',assessment);
-            //console.log("assess..",res);
+            // console.log('....Saved Assessment',assessment);
+            console.log("assess..",res);
   
             if (this.IsProposal == false) {
               this.serviceProxy
@@ -3423,7 +3423,11 @@ export class GhgAssessmentComponent implements OnInit {
             }
            // alert('Successfully Saved');
            
-          });
+          },err=>{console.log("saving error",err);
+          this.messageService.add({severity:'error', summary:'Error Saving', detail:'Error saving in assessment!'});
+        
+        
+        });
       } else {
         this.isSubmitted = true;
       }
