@@ -114,6 +114,10 @@ export class CASADashboardComponent implements OnInit {
   responsiveOptions:any;
   
   screenWidth: number;
+ moduleLevel:number[];
+
+
+
   constructor(private primengConfig: PrimeNGConfig,
     private emmissionProxy: EmissionReductionDraftdataControllerServiceProxy,
      private serviceproxy: ServiceProxy, 
@@ -304,7 +308,8 @@ let s=new String("23")
     const currenyUser=decode<any>(token);
     this.userName = currenyUser.fname;
     this.countryId = currenyUser.countryId;
-    
+    this.moduleLevel=currenyUser.moduleLevels
+    // console.log('this.moduleLevel',this.moduleLevel),
     // this.userId = params['id'];
     // console.log( "this.userId");
     console.log("token",decode<any>(token))
@@ -1208,7 +1213,14 @@ configEmissionTargetGraph=()=>{
 
         let filter1: string[] = new Array();
         filter1.push('project.id||$eq||' + project.id);
-        filter1.push('isProposal||$eq||' + 0);
+        if(this.moduleLevel[3]==1||this.moduleLevel[4]==1){
+          filter1.push('isProposal||$eq||' + 0);
+        }else if(this.moduleLevel[1]==1||this.moduleLevel[2]==1){
+          filter1.push('isProposal||$eq||' + 1);
+        }else{
+          filter1.push('isProposal||$eq||' + 0);
+        }
+        
         // filter1.push('ndc.id||$ne|| NULL' );
 
         this.serviceproxy.getManyBaseAssesmentControllerAssessment(
