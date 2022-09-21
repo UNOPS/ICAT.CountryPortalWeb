@@ -487,7 +487,7 @@ let s=new String("23")
         this.assessmenResulytList = res
         
         for(let assementResult of this.assessmenResulytList){
-          console.log("assesdfs",assementResult.totalEmission)
+          console.log("assesdfs",assementResult)
           total += assementResult.totalEmission?Number(assementResult.totalEmission):0;
           console.log("totalemi",assementResult.assessmentYear.assessmentYear,assementResult.totalEmission?Number(assementResult.totalEmission):0)
           console.log("total",total)
