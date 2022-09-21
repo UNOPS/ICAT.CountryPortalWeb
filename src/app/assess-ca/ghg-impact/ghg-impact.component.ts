@@ -9,6 +9,7 @@ export class GhgImpactComponent implements OnInit {
 
 
   dataCollectionModuleStatus:number
+  dataCollectionGhgModuleStatus:number
   constructor() {}
 
   ngOnInit(): void {
@@ -18,6 +19,7 @@ export class GhgImpactComponent implements OnInit {
     const tokenPayload = decode<any>(token);
    let model:number[]=[];
    this.dataCollectionModuleStatus =tokenPayload.moduleLevels[3];
+   this.dataCollectionGhgModuleStatus =tokenPayload.moduleLevels[4];
 
   }
 }
