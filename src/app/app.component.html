@@ -409,7 +409,7 @@
                 (userRole.role == 3 ||
                   userRole.role == 4 ||
                   userRole.role == 5) &&
-                [models.DATACOLLECTION_MODULE].some(getModel)
+                [models.DATACOLLECTION_MODULE, models.DATACOLLECTION_GHG_MODULE].some(getModel)
               "
               class="sidebar-items--link align-items-start"
               [routerLink]="['/verification-sector-admin']"
@@ -440,7 +440,7 @@
             <div
               *ngIf="
                 userRole.role == 1 &&
-                [models.DATACOLLECTION_MODULE].some(getModel)
+                [models.DATACOLLECTION_MODULE, models.DATACOLLECTION_GHG_MODULE].some(getModel)
               "
               class="sidebar-items--link align-items-start"
               [routerLink]="['/app-assign-verifiers']"
@@ -456,7 +456,7 @@
                   userRole.role == 3 ||
                   userRole.role == 4 ||
                   userRole.role == 5) &&
-                [models.DATACOLLECTION_MODULE].some(getModel)
+                [models.DATACOLLECTION_MODULE, models.DATACOLLECTION_GHG_MODULE].some(getModel)
               "
               class="sidebar-items--link align-items-start"
               [routerLink]="['/report']"
