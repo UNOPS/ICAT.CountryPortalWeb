@@ -1213,9 +1213,9 @@ configEmissionTargetGraph=()=>{
 
         let filter1: string[] = new Array();
         filter1.push('project.id||$eq||' + project.id);
-        if(this.moduleLevel[3]==1){
+        if(this.moduleLevel[3]==1||this.moduleLevel[4]==1){
           filter1.push('isProposal||$eq||' + 0);
-        }else if(this.moduleLevel[1]==1){
+        }else if(this.moduleLevel[1]==1||this.moduleLevel[2]==1){
           filter1.push('isProposal||$eq||' + 1);
         }else{
           filter1.push('isProposal||$eq||' + 0);
