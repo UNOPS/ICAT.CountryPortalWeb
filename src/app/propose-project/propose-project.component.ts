@@ -20,6 +20,7 @@ import {
   ServiceProxy,
   SubNdc,
   User,
+  SectorControllerServiceProxy,
   UsersControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
 import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
@@ -124,7 +125,8 @@ export class ProposeProjectComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private messageService: MessageService,
-    private projectProxy: ProjectControllerServiceProxy
+    private projectProxy: ProjectControllerServiceProxy,
+    private sectorProxy: SectorControllerServiceProxy
   ) // private usersControllerServiceProxy: UsersControllerServiceProxy,
   // private ndcProxy:NdcControllerServiceProxy
   {}
@@ -286,7 +288,8 @@ export class ProposeProjectComponent implements OnInit {
         0
       )
       .subscribe((res: any) => {
-        this.sectorList = res.data;
+        
+        // this.sectorList = res.data;
 
         if (token && this.editEntytyId && this.editEntytyId > 0) {
           this.serviceProxy
@@ -846,6 +849,11 @@ export class ProposeProjectComponent implements OnInit {
     this.getUserEnterdCountry = this.project.country;
 
     this.onSectorChange(event);
+
+    this.sectorProxy.getCountrySector(this.project.country.id).subscribe((res: any) => {
+      this.sectorList = res;
+      console.log("++++" ,this.sectorList)
+    });
   }
 
   onSectorChange(event: any) {
