@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Chart } from 'chart.js';
 import { LazyLoadEvent } from 'primeng/api';
 import { TableModule } from 'primeng/table';
-import { Assessment, AssessmentResault, AssessmentYear, EmissionReductioDraftDataEntity, EmissionReductionDraftdataControllerServiceProxy, Institution, Ndc, NdcControllerServiceProxy, Parameter, ParameterControllerServiceProxy, ParameterRequest, Project, ProjectControllerServiceProxy, Sector, ServiceProxy, SubNdc, User, UserType } from 'shared/service-proxies/service-proxies';
+import { AssesmentResaultControllerServiceProxy, Assessment, AssessmentResault, AssessmentYear, EmissionReductioDraftDataEntity, EmissionReductionDraftdataControllerServiceProxy, Institution, Ndc, NdcControllerServiceProxy, Parameter, ParameterControllerServiceProxy, ParameterRequest, Project, ProjectControllerServiceProxy, Sector, ServiceProxy, SubNdc, User, UserType } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 @Component({
   selector: 'app-ia-dashboard',
@@ -98,6 +98,7 @@ export class IaDashboardComponent implements OnInit {
     private climateactionserviceproxy: ProjectControllerServiceProxy,
     private emmissionProxy: EmissionReductionDraftdataControllerServiceProxy,
     private ndcProxy:NdcControllerServiceProxy,
+    private assesmentResultserviceproxy: AssesmentResaultControllerServiceProxy,
     private paraProxy:ParameterControllerServiceProxy
   ) {
 
@@ -148,49 +149,49 @@ export class IaDashboardComponent implements OnInit {
         
       }
   };
-  this.basicOptions2 = {
-    plugins: {
-        legend: {
-            labels: {
-                color: '#495057'
-            }
-        }
-    },
-    scales: {
-        x: {
-          display:true,
-          title:{
-            display:true,
-            text:'Years',
-            font:{
-              size:12
-            }
-          },
-            ticks: {
-                color: '#495057'
-            },
-            grid: {
-                color: '#ebedef'
-            }
-        },
-        y: {
-          display:true,
-          title:{
-            display:true,
-            text:'Emissions (tCO₂e)',
-            font:{
-              size:12
-            }
-          },
-            ticks: {
-                color: '#495057'
-            },
-            grid: {
-                color: '#ebedef'
-            }
-        }
-    }
-};
+//   this.basicOptions2 = {
+//     plugins: {
+//         legend: {
+//             labels: {
+//                 color: '#495057'
+//             }
+//         }
+//     },
+//     scales: {
+//         x: {
+//           display:true,
+//           title:{
+//             display:true,
+//             text:'Years',
+//             font:{
+//               size:12
+//             }
+//           },
+//             ticks: {
+//                 color: '#495057'
+//             },
+//             grid: {
+//                 color: '#ebedef'
+//             }
+//         },
+//         y: {
+//           display:true,
+//           title:{
+//             display:true,
+//             text:'Emissions (tCO₂e)',
+//             font:{
+//               size:12
+//             }
+//           },
+//             ticks: {
+//                 color: '#495057'
+//             },
+//             grid: {
+//                 color: '#ebedef'
+//             }
+//         }
+//     }
+// };
   }
 
   userName:String;
@@ -349,9 +350,10 @@ this.ndcProxy.getDateRequest(0,0,[])
         //   0
         // )
         this.emmissionProxy.getEmissionEeductionDraftDataForCountry()
-        .subscribe((res: any)=>{
+        .subscribe(async (res: any)=>{
           this.emissionReduction = res;
       // console.log('eeeee',this.emissionReduction)
+      this.configEmissionTargetGraph();
       this.unconditionalValue = this.emissionReduction.targetYearEmission - this.emissionReduction.unconditionaltco2;
       console.log('unconditional',this.unconditionalValue)
       this.conditionalValue = this.emissionReduction.targetYearEmission - this.emissionReduction.conditionaltco2;
@@ -393,9 +395,9 @@ this.ndcProxy.getDateRequest(0,0,[])
       //   0
       // ).subscribe((res: any)=>{
 
-        this.climateactionserviceproxy.getProjectsForCountryAndSectorAdmins(0,0,0,[],0,0)
-        .subscribe(async (res: any)=>{
-        this.cliamteActionsBySector = res.items;
+        // this.climateactionserviceproxy.getProjectsForCountryAndSectorAdmins(0,0,0,[],0,0)
+        // .subscribe(async (res: any)=>{
+        // this.cliamteActionsBySector = res.items;
         // console.log("testqqqsdfffffsdfsfsd");
         
         // console.log('projects by sector',this.cliamteActionsBySector);
@@ -433,20 +435,21 @@ this.ndcProxy.getDateRequest(0,0,[])
         filter1.push('assement.id||$in||'+ this.assessmentListId) 
         // console.log('filter1',filter1);
 
-       let res= await this.serviceProxy
-        .getManyBaseAssesmentResaultControllerAssessmentResault(
-        undefined,
-        undefined,
-        filter1,
-        undefined,
-        ['assessmentYear.assessmentYear,ASC'],
-        undefined,
-        1000,
-        0,
-        0,
-        0,
-        ).toPromise();
-        this.assessmentList = res.data
+      //  let res= await this.serviceProxy
+      //   .getManyBaseAssesmentResaultControllerAssessmentResault(
+      //   undefined,
+      //   undefined,
+      //   filter1,
+      //   undefined,
+      //   ['assessmentYear.assessmentYear,ASC'],
+      //   undefined,
+      //   1000,
+      //   0,
+      //   0,
+      //   0,
+      //   ).toPromise();
+      let res= await this.assesmentResultserviceproxy.getAssessmentResultforDashboard(this.yrList[x]).toPromise();
+        this.assessmentList = res;
         
         for(let assement of this.assessmentList){
          
@@ -539,7 +542,7 @@ this.ndcProxy.getDateRequest(0,0,[])
         ]
     };
 
-      });
+      // });
 
           
         })
@@ -654,7 +657,103 @@ this.ndcProxy.getDateRequest(0,0,[])
  
     }
 
-
+    configEmissionTargetGraph=()=>{
+      this.basicOptions2 = {
+          
+        plugins: {
+          tooltip: {
+                 
+    
+    
+            callbacks: {
+              label: function(context: { chart:{_metasets:any;}; dataset: { label: string; }; parsed: { y: number | bigint | null; };dataIndex:number;raw:number; }) {
+                console.log(context)
+                // console.log(context.chart._metasets[3]._dataset.data)
+                  let baulst=context.chart._metasets[3]._dataset.data;
+                  let label = context.dataset.label || '';
+    
+    
+                  if (label) {
+                    label += ' Emission : ';
+                }
+                if (context.parsed.y !== null) {
+                    label += Number(context.parsed.y).toFixed(2) +" MtCO₂e";
+                }
+    
+                  if(context.dataset.label=='Actual'){
+                    // console.log("Actual")
+               let emissionReduction=  "Emission Reduction : " +  (baulst[ context.dataIndex]- Number(context.parsed.y)).toFixed(2) + " MtCO₂e" +" (" + (((baulst[ context.dataIndex]- Number(context.parsed.y))/baulst[ context.dataIndex])*100).toFixed(2) +"% of BAU Emission)";
+                    return [label,emissionReduction];
+                  }
+                  if(context.dataset.label=='BAU'){
+                    // console.log("BAU")
+                    return [label];
+                  }
+                  
+    
+    
+                  let prsntge= 'Emission reduction of '+context.dataset.label+ ' over BAU : '+(((baulst[ context.dataIndex]-context.raw)/baulst[ context.dataIndex])*100).toFixed(2) +'%'
+                  
+                  return [label,prsntge];
+              }
+          }
+          },
+          
+         
+          title: {
+            
+            display: true,
+            text: `Emission Reduction Targets of ${this.emissionReduction.sector? this.emissionReduction.sector.name + " sector" :this.emissionReduction.country.name}`,
+            
+            font:{
+              size:24
+            }
+        },
+            legend: {
+                labels: {
+                    color: '#495057'
+                }
+            }
+        },
+        scales: {
+            
+            x: {
+                display:true,
+                title:{
+                  display:true,
+                  text:'Years',
+                  font:{
+                    size:12
+                  }
+                },
+                ticks: {
+                    color: '#495057'
+                },
+                grid: {
+                    color: '#ebedef'
+                }
+            },
+            y: {
+              display:true,
+              title:{
+                display:true,
+                text:'Emissions (MtCO₂e)',
+                font:{
+                  size:12
+                }
+              },
+              
+                ticks: {
+                    color: '#495057'
+                },
+                grid: {
+                    color: '#ebedef'
+                }
+            }
+        }
+    };
+    
+    }
     loadCustomers(event: LazyLoadEvent) {
       console.log("HHHHHHHHHHHHHHHHHHHHHHHHHh")
       this.loading = true;

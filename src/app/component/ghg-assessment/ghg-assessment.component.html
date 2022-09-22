@@ -19,6 +19,7 @@
             [disabled]="isClimateActionListDisabled"
             (ngModelChange)="onCAChange($event)"
             [required]="true"
+            appendTo="body"
           ></p-dropdown>
         </div>
         <p
@@ -63,6 +64,7 @@
             [disabled]="isDisableforSubmitButton"
             [ngModelOptions]="{ standalone: true }"
             (ngModelChange)="onNdcChange($event)"
+            appendTo="body"
           ></p-dropdown>
         </div>
         <!-- <p

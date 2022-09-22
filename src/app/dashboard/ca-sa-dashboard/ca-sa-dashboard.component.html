@@ -135,9 +135,9 @@
                   <ng-template pTemplate="header">
                     <tr>
                       <th class=" col-lg-4">Specific Climate Actions </th>
-                      <th class=" col-lg-2">Emission Reduction Target    (MtCO<sub>2</sub>e)</th>
+                      <th class=" col-lg-2">Emission Reduction Target    (tCO<sub>2</sub>e)</th>
                       <th class=" col-lg-2">Target Year Range</th>
-                      <th class=" col-lg-2">Emission Reduction Achievement (MtCO<sub>2</sub>e)</th>
+                      <th class=" col-lg-2">Emission Reduction Achievement (tCO<sub>2</sub>e)</th>
                       <th class=" col-lg-1">Achievement Year Range</th>
                     </tr>
                   </ng-template>
@@ -226,7 +226,7 @@
                   <!-- <div class="col-md-8"> -->
                     
                     <div class="col"> <p-chart type="line"  [data]="lineStylesData" [options]="basicOptions"></p-chart></div>
-                    <p><strong>Note:</strong> Only the emission reductions of Climate Actions calculated Ex-post using the tool are reflected in the Actual Emissions curve</p>
+                    <p><strong>Note:</strong> Only the emission reductions of Climate Actions calculated Ex-post using the Tool are reflected in the Actual Emissions curve</p>
 
                   <!-- </div> -->
                   
@@ -259,7 +259,7 @@
               </div>
              
             </div> -->
-            <div *ngIf="countryId !=30 && countryId !=26 " >
+            <div *ngIf="(moduleLevel[3]==1||moduleLevel[2]==1) &&countryId !=30 && countryId !=26 " >
               <div *ngIf="macGrapsForPosts.length==0" class="p-grid p-fluid card"  style="width: 100%;">
                 <p-messages severity="warn" >
                   <ng-template pTemplate>
@@ -278,7 +278,7 @@
           
                         <div class="row justify-content-center" >
                           <div class="col-lg-6 col-md-8 col-sm-4 col-6 " >
-                            <h6>MAC Curve Year(EX-post) {{macGrapsForPost[0]}}</h6>
+                            <h6>MAC Curve Year(Ex-post) {{macGrapsForPost[0]}}</h6>
                           </div>
                                 
                             </div>                     
@@ -289,7 +289,7 @@
                </p-carousel>
   
               </div>
-            </div>
+            
           
             <div *ngIf="macGrapsForAntes.length>0" class="p-grid p-fluid card"  style="width: 100%;">
 
@@ -299,7 +299,7 @@
         
                       <div class="row justify-content-center" >
                         <div class="col-lg-5 col-md-8 col-sm-4 col-6 " >
-                          <h6>MAC Curve Year(EX-ante) {{macGrapsForAnte[0]}}</h6>
+                          <h6>MAC Curve Year(Ex-ante) {{macGrapsForAnte[0]}}</h6>
                         </div>
                               
                           </div>
@@ -317,6 +317,7 @@
              </p-carousel>
 
             </div>
+          </div>
        
          
         </div>

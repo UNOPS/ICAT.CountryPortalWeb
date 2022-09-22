@@ -73,11 +73,13 @@ export class LoginFormComponent implements OnInit {
   }
 
   resetError() {
+    console.log("work")
     this.isInvalidCredential = false;
   }
 
   login() {
     // this.display = true;
+    console.log(this.logiLayoutService.authCredentialDot)
     this.isSubmitLogin = true;
     if (!this.fLogin.valid) {
       return;

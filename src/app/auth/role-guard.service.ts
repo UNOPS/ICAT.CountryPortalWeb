@@ -149,6 +149,10 @@ export class RoleGuardService implements CanActivate {
 for(let i=0;i<modelsStatus.length;i++){
    if(modelsStatus[i]==1){
      model.push(i)
+     if (i === 4){
+      model.push(0)
+      model.push(1)
+     }
    }
 
 }

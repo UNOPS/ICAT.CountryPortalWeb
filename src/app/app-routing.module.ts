@@ -80,6 +80,7 @@ export enum CountryModule {
   GHG_MODULE = 1,
   MAC_MODULE = 2,
   DATACOLLECTION_MODULE = 3,
+  DATACOLLECTION_GHG_MODULE = 4
   
 }
 const routes: Routes = [
@@ -287,6 +288,7 @@ const routes: Routes = [
         CountryModule.MAC_MODULE,
         CountryModule.DATACOLLECTION_MODULE,
         CountryModule.GHG_MODULE,
+        CountryModule.DATACOLLECTION_GHG_MODULE
         
       ],
     },
