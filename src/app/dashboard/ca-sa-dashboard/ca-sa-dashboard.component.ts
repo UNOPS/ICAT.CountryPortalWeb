@@ -487,7 +487,7 @@ let s=new String("23")
         this.assessmenResulytList = res
         
         for(let assementResult of this.assessmenResulytList){
-          console.log("assesdfs",assementResult.totalEmission)
+          console.log("assesdfs",assementResult)
           total += assementResult.totalEmission?Number(assementResult.totalEmission):0;
           console.log("totalemi",assementResult.assessmentYear.assessmentYear,assementResult.totalEmission?Number(assementResult.totalEmission):0)
           console.log("total",total)
@@ -1154,7 +1154,7 @@ configEmissionTargetGraph=()=>{
     let sectorId = this.searchBy.sector ? this.searchBy.sector.id : 0;
     let ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
     let subNdcId = this.searchBy.subndc ? this.searchBy.subndc.id : 0;
-    let projectApprovalStatusId = ['5'];
+    let projectApprovalStatusId: string[] = [];
     // console.log('ffsectorId',sectorId)
     // console.log('fndcId',ndcId)
     // console.log('fsubNdcId',subNdcId)
@@ -1164,8 +1164,22 @@ configEmissionTargetGraph=()=>{
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
     this.rows = event.rows === undefined ? 5: event.rows;
     // console.log("this.projects2222",this.rows);
+    let filter1: string[] = new Array();
+    if(this.moduleLevel[3]==1||this.moduleLevel[4]==1){
+      
+      projectApprovalStatusId = ['5'];
+      filter1.push('isProposal||$eq||' + 0);
+    }else if(this.moduleLevel[1]==1||this.moduleLevel[2]==1){
+      
+      projectApprovalStatusId = ['1','4'];
+      filter1.push('isProposal||$eq||' + 1);
+    }else{
+      projectApprovalStatusId = ['5'];
+      filter1.push('isProposal||$eq||' + 0);
+    }
 
-    setTimeout(() => {
+
+    // setTimeout(() => {
       // this.climateactionserviceproxy
       //   .getactiveClimateActionDetails(
       //     pageNumber,
@@ -1196,7 +1210,7 @@ configEmissionTargetGraph=()=>{
           this.loading = false;
 
           // this.projects = a.items;
-          console.log("this.projects2222",a);
+          // console.log("this.projects2222",a);
       for(let project of a.items){
         // console.log(project, 'kk');
         // if(project.projectStatus.id==1)  this.proposedProjectsCount+=1;
@@ -1211,22 +1225,17 @@ configEmissionTargetGraph=()=>{
         };
         activeproject1.name = project.climateActionName;
 
-        let filter1: string[] = new Array();
-        filter1.push('project.id||$eq||' + project.id);
-        if(this.moduleLevel[3]==1||this.moduleLevel[4]==1){
-          filter1.push('isProposal||$eq||' + 0);
-        }else if(this.moduleLevel[1]==1||this.moduleLevel[2]==1){
-          filter1.push('isProposal||$eq||' + 1);
-        }else{
-          filter1.push('isProposal||$eq||' + 0);
-        }
+       let filterAsses:string[]=new Array();
+          filterAsses.push(...filter1)
+        // filterAsses.push('project.id||$eq||' + project.id);
+        // console.log("dddddd",filterAsses)
         
         // filter1.push('ndc.id||$ne|| NULL' );
 
         this.serviceproxy.getManyBaseAssesmentControllerAssessment(
           undefined,
           undefined,
-          filter1,
+          filterAsses,
           undefined,
           ['id,ASC'],
           undefined,
@@ -1235,8 +1244,8 @@ configEmissionTargetGraph=()=>{
           0,
           0
         ).subscribe((res=>{
-          console.log("dddddd",res)
-          let sum=0;
+          // console.log("dddddd",res)
+          
           let targettotalemission = 0;
           let tarchievmenttotalem = 0;
           let minyear="0";
@@ -1303,18 +1312,20 @@ configEmissionTargetGraph=()=>{
               //     }
                  
               // }))
+              let sum=0;
               for(let d of dt.assessmentResult){
-                sum=sum + d.totalEmission?Number(d.totalEmission):0; 
-                
+                sum=sum + (d.totalEmission?Number(d.totalEmission):0); 
+                // console.log("hhhhhhh",sum)
                 
               }
             
               if(dt.assessmentType=='Ex-ante'){
-                targettotalemission = sum;
+                targettotalemission = targettotalemission + sum;
                 targetyearrange = minyear+"-"+maxyear
               }
               if(dt.assessmentType=='Ex-post'){
-                tarchievmenttotalem = sum;
+                // console.log("hhhhhhh",dt)
+                tarchievmenttotalem = tarchievmenttotalem + sum;;
                 archiveyearrange = minyear+"-"+maxyear
               }
 
@@ -1368,7 +1379,7 @@ configEmissionTargetGraph=()=>{
         //   }
         // }  
         
-    }, 1);
+    // }, 1);
 
 
   
@@ -1607,18 +1618,18 @@ configEmissionTargetGraph=()=>{
               let ndcReduction:number[]=[]
               let xaxis:number[]=[];
             // console.log('getNdcForDashboard',a);
-            console.log('ndc for aggretion actions',a)
+            // console.log('ndc for aggretion actions',a)
             for(let ndc of a.items){
               // console.log('totalRduction123ass2',ndc.assesment)
              let totalemissionRduction:number=0;
              for(let assement of ndc.assesment){
-              // console.log('totalRduction123ass',assement.assessmentResult)
+              // console.log('totalRduction123ass',assement.project.id)
 
                for(let assesrslt of assement.assessmentResult){
              
                 totalemissionRduction = totalemissionRduction + (assesrslt.totalEmission?Number(assesrslt.totalEmission):0);
-                  // console.log('totalRduction123asstot',Number(assesrslt.totalEmission))
-                  // console.log('totalRduction123asstot',totalemissionRduction)
+                  // console.log('totalRduction123asstot1',Number(assesrslt.totalEmission))
+                  console.log('totalRduction123asstot2',totalemissionRduction)
                   // console.log('totalRduction123',assement.isProposal,totalRduction)
                }
 
