@@ -30690,6 +30690,8 @@ export class Country implements ICountry {
     ghgModule: boolean;
     macModule: boolean;
     dataCollectionModule: boolean;
+    dataCollectionGhgModule: boolean;
+    hasExelTem: boolean;
     uniqueIdentification: string;
     defaultValue: DefaultValue[];
     countrysector: CountrySector[];
@@ -30733,6 +30735,8 @@ export class Country implements ICountry {
             this.ghgModule = _data["ghgModule"];
             this.macModule = _data["macModule"];
             this.dataCollectionModule = _data["dataCollectionModule"];
+            this.dataCollectionGhgModule = _data["dataCollectionGhgModule"];
+            this.hasExelTem = _data["hasExelTem"];
             this.uniqueIdentification = _data["uniqueIdentification"];
             if (Array.isArray(_data["defaultValue"])) {
                 this.defaultValue = [] as any;
@@ -30780,6 +30784,8 @@ export class Country implements ICountry {
         data["ghgModule"] = this.ghgModule;
         data["macModule"] = this.macModule;
         data["dataCollectionModule"] = this.dataCollectionModule;
+        data["dataCollectionGhgModule"] = this.dataCollectionGhgModule;
+        data["hasExelTem"] = this.hasExelTem;
         data["uniqueIdentification"] = this.uniqueIdentification;
         if (Array.isArray(this.defaultValue)) {
             data["defaultValue"] = [];
@@ -30827,6 +30833,8 @@ export interface ICountry {
     ghgModule: boolean;
     macModule: boolean;
     dataCollectionModule: boolean;
+    dataCollectionGhgModule: boolean;
+    hasExelTem: boolean;
     uniqueIdentification: string;
     defaultValue: DefaultValue[];
     countrysector: CountrySector[];

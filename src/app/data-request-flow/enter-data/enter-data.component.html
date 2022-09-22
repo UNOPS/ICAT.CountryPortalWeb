@@ -68,6 +68,7 @@
         [paginator]="true"
         [rows]="rows"
         [showCurrentPageReport]="true"
+        paginatorDropdownAppendTo="body"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [rowsPerPageOptions]="[ 10, 25, 50]"
         [totalRecords]="totalRecords"
@@ -235,7 +236,7 @@
       </p-table>
     </div>
     <div class="row mb-3">
-      <div class="col-sm-1  col-md-3"></div>
+      <!-- <div class="col-sm-1  col-md-3"></div> -->
       <div class="col-sm-4 col-md-3 " >
         
         <button
@@ -250,7 +251,20 @@
         <div style="font-size: 2em;"  type="button"  class="pi pi-info-circle mt-1 ml-10" pTooltip="Download above table to excel. Please make sure not to change the template" ></div>
 
       </div>
-      
+      <div  class="col-sm-4 col-md-3 " *ngIf="country.hasExelTem" >
+        
+        <button
+        style="position:relative;width:85%"
+          type="button"
+          pButton
+          pRipple
+          (click)="handleExport()"
+          label="Export to Excel country"
+        ></button>
+        
+        <div style="font-size: 2em;"  type="button"  class="pi pi-info-circle mt-1 ml-10" pTooltip="Download above table to excel. Please make sure not to change the template" ></div>
+
+      </div>
       <div class=" col-sm-4 col-md-3">
         <button
           type="button"

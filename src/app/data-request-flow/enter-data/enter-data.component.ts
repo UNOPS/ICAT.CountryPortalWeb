@@ -12,9 +12,12 @@ import { environment } from 'environments/environment.prod';
 import * as moment from 'moment';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import decode from 'jwt-decode';
+import { read, utils, writeFile } from 'xlsx';
 // import { strictEqual } from 'assert';
 import {
   AssessmentYearControllerServiceProxy,
+  Country,
+  // CountryControllerServiceProxy
   ParameterControllerServiceProxy,
   ParameterHistoryControllerServiceProxy,
   ParameterRequestControllerServiceProxy,
@@ -39,10 +42,14 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
   climateactions: Project[]=[];
   assignCAArray: any[] = [];
 
+  movies: any[] = [];
+  country:Country;
 
 
   parameterList: any[];
   parameterListFilterData: any[] = [];
+  mainParameterListFilterData: any[] = [];
+  parameterListFilterDataLK: any[] = [];
   unitTypeList: any[];
   selectedParameter: any;
   selectedYear: string;
@@ -93,6 +100,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     private serviceProxy: ServiceProxy,
+    // private countryProxy: CountryControllerServiceProxy,
     private parameterProxy: ParameterControllerServiceProxy,
     private projectProxy: ParameterRequestControllerServiceProxy,
     private cdr: ChangeDetectorRef,
@@ -118,42 +126,27 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
     this.userSectorId = tokenPayload.sectorId;
     this.user_role=tokenPayload.roles[0]
     this.totalRecords = 0;
-    // this.serviceProxy
-    //   .getManyBaseProjectControllerProject(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['editedOn,DESC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    //   .subscribe((res: any) => {
-    //     this.climateactions = res.data;
-    //   });
     this.userName = localStorage.getItem('user_name')!;
     console.log('this.userName..', this.userName);
+
+
+
+    this.serviceProxy
+    .getOneBaseCountryControllerCountry(
+      this.userCountryId,
+      undefined,
+      undefined,
+      0
+    )
+    .subscribe((res: any) => {
+      this.country = res;
+      }
+    )
 
     let filter2: string[] = new Array();
 
     filter2.push('projectApprovalStatus.id||$eq||' + 5);
 
-    // this.serviceProxy
-    //   .getManyBaseProjectControllerProject(
-    //     undefined,
-    //     undefined,
-    //     filter2,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
       this.projectProxy
       .getEnterDataParameter(
         0,
@@ -189,7 +182,25 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
 
 
       });
-  }
+  }  
+
+  handleImport($event: any) {
+    const files = $event.target.files;
+    if (files.length) {
+        const file = files[0];
+        const reader = new FileReader();
+        reader.onload = (event: any) => {
+            const wb = read(event.target.result);
+            const sheets = wb.SheetNames;
+
+            if (sheets.length) {
+                const rows = utils.sheet_to_json(wb.Sheets[sheets[0]]);
+                this.movies = rows;
+            }
+        }
+        reader.readAsArrayBuffer(file);
+    }
+}
 
   onCancel() {
     this.confirm1 = false;
@@ -628,8 +639,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
     }
     else {
 
-      this.parameterListFilterData = [];
-
+      let n=0;
       this.parameterList.map((e) => {
         let id = e.parameterId.id;
         let climateAction = e.parameterId.Assessment?.Prject?.climateActionName;
@@ -650,6 +660,26 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
         let value = e.parameterId.value;
         let unit = e.parameterId.uomDataRequest;
         let deadline = e.deadline;
+
+        
+        if(n==0){
+          let obj1={
+            " " :"Name",
+            "":e.parameterId.Assessment?.Prject?.climateActionName,
+          };
+          let obj2={
+            " " :"Year",
+            "":e.parameterId.AssessmentYear,
+          };
+          let obj3={
+            " " :"Scenario",
+            "":e.parameterId.Assessment?.assessmentType,
+          };
+          this.mainParameterListFilterData.push(obj1);
+          this.mainParameterListFilterData.push(obj2);
+          this.mainParameterListFilterData.push(obj3);
+        }
+        n++;
   
         let obj = {
           id,
@@ -662,7 +692,17 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
           unit,
           deadline,
         };
+
+        let objLK= {
+          id,
+          scenario,
+          parameter,
+          value,
+          unit,
+          deadline,
+        };
   
+        this.parameterListFilterDataLK.push(objLK);
         this.parameterListFilterData.push(obj);
   
         console.log('+++++++obj 2======', obj);
@@ -736,6 +776,45 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
     this.uploadFile = false;
   }
 
+  
+
+handleExport() {
+  this.paraListFilter();
+
+  var d = new Date();
+  var reportTime = this.formatDate(d); 
+
+if(this.country.code=="LK"){
+  const headings = [[
+    'ID',
+    'Scenario',
+    'Parameter',
+    'Value',
+    'Unit',
+    'Deadline',
+]];
+  const wb = utils.book_new();
+  const ws: any = utils.json_to_sheet([]);
+  utils.sheet_add_json(ws, this.mainParameterListFilterData, { origin: 'A1', skipHeader: true });
+  utils.sheet_add_json(ws, headings, { origin: 'A5', skipHeader: true });
+  utils.sheet_add_json(ws, this.parameterListFilterDataLK, { origin: 'A6', skipHeader: true });
+  utils.book_append_sheet(wb, ws, 'Report');
+  writeFile(wb, 'data_entry_template_' + reportTime + '.xlsx');
+}
+
+  this.onSearch();
+  this.messageService.add({
+    severity: 'info',
+    summary: 'Info',
+    detail:
+      'Please do not change the number of columns , column names  & selected units of the excel sheet if you want to re upload ',
+    closable: true,
+  });
+
+  this.selectedParameters = []
+
+}
+
   download() {
     this.paraListFilter();
 
@@ -750,10 +829,15 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
     //  const wb: XLSX.WorkBook = XLSX.utils.book_new();
     //  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
+    console.log(this.parameterListFilterData)
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
       this.parameterListFilterData
     );
+   
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    
+    console.log(ws)
+    console.log(wb)
     XLSX.utils.book_append_sheet(wb, ws, 'sheet1');
 
     XLSX.writeFile(wb, 'data_entry_template_' + reportTime + '.xlsx');
