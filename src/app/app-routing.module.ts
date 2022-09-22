@@ -199,7 +199,7 @@ const routes: Routes = [
       ],
       expectedModules: [
         CountryModule.DATACOLLECTION_MODULE,
-        
+        CountryModule.DATACOLLECTION_GHG_MODULE
         
       ],
     },
@@ -359,7 +359,8 @@ const routes: Routes = [
       ],
       expectedModules: [
         CountryModule.MAC_MODULE,
-        CountryModule.GHG_MODULE
+        CountryModule.GHG_MODULE,
+        CountryModule.DATACOLLECTION_GHG_MODULE
         
       ],
     },
@@ -421,7 +422,7 @@ const routes: Routes = [
       ],
       expectedModules: [
         CountryModule.DATACOLLECTION_MODULE,
-        
+        CountryModule.DATACOLLECTION_GHG_MODULE
       ],
     },
   },
@@ -471,7 +472,7 @@ const routes: Routes = [
       ],
       expectedModules: [
         CountryModule.DATACOLLECTION_MODULE,
-        
+        CountryModule.DATACOLLECTION_GHG_MODULE
       ],
     },
   },
@@ -495,7 +496,7 @@ const routes: Routes = [
       expectedRoles: [UserRoles.COUNTRY_ADMIN],
       expectedModules: [
         CountryModule.DATACOLLECTION_MODULE,
-        
+        CountryModule.DATACOLLECTION_GHG_MODULE
       ],
     },
   },
@@ -529,6 +530,7 @@ const routes: Routes = [
       ],
       expectedModules: [
         CountryModule.DATACOLLECTION_MODULE,
+        CountryModule.DATACOLLECTION_GHG_MODULE
         
       ],
     },
