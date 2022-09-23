@@ -1227,7 +1227,7 @@ configEmissionTargetGraph=()=>{
 
        let filterAsses:string[]=new Array();
           filterAsses.push(...filter1)
-        // filterAsses.push('project.id||$eq||' + project.id);
+        filterAsses.push('project.id||$eq||' + project.id);
         // console.log("dddddd",filterAsses)
         
         // filter1.push('ndc.id||$ne|| NULL' );
@@ -1248,10 +1248,12 @@ configEmissionTargetGraph=()=>{
           
           let targettotalemission = 0;
           let tarchievmenttotalem = 0;
-          let minyear="0";
-          let maxyear="0";
-          let targetyearrange = "-";
-          let archiveyearrange = "-";
+          let minyearante="0";
+          let maxyearante="0";
+          let minyearpost="0";
+          let maxyearpost="0";
+          // let targetyearrange = "-";
+          // let archiveyearrange = "-";
        
           if(res.data.length!=0){
             // console.log("hhhhhhh",res.data)
@@ -1260,19 +1262,7 @@ configEmissionTargetGraph=()=>{
               // let filter2: string[] = new Array();
               // filter2.push('assement.id||$eq||' + dt.id);
       
-              for(let year of dt.assessmentYear){
-                // console.log("hhhhhhh",year.assessmentYear)
-                if(Number(year.assessmentYear)>Number(maxyear) ){
-                      
-                  maxyear = year.assessmentYear;
-                }
-                if(Number(minyear)!=0 && Number(year.assessmentYear)<Number(minyear) ){
-                  minyear = year.assessmentYear;
-                }else if(Number(minyear)==0){
-                  minyear = year.assessmentYear;
-                }
-              }
-
+            
               // if(dt.assessmentType=='Ex-ante'){
                
               //   targetyearrange = minyear+"-"+maxyear
@@ -1320,13 +1310,40 @@ configEmissionTargetGraph=()=>{
               }
             
               if(dt.assessmentType=='Ex-ante'){
+                for(let year of dt.assessmentYear){
+                  // console.log("hhhhhhh",year.assessmentYear)
+                  if(Number(year.assessmentYear)>Number(maxyearante) ){
+                        
+                    maxyearante = year.assessmentYear;
+                  }
+                  if(Number(minyearante)!=0 && Number(year.assessmentYear)<Number(minyearante) ){
+                    minyearante = year.assessmentYear;
+                  }else if(Number(minyearante)==0){
+                    minyearante = year.assessmentYear;
+                  }
+                }
+  
+
                 targettotalemission = targettotalemission + sum;
-                targetyearrange = minyear+"-"+maxyear
+                // targetyearrange = minyearante+"-"+maxyearante
               }
               if(dt.assessmentType=='Ex-post'){
                 // console.log("hhhhhhh",dt)
+                for(let year of dt.assessmentYear){
+                  // console.log("hhhhhhh",year.assessmentYear)
+                  if(Number(year.assessmentYear)>Number(maxyearpost) ){
+                        
+                    maxyearpost = year.assessmentYear;
+                  }
+                  if(Number(minyearpost)!=0 && Number(year.assessmentYear)<Number(minyearpost) ){
+                    minyearpost = year.assessmentYear;
+                  }else if(Number(minyearpost)==0){
+                    minyearpost = year.assessmentYear;
+                  }
+                }
+  
                 tarchievmenttotalem = tarchievmenttotalem + sum;;
-                archiveyearrange = minyear+"-"+maxyear
+                // archiveyearrange = minyearpost+"-"+maxyearpost
               }
 
              // this.serviceproxy.getmanybaseasse
@@ -1334,8 +1351,8 @@ configEmissionTargetGraph=()=>{
             }
             activeproject1.erarchievment = tarchievmenttotalem;
             activeproject1.ertarget = targettotalemission;
-            activeproject1.targetyear = targetyearrange;
-            activeproject1.archivmentyear = archiveyearrange;
+            activeproject1.targetyear = minyearante+"-"+maxyearante;
+            activeproject1.archivmentyear =  minyearpost+"-"+maxyearpost;
 
           }
        
