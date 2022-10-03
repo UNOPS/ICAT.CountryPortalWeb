@@ -360,7 +360,8 @@ const routes: Routes = [
       expectedModules: [
         CountryModule.MAC_MODULE,
         CountryModule.GHG_MODULE,
-        CountryModule.DATACOLLECTION_GHG_MODULE
+        CountryModule.DATACOLLECTION_GHG_MODULE,
+        CountryModule.DATACOLLECTION_MODULE
         
       ],
     },

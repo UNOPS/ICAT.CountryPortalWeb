@@ -107,6 +107,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   allSelect:boolean=false;
   isCountryLevel:boolean=true;
 
+  dataCollectionGhgModuleStatus: number;
 
   searchBy: any = {
     sector: null,
@@ -149,6 +150,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
     })
 
     }
+
+    this.dataCollectionGhgModuleStatus =tokenPayload.moduleLevels[4];
 
     // ****update base on loggin details -- get user id from logging details
     // this.route.queryParams.subscribe((params) =>{
@@ -231,12 +234,20 @@ export class ReportComponent implements OnInit, AfterViewInit {
         console.log('project list..', this.climateActionList);
       });
 
-    this.typePair = [
-      { id: 1, name: 'GHG Ex Post', value: 'Ex-post' },
-      { id: 2, name: 'GHG Ex ante', value: 'Ex-ante' },
-      { id: 3, name: 'MAC Ex Post', value: 'Ex-post' },
-      { id: 4, name: 'MAC Ex ante', value: 'Ex-ante' },
-    ];
+    if (this.dataCollectionGhgModuleStatus){
+      this.typePair = [
+        { id: 1, name: 'GHG Ex Post', value: 'Ex-post' },
+        { id: 2, name: 'GHG Ex ante', value: 'Ex-ante' },
+      ];
+    } else {
+      this.typePair = [
+        { id: 1, name: 'GHG Ex Post', value: 'Ex-post' },
+        { id: 2, name: 'GHG Ex ante', value: 'Ex-ante' },
+        { id: 3, name: 'MAC Ex Post', value: 'Ex-post' },
+        { id: 4, name: 'MAC Ex ante', value: 'Ex-ante' },
+      ];
+    }
+
     // console.log('pair...',this.typePair)
     //
 
