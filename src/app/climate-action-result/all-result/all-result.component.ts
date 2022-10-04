@@ -55,6 +55,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
   event: any;
   selectedProject: Assessment;
   dataCollectionModuleStatus:number;
+  dataCollectionGhgModuleStatus: number;
   ////////////////////////////////////
   searchBy: any = {
     text: null,
@@ -63,7 +64,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
   };
   ////////////////////////////////////////
 
-  asseType = ['MAC','Ex-ante','Ex-post'];
+  asseType: string[] = [];
   count:number = 0;
 
   onSearch() {
@@ -250,8 +251,14 @@ export class AllResultComponent implements OnInit, AfterViewInit {
     const tokenPayload = decode<any>(token);
    let model:number[]=[];
    this.dataCollectionModuleStatus =tokenPayload.moduleLevels[3];
+   this.dataCollectionGhgModuleStatus =tokenPayload.moduleLevels[4];
 
 
+    if (this.dataCollectionGhgModuleStatus) {
+      this.asseType = ['Ex-ante','Ex-post'];
+    } else {
+      this.asseType = ['MAC','Ex-ante','Ex-post'];
+    }
     // this.serviceProxy
     //   .getManyBaseProjectControllerProject(
     //     undefined,

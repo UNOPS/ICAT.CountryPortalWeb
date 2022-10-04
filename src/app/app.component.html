@@ -394,7 +394,7 @@
                 (userRole.role == 3 ||
                   userRole.role == 4 ||
                   userRole.role == 5) &&
-                [models.GHG_MODULE, models.MAC_MODULE].some(getModel)
+                [models.GHG_MODULE, models.MAC_MODULE, models.DATACOLLECTION_MODULE].some(getModel)
               "
               class="sidebar-items--link align-items-start"
               [routerLink]="['/all-result']"
