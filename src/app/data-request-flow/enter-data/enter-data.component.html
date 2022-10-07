@@ -331,9 +331,11 @@
             <input
               placeholder="Type Your Value"
               type="text"
+              #cations="ngModel"
               class="p-inputtext"
               [(ngModel)]="selectedValue"
               pInputText
+              [required]="true"
             />
           </div>
           <div *ngIf="isHistorical">
@@ -344,6 +346,7 @@
               [options]="selectedPara.parameterId.displayhisValues"
               optionLabel="label"
               appendTo="body"
+              [required]="true"
             >
             </p-dropdown>
           </div>
@@ -379,6 +382,7 @@
         <td>
           <div class="p-field">
             <button
+            [disabled]="!selectedValue && !selectedHistoricalValue"
               type="button"
               pButton
               pRipple
@@ -390,6 +394,7 @@
         <td>
           <div class="p-field">
             <button
+            [disabled]="!selectedValue && !selectedHistoricalValue"
               type="button"
               pButton
               pRipple
