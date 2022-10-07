@@ -5,10 +5,10 @@
     <form #fData="ngForm" novalidate>
         <div class="card">
             <p-tabView>
-                <p-tabPanel header="Assess a Proposal"> 
+                <p-tabPanel header="Enter Data and Assess"> 
                    <app-mac-assessment [IsProposal]="true"></app-mac-assessment>
                 </p-tabPanel>
-                <p-tabPanel [disabled]="dataCollectionModuleStatus==0" header="Assess an Approved Specific Climate Actions">
+                <p-tabPanel [disabled]="dataCollectionModuleStatus==0" header="Collect Data and Assess">
                     <app-mac-assessment-approved [IsProposal]="false"></app-mac-assessment-approved>
                 </p-tabPanel> 
                 
