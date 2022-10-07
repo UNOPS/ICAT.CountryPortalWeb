@@ -299,8 +299,10 @@ export class ProposeProjectComponent implements OnInit {
               undefined,
               0
             )
-            .subscribe(async (res) => {
-              this.project = res;
+            .subscribe(async (res1) => {
+              this.project = res1;
+              this.project.ndc = res1.ndc;
+              this.project.sector =res1.sector;
               const latitude = parseFloat(this.project.latitude + '');
               const longitude = parseFloat(this.project.longitude + '');
               await this.addMarker(longitude, latitude);
@@ -332,7 +334,7 @@ export class ProposeProjectComponent implements OnInit {
               var sector = this.sectorList.find(
                 (a) => a.id === this.project?.sector?.id
               );
-              this.project.sector = sector != undefined ? sector : new Sector();
+              // this.project.sector = sector != undefined ? sector : new Sector();
               console.log('this.project.sector...', this.project.sector);
               this.onSectorChange(true);
               this.proposeDateofCommence = new Date(
