@@ -5,10 +5,10 @@
 
   <div class="card overflow-none">
     <p-tabView>
-      <p-tabPanel header="Assess a Proposed Specific Climate Action">
+      <p-tabPanel header="Enter Data and Assess">
         <app-ghg-assessment [IsProposal]="true"></app-ghg-assessment>
       </p-tabPanel>
-      <p-tabPanel  [disabled]="dataCollectionModuleStatus==0 && dataCollectionGhgModuleStatus==0" header=" Assess an Approved Specific Climate Action">
+      <p-tabPanel  [disabled]="dataCollectionModuleStatus==0 && dataCollectionGhgModuleStatus==0" header=" Collect Data and Assess">
         <app-ghg-assessment [IsProposal]="false"></app-ghg-assessment>
       </p-tabPanel>
     </p-tabView>
