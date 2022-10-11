@@ -234,7 +234,7 @@
             pRipple
             (click)="parameterAccept(false, true, false)"
           >
-            Accept
+            {{isMethodology ? "Accepted" : "Accept"}}
           </button>
         </div>
       </div>
@@ -309,6 +309,7 @@
         [ResultValue]="assessmentResult.baselineResult"
         [verificationDetails]="verificationDetails"
         [isBaseline]="true"
+        [isAccept]="isBaseAccept"
         [flag]="flag"
         [verificationStatus] ="verificationStatus"
       ></app-verify-parameter-section>
@@ -325,6 +326,7 @@
         [verificationDetails]="verificationDetails"
         [isProject]="true"
         [isAdmin]="false"
+        [isAccept]="isProjectAccept"
         [flag]="flag"
         [verificationStatus] ="verificationStatus"
       ></app-verify-parameter-section>
@@ -342,6 +344,7 @@
         [verificationDetails]="verificationDetails"
         [isLekage]="true"
         [flag]="flag"
+        [isAccept]="isLeckegeAccept"
         [verificationStatus] ="verificationStatus"
       ></app-verify-parameter-section>
     </div>

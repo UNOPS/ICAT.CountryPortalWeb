@@ -2,7 +2,25 @@
   <h4 class="mt-4">Quality Control</h4>
   <div class="p-grid p-fluid card">
     <div class="row mb-3">
-      <div class="col-md-6">
+      <div class="col-md-4">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Climate action</label>
+            <p-dropdown
+            name="climateActiontype"
+            [options]='climateAction'
+            [(ngModel)]="searchBy.climateaction"
+            #fsector="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            placeholder="Select .."
+            (ngModelChange)="onCAChange($event)"
+          >
+          </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
         <div class="col-12">
           <div class="p-field">
             <label for="projStatus">Status</label>
@@ -20,7 +38,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="p-inputgroup pt-4">
           <input
             placeholder="Type Your Keyword"

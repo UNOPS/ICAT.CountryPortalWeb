@@ -65,6 +65,10 @@ export class VerifyDetailComponent implements OnInit {
   assumption:string = '';
   assessmentObjective:any
 
+  isBaseAccept:boolean = true;
+  isProjectAccept:boolean = true;
+  isLeckegeAccept:boolean = true;
+
   isNdcDisable:boolean = false;
   isNdcDisableReject:boolean = false;
   isMethodology:boolean = false;
@@ -288,13 +292,31 @@ export class VerifyDetailComponent implements OnInit {
 
         this.baselineParameters =
           this.assementYear.assessment.parameters.filter((p) => p.isBaseline);
+        
+        for (let base of this.baselineParameters){
+          if(base.isAcceptedByVerifier !=1){
+            this.isBaseAccept =false;
+          }
+        }
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isProject
         );
+
+        for (let base of this.projectParameters){
+          if(base.isAcceptedByVerifier !=1){
+            this.isProjectAccept =false;
+          }
+        }
         this.lekageParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isLekage
         );
+
+        for (let base of this.lekageParameters){
+          if(base.isAcceptedByVerifier !=1){
+            this.isLeckegeAccept =false;
+          }
+        }
         this.projectionParameters =
           this.assementYear.assessment.parameters.filter(
             (p) =>

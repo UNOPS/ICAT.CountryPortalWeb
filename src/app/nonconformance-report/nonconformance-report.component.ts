@@ -125,7 +125,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
       this.isVerificationHistory = params['isVerificationHistory'];
       this.vStatus = params['vStatus'];
     // this.assesMentYearId = 3;
-      console.log("this.flag..,,",this.flag)
+      console.log("this.flag..,,",params)
 
       this.serviceProxy
         .getOneBaseAssessmentYearControllerAssessmentYear(

@@ -74,7 +74,7 @@ export class ApproveDataComponent implements OnInit {
     private parameterControlProxy: ParameterControllerServiceProxy,
     private prHistoryProxy: ParameterHistoryControllerServiceProxy,
     private instProxy: InstitutionControllerServiceProxy
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     /*
@@ -102,13 +102,11 @@ export class ApproveDataComponent implements OnInit {
         if (this.finalQC != null) {
           // if (this.finalQC.qaStatus != null) {
           //   console.log('Asseyear...', this.finalQC.qaStatus);
-          //   this.enableQCButton = false;
           //   this.isRejectButtonDisable = true;
           //   this.isHideRejectButton = true;
           // }
           if (this.finalQC.qaStatus != 4) {
             console.log('Asseyear...', this.finalQC.qaStatus);
-            // this.enableQCButton = fale;
             this.isRejectButtonDisable = false;
             this.isHideRejectButton = false;
           }
@@ -254,7 +252,7 @@ export class ApproveDataComponent implements OnInit {
   }
   onRejectClick() {
     this.selectedParameters.push(...this.selectedBaselineParameters, ...this.selectedProjectParameters,
-                                  ...this.selectedLeakageParameters, ...this.selectedProjectionParameters)
+      ...this.selectedLeakageParameters, ...this.selectedProjectionParameters)
     if (this.selectedParameters.length > 1) {
       this.messageService.add({
         severity: 'error',
@@ -274,7 +272,7 @@ export class ApproveDataComponent implements OnInit {
 
   onRejectConfirm() {
     this.selectedParameters.push(...this.selectedBaselineParameters, ...this.selectedProjectParameters,
-                                  ...this.selectedLeakageParameters, ...this.selectedProjectionParameters)
+      ...this.selectedLeakageParameters, ...this.selectedProjectionParameters)
     let idList = new Array<number>();
     for (let index = 0; index < this.selectedParameters.length; index++) {
       const element = this.selectedParameters[index];
@@ -408,7 +406,7 @@ export class ApproveDataComponent implements OnInit {
 
   onAcceptClick() {
     this.selectedParameters.push(...this.selectedBaselineParameters, ...this.selectedProjectParameters,
-                                  ...this.selectedLeakageParameters, ...this.selectedProjectionParameters)
+      ...this.selectedLeakageParameters, ...this.selectedProjectionParameters)
     console.log('selectedParameters', this.selectedParameters);
     if (this.selectedParameters.length > 0) {
       let idList = new Array<number>();
@@ -452,7 +450,7 @@ export class ApproveDataComponent implements OnInit {
     this.selectedParameters = []
   }
 
-  clearParameters(){
+  clearParameters() {
     this.selectedParameters = [];
     this.selectedBaselineParameters = [];
     this.selectedLeakageParameters = [];

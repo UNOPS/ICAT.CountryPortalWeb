@@ -23948,7 +23948,7 @@ export class QualityCheckControllerServiceProxy {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getQCParameters(page: number, limit: number, statusId: number, filterText: string, ndcId: number, subNdcId: number): Observable<any> {
+    getQCParameters(page: number, limit: number, statusId: number, filterText: string, ndcId: number, subNdcId: number, ctAction: string): Observable<any> {
         let url_ = this.baseUrl + "/quality-check/quality-check/GetQCParameters/{page}/{limit}/{statusId}/{filterText}/{ndcId}/{subNdcId}?";
         if (page === undefined || page === null)
             throw new Error("The parameter 'page' must be defined and cannot be null.");
@@ -23974,6 +23974,10 @@ export class QualityCheckControllerServiceProxy {
             throw new Error("The parameter 'subNdcId' must be defined and cannot be null.");
         else
             url_ += "subNdcId=" + encodeURIComponent("" + subNdcId) + "&";
+        if (ctAction === undefined || ctAction === null)
+            throw new Error("The parameter 'ctAction' must be defined and cannot be null.");
+        else
+            url_ += "ctAction=" + encodeURIComponent("" + ctAction) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

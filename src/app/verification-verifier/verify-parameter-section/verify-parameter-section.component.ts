@@ -68,6 +68,9 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
 
   @Input()
+  isAccept: boolean;
+
+  @Input()
   verificationDetails: VerificationDetail[];
 
   loading: boolean = false;
