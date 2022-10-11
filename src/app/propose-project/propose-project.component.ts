@@ -100,6 +100,7 @@ export class ProposeProjectComponent implements OnInit {
   institutionTypeID: number = 3;
   selectedInstitution: Institution;
   selectedDocuments: Documents[] = [];
+  counID:number;
 
   isSector: boolean = false;
 
@@ -134,9 +135,19 @@ export class ProposeProjectComponent implements OnInit {
   ngOnInit(): void {
     const token = localStorage.getItem('access_token')!;
     const countryId = token ? decode<any>(token).countryId : 0;
+    this.counID= countryId;
     this.userName = localStorage.getItem('user_name')!;
     let filterUser: string[] = [];
     filterUser.push('username||$eq||' + this.userName);
+    
+
+    if (countryId>0){
+      this.sectorProxy.getCountrySector(countryId).subscribe((res: any) => {
+        this.sectorList = res;
+        console.log("++++" ,this.sectorList)
+      });
+    }
+    
 
     this.serviceProxy
       .getManyBaseUsersControllerUser(
@@ -804,15 +815,20 @@ export class ProposeProjectComponent implements OnInit {
     // for (const w of words) {
     //   orfilter.push('climateActionName||$cont||' + w.trim());
     // }
+    let filter: string[] = new Array();
+    if(this.counID > 0){
+      filter.push('country.id||$eq||' + this.counID);
+    }
+    
 
-    orfilter.push('climateActionName||$cont||' + searchText);
+    filter.push('climateActionName||$cont||' + searchText);
 
     this.serviceProxy
       .getManyBaseProjectControllerProject(
         undefined,
         undefined,
+        filter,
         undefined,
-        orfilter,
         undefined,
         undefined,
         10,
@@ -1385,7 +1401,7 @@ export class ProposeProjectComponent implements OnInit {
               );
 
             console.log('update....', res, this.project);
-            this.isMapped = this.project.isMappedCorrectly
+            this.isMapped = 1
             this.messageService.add({
               severity: 'success',
               summary: 'Success',

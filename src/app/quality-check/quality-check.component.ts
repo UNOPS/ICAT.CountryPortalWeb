@@ -10,6 +10,7 @@ import {
   Parameter,
   ParameterRequest,
   ParameterRequestQaStatus,
+  Project,
   QualityCheckControllerServiceProxy,
   ServiceProxy,
 } from 'shared/service-proxies/service-proxies';
@@ -35,6 +36,7 @@ export class QualityCheckComponent implements OnInit {
     subNdc: null,
   };
   parameteters: AssessmentYear[] = [];
+  climateAction: any[]=[];
   loading: boolean;
   totalRecords: number = 0;
   itemsPerPage: number = 0
@@ -93,7 +95,34 @@ export class QualityCheckComponent implements OnInit {
         this.ndcList = res.data;
       });
 
+
+      let statusId = this.searchBy.status
+      let filtertext = this.searchBy.text ? this.searchBy.text : '';
+      let ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
+      let subNDC = this.searchBy.subNdc ? this.searchBy.subNdc.id : 0;
+
+      this.qaServiceProxy.getQCParameters(
+          1,
+          10000,
+          0,
+          filtertext,
+          ndcId,
+          subNDC,
+          '',
+        )
+        .subscribe((a) => {
+
+          // this.parameteters = a.items;
+          a.items.forEach((b:any)=>{
+            if( !this.climateAction.includes(b.assessment.project.climateActionName)){
+              this.climateAction.push(b.assessment.project.climateActionName)
+            }
+            
+          })
+        });
+
     this.onSearch();
+    console.log(this.climateAction)
   }
 
   onStatusChange($event: any) {
@@ -125,7 +154,10 @@ export class QualityCheckComponent implements OnInit {
     let filtertext = this.searchBy.text ? this.searchBy.text : '';
     let ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
     let subNDC = this.searchBy.subNdc ? this.searchBy.subNdc.id : 0;
-
+    let ctAction = this.searchBy.climateaction
+    ? this.searchBy.climateaction
+    : '';
+    console.log("===========",ctAction)
     let pageNumber =
       event.first === 0 || event.first === undefined
         ? 1
@@ -140,7 +172,8 @@ export class QualityCheckComponent implements OnInit {
           statusId,
           filtertext,
           ndcId,
-          subNDC
+          subNDC,
+          ctAction
         )
         .subscribe((a) => {
 
@@ -152,6 +185,11 @@ export class QualityCheckComponent implements OnInit {
         });
     }, 1);
   };
+
+  onCAChange(event: any) {
+    console.log('searchby...', this.searchBy);
+    this.onSearch();
+  }
 
   statusClick(event: any, object: AssessmentYear) {
     // if (

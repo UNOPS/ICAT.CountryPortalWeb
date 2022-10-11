@@ -124,6 +124,7 @@
               </th> 
               <th>Name</th>
               <th>Assessment Year</th>
+              <th>Assessment Result</th>
               <th>Methodology</th>
               <th>Assessment Type</th>
               <!-- <th>Emmisssion Reduction</th>
@@ -227,7 +228,10 @@
 
                 <td>{{ ase.project?.climateActionName }}</td>
                   <td>{{ asseYer.assessmentYear }}</td>
-                
+                  <!-- <ng-container *ngIf="ase.assessmentType == 'MAC'; else elseBlockmethNAme"> -->
+                    <td *ngIf="ase.assessmentType == 'MAC' " >{{ ase.assessmentResult?.macResult? ase.assessmentResult?.macResult : 0}}  USD/tCO₂e</td>
+                  <!-- </ng-container> -->
+                  <td *ngIf="ase.assessmentType != 'MAC'  ">{{ ase.assessmentResult?.totalEmission ? ase.assessmentResult?.totalEmission :0 }}  tCO₂e</td>
 
 
                   <ng-container *ngIf="ase.assessmentType == 'MAC'; else elseBlockmethNAme">

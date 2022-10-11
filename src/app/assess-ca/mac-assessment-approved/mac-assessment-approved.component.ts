@@ -15,7 +15,7 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
 
   @Input() IsProposal: boolean;
   climateActions: Project[] = [];  
-  assessments: Assessment[] = [];
+  assessments: any[] = [];
   assessmentsByYear: Assessment[][] = [];
   filteredAssessments: any[] = [];
   ndc :any = '';
@@ -168,8 +168,8 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
 
     let projfilter: string[] = new Array();
     projfilter.push('projectApprovalStatus.id||$in||' +[1,5]);
-    projfilter.push('Country.id||$eq||' +this.userCountryId);
-
+    projfilter.push('country.id||$eq||' +this.userCountryId);
+    // projfilter.push('Country.id||$eq||' +this.userCountryId);
     this.serviceProxy
     .getManyBaseProjectControllerProject(
       undefined,
@@ -299,7 +299,7 @@ export class MacAssessmentApprovedComponent implements OnInit,AfterViewInit {
     this.assesmentServiceProxy.assessmentForMAC(this.slectedProject.id)
     .subscribe((res: any) => {
       this.assessments = res;
-      console.log('assessments', res);
+      console.log('assessments', this.assessments);
      // this.asseYear = this.assessments[0].assessmentYear[0].assessmentYear;
      // console.log('asse year',this.asseYear)
      this.getYears()
@@ -316,7 +316,7 @@ getYears()
     {
     for (let x =0; x<this.assessments.length;x++)
     {
-     // console.log('your ass',this.assessments[x])
+     console.log('your ass',this.assessments[x].ay_assessmentYear)
 
     //  for (let j =0; j<this.assessments[x].assessmentYear.length;x++)
     // {
@@ -325,11 +325,11 @@ getYears()
     // }
 
 
-      this.details.push(this.assessments[x].assessmentYear[0].assessmentYear);
+      this.details.push(this.assessments[x].ay_assessmentYear);
 
 
     }
-   // console.log('asse year',this.details)
+   console.log('asse year',this.details)
      }
      this.uniqueYears = [...new Set(this.details)];
      this.uniqueYears = this.uniqueYears.map(year => {return {label: year.toString(), value: year}})

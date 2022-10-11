@@ -15,12 +15,23 @@
       <div class="col-12" *ngIf="flag != 1">
         <button *ngIf="verificationStatus !=3"
           type="button"
-          [disabled]="selectedParameter.length < 1"
+          [disabled]="selectedParameter.length < 1 || isAccept"
           pButton
           pRipple
           (click)="parameterAccept()"
         >
-          Accept
+          <!-- Accept -->
+          {{isAccept ? "Accepted" : "Accept"}} 
+        </button>
+        <button *ngIf="verificationStatus ==3"
+          type="button"
+          [disabled]="true"
+          pButton
+          pRipple
+          (click)="parameterAccept()"
+        >
+          <!-- Accept -->
+          {{isAccept ? "Accepted" : "Accept"}} 
         </button>
       </div>
     </div>

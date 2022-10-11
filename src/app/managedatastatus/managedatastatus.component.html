@@ -71,7 +71,7 @@
             <td>
               <button pRipple pButton type="button" (click)="directToApprovePage(datarequests)"
                 class="btn btn-primary btn-block text-uppercase btn-lg" style="margin-left: 1%">
-                 Approve Data
+                 {{datarequests.qaStatus ==4 ? "Approved Data" : "Approve Data"}}
               </button>
             </td>
           </tr>
