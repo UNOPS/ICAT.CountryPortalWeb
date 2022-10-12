@@ -362,6 +362,7 @@
         [verificationDetails]="verificationDetails"
         [isProjection]="true"
         [flag]="flag"
+        [isAccept]="isProjectionAccept"
         [verificationStatus] ="verificationStatus"
       ></app-verify-parameter-section>
     </div>
@@ -398,7 +399,7 @@
           pRipple
           (click)="parameterAccept(false,false,true)"
         >
-          Accept
+         {{isAssumptions ? "Accepted" :"Accept" }} 
         </button>
         </div>
         <div class="col-2">

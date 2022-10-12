@@ -318,17 +318,21 @@ export class VerifyDetailComponent implements OnInit {
             this.isLeckegeAccept =false;
           }
         }
-        for (let base of this.projectionParameters){
-          if(base.isAcceptedByVerifier !=1){
-            this.isProjectionAccept =false;
-          }
-        }
+        
+        
         this.projectionParameters =
           this.assementYear.assessment.parameters.filter(
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == Number(this.assementYear.assessmentYear)
           );
+
+          for (let base of this.projectionParameters){
+            if(base.isAcceptedByVerifier !=1){
+              this.isProjectionAccept =false;
+            }
+          }
+          console.log("__________",this.projectionParameters)
       });
   }
 

@@ -233,6 +233,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       rejectIcon: 'icon-not-visible',
       accept: () => {
         this.acceptParametrs();
+
       },
       reject: () => {},
     });
@@ -312,6 +313,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
           detail: 'successfully Save.',
           closable: true,
         });
+        this.isAccept=true
       });
   }
 

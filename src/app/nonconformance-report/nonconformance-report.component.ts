@@ -395,28 +395,13 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
       this.assementYear.verificationStatus = 7;
     }
    }
-    
-
-    
-   
-
-
-
-
-
-
-
-    
-
-
-
-
+  
     this.serviceProxy
     .updateOneBaseAssessmentYearControllerAssessmentYear(this.assementYear.id, this.assementYear)
     .subscribe(
       (res) => {
         this.messageService.add({severity:'success', summary: 'Success', detail:'successfully updated!'});
-
+        console.log("++++++++++++++++++++++",this.assementYear)
       },
     );
 
