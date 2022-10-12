@@ -377,9 +377,9 @@ this.ndcProxy.getDateRequest(0,0,[])
       
      
 
-      let filterBySector: string[] = new Array();
+      // let filterBySector: string[] = new Array();
 
-      filterBySector.push('sector.id||$eq||'+ this.sectorId)
+      // filterBySector.push('sector.id||$eq||'+ this.sectorId)
 
       // this.serviceProxy
       // .getManyBaseProjectControllerProject(
@@ -401,13 +401,13 @@ this.ndcProxy.getDateRequest(0,0,[])
         // console.log("testqqqsdfffffsdfsfsd");
         
         // console.log('projects by sector',this.cliamteActionsBySector);
-        for(let a=0;a<this.cliamteActionsBySector.length;a++){
-          // console.log('proId....',this.cliamteActionsBySector[a]?.id)
-          for(let b=0;b<this.cliamteActionsBySector[a]?.assessments.length;b++){
-            this.assessmentListId.push(this.cliamteActionsBySector[a]?.assessments[b]?.id)
+        // for(let a=0;a<this.cliamteActionsBySector.length;a++){
+        //   // console.log('proId....',this.cliamteActionsBySector[a]?.id)
+        //   for(let b=0;b<this.cliamteActionsBySector[a]?.assessments.length;b++){
+        //     this.assessmentListId.push(this.cliamteActionsBySector[a]?.assessments[b]?.id)
 
-          }
-        }
+        //   }
+        // }
       //  console.log('assessment ListId...',this.assessmentListId)
 
           // if(this.assessmentListBySector[a]?.assessmentType == 'Ex-Post'){
@@ -428,11 +428,11 @@ this.ndcProxy.getDateRequest(0,0,[])
         this.unconValLst.push(!this.emissionReduction.unconditionaltco2 && this.emissionReduction.unconditionaltco2==0?0:((this.unconditionalValue-this.emissionReduction.baseYearEmission)/yearlstLength)*x +this.emissionReduction.baseYearEmission);
         this. bauValLst.push(bauValue);
 
-        filter1.push('assessmentYear.assessmentYear||$in||'+ this.yrList[x])  
-        &
-        filter1.push('assement.assessmentType||$eq||Ex-post') 
-        & 
-        filter1.push('assement.id||$in||'+ this.assessmentListId) 
+        // filter1.push('assessmentYear.assessmentYear||$in||'+ this.yrList[x])  
+        // &
+        // filter1.push('assement.assessmentType||$eq||Ex-post') 
+        // & 
+        // filter1.push('assement.id||$in||'+ this.assessmentListId) 
         // console.log('filter1',filter1);
 
       //  let res= await this.serviceProxy
@@ -454,7 +454,7 @@ this.ndcProxy.getDateRequest(0,0,[])
         for(let assement of this.assessmentList){
          
           total += assement.totalEmission?Number(assement.totalEmission):0;
-          console.log("total",total)
+          // console.log("total",total)
 
         }
         
