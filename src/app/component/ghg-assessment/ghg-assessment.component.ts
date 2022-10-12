@@ -2461,9 +2461,11 @@ export class GhgAssessmentComponent implements OnInit {
     console.log(sectionparam);
   }
 
-  suggestValues(sectionparam:SectionParameter) {
+  async suggestValues(sectionparam:SectionParameter) {
+    let assessments = await this.assessmentProxy.getAssessmentsByCountryMethodology(this.selectedMethodology.id, this.userCountryId).toPromise()
+     console.log(assessments)
     this.methodParaCodes = sectionparam.parameters.map(para => {return para.Code});
-    let assessmentIds = this.methodAssessments.map(ass => {return ass.id});
+    let assessmentIds = assessments.map(ass => {return ass.id});
     let filter: string[] | undefined = []
     if (this.methodParaCodes && this.methodParaCodes.length > 0 && 
         assessmentIds && assessmentIds.length > 0){
@@ -2492,6 +2494,7 @@ export class GhgAssessmentComponent implements OnInit {
                 0,
                 0
               ).subscribe((res: any) => {
+                console.log(res)
 
                 sectionparam.parameters = sectionparam.parameters.map(para =>{
                   let parameters = res.data.filter((p:any) => (p.code == para.Code) && p.value )
@@ -2833,7 +2836,7 @@ export class GhgAssessmentComponent implements OnInit {
   //   return true
   // }
 
-  createAssementCA(data: NgForm) {
+  async createAssementCA(data: NgForm) {
     console.log("proprose")
     this.requiredParas = true
     if (this.IsProposal) {
@@ -2841,7 +2844,10 @@ export class GhgAssessmentComponent implements OnInit {
     }
 
     if (data.form.valid && this.selectYears !== undefined && !this.isSave ) {
+      let country = new Country();
+      country.id = this.userCountryId;
       let assessment = new Assessment();
+      assessment.country = country;
       assessment.baseYear = this.baseYear.getFullYear();
       if (this.selectedNdc) {
         var ndc = new Ndc();

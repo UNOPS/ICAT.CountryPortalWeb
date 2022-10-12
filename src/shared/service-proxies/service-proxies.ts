@@ -21728,6 +21728,69 @@ export class AssesmentControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
+    getAssessmentsByCountryMethodology(methodId: number, countryId: number): Observable<Assessment[]> {
+        let url_ = this.baseUrl + "/assesment/get-assessments-by-country-methodology?";
+        if (methodId === undefined || methodId === null)
+            throw new Error("The parameter 'methodId' must be defined and cannot be null.");
+        else
+            url_ += "methodId=" + encodeURIComponent("" + methodId) + "&";
+        if (countryId === undefined || countryId === null)
+            throw new Error("The parameter 'countryId' must be defined and cannot be null.");
+        else
+            url_ += "countryId=" + encodeURIComponent("" + countryId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAssessmentsByCountryMethodology(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAssessmentsByCountryMethodology(<any>response_);
+                } catch (e) {
+                    return <Observable<Assessment[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Assessment[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAssessmentsByCountryMethodology(response: HttpResponseBase): Observable<Assessment[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(Assessment.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
     assessmentForMAC(projectId: number): Observable<any> {
         let url_ = this.baseUrl + "/assesment/assessmentForMAC?";
         if (projectId === undefined || projectId === null)
