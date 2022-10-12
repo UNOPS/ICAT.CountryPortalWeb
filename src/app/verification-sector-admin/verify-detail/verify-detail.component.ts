@@ -148,8 +148,10 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
           });
 
           this.getAssesment();
+          this.getProjectionResult();
           this.getAssesmentResult(false);
           this.getVerificationDetail();
+          
         });
     });
   }
@@ -198,6 +200,18 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       .subscribe((res) => {
         this.assessmentResult = res;
         console.log("this.assessmentResult...",this.assessmentResult);
+      });
+  }
+
+  getProjectionResult() {
+    this.projectionResultProxy
+      .getProjectionResult(
+        this.assementYear.assessment.id,
+        Number(this.assementYear.assessmentYear)
+      )
+      .subscribe((res) => {
+        this.projectionResult = res;
+        console.log("ffffffffffffff",res)
       });
   }
 

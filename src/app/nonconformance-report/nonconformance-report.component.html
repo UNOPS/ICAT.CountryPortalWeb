@@ -1488,7 +1488,7 @@
         <div class="col-md-2" >
             <button *ngIf="isVerificationHistory !=1 && vStatus != 3"
              pButton pRipple type="button" label="Submit" (click)="toChangeStatus()" class="p-button-info"></button>
-             <button *ngIf="vStatus == 3"
+             <button *ngIf="vStatus == 3 || vStatus == 7"
              pButton pRipple type="button" label="Submited" [disabled]="true" class="p-button-info"></button>
     
         </div>

@@ -69,9 +69,9 @@
             <td>{{ datarequests.pendingdataentries }}</td>
             <td>{{ datarequests.recieved }}</td>
             <td>
-              <button pRipple pButton type="button" (click)="directToApprovePage(datarequests)"
+              <button pRipple pButton type="button" (click)="directToApprovePage(datarequests)" [disabled]="datarequests.qaStatus ==4  || datarequests.qaStatus ==1"
                 class="btn btn-primary btn-block text-uppercase btn-lg" style="margin-left: 1%">
-                 {{datarequests.qaStatus ==4 ? "Approved Data" : "Approve Data"}}
+                 {{datarequests.qaStatus ==4 || datarequests.qaStatus ==1 ? "Approved Data" : "Approve Data"}}
               </button>
             </td>
           </tr>

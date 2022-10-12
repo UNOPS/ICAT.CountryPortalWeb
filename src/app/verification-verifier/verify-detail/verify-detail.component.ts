@@ -68,6 +68,7 @@ export class VerifyDetailComponent implements OnInit {
   isBaseAccept:boolean = true;
   isProjectAccept:boolean = true;
   isLeckegeAccept:boolean = true;
+  isProjectionAccept:boolean = true;
 
   isNdcDisable:boolean = false;
   isNdcDisableReject:boolean = false;
@@ -315,6 +316,11 @@ export class VerifyDetailComponent implements OnInit {
         for (let base of this.lekageParameters){
           if(base.isAcceptedByVerifier !=1){
             this.isLeckegeAccept =false;
+          }
+        }
+        for (let base of this.projectionParameters){
+          if(base.isAcceptedByVerifier !=1){
+            this.isProjectionAccept =false;
           }
         }
         this.projectionParameters =
