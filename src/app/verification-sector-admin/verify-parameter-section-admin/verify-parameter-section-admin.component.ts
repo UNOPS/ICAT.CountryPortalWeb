@@ -38,7 +38,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   parameters: Parameter[];
 
   @Input()
-  ResultValue: number | undefined;
+  ResultValue: any | undefined;
 
   @Input()
   ResultLabel: string;
@@ -48,6 +48,9 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
 
   @Input()
   isProject: boolean;
+
+  @Input()
+  multiResult: boolean;
 
   @Input()
   isLekage: boolean;
@@ -74,6 +77,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   raiseConcernSection: string = '';
   concernVerificationDetails: VerificationDetail[];
   concernParam: Parameter | undefined;
+  isProjectionResult = false;
 
   isParameter: boolean;
   isValue: boolean;
@@ -95,6 +99,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadUser();
+    if (this.multiResult) this.isProjectionResult = true;
   }
 
   loadUser() {

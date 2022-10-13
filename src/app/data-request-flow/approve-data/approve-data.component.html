@@ -467,7 +467,7 @@
         <button
           class="btn btn-primary text-uppercase"
           type="submit"
-          [disabled]="isHideRejectButton"
+          [disabled]="isHideRejectButton || enableQCButton"
           (click)="onAcceptClick()"
         >
           Accept

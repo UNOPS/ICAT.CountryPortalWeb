@@ -192,6 +192,7 @@
         [baseImage] = "leakageImage"  
         [assessmentType]="assessmentType"
         [parameters]="lekageParameters"
+        (isReadyToCal)="addItem($event)"
       ></app-parameter-summary>
     </div>
 
@@ -204,6 +205,7 @@
         [assessmentType]="assessmentType"
         [baseImage] = "projectionImage"
         [parameters]="projectionParameters"
+        (isReadyToCal)="addItem($event)"
       ></app-parameter-summary>
     </div>
 

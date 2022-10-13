@@ -301,6 +301,7 @@
         [ResultValue]="assessmentResult.baselineResult"
         [verificationDetails]="verificationDetails"
         [isBaseline]="true"
+        [isProjection]="false"
         [isAdmin]="true"
       ></app-verify-parameter-section-admin>
     </div>
@@ -315,6 +316,7 @@
         [ResultValue]="assessmentResult.projectResult"
         [verificationDetails]="verificationDetails"
         [isProject]="true"
+        [isProjection]="false"
         [isAdmin]="true"
       ></app-verify-parameter-section-admin>
     </div>
@@ -330,6 +332,7 @@
         [ResultValue]="assessmentResult.lekageResult"
         [verificationDetails]="verificationDetails"
         [isLekage]="true"
+        [isProjection]="false"
         [isAdmin]="true"
       ></app-verify-parameter-section-admin>
     </div>
@@ -337,15 +340,15 @@
     <div class="row mb-3">
       <app-verify-parameter-section-admin
         *ngIf="projectionParameters.length > 0"
-        header="Projection Parameters"
+        header="Projection Parameter"
         [assessmentYear]="assementYear"
         [scenario]=""
         [parameters]="projectionParameters"
-        ResultLabel=""
-        [ResultValue]=""
+        ResultLabel="Projected Emission Reduction"
+        [multiResult]="true"
+        [ResultValue]="projectionResult[0]"
         [verificationDetails]="verificationDetails"
         [isProjection]="true"
-        [isAdmin]="true"
       ></app-verify-parameter-section-admin>
     </div>
 

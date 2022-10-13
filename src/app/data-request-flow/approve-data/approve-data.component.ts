@@ -108,7 +108,10 @@ export class ApproveDataComponent implements OnInit {
           if (this.finalQC.qaStatus != 4) {
             console.log('Asseyear...', this.finalQC.qaStatus);
             this.isRejectButtonDisable = false;
-            this.isHideRejectButton = false;
+            if(this.finalQC.qaStatus==1){
+              this.isHideRejectButton = true;
+            }
+            else {this.isHideRejectButton = false;}
           }
         }
         //  this.assessmentYear = res;
@@ -246,7 +249,7 @@ export class ApproveDataComponent implements OnInit {
         if (r) {
           console.log('check res...', r);
           this.enableQCButton = r;
-          this.isRejectButtonDisable = r;
+          this.isRejectButtonDisable = !r;
         }
       });
   }
@@ -319,7 +322,7 @@ export class ApproveDataComponent implements OnInit {
   }
 
   onClickQC() {
-    this.isHideRejectButton = true;
+    this.isHideRejectButton = true; 
     console.log('selected qc dead line..', this.selectedQCDeadline);
     this.assementYear.qaDeadline = this.selectedQCDeadline;
     console.log('qc dead line..', this.assementYear);
