@@ -20,6 +20,7 @@ class Parameter {
   public defaultValues: DefaultValue[] = [];
   public defaultValue: DefaultValue;
 
+  public isHistorical: boolean = false;
   public historicalValues: any[] = [];
   public displayhisValues: any[] = [];
   public historicalValue: any;

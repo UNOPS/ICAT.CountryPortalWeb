@@ -27,7 +27,6 @@ export class RouteParameterComponent implements OnInit {
   
   instiTutionList: Institution[];
   isHistoricalValue: boolean = false;
-  checked: number[] = [];
 
   userCountryId:number = 0;
   userSectorId:number = 0;
@@ -57,14 +56,6 @@ export class RouteParameterComponent implements OnInit {
   onSelectHistoricalVal(event:any, idxSec:any, idxPara:any){
     console.log(event.value.value)
     this.parameterSection.routeSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
-  }
-
-  onChangeIshistorical(e: any, i: number){
-    if (e.checked){
-      this.checked.push(i)
-    } else {
-      this.checked.splice(this.checked.indexOf(i), 1)
-    }
   }
 
   changeUnit(e: any, idxSec:any, idxPara:any ){

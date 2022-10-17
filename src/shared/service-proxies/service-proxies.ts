@@ -27134,6 +27134,7 @@ export class Parameter implements IParameter {
     isLekage: boolean;
     isProjection: boolean;
     isDefault: boolean;
+    isHistorical: boolean;
     vehical: string;
     fuelType: string;
     route: string;
@@ -27197,6 +27198,7 @@ export class Parameter implements IParameter {
             this.isLekage = _data["isLekage"];
             this.isProjection = _data["isProjection"];
             this.isDefault = _data["isDefault"];
+            this.isHistorical = _data["isHistorical"];
             this.vehical = _data["vehical"];
             this.fuelType = _data["fuelType"];
             this.route = _data["route"];
@@ -27261,6 +27263,7 @@ export class Parameter implements IParameter {
         data["isLekage"] = this.isLekage;
         data["isProjection"] = this.isProjection;
         data["isDefault"] = this.isDefault;
+        data["isHistorical"] = this.isHistorical;
         data["vehical"] = this.vehical;
         data["fuelType"] = this.fuelType;
         data["route"] = this.route;
@@ -27325,6 +27328,7 @@ export interface IParameter {
     isLekage: boolean;
     isProjection: boolean;
     isDefault: boolean;
+    isHistorical: boolean;
     vehical: string;
     fuelType: string;
     route: string;

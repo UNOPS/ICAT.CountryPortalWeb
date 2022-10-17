@@ -3603,6 +3603,9 @@ export class GhgAssessmentComponent implements OnInit {
       param.uomDataEntry = p.UOM;
       param.conversionValue = p.value;
     }
+    if (p.isHistorical){
+      param.isHistorical = p.isHistorical
+    }
     param.uomDataRequest = p.UOM;
     param.methodologyCode = this.methodologyCode;
     param.methodologyVersion = this.methodologyVersion;
