@@ -22,7 +22,6 @@ export class StratumParameterComponent implements OnInit {
 
   instiTutionList: Institution[];
   isHistoricalValue: boolean = false;
-  checked: number[] = [];
 
   constructor(
     
@@ -50,13 +49,6 @@ export class StratumParameterComponent implements OnInit {
     this.parameterSection.stratumSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
   }
 
-  onChangeIshistorical(e: any, i: number){
-    if (e.checked){
-      this.checked.push(i)
-    } else {
-      this.checked.splice(this.checked.indexOf(i), 1)
-    }
-  }
   changeUnit(e: any, idxSec:any, idxPara:any ){
       console.log(e.value)
       let values = this.parameterSection.stratumSection.sectionparameters[idxSec].parameters[idxPara].historicalValues.filter(
