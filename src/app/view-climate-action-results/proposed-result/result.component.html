@@ -183,7 +183,7 @@
 
                   </td>
                   <td>{{ bvalues.name }}</td>
-                  <td>{{ bvalues.value }}</td>
+                  <td>{{ bvalues.value | number: '2.0-5'}}</td>
                   <td>{{ bvalues.uomDataRequest }}</td>
                   <!-- unit from json to be added -->
                 </tr>
@@ -193,7 +193,7 @@
             <div *ngIf="baselineEmission != null" class="row p-2">
               <div class="col-12 col-md-6">
                 <div class="p-field">
-                  <label for="baselineEmi"><b> Baseline Emission : {{baselineEmission}} tCO₂e</b></label>
+                  <label for="baselineEmi"><b> Baseline Emission : {{baselineEmission | number: '2.0-5' }} tCO₂e</b></label>
 
                 </div>
               </div>
@@ -247,7 +247,7 @@
 
                   </td>
                   <td>{{ presult.name }}</td>
-                  <td>{{ presult.value }}</td>
+                  <td>{{ presult.value | number: '2.0-5'}}</td>
                   <td>{{ presult.uomDataRequest }}</td>
                   <!-- unit from json to be added -->
                 </tr>
@@ -257,7 +257,7 @@
             <div *ngIf="projectEmission != null " class="row p-2">
               <div class="col-12 col-md-6">
                 <div class="p-field">
-                  <label for="contatname"><b> Project Emission :  {{projectEmission}} tCO₂e</b></label>
+                  <label for="contatname"><b> Project Emission :  {{projectEmission | number: '2.0-5'}} tCO₂e</b></label>
 
                 </div>
               </div>
@@ -316,7 +316,7 @@
                         ></i> -->
                   </td>
                   <td>{{ lresult.name }}</td>
-                  <td>{{ lresult.value }}</td>
+                  <td>{{ lresult.value | number: '2.0-5'}}</td>
                   <td>{{ lresult.uomDataRequest }}</td>
                 </tr>
               </ng-template>
@@ -325,7 +325,7 @@
             <div class="row p-2">
               <div class="col-12 col-md-6">
                 <div class="p-field">
-                  <label for="lekageResult"><b> Leakage Emission : {{leakageEmission}} tCO₂e</b></label>
+                  <label for="lekageResult"><b> Leakage Emission : {{leakageEmission | number: '2.0-5'}} tCO₂e</b></label>
 
                 </div>
               </div>
@@ -344,7 +344,7 @@
         <div class="row p-2">
           <div class="col-12 col-md-6">
             <div class="p-field">
-              <label for="reduction"><b>Emission Reduction : {{totalEmission}} tCO₂e</b> </label>
+              <label for="reduction"><b>Emission Reduction : {{totalEmission | number: '2.0-5'}} tCO₂e</b> </label>
 
             </div>
           </div>
@@ -377,7 +377,7 @@
 
                   </td>
                   <td>{{ proresult.name }}</td>
-                  <td>{{ proresult.value }}</td>
+                  <td>{{ proresult.value | number: '2.0-5'}}</td>
                   <td>{{ proresult.uomDataRequest }}</td>
                   <!-- unit from json to be added -->
                 </tr>
@@ -410,11 +410,11 @@
                   <ng-template pTemplate="body" let-param>
                     <tr>
                       <td>{{ param.projectionYear}}</td>
-                      <td>{{ param.baselineResult }} tCO₂e</td>
-                      <td>{{ param.projectResult }} tCO₂e</td>
-                      <td *ngIf="param.leakageResult > 0">{{ param.leakageResult }} tCO₂e</td>
+                      <td>{{ param.baselineResult | number: '2.0-5'}} tCO₂e</td>
+                      <td>{{ param.projectResult | number: '2.0-5'}} tCO₂e</td>
+                      <td *ngIf="param.leakageResult > 0">{{ param.leakageResult | number: '2.0-5'}} tCO₂e</td>
                       <td *ngIf="param.leakageResult <= 0">0 tCO₂e</td>
-                      <td>{{ param.emissionReduction }} tCO₂e</td>
+                      <td>{{ param.emissionReduction | number: '2.0-5'}} tCO₂e</td>
 
                     </tr>
                   </ng-template>

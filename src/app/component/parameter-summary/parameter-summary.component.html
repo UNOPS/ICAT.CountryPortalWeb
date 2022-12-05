@@ -50,9 +50,9 @@
         <tr>
           <td>{{ param.name }}</td>
           <td>{{ param.institution?.name }}</td>
-          <td>{{ param.value }}</td>
+          <td>{{ param.value | number: '2.0-5'}}</td>
           <td>{{ param.uomDataEntry }}</td>
-          <td>{{ param.conversionValue }}</td>
+          <td>{{ param.conversionValue | number: '2.0-5'}}</td>
           <td>{{ param.uomDataRequest }}</td>
           <td>
             <table>

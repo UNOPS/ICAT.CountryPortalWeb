@@ -269,8 +269,7 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
 
             })
 
-            
-
+          
           })
          // this.loading = false;
           console.log(" this.totalRecords", this.totalRecords)
