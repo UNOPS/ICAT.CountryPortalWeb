@@ -3574,6 +3574,9 @@ export class GhgAssessmentComponent implements OnInit {
     param.isAlternative = isAlternative;
 
     if (param.isAlternative) {
+      if (pp !== undefined){
+        pp.institution = param.institution
+      }
       param.parentParameter = pp!;
     }
     param.baseYear = this.baseYear.getFullYear();
@@ -3605,6 +3608,8 @@ export class GhgAssessmentComponent implements OnInit {
     }
     if (p.isHistorical){
       param.isHistorical = p.isHistorical
+      param.uomDataEntry = p.UOM;
+      param.conversionValue = p.value;
     }
     param.uomDataRequest = p.UOM;
     param.methodologyCode = this.methodologyCode;
