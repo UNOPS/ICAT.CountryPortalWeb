@@ -3623,6 +3623,9 @@ else{
     param.isAlternative = isAlternative;
 
     if (param.isAlternative) {
+      if (pp !== undefined){
+        pp.institution = param.institution
+      }
       param.parentParameter = pp!;
     }
     param.baseYear = this.baseYear.getFullYear();
@@ -3654,6 +3657,8 @@ else{
     }
     if (p.isHistorical){
       param.isHistorical = p.isHistorical
+      param.uomDataEntry = p.UOM;
+      param.conversionValue = p.value;
     }
     param.uomDataRequest = p.UOM;
     param.methodologyCode = this.methodologyCode;
