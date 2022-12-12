@@ -359,9 +359,9 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
     return str.replace(regex, '');
   }
 
-  toGhGAsse() {
+  toGhGAsse(climateactions: Project)  {
     this.router.navigate(['/ghg-impact'], {
-      // queryParams: { id: climateactions.id },
+      queryParams: { id: climateactions.id },
     });
   }
 

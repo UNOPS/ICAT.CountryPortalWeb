@@ -42,7 +42,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { empty, Observable } from 'rxjs';
 import { MessageService, SelectItem } from 'primeng/api';
-import { Router } from '@angular/router';
+import { Router ,ActivatedRoute} from '@angular/router';
 import { MethodologyControllerServiceProxy,  } from 'shared/service-proxies/service-proxies';
 import { ParameterInfo } from '../parameter-info.enum';
 import { FuelParameterComponent } from '../fuel-parameter/fuel-parameter.component';
@@ -338,9 +338,13 @@ export class GhgAssessmentComponent implements OnInit {
 
   requiredParas: boolean = true;
 
+  projectId:number;
+  project:Project;
+
   constructor(
     private methodologyProxy: MethodologyControllerServiceProxy,
     private router: Router,
+    private route1: ActivatedRoute,
     private serviceProxy: ServiceProxy,
     private parameterProxy: ParameterControllerServiceProxy,
     private http: HttpClient,
@@ -371,6 +375,29 @@ export class GhgAssessmentComponent implements OnInit {
     let filterUser: string[] = [];
     filterUser.push('username||$eq||' + this.userName);
     
+    this.route1.queryParams.subscribe((params) => {
+      this.projectId = 0;
+      this.projectId = params['id'];
+      console.log("projectId",this.projectId)
+    });
+    this.serviceProxy
+    .getManyBaseNdcControllerNdc(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ['name,ASC'],
+      ['subNdc'],
+      1000,
+      0,
+      0,
+      0
+    )
+    .subscribe((res: any) => {
+      this.ndcList = res.data;
+      this.ndcList = this.ndcList.filter((o)=>o.country.id == this.userCountryId && o.sector.id == this.userSectorId);
+      console.log("+++++++++",this.ndcList)
+    });
 
     this.serviceProxy
       .getManyBaseUsersControllerUser(
@@ -509,47 +536,68 @@ export class GhgAssessmentComponent implements OnInit {
       // projfilter.push('projectApprovalStatus.id||$in||' +[1,5])
     }
 
-    this.serviceProxy
-      .getManyBaseProjectControllerProject(
-        undefined,
-        undefined,
-        filter,
-        undefined,
-        ['id,DESC'],
-        undefined,
-        1000,
-        0,
-        0,
-        0
-      )
-      .subscribe((res: any) => {
+   
+if(this.projectId && this.projectId>0){
+  
 
-        // console.log('this.userCountryId',this.userCountryId,this.userSectorId)
-        this.climateActions = res.data;
-        // console.log('this.userCountryId',  this.climateActions)
-        this.climateActions = this.climateActions.filter(o=>o.country?o.country.id == this.userCountryId:false && o.sector?o.sector.id == this.userSectorId:false)
-        // console.log('this.userCountryId',  this.climateActions)
+  this.serviceProxy
+  .getOneBaseProjectControllerProject(
+    this.projectId,
+    undefined,
+    undefined,
+    0
+  )
+  .subscribe(async (res) => {
+    this.selectedClimateAction=res
+    this.climateActions.push(res)
+    this.projectDuration =res.duration;
+    this.selectedNdc = this.ndcList.find(
+      (a) => a.name === res.previousNdc
+    )!;
+
+    this.selctedSubNdc = this.selectedNdc?.subNdc.find(
+      (a) => a.id === this.selectedClimateAction.subNdc?.id
+    )!;
+
+    this.proposeDateofCommence=new Date(
+      this.selectedClimateAction.proposeDateofCommence.year(),
+      this.selectedClimateAction.proposeDateofCommence.month(),
+      this.selectedClimateAction.proposeDateofCommence.date()
+    );
+   
+    
+  })
+}
+else{
+  this.serviceProxy
+  .getManyBaseProjectControllerProject(
+    undefined,
+    undefined,
+    filter,
+    undefined,
+    ['id,DESC'],
+    undefined,
+    1000,
+    0,
+    0,
+    0
+  )
+  .subscribe((res: any) => {
+
+    // console.log('this.userCountryId',this.userCountryId,this.userSectorId)
+    this.climateActions = res.data;
+    // console.log('this.userCountryId',  this.climateActions)
+    this.climateActions = this.climateActions.filter(o=>o.country?o.country.id == this.userCountryId:false && o.sector?o.sector.id == this.userSectorId:false)
+    // console.log('this.userCountryId',  this.climateActions)
 
 
-      });
+  });
 
-    this.serviceProxy
-      .getManyBaseNdcControllerNdc(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        ['name,ASC'],
-        ['subNdc'],
-        1000,
-        0,
-        0,
-        0
-      )
-      .subscribe((res: any) => {
-        this.ndcList = res.data;
-        this.ndcList = this.ndcList.filter((o)=>o.country.id == this.userCountryId && o.sector.id == this.userSectorId);
-      });
+ 
+}
+    
+
+   
 
 
  
@@ -2570,6 +2618,7 @@ export class GhgAssessmentComponent implements OnInit {
   onCAChange(event: any) {
     this.isDiasbaleEye = false;
    console.log("my event....gggg.",this.selectedClimateAction)
+   console.log("my event....gg.",event)
    if(this.selectedClimateAction.projectApprovalStatus?.id==5){
      this.hasPrevActiveCA = true
 

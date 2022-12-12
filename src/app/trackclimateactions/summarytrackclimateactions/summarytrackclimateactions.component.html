@@ -61,8 +61,8 @@
               <td>{{ finalRecords.Years }}</td>
               <td>{{ finalRecords.Sectors }}</td>
               <td>{{ finalRecords.GeneratedDate | date: "dd-MM-yyyy "}}</td>
-              <td>{{ finalRecords.ActualEmissionReduction }}</td>
-              <td>{{ finalRecords.ExpectedEmissionReduction}}</td>
+              <td>{{ finalRecords.ActualEmissionReduction | number: '2.0-5' }}</td>
+              <td>{{ finalRecords.ExpectedEmissionReduction | number: '2.0-5' }}</td>
               <td>
                 <table>
                     <tr>

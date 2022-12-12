@@ -183,7 +183,7 @@
                             >
                             </p-inputNumber>
                           -->
-                            <p>{{getBsTotalInvestment}} $</p>
+                            <p>{{getBsTotalInvestment | number: '2.0-5'}} $</p>
                           </div>
                     </div>
                 </div> 
@@ -226,7 +226,7 @@
                         </p-inputNumber>
                         
                         -->
-                        <p>{{getBsAnnualOM}} $</p>
+                        <p>{{getBsAnnualOM  | number: '2.0-5'}} $</p>
                         
                         
                       </div>
@@ -252,7 +252,7 @@
                         >
                         </p-inputNumber>
                         -->
-                        <p>{{getBsAnnualFuelCost}} $</p>
+                        <p>{{getBsAnnualFuelCost  | number: '2.0-5'}} $</p>
                       </div>
                     </div>
                 </div>
@@ -275,7 +275,7 @@
                         >
                         </p-inputNumber>
                         -->
-                        <p>{{getBsOtherAnnualCost}} $</p>
+                        <p>{{getBsOtherAnnualCost  | number: '2.0-5'}} $</p>
                       </div>
                     </div>
                 </div>
@@ -299,7 +299,7 @@
                         >
                         </p-inputNumber>
                         -->
-                        <p>{{getBsTotalAnnualCost}} $</p>
+                        <p>{{getBsTotalAnnualCost  | number: '2.0-5'}} $</p>
                       </div>
                     </div>
                 </div>
@@ -334,7 +334,7 @@
                             >
                             </p-inputNumber>
                           -->
-                            <p>{{getPsTotalInvestment}} $</p>
+                            <p>{{getPsTotalInvestment  | number: '2.0-5'}} $</p>
                           </div>
                     </div>
                 </div> 
@@ -376,7 +376,7 @@
                         >
                         </p-inputNumber>
                            -->
-                        <p>{{getPsAnnualOM}} $</p>
+                        <p>{{getPsAnnualOM  | number: '2.0-5'}} $</p>
                       </div>
                     </div>
                 </div>
@@ -400,7 +400,7 @@
                         >
                         </p-inputNumber>
                         -->
-                        <p>{{getPsAnnualFuelCost}} $</p>
+                        <p>{{getPsAnnualFuelCost | number: '2.0-5'}} $</p>
                       </div>
                     </div>
                 </div>
@@ -423,7 +423,7 @@
                         >
                         </p-inputNumber>
                           -->
-                        <p>{{getPsOtherAnnualCost}} $</p>
+                        <p>{{getPsOtherAnnualCost | number: '2.0-5'}} $</p>
                       </div>
                     </div>
                 </div>
@@ -447,7 +447,7 @@
                         >
                         </p-inputNumber>
                           -->
-                        <p>{{getPsTotalAnnualCost}} $</p>
+                        <p>{{getPsTotalAnnualCost | number: '2.0-5'}} $</p>
                       </div>
                     </div>
                 </div>
@@ -479,7 +479,7 @@
                     </div>
                     <div class="col-12 col-md-7">
                       <div>
-                        <p>{{getCostDifference}} $</p>
+                        <p>{{getCostDifference | number: '2.0-5'}} $</p>
 
                       </div>
                     </div>
@@ -493,7 +493,7 @@
                     </div>
                     <div class="col-12 col-md-7">
                       <div>
-                        <p>{{getReduction}} tCO2e</p>
+                        <p>{{getReduction | number: '2.0-5'}} tCO2e</p>
                       </div>
                     </div>
                 </div>
@@ -516,7 +516,7 @@
                   </div>
                   <div class="col-12 col-md-7">
                     <div>
-                      <p>{{getMacValue}} USD/tCO2e</p>
+                      <p>{{getMacValue | number: '2.0-5'}} USD/tCO2e</p>
                     </div>
                   </div>
               </div>

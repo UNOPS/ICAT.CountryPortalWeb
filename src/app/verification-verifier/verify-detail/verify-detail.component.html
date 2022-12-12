@@ -131,7 +131,7 @@
           <label> <strong>Emission Reduction </strong> </label>
           <input
               [disabled]="true"
-              type="text"
+              type="number"
               name="ereduction"
               #ereduction="ngModel"
               [(ngModel)]="assessmentResult.totalEmission!"
@@ -306,7 +306,7 @@
         [scenario]="assementYear.assessment.baselineScenario"
         [parameters]="baselineParameters"
         ResultLabel="Baseline emission"
-        [ResultValue]="assessmentResult.baselineResult"
+        [ResultValue]="assessmentResult.baselineResult |  number: '2.0-5'"
         [verificationDetails]="verificationDetails"
         [isBaseline]="true"
         [isAccept]="isBaseAccept"
