@@ -3623,9 +3623,9 @@ else{
     param.isAlternative = isAlternative;
 
     if (param.isAlternative) {
-      // if (pp !== undefined){
-      //   pp.institution = param.institution
-      // }
+      if (pp !== undefined && pp.isHistorical){
+        pp.institution = null!
+      }
       param.parentParameter = pp!;
     }
     param.baseYear = this.baseYear.getFullYear();
