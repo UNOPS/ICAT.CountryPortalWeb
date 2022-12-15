@@ -109,6 +109,7 @@ export class QualityCheckDetailComponent implements OnInit {
   isSubmitButtondisable:boolean=false;
 
   isApproveAllAssesmentResult:boolean=false;
+  isApproveAllProjectionResult:boolean=false;
   verificationStatusIsNull:boolean=false;
   @ViewChild('opDRPro') overlayDRPro: any;
   @ViewChild('opDRAss') overlayDRAssemnet: any;
@@ -492,6 +493,7 @@ export class QualityCheckDetailComponent implements OnInit {
     }
     this.isReadyToCAl = false;
     this.isDisable = true;
+    window.location.reload()
   }
 
   toCalMacResult() {
@@ -725,7 +727,7 @@ export class QualityCheckDetailComponent implements OnInit {
 
   reject(parameter: ProjectionResault) {}
 
-  drWithComment() {
+  async drWithComment() {
     
     if (!this.isApprove && this.drComment === '') {
       this.commentRequried = true;
@@ -744,7 +746,7 @@ export class QualityCheckDetailComponent implements OnInit {
         this.drComment
       )
       .subscribe(
-        (res:any) => {
+        async (res:any) => {
           if(res.qcStatus == 4)
           {
             this.isProjectionResultButtonsDisable= true
@@ -760,10 +762,10 @@ export class QualityCheckDetailComponent implements OnInit {
           var index = this.projectionResult.indexOf(
             this.selectdProjectionResult
           );
-
           console.log(this.selectdProjectionResult);
           this.selectdProjectionResult.qcStatus = this.isApprove ? 4 : 3;
 
+          this.isApproveAllProjectionResult=await this.projectionResultProxy.checkAllQCApprovmentProjectionResult(this.asseId).toPromise();
           // this.parameters.splice(index, 0, this.selectdParameter);
 
           this.overlayDRPro.hide();
