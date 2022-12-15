@@ -162,14 +162,23 @@
     <div *ngIf="isCountryLevel" class="row p-2">
       <div class="col-2">
         <div>
-          <label for="sector">Select Sector/(s)</label>
+          <label for="sector">Select Sector/(s)*</label>
         </div>
       </div>
       <div  class="col-6">
         <div>
           <p-multiSelect [disabled]="allSelect" [style]="{ width: '100%' }" placeholder="Select Sectors" name="sector" #sector="ngModel"
             [options]="sectorList" [(ngModel)]="selectedSector" optionLabel="name"
-            (onChange)="onSectorChange(selectedSector)"></p-multiSelect>
+            (onChange)="onSectorChange(selectedSector)" [required]="true"> </p-multiSelect>
+            <p
+              class="info-message text-danger"
+              *ngIf="
+                !selectedSector &&
+                (sector.touched || sector.dirty)
+              "
+            >
+              This is a mandatory field
+            </p>
         </div>
       </div>
       <div class="col-2">
@@ -204,14 +213,23 @@
     <div class="row p-2">
       <div class="col-2">
         <div>
-          <label for="ndc">Select Aggregated Actions</label>
+          <label for="ndc">Select Aggregated Actions*</label>
         </div>
       </div>
       <div class="col-10">
         <div>
           <p-multiSelect appendTo="body" [style]="{ width: '75%' }" placeholder="Select Aggregated Actions " name="ndc" #ndc="ngModel"
             [options]="selectedNdc1" [(ngModel)]="selectedNdc" optionLabel="name"
-            (onChange)="onselectedNdcChange(selectedNdc)"></p-multiSelect>
+            (onChange)="onselectedNdcChange(selectedNdc)" [required]="true"></p-multiSelect>
+            <p
+            class="info-message text-danger"
+            *ngIf="
+              !selectedNdc &&
+              (ndc.touched || ndc.dirty)
+            "
+          >
+            This is a mandatory field
+          </p>
         </div>
       </div>
     </div>
@@ -219,14 +237,23 @@
     <div class="row p-2">
       <div class="col-2">
         <div>
-          <label for="project">Select Specific Climate Action</label>
+          <label for="project">Select Specific Climate Action*</label>
         </div>
       </div>
       <div class="col-10">
         <div>
           <p-multiSelect  appendTo="body" [style]="{ width: '75%' }" placeholder="Select Specific Climate Actions" name="project"
             #project="ngModel" [options]="popUpProject" [(ngModel)]="selectedproject" optionLabel="climateActionName"
-            (onChange)="onClimateActionChange()"></p-multiSelect>
+            (onChange)="onClimateActionChange()" [required]="true"></p-multiSelect>
+            <p
+            class="info-message text-danger"
+            *ngIf="
+              !selectedproject &&
+              (project.touched || project.dirty)
+            "
+          >
+            This is a mandatory field
+          </p>
 
           <!-- <p-dropdown
                         placeholder="Select climate action"
@@ -244,7 +271,7 @@
     <div class="row p-2">
       <div class="col-2">
         <div>
-          <label for="atype">Select Assessment Type</label>
+          <label for="atype">Select Assessment Type*</label>
         </div>
       </div>
       <div class="col-10">
@@ -258,7 +285,17 @@
           [(ngModel)]="selecetedType" 
           optionLabel="name"
           (onChange)="onselectedAssesmentType(selecetedType)" 
+          [required]="true"
           ></p-multiSelect>
+          <p
+          class="info-message text-danger"
+          *ngIf="
+            !selecetedType &&
+            ( atype.touched || atype.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
         </div>
       </div>
     </div>
@@ -266,13 +303,22 @@
     <div class="row p-2">
       <div class="col-2">
         <div>
-          <label for="ayr">Select Year/(s)</label>
+          <label for="ayr">Select Year/(s)*</label>
         </div>
       </div>
       <div class="col-10">
         <div>
           <p-multiSelect  appendTo="body" [style]="{ width: '75%' }" placeholder="Select Assessment Years" name="ayr" #ayr="ngModel"
-            [options]="uniquePopYrList" [(ngModel)]="selectedYr" optionLabel="assessmentYear"></p-multiSelect>
+            [options]="uniquePopYrList" [(ngModel)]="selectedYr" optionLabel="assessmentYear" [required]="true"></p-multiSelect>
+            <p
+          class="info-message text-danger"
+          *ngIf="
+            !selectedYr &&
+            ( ayr.touched || ayr.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
         </div>
       </div>
     </div>
@@ -280,20 +326,20 @@
     <div class="row p-2">
       <div class="col-2">
         <div>
-          <label for="sector">Report Name</label>
+          <label for="sector">Report Name*</label>
         </div>
       </div>
       <div class="col-10">
         <div>
-          <input [style]="{ width: '75%' }" type="text" name="reportName" class="p-inputtext" [(ngModel)]="reportName"
+          <input [style]="{ width: '75%' }" type="text" name="reportName" class="p-inputtext" [(ngModel)]="reportName" [required]="true"
             pInputText />
         </div>
       </div>
     </div>
 
     <div>
-      <button style="margin-right: 5px" pButton pRipple label="Executive Summary" (click)="confirm()"></button>
-      <button pButton pRipple label="Full Report" (click)="confirmPDF()"></button>
+      <button [disabled]="!selectedSector || !selectedNdc || !selectedproject || !selectedYr || !selecetedType || !reportName " style="margin-right: 5px" pButton pRipple label="Executive Summary" (click)="confirm()"></button>
+      <button [disabled]="!selectedSector || !selectedNdc || !selectedproject || !selectedYr || !selecetedType || !reportName" pButton pRipple label="Full Report" (click)="confirmPDF()"></button>
     </div>
   </div>
 </p-dialog>
