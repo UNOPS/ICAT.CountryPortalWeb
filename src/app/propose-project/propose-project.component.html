@@ -699,7 +699,7 @@
         <div class="row p-2">
           <div class="col-12 col-md-6">
             <div class="p-field">
-              <label for="projectownership">Ownership</label>
+              <label for="projectownership">Ownership *</label>
               <ng-container *ngIf="isDownloadMode == 0 && flag !=1; else elseBlockownership">
               <p-dropdown
                 [disabled]="editEntytyId > 0"
@@ -711,7 +711,17 @@
                 [autoDisplayFirst]="false"
                 [options]="projectOwnerList"
                 optionLabel="name"
+                [required]="true"
               ></p-dropdown>
+              <p
+              class="info-message text-danger"
+              *ngIf="
+                !project.projectOwner &&
+                (fData.submitted || projectownership.touched || projectownership.dirty)
+              "
+            >
+              This is a mandatory field
+            </p>
             </ng-container>
             <ng-template #elseBlockownership>
               <input
@@ -834,7 +844,7 @@
         <div class="row p-2">
           <div class="col-12 col-md-12">
             <div class="p-field">
-              <label for="objective">Objective of the Specific Climate Action</label>
+              <label for="objective">Objective of the Specific Climate Action *</label>
               <textarea
                 [disabled]="editEntytyId > 0"
                 name="objective"
@@ -846,7 +856,17 @@
                 pInputTextarea
                 autoResize="autoResize"
                 class="p-inputtext"
+                [required]="true"
               ></textarea>
+              <p
+                class="info-message text-danger"
+                *ngIf="
+                  !project.objective &&
+                  (fData.submitted || objective.touched || objective.dirty)
+                "
+              >
+                This is a mandatory field
+              </p>
             </div>
           </div>
         </div>
@@ -1978,7 +1998,7 @@
         pButton
         pRipple
         type="button"
-        [label]="editEntytyId>0?'back':(isSaving?'back':'cancel')"
+        [label]="editEntytyId>0?'back':(isSaving?'Back':'Cancel')"
         class="p-button-raised"
         (click)="confirmBack(editEntytyId>0?'back':(isSaving?'back':'cancel'))"
       ></button>
