@@ -1,0 +1,158 @@
+<div class="container pl-20 pr-20">
+  <h4 class="mt-4">Assessed Specific Climate Actions</h4>
+  <div class="p-grid p-fluid card">
+
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projApprovelStatus">Specific Climate Actions Status</label>
+            <p-dropdown name="projStatus" [(ngModel)]="searchBy.status" [options]="projectStatusList"
+              #projStatus="ngModel" [showClear]="true" [filter]="true" placeholder="Select .." optionLabel="name"
+              (ngModelChange)="onStatusChange($event)">
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="assessmentStatus">Assessment Type</label>
+          <p-dropdown
+          name="assessmentType"
+          [(ngModel)]="searchBy.assessmentType1"    
+          [options]="asseType"
+          #assessmentType="ngModel"
+          [showClear]="true"
+          [filter]="true"
+          placeholder="Select .."
+         
+          (ngModelChange)="onStatusChange($event)"
+        >
+      </p-dropdown> 
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-inputgroup pt-4">
+          <input placeholder="Type Your Keyword" [(ngModel)]="searchBy.text" #nameClimate="ngModel" type="text"
+            name="nameClimate" class="p-inputtext" pInputText />
+          <button type="button" pButton pRipple label="Search" (click)="onSearch()"></button>
+        </div>
+      </div>
+     
+      
+      <!-- <div> {{climateactions|json}} </div> -->
+      <div class="row p-2 mt-4">
+        <p-table 
+        [value]="climateactions"
+        [lazy]="true"
+        (onLazyLoad)="loadgridData($event)"
+        [paginator]="true"
+        [rows]="rows"
+        [showCurrentPageReport]="true"
+        paginatorDropdownAppendTo="body"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Entries"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+        [responsive]="true"
+        >
+          
+  
+          <ng-template pTemplate="header">
+            
+            <tr>
+                
+              <th>
+                  <div class="col-sm-2" style="width: 70.666667%">
+                    
+                  </div>
+              </th> 
+          
+              <th>Specific Climate Action</th>
+              <th>Proponent</th>
+              <th>Status</th>
+              <th>MAC</th>
+              <th>GHG Assessment</th>
+              
+              <th>Proposed Date</th>   
+              <!-- <th>Accepted Date</th> -->
+              <th>Updated Date</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-climateaction>
+            
+              <tr>
+                   <td style="text-align: center">
+            <!-- Project Summery page is not ready so hiding for release -->
+                     <!-- <i
+                  class="pi pi-eye"
+                  style="font-size: 1.5rem; color: #000; margin-left: 17%"
+                  (click)="projectSummery()"
+                ></i> -->
+                   </td>
+                  <td>{{ climateaction.climateActionName }}</td>
+                  <td>{{ climateaction.institution }}</td> 
+                  <td>{{ climateaction.projectStatus?.name }}</td>
+                  
+                  <ng-container *ngIf=" isMac(climateaction.assessments); else elseBlock">
+
+                    <td>
+                      <i class="pi pi-check-square" style="font-size: 1rem"></i> 
+                    </td>
+
+                    </ng-container>
+                    <ng-template #elseBlock>   
+                      <td>
+                        <i class="pi pi-stop" style="font-size: 1rem"></i>
+                      </td>
+                    </ng-template> 
+
+                    <ng-container *ngIf=" isGhg(climateaction.assessments); else elseBlock">
+
+                      <td>
+                        <i class="pi pi-check-square" style="font-size: 1rem"></i> 
+                      </td>
+  
+                      </ng-container>
+                      <ng-template #elseBlock>   
+                        <td>
+                          <i class="pi pi-stop" style="font-size: 1rem"></i>
+                        </td>
+                      </ng-template> 
+
+                      <!-- <ng-container *ngIf=" isTracking(climateaction.assessments); else elseBlock">
+
+                        <td>
+                          <i class="pi pi-check-square" style="font-size: 1rem"></i> 
+                        </td>
+    
+                        </ng-container>
+                        <ng-template #elseBlock>   
+                          <td>
+                            <i class="pi pi-stop" style="font-size: 1rem"></i>
+                          </td>
+                        </ng-template>  -->
+
+                  <td>{{ climateaction.createdOn | date: "yyyy-MM-dd "}}</td> 
+                  <!-- <td>{{ climateaction.acceptedDate | date: "yyyy-MM-dd "}}</td>  -->
+                  <td>{{ climateaction.editedOn | date: "yyyy-MM-dd "}}</td>  
+                  <td>
+                      <table>
+                          <tr>
+                              <td>
+                                
+                                <button pButton pRipple type="button" label="Results" class="p-button-info" (click)="sendDetails(climateaction)"></button>
+                    
+                              </td>
+                          </tr>
+                      </table>
+                  </td>
+              </tr>
+            
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<!-- <p>view-datarequest-history works!</p> -->
+
+
+
+
+<!-- <p><b>{{this.listOfHistory[0]?.parameterName}}</b></p> -->
+<br><br>
+
+<ng-container *ngIf="this.listOfHistory.length != 0; else elseBlock1">
+<div *ngFor="let item of this.listOfHistory; let i = index">
+    
+    <p><b>Date </b>  {{item?.createdOn | date: "yyyy-MM-dd"}}</p>
+    <p><b>Parameter Created Date </b>  {{item?.parameterCreatedDate | date: "yyyy-MM-dd"}}</p>
+    <p><b>Parameter Allocated Date </b>  {{item?.parameterAllocatedDate | date: "yyyy-MM-dd"}}</p>
+    <p><b>Parameter Assigned by IA </b>  {{item?.parameterAssignDateByIA | date: "yyyy-MM-dd"}}</p>
+    <p><b>Action</b>  {{ParameterHistoryActionEnum[item?.Action]}}</p>
+    <p><b>Previous Status</b> {{DataRequestStatusEnum[item?.parameterStatusPrevious]}}</p>
+    <p><b>Current Status</b> {{DataRequestStatusEnum[item?.parameterStatus]}}</p>
+    <p><b>DEO Assumption</b>  {{item?.deoAssumption}}</p>
+    <p><b>QC Assumption</b>  {{item?.comment}}</p>
+    <p><b>Description</b>  {{item?.description}}</p>
+    <br><br>
+    
+    
+
+</div>
+</ng-container>
+<ng-template #elseBlock1>
+<p>There is no parameter history so far</p>
+</ng-template>

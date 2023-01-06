@@ -1,0 +1,298 @@
+<div
+  class="row p-2"
+  *ngIf="parameterSection && parameterSection.vehicalSection !== undefined"
+>
+  <h5>
+    {{ parameterSection.vehicalSection.sectionHeader }}
+  </h5>
+  <hr />
+
+  <div
+    class="row p-2"
+    *ngFor="
+      let sp of parameterSection.vehicalSection.sectionparameters;
+      let spi = index
+    "
+  >
+    <h6>{{ sp.parameterHeader }}</h6>
+    <!-- Main Param -->
+    <div class="row p-2" *ngFor="let p of sp.parameters; let i = index">
+      <!-- Alternavtive Param -->
+      <div class="row p-2">
+        <div class="col-12 col-md-3">
+          <div>
+            <label for="projectownership">{{ p.parameterName }} </label>
+            <i *ngIf="infos[p.Code] !== undefined"
+            class="pi pi-info-circle" pTooltip="{{infos[p.Code]}}">
+            </i>
+          </div>
+        </div>
+        <div class="col-12 col-md-3" >
+          <div>
+            <p-dropdown
+              placeholder="Select Unit"
+              name="{{ 'apu' + i }}"
+              [autoDisplayFirst]="false"
+              [(ngModel)]="p.UOM"
+              [disabled]="isDisableforSubmitButton"
+              [autoDisplayFirst]="false"
+              [options]="p.UOMList"
+              (onChange)="changeUnit($event, spi, i)"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div *ngIf="!IsProposal">
+            <div *ngIf="p.isDefaultValue  && !p.isHistorical">
+              <p-dropdown
+                placeholder="Select Default value"
+                name="{{ 'p' + i }}"
+                [autoDisplayFirst]="false"
+                [(ngModel)]="p.defaultValue"
+                [autoDisplayFirst]="false"
+                [disabled]="isDisableforSubmitButton"
+                [options]="p.defaultValues"
+                optionLabel="name"
+              ></p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.defaultValue && isSubmitted)">
+                This is a mandatory field
+              </p>
+            </div>
+            <div *ngIf="p.isHistorical && !p.isDefaultValue">
+              <p-dropdown
+                placeholder="Select historical value"
+                [(ngModel)]="p.historicalValue"
+                [disabled]="isDisableforSubmitButton"
+                [autoDisplayFirst]="false"
+                [options]="p.displayhisValues"
+                (onChange) = "onSelectHistoricalVal($event, spi, i)"
+                optionLabel="label"
+              ></p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.historicalValue && isSubmitted)">
+                This is a mandatory field
+              </p>
+            </div>
+            <div *ngIf="!p.isDefaultValue  && !p.isHistorical">
+              <p-dropdown
+                placeholder="Select Institution"
+                name="{{ 'vp' + i }}"
+                [autoDisplayFirst]="false"
+                [(ngModel)]="p.institution"
+                [disabled]="isDisableforSubmitButton"
+                [autoDisplayFirst]="false"
+                [options]="instiTutionList"
+                optionLabel="name"
+                [required]="true"
+              ></p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.institution && isSubmitted)">
+                This is a mandatory field
+              </p>
+            </div>
+          </div>
+          <div *ngIf="IsProposal">
+            <div *ngIf="p.isDefaultValue && !p.isHistorical">
+              <p-dropdown
+                placeholder="Select Default value"
+                name="{{ 'p' + i }}"
+                [autoDisplayFirst]="false"
+                [(ngModel)]="p.defaultValue"
+                [disabled]="isDisableforSubmitButton"
+                [autoDisplayFirst]="false"
+                [options]="p.defaultValues"
+                optionLabel="name"
+              ></p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.defaultValue && isSubmitted)">
+                This is a mandatory field
+              </p>
+            </div>
+            <div *ngIf="p.isHistorical && !p.isDefaultValue">
+              <p-dropdown
+                placeholder="Select historical value"
+                [(ngModel)]="p.historicalValue"
+                [disabled]="isDisableforSubmitButton"
+                [autoDisplayFirst]="false"
+                [options]="p.displayhisValues"
+                (onChange) = "onSelectHistoricalVal($event, spi, i)"
+                optionLabel="label"
+              ></p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.historicalValue && isSubmitted)">
+                This is a mandatory field
+              </p>
+            </div>
+            <div *ngIf="!p.isDefaultValue  && !p.isHistorical">
+              <input
+                type="text"
+                name="{{ 'vp' + i }}"
+                class="p-inputtext"
+                #value="ngModel"
+                [disabled]="isDisableforSubmitButton"
+                [(ngModel)]="p.value"
+                pInputText
+              />
+              <p
+                class="info-message text-danger"
+                *ngIf="(!p.value && isSubmitted)">
+                This is a mandatory field
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-12 col-md-2"
+          *ngIf="p.useDefaultValue.toString() == 'true'"
+        >
+          <div class="p-field-checkbox">
+            <p-checkbox
+              [(ngModel)]="p.isDefaultValue"
+              [binary]="true"
+              [disabled]="isDisableforSubmitButton || p.isHistorical"
+              inputId="binary"
+              label="Default Values"
+            ></p-checkbox>
+            <!-- <label for="binary">Default Values</label> -->
+          </div>
+        </div>
+        <div class="p-field-checkbox">
+          <p-checkbox
+            [(ngModel)]="p.isHistorical" 
+            [binary]="true"
+            [disabled]="isDisableforSubmitButton || p.isDefaultValue"
+            inputId="binary"
+            label="Historical Values"
+          ></p-checkbox>
+          <!-- <label for="binary">Default Values</label> -->
+        </div>
+      </div>
+
+      <div
+        class="row p-2 ml-20"
+        *ngFor="let ap of p.alternativeParameters; let api = index"
+      >
+        <div class="row p-2">
+          <div class="col-12 col-md-3">
+            <div>
+              
+              <label for="projectownership"> 
+                <i 
+                class="pi pi-info-circle" pTooltip="This is an alternative parameter for {{p.parameterName}}">
+                <b><i>{{ ap.parameterName }}</i> </b></i> </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-3" >
+            <div>
+              <p-dropdown
+                placeholder="Select Unit"
+                name="{{ 'apu' + i }}"
+                [autoDisplayFirst]="false"
+                [(ngModel)]="ap.UOM"
+                [disabled]="isDisableforSubmitButton"
+                [autoDisplayFirst]="false"
+                [options]="ap.UOMList"
+              ></p-dropdown>
+            </div>
+          </div>
+          <div class="col-12 col-md-5">
+            <div *ngIf="!IsProposal">
+              <div *ngIf="ap.isDefaultValue">
+                <p-dropdown
+                  placeholder="Select Default value"
+                  name="{{ 'ap' + i }}"
+                  [autoDisplayFirst]="false"
+                  [(ngModel)]="ap.defaultValue"
+                  [disabled]="isDisableforSubmitButton"
+                  [autoDisplayFirst]="false"
+                  [options]="ap.defaultValues"
+                  optionLabel="name"
+                ></p-dropdown>
+                <p
+                  class="info-message text-danger"
+                  *ngIf="(!ap.defaultValue && isSubmitted)">
+                  This is a mandatory field
+                </p>
+              </div>
+
+              <div *ngIf="!ap.isDefaultValue">
+                <p-dropdown
+                  placeholder="Select Institution"
+                  name="{{ 'ap' + i }}"
+                  [autoDisplayFirst]="false"
+                  [(ngModel)]="ap.institution"
+                  [disabled]="isDisableforSubmitButton"
+                  [autoDisplayFirst]="false"
+                  [options]="instiTutionList"
+                  optionLabel="name"
+                  [required]="true"
+                ></p-dropdown>
+                <p
+                  class="info-message text-danger"
+                  *ngIf="(!ap.institution && isSubmitted)">
+                  This is a mandatory field
+                </p>
+              </div>
+            </div>
+            <div *ngIf="IsProposal">
+              <div *ngIf="ap.isDefaultValue">
+                <p-dropdown
+                  placeholder="Select Default value"
+                  name="{{ 'ap' + i }}"
+                  [autoDisplayFirst]="false"
+                  [(ngModel)]="ap.defaultValue"
+                  [disabled]="isDisableforSubmitButton"
+                  [autoDisplayFirst]="false"
+                  [options]="ap.defaultValues"
+                  optionLabel="name"
+                ></p-dropdown>
+              </div>
+              <div *ngIf="!ap.isDefaultValue">
+                <input
+                  type="text"
+                  name="{{ 'avp' + i }}"
+                  class="p-inputtext"
+                  [disabled]="isDisableforSubmitButton"
+                  #value="ngModel"
+                  [(ngModel)]="ap.value"
+                  pInputText
+                />
+              </div>
+            </div>
+
+            <div
+              class="col-12 col-md-2"
+              *ngIf="ap.useDefaultValue.toString() == 'true'"
+            >
+              <div class="p-field-checkbox">
+                <p-checkbox
+                  [(ngModel)]="ap.isDefaultValue"
+                  [binary]="true"
+                  [disabled]="isDisableforSubmitButton"
+                  inputId="binary"
+                  label="Default Values"
+                ></p-checkbox>
+                <!-- <label for="binary">Default Values</label> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="d-flex justify-content-center"
+        *ngIf="
+          parameterSection.vehicalSection.sectionparameters.length - 1 !== spi
+        "
+      >
+        <hr class="col-md-8" />
+      </div>
+    </div>
+    <!-- <hr /> -->
+  </div>
+</div>

@@ -1,0 +1,985 @@
+<div class="container">
+  <h4 class="mt-4">Quality Control Details</h4>
+  <div class="p-grid p-fluid card">
+    <div class="row mb-3" *ngIf="assementYear.assessment?.assessmentType! !='MAC' ">
+      <div class="col-md-6">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Aggregated Actions</label>
+            <input
+              [disabled]="true"
+              type="text"
+              name="ndc"
+              #chgEmission="ngModel"
+              [(ngModel)]="assementYear.assessment.ndc?.name!"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Action Areas</label>
+            <input
+              [disabled]="true"
+              type="text"
+              name="subNDc"
+              #chgEmission="ngModel"
+              [(ngModel)]="assementYear.assessment.subNdc?.name!"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-10">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Specific Climate Action</label>
+            <input
+              [disabled]="true"
+              type="text"
+              name="ndc"
+              #chgEmission="ngModel"
+              [(ngModel)]="assementYear.assessment.project?.climateActionName!"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <div class="col-12">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-eye"
+            (click)="detail(assementYear.assessment.project!)"
+            class="p-button-rounded p-button-text"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-10">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Assessment Type</label>
+            <input
+              [disabled]="true"
+              type="text"
+              name="ndc"
+              #chgEmission="ngModel"
+              [(ngModel)]="assementYear.assessment?.assessmentType!"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="assementYear.assessment.assessmentType !='MAC' ">
+    <div class="row mb-3">
+      <div class="col-md-5">
+        <div class="col-5">
+          <label for="projStatus"
+            >Base Year</label
+          >
+          <input
+              [disabled]="true"
+              type="text"
+              name="baseyear"
+              #baseyear="ngModel"
+              [(ngModel)]="assementYear.assessment?.baseYear!"
+              class="p-inputtext"
+              pInputText
+            />
+        </div>
+      </div>
+    </div>
+    </ng-container>
+
+    <div class="row mb-3">
+      <div class="col-md-5">
+        <div class="col-5">
+          <label for="projStatus"
+            >Assessment Year </label
+          >
+          <input
+              [disabled]="true"
+              type="text"
+              name="assebaseyear"
+              #assebaseyear="ngModel"
+              [(ngModel)]="assementYear?.assessmentYear!"
+              class="p-inputtext"
+              pInputText>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="assementYear.assessment.assessmentType !='MAC' ">
+    <div class="row mb-3">
+      <div class="col-md-10">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Methodology</label>
+            <input
+              [disabled]="true"
+              type="text"
+              name="meth"
+              #chgEmission="ngModel"
+              [(ngModel)]="assementYear.assessment.methodology?.displayName!"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <div class="col-12">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-eye"
+            (click)="openDoc()"
+            class="p-button-rounded p-button-text"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+ 
+    <div class="row mb-3">
+      <app-parameter-summary
+        header="Baseline Parameter"
+        [assessmentYearId]="assesMentYearId"
+        [isDisable] = "isDisable"
+        [scenario]="assementYear.assessment.baselineScenario"
+        [parameters]="baselineParameters"
+        [baseImage] = "baseImage"
+        [assessmentType]="assessmentType"
+        (isReadyToCal)="addItem($event)"
+      ></app-parameter-summary>
+    </div>
+
+    <div class="row mb-3">
+      <app-parameter-summary
+        header="Project Parameter"
+        [assessmentYearId]="assesMentYearId"
+        [isDisable] = "isDisable"
+        [scenario]="assementYear.assessment.projectScenario"
+        [parameters]="projectParameters"
+        [baseImage] = "projectImage"  
+        [assessmentType]="assessmentType"
+        (isReadyToCal)="addItem($event)"
+      ></app-parameter-summary>
+    </div>
+
+    <div class="row mb-3">
+      <app-parameter-summary
+        *ngIf="lekageParameters.length > 0"
+        header="Leakage Parameter"
+        [assessmentYearId]="assesMentYearId"
+        [scenario]="assementYear.assessment.lekageScenario"
+        [baseImage] = "leakageImage"  
+        [assessmentType]="assessmentType"
+        [parameters]="lekageParameters"
+        (isReadyToCal)="addItem($event)"
+      ></app-parameter-summary>
+    </div>
+
+    <div class="row mb-3">
+      <app-parameter-summary
+        *ngIf="projectionParameters.length > 0"
+        header="Projection Parameter"
+        [scenario]=""
+        [assessmentYearId]="assesMentYearId"
+        [assessmentType]="assessmentType"
+        [baseImage] = "projectionImage"
+        [parameters]="projectionParameters"
+        (isReadyToCal)="addItem($event)"
+      ></app-parameter-summary>
+    </div>
+
+    <div class="row mb-3" *ngIf="this.assementYear.assessment.assessmentType != 'MAC' ">
+      <div class="col-md-2">
+        <div class="p-field">
+          <button
+          pButton
+          pRipple
+          label=" Result Equation"
+          type="button"
+          style="margin-right: 10px"
+          
+          class="p-button-raised"
+          (click)="toOpenImage()"
+        ></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3" *ngIf="assessmentResult && assessmentResult.id > 0">
+      <div class="p-grid p-fluid card">
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <h4>Assessment Result</h4>
+          </div>
+        </div>
+
+        <div class="row mb-3" *ngIf="assessmentResult?.baselineResult! != undefined">
+        <div class="row mb-3">
+          <div class="col-md-8">
+            <div class="col-12">
+              <div class="p-field">
+                <label for="arBaseline">Baseline Result</label>
+                <input
+                  [disabled]="true"
+                  type="text"
+                  name="arBaseline"
+                  #arBaseline="ngModel"
+                  [(ngModel)]="assessmentResult?.baselineResult!"
+                  class="p-inputtext"
+                  pInputText
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="isbsResultButtonsDisable"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(1, true)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatusBaselineResult === 4
+                      ? "Approved"
+                      : "Approve"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="isbsResultButtonsDisableReject"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(1, false)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatusBaselineResult === 3
+                      ? "Rejected"
+                      : "Reject"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3" *ngIf="assessmentResult?.projectResult! != undefined">
+        <div class="row mb-3">
+          <div class="col-md-8">
+            <div class="col-12">
+              <div class="p-field">
+                <label for="arBaseline">Project Result</label>
+                <input
+                  [disabled]="true"
+                  type="text"
+                  name="arBaseline"
+                  #arBaseline="ngModel"
+                  [(ngModel)]="assessmentResult?.projectResult!"
+                  class="p-inputtext"
+                  pInputText
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="ispsResultButtonsDisable"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(2, true)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatuProjectResult === 4
+                      ? "Approved"
+                      : "Approve"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="ispsResultButtonsDisableReject"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(2, false)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatuProjectResult === 3
+                      ? "Rejected"
+                      : "Reject"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <div class="row mb-3" *ngIf="assessmentResult?.lekageResult! != undefined">
+          <div class="row mb-3">
+            <div class="col-md-8">
+              <div class="col-12">
+                <div class="p-field">
+                  <label for="arBaseline">Leakage Result</label>
+                  <input
+                    [disabled]="true"
+                    type="text"
+                    name="arBaseline"
+                    #arBaseline="ngModel"
+                    [(ngModel)]="assessmentResult?.lekageResult!"
+                    class="p-inputtext"
+                    pInputText
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <div class="col-12">
+                <div class="p-field">
+                  <button
+                    type="button"
+                    [disabled]="islkResultButtonsDisable"
+                    pButton
+                    pRipple
+                    (click)="
+                      opDRAss.toggle($event); onRowSelectAssessment(3, true)
+                    "
+                  >
+                    {{
+                      assessmentResult.qcStatusLekageResult === 4
+                        ? "Approved"
+                        : "Approve"
+                    }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <div class="col-12">
+                <div class="p-field">
+                  <button
+                    type="button"
+                    [disabled]=" islkResultButtonsDisableReject"
+                    pButton
+                    pRipple
+                    (click)="
+                      opDRAss.toggle($event); onRowSelectAssessment(3, false)
+                    "
+                  >
+                    {{
+                      assessmentResult.qcStatusLekageResult === 3
+                        ? "Rejected"
+                        : "Reject"
+                    }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3" *ngIf="assessmentResult?.totalEmission! != undefined">
+          <div class="row mb-3">
+            <div class="col-md-8">
+              <div class="col-12">
+                <div class="p-field">
+                  <label for="arBaseline">Final Result</label>
+                  <input
+                    [disabled]="true"
+                    type="text"
+                    name="arBaseline"
+                    #arBaseline="ngModel"
+                    [(ngModel)]="assessmentResult?.totalEmission!"
+                    class="p-inputtext"
+                    pInputText
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <div class="col-12">
+                <div class="p-field">
+                  <button
+                    type="button"
+                    [disabled]="isteResultButtonsDisable"
+                    pButton
+                    pRipple
+                    (click)="
+                      opDRAss.toggle($event); onRowSelectAssessment(5, true)
+                    "
+                  >
+                    {{
+                      assessmentResult.qcStatusTotalEmission === 4
+                        ? "Approved"
+                        : "Approve"
+                    }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <div class="col-12">
+                <div class="p-field">
+                  <button
+                    type="button"
+                    [disabled]="isteResultButtonsDisableReject"
+                    pButton
+                    pRipple
+                    (click)="
+                      opDRAss.toggle($event); onRowSelectAssessment(5, false)
+                    "
+                  >
+                    {{
+                      assessmentResult.qcStatusTotalEmission === 3
+                        ? "Rejected"
+                        : "Reject"
+                    }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+
+
+        <div class="row mb-3" *ngIf="assessmentResult?.macResult != undefined">
+          <div class="col-md-8">
+            <div class="col-12">
+              <div class="p-field">
+                <label for="macresult">MAC Result (USD/tCO2e)</label>
+                <input
+                  [disabled]="true"
+                  type="text"
+                  name="macresult"
+                  #macresult="ngModel"
+                  [(ngModel)]="assessmentResult?.macResult!"
+                  class="p-inputtext"
+                  pInputText
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="ismacResultButtonsDisable"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(6, true)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatusmacResult === 4
+                      ? "Approved"
+                      : "Approve"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="ismacResultButtonsDisableReject"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(6, false)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatusmacResult === 3
+                      ? "Rejected"
+                      : "Reject"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row mb-3" *ngIf="assessmentResult.costDifference != undefined">
+          <div class="col-md-8">
+            <div class="col-12">
+              <div class="p-field">
+                <label for="costDifference">Cost Difference ($)</label>
+                <input
+                  [disabled]="true"
+                  type="text"
+                  name="costDifference"
+                  #costDifference="ngModel"
+                  [(ngModel)]="assessmentResult?.costDifference!"
+                  class="p-inputtext"
+                  pInputText
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="iscdResultButtonsDisable"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(7, true)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatuscostDifference === 4
+                      ? "Approved"
+                      : "Approve"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="iscdResultButtonsDisableReject"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(7, false)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatuscostDifference === 3
+                      ? "Rejected"
+                      : "Reject"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row mb-3" *ngIf="assessmentResult.psTotalAnnualCost != undefined">
+          <div class="col-md-8">
+            <div class="col-12">
+              <div class="p-field">
+                <label for="psTotalAnnualCost">Project Total Annual Cost ($)</label>
+                <input
+                  [disabled]="true"
+                  type="text"
+                  name="psTotalAnnualCost"
+                  #psTotalAnnualCost="ngModel"
+                  [(ngModel)]="assessmentResult?.psTotalAnnualCost!"
+                  class="p-inputtext"
+                  pInputText
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="ispstacResultButtonsDisable"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(8, true)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatuspsTotalAnnualCost === 4
+                      ? "Approved"
+                      : "Approve"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="ispstacResultButtonsDisableReject"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(8, false)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatuspsTotalAnnualCost === 3
+                      ? "Rejected"
+                      : "Reject"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row mb-3" *ngIf="assessmentResult.bsTotalAnnualCost != undefined">
+          <div class="col-md-8">
+            <div class="col-12">
+              <div class="p-field">
+                <label for="bsTotalAnnualCost">Baseline Total Annual Cost ($)</label>
+                <input
+                  [disabled]="true"
+                  type="text"
+                  name="bsTotalAnnualCost"
+                  #bsTotalAnnualCost="ngModel"
+                  [(ngModel)]="assessmentResult?.bsTotalAnnualCost!"
+                  class="p-inputtext"
+                  pInputText
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="isbstacResultButtonsDisable"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(9, true)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatusbsTotalAnnualCost === 4
+                      ? "Approved"
+                      : "Approve"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="col-12">
+              <div class="p-field">
+                <button
+                  type="button"
+                  [disabled]="isbstacResultButtonsDisableReject"
+                  pButton
+                  pRipple
+                  (click)="
+                    opDRAss.toggle($event); onRowSelectAssessment(9, false)
+                  "
+                >
+                  {{
+                    assessmentResult.qcStatusbsTotalAnnualCost === 3
+                      ? "Rejected"
+                      : "Reject"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <div class="row mb-3" *ngIf="projectionResult.length > 0">
+      <div class="p-grid p-fluid card">
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <h4>Projection Result</h4>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <p-table
+              #table
+              [value]="projectionResult"
+              [loading]="loading"
+              [responsive]="true"
+              selectionMode="single"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Year</th>
+                  <th>Baseline Result</th>
+                  <th>Project Result</th>
+                  <th>Leakage Result</th>
+                  <th>Emission Reduction</th>
+                  <th></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-param>
+                <tr>
+                  <td>{{ param.projectionYear }}</td>
+                  <td>{{ param.baselineResult }}</td>
+                  <td>{{ param.projectResult }}</td>
+                  <td>{{ param.leakageResult }}</td>
+                  <td>{{ param.emissionReduction }}</td>
+
+                  <td>
+                    <table>
+                      <tr>
+                        <td>
+                          <button
+                            type="button"
+                            pButton
+                            [disabled]="isProjectionResultButtonsDisable"
+                            pRipple
+                            (click)="approve(param)"
+                            (click)="
+                              opDRPro.toggle($event); onRowSelect(param, true)
+                            "
+                          >
+                            {{ param.qcStatus === 4 ? "Approved" : "Approve" }}
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            pButton
+                            [disabled]="isProjectionResultButtonsDisable"
+                            pRipple
+                            (click)="
+                              opDRPro.toggle($event); onRowSelect(param, false)
+                            "
+                          >
+                            {{ param.qcStatus === 3 ? "Rejected" : "Reject" }}
+                          </button>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="row mb-3"
+      *ngIf="
+        (projectionResult && projectionResult.length > 0) ||
+        (assessmentResult && assessmentResult.id > 0)
+      "
+    >
+      <div
+        class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
+      >
+        <!-- <button 
+        *ngIf="flag != 4 && flag != 3"
+          class="btn btn-primary text-uppercase ml-5"
+          type="submit"
+          [disabled]="isSubmitButtondisable"
+          (click)="submitStatus()"
+        >
+          Submit
+         
+        </button> -->
+        <button 
+        *ngIf="flag != 3"
+          class="btn btn-primary text-uppercase ml-5"
+          type="submit"
+          [disabled]="!verificationStatusIsNull || !isApproveAllAssesmentResult || isSubmitButtondisable"
+          (click)="submitStatus()"
+        >
+          Submit
+          <!-- {{parameters.find(m => m.parameterRequest.qaStatus !== 4) === undefined ? 'Calculate' :  'Submit'}} -->
+        </button>
+        
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div
+        class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
+      >
+        <button
+          class="btn btn-primary text-uppercase"
+          type="submit"
+          (click)="back()"
+        >
+          Back
+        </button>
+        
+        <button *ngIf="flag !=4 && flag != 3"
+       
+          class="btn btn-primary text-uppercase ml-5"
+          type="submit"
+          [disabled]="!isReadyToCAl"
+          (click)="submit()"
+        >
+          Check Result
+          <!-- {{parameters.find(m => m.parameterRequest.qaStatus !== 4) === undefined ? 'Calculate' :  'Submit'}} -->
+        </button>
+      
+      </div>
+    </div>
+
+    <p-overlayPanel
+      #opDRAss
+      [showCloseIcon]="true"
+      [style]="{ width: '50vw' }"
+      (onShow)="OnShowOerlayDRAssessment()"
+    >
+      <ng-template pTemplate>
+        <div
+          class="d-flex justify-content-start align-content-center flex-wrap mb-15"
+        >
+          <div class="col-12">
+            <div class="p-field">
+              <label for="scopeTA">Comment</label>
+              <textarea
+                name="scopeTA"
+                class="form-control"
+                class="form-control"
+                style="width: 100%"
+                pInputTextarea
+                [(ngModel)]="assesmentResultComment"
+                #fscope="ngModel"
+                [rows]="5"
+                [cols]="30"
+                required
+                maxlength="500"
+              ></textarea>
+              <p class="info-message text-danger" *ngIf="commentRequried">
+                This is a mandatory field
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
+        >
+          <button
+            class="btn btn-primary text-uppercase"
+            type="submit"
+            (click)="drWithCommentAssesment()"
+          >
+            Complete
+          </button>
+          <button
+            class="btn btn-primary text-uppercase ml-5"
+            type="submit"
+            (click)="opDRAss.hide()"
+          >
+            Cancel
+          </button>
+        </div>
+      </ng-template>
+    </p-overlayPanel>
+
+    <p-overlayPanel
+      #opDRPro
+      [showCloseIcon]="true"
+      [style]="{ width: '50vw' }"
+      (onShow)="OnShowOerlayDR()"
+    >
+      <ng-template pTemplate>
+        <div
+          class="d-flex justify-content-start align-content-center flex-wrap mb-15"
+        >
+          <div class="col-12">
+            <div class="p-field">
+              <label for="scopeTA">Comment</label>
+              <textarea
+                name="scopeTA"
+                class="form-control"
+                class="form-control"
+                style="width: 100%"
+                pInputTextarea
+                [(ngModel)]="drComment"
+                #fscope="ngModel"
+                [rows]="5"
+                [cols]="30"
+                required
+                maxlength="500"
+              ></textarea>
+              <p class="info-message text-danger" *ngIf="commentRequried">
+                This is a mandatory field
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
+        >
+          <button
+            class="btn btn-primary text-uppercase"
+            type="submit"
+            (click)="drWithComment()"
+          >
+            Complete
+          </button>
+          <button
+            class="btn btn-primary text-uppercase ml-5"
+            type="submit"
+            (click)="opDRPro.hide()"
+          >
+            Cancel
+          </button>
+        </div>
+      </ng-template>
+    </p-overlayPanel>
+  </div>
+  <p-toast position="top-right"></p-toast>
+</div>

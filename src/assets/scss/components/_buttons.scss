@@ -1,0 +1,145 @@
+.btn-primary{
+    color: $site-white-100;
+    background-color: $site-purple-400;
+    border-color: $site-purple-400;
+    font-weight: 600;
+    padding: 8px 24px;
+    transition: all ease 0.3s;
+
+    &:hover,&:focus,&:not(:disabled):not(.disabled):active, &:disabled{
+        background-color: darken($site-purple-400, 5%) !important;
+        border-color: darken($site-purple-400, 5%) !important;;
+    }
+}
+
+.btn-success{
+    color: $site-white-100;
+    background-color: $site-green-200;
+    border-color: $site-green-200;
+    font-weight: 600;
+    padding: 8px 24px;
+    transition: all ease 0.3s;
+    &:hover,&:focus,&:not(:disabled):not(.disabled):active,&:disabled{
+        background-color: darken($site-green-200, 5%) !important;
+        border-color: darken($site-green-200, 5%) !important;
+    }
+}
+
+.btn-lg{
+    letter-spacing: 0.5px;
+    padding: 12px 45px;
+    font-size: 16px;
+}
+
+.btn-light{
+    background: $site-white-100;
+    border-color: $site-white-100;
+    font-weight: 600;
+    padding: 8px 24px;
+    color: $site-gray-300;
+    &:hover,&:focus,&:not(:disabled):not(.disabled):active, &:disabled{
+        background-color: darken($site-white-100, 5%) !important;
+        border-color: darken($site-white-100, 5%) !important;
+        color: $site-gray-300 !important;
+    }
+}
+
+.btn{
+    font-family: 'Inter', serif;
+    &--48{
+        height: 48px;
+        padding: 12px 24px;
+    }
+}
+.btn-outline-primary{
+    border: 1px solid $site-purple-500;
+    color: $site-purple-500;
+    &:hover,&:focus, &:active{
+        background-color: $site-purple-500;
+        color: $site-white-100;
+    }
+}
+.p-button{
+    .p-button-icon-right{
+     margin-left: 1rem;
+    }
+    .p-button-icon-left{
+        margin-right: 1rem;
+    }
+}
+
+.label-edit-icon{
+    display:inline-block;
+    height: 13px;
+    width: 11px;
+    background-image: url('../../images/edit-icon.svg');
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+.label-save-icon{
+    color: $site-green-200;
+    &:hover,&:focus,&:active{
+        color: $site-green-200;
+    }
+}
+
+.toggle-btn{
+    font-weight: normal;
+    height: 58px;
+    display: inline-block;
+    &.btn-light{
+        border: 1px solid #CBD5E0;
+        background: #F7FAFC;
+        color: #4A5568;
+        &:hover,&:focus, &:not(:disabled):not(.disabled):active{
+            border: 1px solid #CBD5E0 !important;
+            background: darken($color: #F7FAFC, $amount: 2%) !important;
+            color: #4A5568 !important;
+        }
+    }
+    &.btn-success{
+        outline: 1px solid #38B2AC !important;
+        border: 2px solid #ffffff !important;
+        border-radius: 5px;
+    }
+}
+
+.btn-filter{
+    border: 1px solid #A0AEC0;
+    color: #718096;
+    background: #ffffff;
+    height: 40px;
+    font-weight: normal;
+    padding: 5px 10px;
+    &.active{
+        border: 1px solid #2C7A7B;
+        color: #ffffff;
+        background: #38B2AC;
+    }
+    
+}
+
+.btn-sm-table{
+    border: 1px solid #38B2AC;
+    background: #EFF9F9;
+    color: #38B2AC;
+    i{
+        font-size: 9px;
+        vertical-align: middle;
+        font-weight: 600;
+    }
+    &:hover,&:focus,&:active{
+        border: 1px solid #38B2AC !important;
+        background: #EFF9F9 !important;
+        color: #38B2AC !important;
+    }
+}
+.p-selectbutton .p-button{
+    background-color: #EDF1F7;
+}
+
+button.p-button.p-button-icon-only.p-button-rounded.p-button-text.p-component.p-element {
+    background: #fff !important;
+    border: 1px solid #1a4f7a;
+    color: #1a4f7a;
+}

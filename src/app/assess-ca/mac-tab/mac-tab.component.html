@@ -1,0 +1,18 @@
+<div class="container pl-20 pr-20">
+    <div class="mb-12">
+      <h4 class="mt-4">Marginal Abatement Cost Assessment</h4>
+    </div>
+    <form #fData="ngForm" novalidate>
+        <div class="card">
+            <p-tabView>
+                <p-tabPanel header="Enter Data and Assess"> 
+                   <app-mac-assessment [IsProposal]="true"></app-mac-assessment>
+                </p-tabPanel>
+                <p-tabPanel [disabled]="dataCollectionModuleStatus==0" header="Collect Data and Assess">
+                    <app-mac-assessment-approved [IsProposal]="false"></app-mac-assessment-approved>
+                </p-tabPanel> 
+                
+            </p-tabView>
+        </div>
+    </form>
+  </div>   

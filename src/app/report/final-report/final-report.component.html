@@ -1,0 +1,180 @@
+<div style="margin-left: 50px; margin-right: 50px">
+  <div class="container-fluid mb-2">
+    <h1>Executive Summary</h1>
+  </div>
+  <div class="container-fluid mb-5">
+    <table class="table">
+      <tbody>
+        <tr class="table-primary">
+          <td style="width: 250px; padding-left: 100px; white-space: nowrap">
+            <h5>Report Name:</h5>
+          </td>
+          <td>{{ report.reportName }}</td>
+        </tr>
+        <tr class="table-primary">
+          <td style="width: 250px; padding-left: 100px"><h5>Sector(s):</h5></td>
+          <td>{{ report.sectors.toString() }}</td>
+        </tr>
+        <tr class="table-primary">
+          <td style="width: 250px; padding-left: 100px">
+            <h5>Year(s):</h5>
+          </td>
+          <td>{{ sortedYearList }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container-fluid">
+    <div class="mb-4">
+      <h6>
+        Table 1: Summary of the assessments of Specific climate actions in
+        {{ report.sectors.toString() }} sector
+      </h6>
+    </div>
+    <p-table
+      #table
+      [value]="executiveSummery"
+      [lazy]="true"
+      [paginator]="false"
+      [showCurrentPageReport]="false"
+      [responsive]="true"
+    >
+      <!-- Table header start search -->
+
+      <!-- <p-table #tt [value]="climateactions" [columns]="cols" placeholder="Global Filter" [filter]="true" filterMatchMode="contains" >                                                          
+      <ng-template pTemplate="caption">
+          <div style="text-align: right">        
+              <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" pInputText size="50" style="width:auto">
+          </div>
+      </ng-template> -->
+
+      <!-- Table header END Search -->
+
+      <ng-template pTemplate="header">
+        <!-- <tr> 
+          <th *ngFor="let col of columns" [ngSwitch]="col.field">
+            <input *ngSwitchCase="'climateActionName'" pInputText type="text"
+              (input)="dt.filter($event.target.value, col.field, 'contains')" />
+          </th>
+        </tr> -->
+
+        <tr>
+          <th style="width: 300px"><h6>Aggregated Actions</h6></th>
+          <th><h6>Specific Climate Action</h6></th>
+          <th><h6>Year</h6></th>
+          <th style="width: 100px"><h6>Type</h6></th>
+          <th>
+            <h6>Emission Reduction</h6>
+
+            (tCO₂e)
+          </th>
+          <th>
+            <h6>MAC</h6>
+
+            (tCO₂e/USD)
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-executiveSummery>
+        <tr>
+          <td style="vertical-align: top">{{ executiveSummery.NDC }}</td>
+          <td style="vertical-align: top">
+            {{ executiveSummery.ClimateAction }}
+          </td>
+          <td style="vertical-align: top">
+            {{ executiveSummery.Year }}
+          </td>
+          <td style="vertical-align: top">
+            {{ executiveSummery.Type == "MAC" ? "MAC " + executiveSummery.TypeOfMac  : "GHG " + executiveSummery.Type }}
+          </td>
+
+          <td style="vertical-align: top">
+            {{ executiveSummery.Type != "MAC" ?  executiveSummery.Result : executiveSummery.EmmisionValue ? executiveSummery.EmmisionValue: "N/A"}}
+          </td>
+          <td style="vertical-align: top">
+            {{ executiveSummery.MACResult ? executiveSummery.MACResult : "N/A" }}
+          </td>
+          <!-- <td>{{ dataRequestList.id }}</td> -->
+        </tr>
+      </ng-template>
+    </p-table>
+    
+  </div>
+  <div class="buttonContainer">
+    <div class="mt-4" style="margin-left: 4px; margin-right: 4px">
+      <button
+        pRipple
+        pButton
+        type="button"
+        (click)="download()"
+        class="btn btn-primary btn-block text-uppercase btn-lg"
+        style="margin-left: 1%"
+      >
+        Download Excel
+      </button>
+    </div>
+    <div class="mt-4">
+      <button
+        pRipple
+        pButton
+        type="button"
+        (click)="downloadChart()"
+        class="btn btn-primary btn-block text-uppercase btn-lg"
+        style="margin-left: 1%"
+      >
+        Download Chart
+      </button>
+    </div>
+  </div>
+  <div class="container-fluid bg-white mt-5 mb-5">
+    <blockquote class="blockquote">
+      <h6
+        *ngIf="unconditionalValue"
+        style="text-align: justify; text-justify: inter-word"
+      >
+        Figure 1 illustrates the status of achieving emissions reduction targets
+        of {{ sectorList }} sector of {{ country }}. The expected emission
+        reduction of the {{ sectorList }} sector by {{ targetYear }} year is
+        {{ conditionalValue | number: "1.0":"en-US" }} MtCO₂e conditionally, and
+        {{ unconditionalValue | number: "1.0":"en-US" }} MtCO₂e unconditionally.
+        Mitigation actions implemented by year {{ maxYear }} were able to reduce
+        {{ sectorList }} sector emissions from
+        {{ totalExPost | number: "1.0":"en-US" }} tCO₂e.
+      </h6>
+
+      <h6
+        *ngIf="!unconditionalValue"
+        style="text-align: justify; text-justify: inter-word"
+      >
+        Figure 1 illustrates the status of achieving emissions reduction targets
+        of {{ sectorList }} sector of {{ country }}. The expected emission
+        reduction of the {{ sectorList }} sector by {{ targetYear }} year is
+        {{ conditionalValue | number: "1.0":"en-US" }} MtCO₂e. Mitigation actions
+        implemented by year {{ maxYear }} were able to reduce
+        {{ sectorList }} sector emissions from
+        {{ totalExPost | number: "1.0":"en-US" }} tCO₂e.
+      </h6>
+    </blockquote>
+  </div>
+  <div *ngIf="yrList.length>1" class="container-fluid">
+    <div class="mt-4">
+      <!-- <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart> -->
+      <p-chart
+        type="line"
+        [data]="lineStylesData"
+        [options]="basicOptions"
+      ></p-chart>
+    </div>
+    
+      <p><strong>Note:</strong>Only the emission reductions of Climate Actions calculated through the tool using the ex-post approach are reflected in the Actual Emissions curve.</p>
+    
+ 
+  </div>
+  <div class="container-fluid mt-4">
+    <button (click)="printPage()" class="btn btn-primary" style="width: 100px">
+      Print
+    </button>
+  </div>
+</div>

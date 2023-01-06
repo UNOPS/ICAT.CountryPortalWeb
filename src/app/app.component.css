@@ -1,0 +1,17 @@
+.username {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 175%;
+  color: #232D42;
+}
+
+.userrole {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 130%;
+  color: #8A92A6;
+}

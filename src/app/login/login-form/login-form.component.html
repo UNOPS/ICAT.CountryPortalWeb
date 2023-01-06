@@ -1,0 +1,80 @@
+<p class="mb-35">
+  Enter details below to
+  <span class="text-info font-weight-bold">sign in</span> to your account.
+</p>
+
+<form #fLogin="ngForm" autocomplete="off">
+  <div class="form-group mb-25">
+    <label class="font-weight-bold">Username</label>
+    <input type="email" class="form-control" name="userName" #userName="ngModel"
+      [(ngModel)]="logiLayoutService.authCredentialDot.username" (input)="resetError()" [ngClass]="{
+        'form-control--error':
+          (userName.errors && (userName.touched || userName.dirty)) ||
+          (userName.errors?.['required'] && isSubmitLogin)
+      }" placeholder="Enter the username" required />
+    <p class="info-message text-danger" *ngIf="
+        (userName.errors?.['required'] && (userName.touched || userName.dirty)) ||
+        (userName.errors?.['required'] && isSubmitLogin)
+      ">
+      Username is required
+    </p>
+  </div>
+  <div class="form-group mb-15 inner-addon right-addon">
+    <label class="font-weight-bold">Password</label>
+    <div class="input-group  mx-auto">
+      <p-password 
+      [(ngModel)]="logiLayoutService.authCredentialDot.password"
+      name="password"
+      #password="ngModel"
+      [ngClass]="{ 'form-control--error':(password.errors && (password.touched || password.dirty)) ||(password.errors?.['required'] && isSubmitLogin) }" 
+      placeholder="Enter the Password"
+      [feedback]="false"
+      [toggleMask]="true"
+      (onFocus)="resetError()"
+      required
+      [style]="{'width':'100%'}"
+      ></p-password>
+      <!-- <input [type]="showPassword ? 'text' : 'password'" class="form-control pwd-control" name="password"
+        #passowrd="ngModel" [(ngModel)]="logiLayoutService.authCredentialDot.password" (input)="resetError()" [ngClass]="{
+        'form-control--error':
+          (passowrd.errors && (passowrd.touched || passowrd.dirty)) ||
+          (passowrd.errors?.['required'] && isSubmitLogin)
+      }" placeholder="Enter the Password" required /> -->
+      <!-- <div>
+        <i alt="show" class="pi pi-eye eye-show" (click)="showPassword = !showPassword" [class.hide]="showPassword"></i>
+        <i alt="hide" class="pi pi-eye-slash eye-hide" (click)="showPassword = !showPassword"
+          [class.hide]="!showPassword"></i>
+      </div> -->
+
+    </div>
+    <p class="info-message text-danger" *ngIf="
+        (password.errors?.['required'] && (password.touched || password.dirty)) ||
+        (password.errors?.['required'] && isSubmitLogin)
+      ">
+      Password is required
+    </p>
+  </div>
+  <p class="mb-35">
+    <a href="javascript:void(0)" (click)="showPasswordResetForm()" class="text-info">Forgot your password?</a>
+  </p>
+  <p class="info-message text-danger" *ngIf="isInvalidCredential">
+    <span *ngIf="loginError !== ''">{{loginError}}</span>
+    <span *ngIf="loginError === ''">Something went wrong!</span>
+  </p>
+  <button class="btn btn-primary btn-block text-uppercase btn-lg" type="submit" (click)="login()">
+    Sign in
+  </button>
+</form>
+
+<p-dialog header=" " [(visible)]="display">
+  <div class="text-center pr-30 pl-30 mw-460">
+    <!-- <img class="mb-20" src="../../../../assets/images/confirm-icon.jpg" /> -->
+    <h6 class="mb-20">Something went wrong</h6>
+    <p>
+      Please try again and see how it goes, if that doesn’t work again, please
+      do send us an email at support@nutmeg.com and our team will look at the
+      issue ASAP
+    </p>
+    <a class="btn btn-primary mt-15" href="/home">PROCEED TO DASHBOARD</a>
+  </div>
+</p-dialog>

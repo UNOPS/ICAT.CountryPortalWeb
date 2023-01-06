@@ -1,0 +1,10 @@
+.might-overflow {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 150px;
+}
+
+.alternative {
+    pointer-events: none;
+  }

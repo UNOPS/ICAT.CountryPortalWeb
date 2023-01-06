@@ -1,0 +1,32 @@
+<!--
+<p-table 
+class="table-doc"
+[value]="doc_name"
+[lazy]="true"
+>
+<ng-template pTemplate="header" >
+  <tr>
+    <th>FILE NAME</th>
+  </tr>
+</ng-template>
+<ng-template pTemplate="body"let-docs >
+  <tr>
+        <td (click)= "onDownload()">
+        {{docs.documentName}}
+        
+        </td>
+ </tr>
+</ng-template>
+</p-table>
+-->
+
+<p-card header="" [style]="{'width': '10rem','height':'8rem', 'margin-bottom': '2em','text-align': 'center'}" styleClass="p-card-shadow" (click)="onRedirect()">
+    <ng-template pTemplate="header">
+        
+        <p><b>{{doc_name[0].substring(0,15)}}....</b></p>
+        <p>Updated Date</p>
+        <p>{{doc_name[1] | date: "yyyy-MM-dd" }}</p>
+    </ng-template>
+    
+    
+</p-card>

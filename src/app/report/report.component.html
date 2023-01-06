@@ -1,0 +1,299 @@
+<div class="container pl-20 pr-20">
+  <h4 class="mt-4">Reports</h4>
+
+  <div class="p-grid p-fluid card">
+    <div class="row mb-3">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-inputgroup pt-4">
+          <input placeholder="Type Your Keyword" [(ngModel)]="searchBy.text" #nameClimate="ngModel" type="text"
+            name="nameClimate" class="p-inputtext" pInputText />
+          <button type="button" pButton pRipple label="Search" (click)="onSearch()"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projNdc">Aggregated Actions</label>
+            <p-dropdown appendTo="body" name="ndc" [options]="ndcList" placeholder="Select .." [(ngModel)]="searchBy.ndc"
+              #fndc="ngModel" [showClear]="true" [filter]="true" optionLabel="name" (onChange)="onNdcChange($event)">
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="proj">Specific Climate Action</label>
+          <p-dropdown  appendTo="body" name="ca" [options]="climateActionList" placeholder="Select .." [(ngModel)]="searchBy.ca"
+            #fca="ngModel" [showClear]="true" [filter]="true" optionLabel="climateActionName"
+            (onChange)="onCAChange($event)">
+          </p-dropdown>
+        </div>
+      </div>
+      <div *ngIf="isShown" class="col-md-4">
+        <div class="p-field">
+          <label for="projsector">Sector</label>
+          <p-dropdown  appendTo="body" name="sector" [options]="sectorList" placeholder="Select .." [(ngModel)]="searchBy.sector"
+            #fsector="ngModel" [showClear]="true" [filter]="true" optionLabel="name"
+            (onChange)="onStatusChange($event)">
+          </p-dropdown>
+        </div>
+      </div>
+      <!-- <div class="col-md-4">
+        <div class="p-field">
+          <label for="type">Assessment Type</label>
+          <p-dropdown
+            name="type"
+            [options]="typePair"
+            placeholder="Select .."
+            [(ngModel)]="searchBy.type"
+            #type="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            optionLabel="name"
+            (onChange)="onTypeChange($event)"
+          >
+          </p-dropdown>
+        </div>
+      </div> -->
+    </div>
+    <div class="row mb-3"></div>
+    <div class="row mb-3">
+      <div class="col-md-4"></div>
+      <div class="col-md-5"></div>
+      <div class="col-md-3 text-end" >
+        <button pButton pRipple label="Genarate" (click)="generate()"></button>
+      </div>
+    </div>
+    
+
+    <h6 class="mt-4" style="color: #1a4f7b">Reports</h6>
+    <br />
+    <div class="row" >
+        <div *ngFor="let file of pdfFiles" class="col col-md-6" style="margin: auto;"  >
+            <a href="{{SERVER_URL}}/{{file.generateReportName}}"  >{{file.reportName}}</a>
+            
+          
+      </div>
+      
+    </div>
+    
+    <div class="row p-2"> 
+      <div class="container" fxLayout="column" fxLayout.md="row" fxLayoutGap="20px">
+        <div class="cardWrap" fxLayout.lt-md="row" fxLayout.md="column" fxLayout="row" fxFlex.md="50"
+          fxLayoutAlign="start" fxLayoutGap="10px">
+          <div *ngFor="let item of reports">
+            <ng-container>
+              <div fxFlex.lt-md="100" fxFlex="30">
+                <app-document-report [documents]="item"> </app-document-report>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3"></div>
+    <div class="col-md-3"></div>
+    <div class="col-md-3">
+      <div *ngIf="userId === 1 && displayButton">
+        <button type="button" pButton pRipple label="Publish"></button>
+      </div>
+
+      <p-dialog [(visible)]="display1">
+        <div class="row p-2">
+          <div class="col-4">
+            <div>
+              <label for="reportName1">Report name</label>
+            </div>
+          </div>
+          <div class="col-6">
+            <div>
+              <input type="text" name="reportName1" field="reportName1" class="p-inputtext" [(ngModel)]="reportName1" />
+            </div>
+          </div>
+        </div>
+
+        <div class="row p-2">
+          <div class="col-4">
+            <div>
+              <label for="description">Report Description</label>
+            </div>
+          </div>
+          <div class="col-6">
+            <div>
+              <input type="text" name="description" field="description" class="p-inputtext" [(ngModel)]="description" />
+            </div>
+          </div>
+        </div>
+
+        <div class="row p-2">
+          <div class="col-4">
+            <div>
+              <i class="pi pi-eye" style="font-size: 1.5rem; color: #000; margin-left: 17%"></i>
+            </div>
+          </div>
+          <div class="col-6">
+            <div>
+              <input placeholder="warning msg to be added" />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <button pButton pRipple label="Publish"></button>
+        </div>
+      </p-dialog>
+    </div>
+   
+  </div>
+</div>
+<p-dialog [(visible)]="display">
+  <div class="container" style="width: 1200px; height: 700px">
+    <div *ngIf="isCountryLevel" class="row p-2">
+      <div class="col-2">
+        <div>
+          <label for="sector">Select Sector/(s)</label>
+        </div>
+      </div>
+      <div  class="col-6">
+        <div>
+          <p-multiSelect [disabled]="allSelect" [style]="{ width: '100%' }" placeholder="Select Sectors" name="sector" #sector="ngModel"
+            [options]="sectorList" [(ngModel)]="selectedSector" optionLabel="name"
+            (onChange)="onSectorChange(selectedSector)"></p-multiSelect>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="p-field-checkbox">
+          <p-checkbox name="selectAllSectors" 
+          [binary]="true" inputId="selectAllSectors" 
+          [(ngModel)]="allSelect" 
+          (onChange)="selectAllSectors(allSelect)"
+          [ngModelOptions]="{standalone: true}"
+          label="Select All Sectors"
+          ></p-checkbox>
+          
+        </div>
+      </div>
+      
+    </div>
+    <div *ngIf="!isCountryLevel"  class="row p-2">
+      <div class="col-2">
+        <div>
+          <label for="sector">Sector</label>
+        </div>
+      </div>
+      <div class="col-10">
+        <div>
+          <input disabled="true" [style]="{ width: '75%' }" type="text" name="reportName" class="p-inputtext" [value]="selectedSector.length>0?selectedSector[0].name:''"
+            pInputText />
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row p-2">
+      <div class="col-2">
+        <div>
+          <label for="ndc">Select Aggregated Actions</label>
+        </div>
+      </div>
+      <div class="col-10">
+        <div>
+          <p-multiSelect appendTo="body" [style]="{ width: '75%' }" placeholder="Select Aggregated Actions " name="ndc" #ndc="ngModel"
+            [options]="selectedNdc1" [(ngModel)]="selectedNdc" optionLabel="name"
+            (onChange)="onselectedNdcChange(selectedNdc)"></p-multiSelect>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2">
+      <div class="col-2">
+        <div>
+          <label for="project">Select Specific Climate Action</label>
+        </div>
+      </div>
+      <div class="col-10">
+        <div>
+          <p-multiSelect  appendTo="body" [style]="{ width: '75%' }" placeholder="Select Specific Climate Actions" name="project"
+            #project="ngModel" [options]="popUpProject" [(ngModel)]="selectedproject" optionLabel="climateActionName"
+            (onChange)="onClimateActionChange()"></p-multiSelect>
+
+          <!-- <p-dropdown
+                        placeholder="Select climate action"
+                        name="project"
+                        #project="ngModel"
+                        [options]="popUpProject"
+                        [(ngModel)]="selectedproject"
+                        [ngModelOptions]="{ standalone: true }"
+                        optionLabel="climateActionName"
+                      ></p-dropdown> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2">
+      <div class="col-2">
+        <div>
+          <label for="atype">Select Assessment Type</label>
+        </div>
+      </div>
+      <div class="col-10">
+        <div>
+          <p-multiSelect   appendTo="body"
+          [style]="{ width: '75%' }" 
+          placeholder="Select assessment Type" 
+          name="atype" 
+          #atype="ngModel"
+          [options]="typePair" 
+          [(ngModel)]="selecetedType" 
+          optionLabel="name"
+          (onChange)="onselectedAssesmentType(selecetedType)" 
+          ></p-multiSelect>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2">
+      <div class="col-2">
+        <div>
+          <label for="ayr">Select Year/(s)</label>
+        </div>
+      </div>
+      <div class="col-10">
+        <div>
+          <p-multiSelect  appendTo="body" [style]="{ width: '75%' }" placeholder="Select Assessment Years" name="ayr" #ayr="ngModel"
+            [options]="uniquePopYrList" [(ngModel)]="selectedYr" optionLabel="assessmentYear"></p-multiSelect>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2">
+      <div class="col-2">
+        <div>
+          <label for="sector">Report Name</label>
+        </div>
+      </div>
+      <div class="col-10">
+        <div>
+          <input [style]="{ width: '75%' }" type="text" name="reportName" class="p-inputtext" [(ngModel)]="reportName"
+            pInputText />
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <button style="margin-right: 5px" pButton pRipple label="Executive Summary" (click)="confirm()"></button>
+      <button pButton pRipple label="Full Report" (click)="confirmPDF()"></button>
+    </div>
+  </div>
+</p-dialog>

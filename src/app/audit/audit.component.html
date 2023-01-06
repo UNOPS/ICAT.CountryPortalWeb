@@ -1,0 +1,113 @@
+<div class="container pl-20 pr-20">
+  <h4 class="mt-4">Activity log</h4>
+  <div class="p-grid p-fluid card">
+    <div class="row mb-3">
+      <div class="col-md-8"></div>
+      <div class="col-md-4">
+        <div class="p-inputgroup pt-4">
+          <input placeholder="Type Your Keyword" [(ngModel)]="searchBy.text" #nameClimate="ngModel" type="text"
+            name="nameAudit" class="p-inputtext" pInputText />
+          <button type="button" pButton pRipple label="Search" (click)="onSearch()"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">User Type</label>
+            <p-dropdown name="usertype" [options]="userTypeList" [(ngModel)]="searchBy.usertype" #fsector="ngModel"
+              [showClear]="true" [filter]="true" placeholder="Select .." appendTo="body"
+              (ngModelChange)="onUTChange($event)">
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="projStatus">Date</label>
+          <p-calendar appendTo="body" placeholder="DD/MM/YYYY" dateFormat="dd/mm/yy" #propsedDate="ngModel"
+            [(ngModel)]="searchBy.editedOn" (ngModelChange)="ondateChange($event)"  [maxDate]="Date"></p-calendar>
+          <!-- <p-dropdown
+              name="date"
+              [options]="dateList"
+              [(ngModel)]="searchBy.date"
+              #fsector="ngModel"
+              [showClear]="true"
+              [filter]="true"
+              placeholder="Select .."
+            
+              (ngModelChange)="ondateChange($event)"
+            >
+            </p-dropdown> -->
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="projStatus">Status</label>
+          <p-dropdown name="activitytype" [options]="status" [(ngModel)]="searchBy.activity" #fsector="ngModel"
+            [showClear]="true" [filter]="true" placeholder="Select .." appendTo="body"
+            (ngModelChange)="onactivityChange($event)">
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <div [ngStyle]="{'margin-bottom': itemsPerPage === 1?'100px':'unset'}">
+      <p-table #table [value]="activities" [lazy]="true" (onLazyLoad)="loadgridData($event)" [paginator]="true"
+        [rows]="rows" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        paginatorDropdownAppendTo="body"
+        [rowsPerPageOptions]="[ 10, 25, 50]" [totalRecords]="totalRecords" [loading]="loading" [responsive]="true">
+        <!-- Table header start search -->
+
+        <!-- <p-table #tt [value]="climateactions" [columns]="cols" placeholder="Global Filter" [filter]="true" filterMatchMode="contains" >                                                          
+        <ng-template pTemplate="caption">
+            <div style="text-align: right">        
+                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="50" style="width:auto">
+            </div>
+        </ng-template> -->
+
+        <!-- Table header END Search -->
+
+        <ng-template pTemplate="header">
+          <!-- <tr> 
+            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+              <input *ngSwitchCase="'climateActionName'" pInputText type="text"
+                (input)="dt.filter($event.target.value, col.field, 'contains')" />
+            </th>
+          </tr> -->
+
+          <tr>
+
+            <th>Name</th>
+            <th>User Type</th>
+            <th>Activity</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-activities>
+          <tr>
+
+
+            <td>{{ activities.userName }}</td>
+            <td>{{ activities.userType }}</td>
+            <td>{{ activities.action }}</td>
+            <td>{{ activities.editedOn | date: "dd-MM-yyyy " }}</td>
+            <td>{{ activities.editedOn | date: "h:mm:ss a" }}</td>
+            <!-- <td>{{ activities.editedOn | date: "YYYY-MM-DDThh:mm:ssTZD" }}</td> -->
+
+
+            <td>{{ activities.actionStatus }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

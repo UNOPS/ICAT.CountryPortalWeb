@@ -1,0 +1,176 @@
+.navbar-landing{
+    background-color: $site-yellow-100;
+    .navbar-nav {
+        .nav-item{
+            .nav-link {
+                padding-right: 20px;
+                padding-left: 20px;
+                color: $site-black-100;
+                cursor: pointer;
+            }
+            &.active{
+                .nav-link{
+                    font-weight: bold;
+                }
+            }
+        }
+        
+    }
+}
+
+.main-header{
+    min-height: 825px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    @media screen and (min-width: 992px) {
+        background-color: $site-yellow-100;
+        background-image: none;
+    }
+    .container-fluid{
+        z-index: 1;
+    }
+    &::after{
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.7);
+        z-index: 0;
+        @media screen and (min-width: 992px) {
+            background-color:$site-yellow-100;
+            background-image: url('../../images/pattern.svg');
+            background-position: left -450px bottom -300px;
+            background-repeat:  no-repeat;
+            background-size: contain;
+        }
+    }
+    &--text{
+        padding-left: 0;
+        @media screen and (min-width: 992px) {
+            padding-left: 75px;
+        }
+    }
+    &--img{
+        position: relative;
+        img{
+            z-index: 5;
+        }
+        &::after{
+            // content: '';
+            position: absolute;
+            bottom: -100px;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image:url('../../images/bg-4.svg');
+            background-position: right 10px bottom;
+            background-repeat:  no-repeat;
+            background-size: 98%;
+        }
+        &::before{
+            // content: '';
+            position: absolute;
+            top: -70px;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image:url('../../images/bg-3.svg');
+            background-position: left 15px top;
+            background-repeat:  no-repeat;
+            background-size: contain;
+        }
+    }
+}
+
+.bg-pattern-dotted {
+    position: relative;
+    &::after{
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+     
+        @media screen and (min-width: 992px) {
+            background-image: url('../../images/pattern.svg');
+            background-position: right -290px top -690px;
+            background-repeat:  no-repeat;
+            background-size: contain;
+        }
+    }
+}
+
+.product-box{
+    position: relative;
+    cursor: pointer;
+    transition: all ease 0.3s;
+    padding: 15px;
+    &:hover,&:focus{
+        border: 1px solid $site-purple-100;
+        border-radius: 4px;
+        -webkit-box-shadow: 0px 2px 53px -15px rgba(127,156,245,0.5);
+        -moz-box-shadow: 0px 2px 53px -15px rgba(127,156,245,0.5);
+        box-shadow: 0px 2px 53px -15px rgba(127,156,245,0.5);
+        &::after{
+            content: '';
+            width: 32px;
+            height: 14px;
+            background-image: url('../../images/icons/arrow-right.svg');
+            background-repeat:  no-repeat;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        
+    }
+    p{
+        margin-bottom: 0;
+    }
+    
+}
+
+.bg-pattern-purple{
+    background-image: url('../../images/pattern-2.png');
+    background-repeat:  no-repeat;
+    background-size: cover;
+}
+
+.bg-pattern-yellow{
+    .container{
+        position: relative;
+        &::before{
+            content: '';
+            position: absolute;
+            background-color: $site-yellow-200;
+            width: calc(100% - 30px);
+            height: 95%;
+            top: -30px;
+            bottom: 0;
+            left: 15px;
+            z-index: -1;
+    
+            @media screen and (min-width: 992px) {
+                top: 5%;
+                left: 15px;
+                width: calc(100% - 30px);
+                height: 88%;
+            }
+            @media screen and (min-width: 1199px) {
+                top: 10%;
+                left: 15px;
+                height: 75%;
+                width: calc(100% - 30px);
+            }
+            
+        }
+    }
+}
+.bg-pattern-shapes{
+    background-repeat:  no-repeat;
+    background-size: cover;
+}

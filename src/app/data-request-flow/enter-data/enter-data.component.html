@@ -1,0 +1,529 @@
+<div class="container pl-20 pr-20">
+  <h4 class="mt-4">Enter Data</h4>
+  <div class="p-grid p-fluid card">
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Specific Climate Actions</label>
+            <p-dropdown
+              name="climateActiontype"
+              [options]="climateactions"
+              [(ngModel)]="searchBy.climateaction"
+              #fsector="ngModel"
+              [showClear]="true"
+              [filter]="true"
+              placeholder="Select .."
+              optionLabel="climateActionName"
+              (ngModelChange)="onCAChange($event)"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="projStatus">Year</label>
+          <p-dropdown
+            name="projYear"
+            [options]="yearList"
+            [(ngModel)]="searchBy.year"
+            #fsector="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            placeholder="Select .."
+            optionLabel="assessmentYear"
+            (ngModelChange)="onYearChange($event)"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-inputgroup pt-4">
+          <input
+            placeholder="Type Your Keyword"
+            type="text"
+            class="p-inputtext"
+            [(ngModel)]="searchBy.text"
+            pInputText
+          />
+          <button
+            type="button"
+            pButton
+            pRipple
+            label="Search"
+            (click)="onSearchClick($event)"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <!-- <div>{{ this.selectedParameters | json }}</div> -->
+    <div class="row p-2">
+      <p-table
+        #table
+        [value]="parameterList"
+        [lazy]="true"
+        (onLazyLoad)="loadgridData($event)"
+        [paginator]="true"
+        [rows]="rows"
+        [showCurrentPageReport]="true"
+        paginatorDropdownAppendTo="body"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[ 10, 25, 50]"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+        [responsive]="true"
+        [(selection)]="selectedParameters"
+      >
+        <!-- Table header start search -->
+
+        <!-- <p-table #tt [value]="climateactions" [columns]="cols" placeholder="Global Filter" [filter]="true" filterMatchMode="contains" >                                                          
+      <ng-template pTemplate="caption">
+          <div style="text-align: right">        
+              <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" pInputText size="50" style="width:auto">
+          </div>
+      </ng-template> -->
+
+        <!-- Table header END Search -->
+
+        <ng-template pTemplate="header">
+          <!-- <tr> 
+          <th *ngFor="let col of columns" [ngSwitch]="col.field">
+            <input *ngSwitchCase="'climateActionName'" pInputText type="text"
+              (input)="dt.filter($event.target.value, col.field, 'contains')" />
+          </th>
+        </tr> -->
+
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th>Specific Climate Actions</th>
+            <th>Approach</th>
+            <th>Year</th>
+            <th>Scenario</th>
+            <th>Parameter</th>
+
+            <th>Value</th>
+            <th>Unit</th>
+            <th>Actions</th>
+
+            <th>Deadline</th>
+            <th>Info</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-parameterList>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="parameterList"> </p-tableCheckbox>
+            </td>
+            <td>
+              <div
+                class="might-overflow"
+                [pTooltip]="
+                  parameterList.parameterId.Assessment?.Prject
+                    ?.climateActionName
+                "
+                tooltipPosition="top"
+              >
+                {{
+                  parameterList.parameterId.Assessment?.Prject
+                    ?.climateActionName
+                }}
+              </div>
+            </td>
+            <td>{{ parameterList.parameterId.Assessment?.assessmentType }}</td>
+
+            <ng-container
+              *ngIf="
+                parameterList.parameterId?.DefaultValue?.year! == undefined;
+                else elseBlockYear
+              "
+            >
+              <td *ngIf="parameterList?.parameterId?.Assessment">
+                {{
+                  parameterList?.parameterId!?.Assessment!?.AssessmentYear!
+                    ?.assessmentYear!
+                }}
+              </td>
+              <td *ngIf="!parameterList?.parameterId?.Assessment">
+                {{
+                  parameterList.parameterId.AssessmentYear
+                }}
+              </td>
+
+            </ng-container>
+            <ng-template #elseBlockYear>
+              <td>
+                {{ parameterList.parameterId?.DefaultValue?.year! }}
+              </td>
+            </ng-template>
+
+            <td>
+              {{ parameterList.parameterId.isAlternative ? "Alternative" : "" }}
+              {{ parameterList.parameterId.isBaseline ? "Baseline" : "" }}
+              {{ parameterList.parameterId.isProject ? "Project" : "" }}
+              {{ parameterList.parameterId.isLekage ? "Lekage" : "" }}
+              {{ parameterList.parameterId.isProjection ? "Projection" : "" }}
+            </td>
+            <td>
+              <div
+                class="might-overflow"
+                [pTooltip]="parameterList.parameterId.name"
+                tooltipPosition="top"
+              >
+                {{ parameterList.parameterId.name }}
+              </div>
+            </td>
+
+            <td>{{ parameterList.parameterId.value }}</td>
+            <td>{{ parameterList.parameterId.uomDataRequest }}</td>
+            <td>
+              <tr>
+                <td>
+                  <button
+                    pRipple
+                    class="fas fa-plus"
+                    pButton
+                    type="button"
+                    style="background-color: #c6cfd7; border-color: transparent"
+                    (click)="
+                      onClickUpdateValue(
+                        parameterList,
+                        parameterList.parameterId?.value,
+                        parameterList.id,
+                        parameterList.parameterId?.id,
+                        parameterList.parameterId?.uomDataRequest,
+                        parameterList.parameterId.Assessment?.AssessmentYear
+                          ?.assessmentYear
+                      )
+                    "
+                  >
+                    <i
+                      class="pi pi-plus"
+                      style="font-size: 1rem; color: #000"
+                    ></i>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary"
+                    (click)="onRejectClick(parameterList.id)"
+                    (mouseenter)="onMouseOver()"
+                    (mouseleave)="onMouseleave()"
+                  >
+                    Reject
+                  </button>
+                </td>
+              </tr>
+            </td>
+
+            <td>
+              {{ parameterList.deadline | date: "yyyy-MM-dd " }}
+            </td>
+            <td>
+              <i
+                class="pi pi-ellipsis-v"
+                style="font-size: 2rem"
+                (click)="getInfo(parameterList)"
+              ></i>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="row mb-3">
+      <!-- <div class="col-sm-1  col-md-3"></div> -->
+      <div class="col-sm-4 col-md-3 " >
+        
+        <button
+        style="position:relative;width:85%"
+          type="button"
+          pButton
+          pRipple
+          (click)="download()"
+          label="Export to Excel"
+        ></button>
+        
+        <div style="font-size: 2em;"  type="button"  class="pi pi-info-circle mt-1 ml-10" pTooltip="Download above table to excel. Please make sure not to change the template" ></div>
+
+      </div>
+      <div  class="col-sm-4 col-md-3 " *ngIf="country.hasExelTem" >
+        
+        <button
+        style="position:relative;width:85%"
+          type="button"
+          pButton
+          pRipple
+          (click)="handleExport()"
+          label="Export to Excel country"
+        ></button>
+        
+        <div style="font-size: 2em;"  type="button"  class="pi pi-info-circle mt-1 ml-10" pTooltip="Download above table to excel. Please make sure not to change the template" ></div>
+
+      </div>
+      <div class=" col-sm-4 col-md-3">
+        <button
+          type="button"
+          (click)="uploadDialog()"
+          pButton
+          pRipple
+          label="Upload Excel"
+        ></button>
+      </div>
+      <div class=" col-sm-3  col-md-3">
+        <button
+          type="button"
+          (click)="onClickSendNowAll()"
+          pButton
+          pRipple
+          label="Send"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+<p-dialog [(visible)]="confirm1" header="Add Data" (onHide)="onHideDialog()">
+  <div
+    class="container"
+    style="width: 700px; height: 225px; margin-left: 50px; margin-top: 0px"
+  >
+    <table>
+      <tr>
+        <td style="width: 150px">
+          <div class="p-field mb-2">Year</div>
+        </td>
+        <td style="width: 150px">
+          <div class="p-field mb-2">Unit</div>
+        </td>
+        <td style="width: 100px">
+          <div class="p-field mb-2">Value</div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="p-field mb-2" style="width: 150px">
+            {{ selectedYear }}
+          </div>
+        </td>
+        <td>
+          <div class="p-field mb-2" style="width: 150px">
+            <p-dropdown
+              name="unitType"
+              [options]="unitTypeList"
+              [(ngModel)]="selectedUnit"
+              #fsector="ngModel"
+              [showClear]="true"
+              [filter]="true"
+              placeholder="Select .."
+              optionLabel="ur_fromUnit"
+              width="100px"
+              (onChange)="changeUnit($event, selectedPara, selectedPara.parameterId)"
+            >
+            </p-dropdown>
+          </div>
+        </td>
+        <td>
+          <div class="p-field mb-2" *ngIf="!isHistorical">
+            <input
+              placeholder="Type Your Value"
+              type="text"
+              #cations="ngModel"
+              class="p-inputtext"
+              [(ngModel)]="selectedValue"
+              pInputText
+              [required]="true"
+            />
+          </div>
+          <div *ngIf="isHistorical">
+            <p-dropdown
+              placeholder="Select historical value"
+              [(ngModel)]="selectedHistoricalValue"
+              [autoDisplayFirst]="false"
+              [options]="selectedPara.parameterId.displayhisValues"
+              optionLabel="label"
+              appendTo="body"
+              [required]="true"
+            >
+            </p-dropdown>
+          </div>
+        </td>
+        <td>
+          <p-checkbox
+              [(ngModel)]="isHistorical"
+              [binary]="true"
+              inputId="binary"
+              label="Historical Values"
+            >
+          </p-checkbox>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="p-field mb-2">Assumption</div>
+        </td>
+        <td>
+          <div class="p-field mb-2">
+            <input
+              style="width: 322%; height: 55px;"
+              placeholder="Type Your Assumption"
+              type="text"
+              class="p-inputtext"
+              [(ngModel)]="selectedAssumption"
+              pInputText
+            />
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="p-field">
+            <button
+            [disabled]="!selectedValue && !selectedHistoricalValue"
+              type="button"
+              pButton
+              pRipple
+              label="Save"
+              (click)="onClickSendNow(5)"
+            ></button>
+          </div>
+        </td>
+        <td>
+          <div class="p-field">
+            <button
+            [disabled]="!selectedValue && !selectedHistoricalValue"
+              type="button"
+              pButton
+              pRipple
+              label="Send"
+              (click)="onClickSendNow(6)"
+            ></button>
+          </div>
+        </td>
+        <td>
+          <div class="p-field">
+            <button
+              type="button"
+              pButton
+              pRipple
+              label="Cancel"
+              (click)="onCancel()"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</p-dialog>
+
+<p-dialog [(visible)]="confirm2" header="Reject Data Request">
+  <div class="container" style="width: 600px; height: 500px">
+    <div class="row mb-2">
+      <div class="col-3">Reason</div>
+      <div class="col-4">
+        <textarea
+          rows="4"
+          cols="35"
+          placeholder="Reason for Reject"
+          type="text"
+          class="p-inputtext"
+          [(ngModel)]="reasonForReject"
+          pInputTextarea
+        ></textarea>
+      </div>
+      <div class="col-5"></div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-3"></div>
+      <div class="col-4">
+        <button
+          type="button"
+          pButton
+          pRipple
+          label="Reject"
+          style="margin-right: 10px"
+          (click)="onRejectConfirm()"
+        ></button>
+
+        <button
+          type="button"
+          pButton
+          pRipple
+          label="Cancel"
+          (click)="onReject()"
+        ></button>
+      </div>
+      <div class="col-5"></div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog [(visible)]="uploadFile" header="Upload Excel">
+  <div class="container" style="width: 600px; height: 400px">
+    <div class="row mb-2">
+      <div class="col-3"></div>
+      <div class="col-6">
+        <input
+          class="form-control mb-3"
+          #myInput
+          type="file"
+          (change)="onChange($event)"
+        />
+      </div>
+      <div class="col-3"></div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-3"></div>
+      <div class="col-4">
+        <button
+          type="button"
+          pButton
+          pRipple
+          label="Upload"
+          style="margin-right: 10px"
+          (click)="onUpload()"
+        ></button>
+
+        <button
+          type="button"
+          (click)="uploadDialogCancel()"
+          pButton
+          pRipple
+          label="Cancel"
+        ></button>
+      </div>
+      <div class="col-5"></div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="Data Request History"
+  [(visible)]="displayHistory"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <app-view-datarequest-history
+    [parameterId]="paraId"
+    [listOfHistory]="requestHistoryList"
+  >
+  </app-view-datarequest-history>
+</p-dialog>
+
+<p-dialog
+  header="Possible Reasons for Reject"
+  [(visible)]="isOpen"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="container" style="width: 300px; height: 100px">
+    <p>Eg - Data is not available</p>
+    <!-- <p>Data is not accurate</p> -->
+  </div>
+</p-dialog>
+<p-toast position="top-right"></p-toast>

@@ -1,0 +1,17 @@
+#ndc,
+#ss{
+    width: 50%;
+}
+::ng-deep .p-selectbutton .p-button.p-highlight {
+    color: white !important;
+    background-color:#3b82f6 !important;
+    font-weight: 700;
+  }
+  ::ng-deep .p-selectbutton .p-button {
+    color: black !important;
+    background-color:white !important;
+    font-weight: 700;
+  }
+
+  
+

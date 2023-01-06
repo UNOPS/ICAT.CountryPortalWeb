@@ -1,0 +1,601 @@
+<div class="container pl-20 pr-20">
+  <div class="p-2">
+    <h4 class="mt-4">Country Profile</h4>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="p-grid p-fluid col-sm-12">
+          <div class="row p-2">
+            <div class="col-12 col-md-4">
+              <img 
+                src="{{country?.flagPath}}"
+                alt="Image"
+                class="img-fluid"
+                width="500" 
+                height="600"
+              />
+
+            </div>
+            <div class="col-md-6">
+              <div class="p-field ">
+                <!-- <label for="countryname" style="font-size: 24px;" readonly>{{ country?.name }}</label> -->
+                
+              
+
+              <h5>{{ country?.name }}</h5>
+    <div class="ui-fluid">
+        <div class="p-field">
+          <!-- <textarea
+          name="countryname"
+          [(ngModel)]="country.description"
+          rows="5"
+          cols="62"
+          pInputTextarea
+          length="300"
+          autoResize="autoResize"
+          readonly
+        ></textarea> -->
+        <p>{{country.description}}</p>
+      </div>
+           
+        </div>
+        
+    </div>
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-12 col-md-6">
+    <div class="p-field">
+      <label for="contatname"><b>National Communciation(s)</b></label>
+      <br/>
+        <a href="listDocumentsNC[0]?.relativePath">
+          {{listDocumentsNC[0]?.fileName}}               
+    </a>
+
+    <br/>
+    <br/>
+  <button
+    pRipple
+    pButton
+    type="button"
+    label="View more"
+    class="btn mr-5"
+    (click)="viewmore()"
+  ></button>
+
+  <p-dialog [(visible)]="display1">
+      <div class="col-12">
+      
+        <ng-container *ngFor = "let set of listDocumentsNC">
+          <div>
+            
+            <a href="listDocumentsNC[0]?.relativePath">
+              {{ set.fileName }}
+              
+             </a>
+          </div>
+        </ng-container>
+      </div>
+ </p-dialog>
+
+    </div>
+  </div> -->
+
+  <div class="card">
+    <div class="p-grid p-fluid col-sm-12">
+      <div class="row p-2">
+
+        <div class="col-12 col-md-6">
+          <div class="p-field">
+            <label for="contatname"><b>National Communciation(s)</b></label>
+            <br/>
+              <a *ngIf = listDocumentsNC[0]  href="{{SERVER_URL}}/inline/{{ listDocumentsNC[0]?.id}}">
+                {{listDocumentsNC[0]?.fileName}}               
+          </a>
+
+          <br/>
+          <br/>
+        
+        <button [disabled]="listDocumentsNC.length == 0" type="text"  class="btn mr-5" pRipple  pButton label="View more" (click)="op.toggle($event)"></button>  
+
+        <p-overlayPanel   #op>
+          <ng-template pTemplate>
+            <ng-container *ngFor = "let set of listDocumentsNC">
+              <div>
+                
+                <a href="{{SERVER_URL}}/inline/{{ set?.id}}">
+                  {{ set.fileName }}
+                  
+                 </a>
+              </div>
+            </ng-container>
+          </ng-template>
+      </p-overlayPanel>
+      
+
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="p-field">
+            <label for="contatemail"><b>Biennial Update Report(s)</b></label>
+            <br/>
+
+            <a *ngIf = listDocumentsBUR[0]  href="{{SERVER_URL}}/inline/{{ listDocumentsBUR[0]?.id}}">
+              {{listDocumentsBUR[0]?.fileName}}               
+        </a>
+
+        <br/>
+        <br/>
+       
+        <button [disabled]="listDocumentsBUR.length == 0" type="text"  class="btn mr-5" pRipple  pButton label="View more" (click)="op2.toggle($event)"></button>  
+
+        <p-overlayPanel   #op2>
+          <ng-template pTemplate>
+             <!-- <div> {{this.listDocumentsBUR|json}} </div> -->
+            <ng-container *ngFor = "let set of this.listDocumentsBUR">
+              <div>
+                
+                <a href="{{SERVER_URL}}/inline/{{ set?.id}}">
+                  {{ set.fileName }}
+                  
+                 </a>
+              </div>
+            </ng-container>
+          </ng-template>
+      </p-overlayPanel>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- {{ listDocumentsBTR|json }} -->
+
+      <div class="row p-2">
+        <div class="col-12 col-md-6">
+          <div class="p-field">
+            <label for="designation"
+              ><b>Biennial Transparency Report(s)</b></label
+            >
+            <br/>
+              <a *ngIf = listDocumentsBTR[0] href="{{SERVER_URL}}/inline/{{ listDocumentsBTR[0]?.id}}">
+                {{listDocumentsBTR[0]?.fileName}}               
+          </a>
+
+          <br/>
+          <br/>
+          <button [disabled]="listDocumentsBTR.length == 0"  type="text"  class="btn mr-5" pRipple  pButton label="View more" (click)="op3.toggle($event)"></button>  
+
+          <p-overlayPanel   #op3>
+            <ng-template pTemplate>
+              <ng-container *ngFor = "let set of listDocumentsBTR">
+                <div>
+                  
+                  <a href="{{SERVER_URL}}/inline/{{ set?.id}}">
+                    {{ set.fileName }}
+                    
+                   </a>
+                </div>
+              </ng-container>
+            </ng-template>
+        </p-overlayPanel>
+
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="p-field">
+            <label for="telephoneNumber"
+              ><b>Nationally Determined Contributions</b></label
+            >
+
+            <br/>
+            <a *ngIf = listDocumentsNDC[0]  href="{{SERVER_URL}}/inline/{{ listDocumentsNDC[0]?.id}}">
+              {{listDocumentsNDC[0]?.fileName}}               
+        </a>
+
+        <br/>
+        <br/>
+        <button [disabled]="listDocumentsNDC.length == 0" type="text"  class="btn mr-5" pRipple  pButton label="View more" (click)="op4.toggle($event)"></button>  
+
+        <p-overlayPanel   #op4>
+          <ng-template pTemplate>
+            <ng-container *ngFor = "let set of listDocumentsNDC">
+              <div>
+                
+                <a href="{{SERVER_URL}}/inline/{{ set?.id}}">
+                  {{ set.fileName }}
+                  
+                 </a>
+              </div>
+            </ng-container>
+          </ng-template>
+      </p-overlayPanel>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="row p-2">
+      <div class="col-12 col-md-6">
+        <div class="p-field">
+          <label for="contatemail"
+            ><b>GHG Inventory</b></label
+          >
+
+          <br/>
+          <a *ngIf = listDocumentsGHG[0]  href="{{SERVER_URL}}/inline/{{ listDocumentsGHG[0]?.id}}">
+            {{listDocumentsGHG[0]?.fileName}}               
+      </a>
+
+      <br/>
+      <br/>
+      <button [disabled]="listDocumentsGHG.length == 0" type="text"  class="btn mr-5" pRipple  pButton label="View more" (click)="op4.toggle($event)"></button>  
+
+      <p-overlayPanel   #op4>
+        <ng-template pTemplate>
+          <ng-container *ngFor = "let set of listDocumentsGHG">
+            <div>
+              
+              <a href="{{SERVER_URL}}/inline/{{ set?.id}}">
+                {{ set.fileName }}
+                
+               </a>
+            </div>
+          </ng-container>
+        </ng-template>
+    </p-overlayPanel>
+
+
+        </div>
+      </div>
+    </div>
+      
+    </div>
+  </div>
+  <div class="card">
+    <div class="p-grid p-fluid col-sm-12">
+      <div class="row">
+      <div class="col-4">
+
+        <p-selectButton  styleClass="btn" [options]="stateOptions" (onChange)="onSectorChange(isCountry)" [(ngModel)]="isCountry" optionLabel="label" optionValue="value"></p-selectButton>
+     
+       
+     
+     
+      </div>
+      </div>
+      <div *ngIf="!isCountry" class="row">
+
+        <div class="col-3">
+                        
+          <label for="projStatus">Sector</label>
+          <p-dropdown
+            name="ndc"
+            [options]="sectors"
+            [(ngModel)]="selectedSector"
+            #fndc="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            
+            optionLabel="name"
+            (ngModelChange)="onSectorChange($event)"
+          >
+          </p-dropdown>
+      
+    </div>
+
+
+      </div>
+      <br>
+
+      <h6>BAU Scenario</h6><br>
+      <div class="row">
+        <div class="col mt-10" >
+          
+          <label >Base Year</label><br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="baseyear" 
+          #baseyear="ngModel"
+          field="baseyear" 
+          [(ngModel)]="emissionReduction.baseYear" 
+      
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+         
+          placeholder="Please enter the Base Year" />
+          <p
+          class="info-message text-danger"
+          *ngIf="
+           !emissionReduction.baseYear &&
+            (display2 || baseyear.touched)
+          "
+          
+        >
+          This is a mandatory field
+        </p>
+        </div>
+
+        <div class="col mt-10">
+
+          <label >Base Year Emission (MtCO₂e)</label>
+          <div style="margin-left: 1%"  type="button"  class="pi pi-info-circle " pTooltip="Without FOLU"></div>
+
+
+
+          <br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="baseyearemission" 
+          #baseyearemission="ngModel"
+          field="baseyearemission" 
+          [(ngModel)]="emissionReduction.baseYearEmission" 
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+          
+          placeholder="Please enter the Base Year Emission" />
+          <p
+          class="info-message text-danger"
+          *ngIf="
+           !emissionReduction.baseYearEmission &&
+            (display2 || baseyearemission.touched)
+          "
+          
+        >
+          This is a mandatory field
+        </p>
+        </div>
+      </div> 
+        <!-- ////////////////////////////////////////////////////////////////////////////// -->
+      
+        <div class="row">
+          <div class="col mt-10" >
+          <label >Target Year</label><br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="targetyear" 
+          #targetyear="ngModel"
+          field="targetyear" 
+          [(ngModel)]="emissionReduction.targetYear" 
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+          
+          placeholder="Please enter the Base Year Emission" />
+          <p
+          class="info-message text-danger"
+          *ngIf="
+           !emissionReduction.targetYear &&
+            (display2 || targetyear.touched)
+          "
+          
+        >
+      
+          This is a mandatory field
+        </p>
+        </div>
+        <!-- ///////////////////////////////////////////////////////////////////////////// -->
+        <div class="col mt-10" >
+          <label >Target Year Emission (MtCO₂e)</label>
+          <div style="margin-left: 1%"  type="button"  class="pi pi-info-circle " pTooltip="Without FOLU"></div>
+
+          <br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="targetyearem" 
+          #targetyearem="ngModel"
+          field="targetyearem" 
+          [(ngModel)]="emissionReduction.targetYearEmission" 
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+         
+          placeholder="Please enter the Base Year Emission" />
+          <p
+          class="info-message text-danger"
+          *ngIf="
+         !emissionReduction.targetYearEmission &&
+            (display2 || targetyearem.touched)
+          "
+          
+        >
+          This is a mandatory field
+        </p>
+        </div>
+        </div>
+      <!-- 
+        ///////////////////////////////////////////////////////////////////////////////////// -->
+      
+        <br>
+          <h6 class="mt-20">Emission Reduction Targets
+            <div style="font-size: 1em;"  type="button"  class="pi pi-info-circle " pTooltip="if targets is not defined as conditional and unconditional, Please add it under the unconditional" ></div>
+
+          </h6><br>
+
+        
+
+          <div class="row">
+            <div class="col" >
+          <label >Unconditional (MtCO₂e)</label>
+          <div style="margin-left: 1%"  type="button"  class="pi pi-info-circle " pTooltip="Without FOLU"></div>
+
+          <br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="ucEmission" 
+          #ucEmission="ngModel"
+          field="ucEmission" 
+          [(ngModel)]="emissionReduction.unconditionaltco2" 
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+         
+          placeholder="Please enter the Base Year" />
+          <!-- <p
+          class="info-message text-danger"
+          *ngIf="
+            !unCEmission &&
+            (display2 || ucEmission.touched)
+          "
+          
+        >
+          This is a mandatory field
+        </p> -->
+        </div>
+      
+        <!-- ////////////////////////////////////////////////////////// -->
+        
+          <div class="col" >
+          <label >Conditional (MtCO₂e)</label>
+          <div style="margin-left: 1%"  type="button"  class="pi pi-info-circle " pTooltip="Without FOLU"></div>
+
+          <br />
+          <input 
+          type="text"
+          class="p-inputtext"
+          name="cEmission" 
+          #cEmission="ngModel"
+          field="cEmission" 
+          [(ngModel)]="emissionReduction.conditionaltco2" 
+          pInputText
+          [ngModelOptions]="{ standalone: true }"
+          
+          placeholder="Please enter the Base Year" />
+          <!-- <p
+          class="info-message text-danger"
+          *ngIf="
+            !emissionReduction.conditionaltco2 && emissionReduction.unconditionaltco2 &&
+            (display2 || cEmission.touched)
+          "
+          
+        >
+          This is a mandatory field
+        </p> -->
+        </div>
+          </div>
+
+          <br>
+          <div class="row justify-content-end">   
+             <div class="col-2 ">
+
+              <button [disabled]="!isCountry&&!selectedSector" pButton type="button" (click)="saveTargets()" [label]="(isNewNDAC) ? 'Save' :'Update'" 
+              class="mt-2" style="margin-right: 2%">
+              
+                
+              </button>
+
+             </div>
+
+
+          </div>
+        
+
+
+
+
+    </div></div>
+
+  <div class="card">
+    <p-tabView>
+      <!-- <p-tabPanel *ngFor="let sector of sectors">
+        <ng-template pTemplate="header">
+          <label for="sector">{{ sector?.name }} </label>
+        </ng-template>
+
+        <div class="card" style="float: left; width: 49%">
+          <div class="p-grid p-fluid">
+            <div class="row p-2">
+              <div class="col-12 col-md-6">
+                <div class="p-field">
+                  <label for="sector"
+                    ><b>{{ sector?.name }}</b></label
+                  >
+                  <textarea
+                    name="sector"
+                    [(ngModel)]="sector.description"
+                    rows="5"
+                    cols="62"
+                    pInputTextarea
+                    length="300"
+                    autoResize="autoResize"
+                    readonly
+                  >
+                  </textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="float: right; width: 50%">
+          <div class="p-grid p-fluid">
+            <div class="row p-2">
+              <div class="col-12 col-md-6">
+                <div class="p-field">
+                  <label for="esummary"
+                    ><b>Emission Reductions of Climate Actions</b></label
+                  >
+
+                  <textarea
+                    name="esummary"
+                    [(ngModel)]="sector.emissionSummary"
+                    rows="5"
+                    cols="62"
+                    pInputTextarea
+                    length="300"
+                    autoResize="autoResize"
+                    readonly
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel> -->
+
+      <div class="text-end">
+        <button
+          pRipple
+          pButton
+          style=" margin-right: 1%;"
+          type="button"
+          (click)="ndc()"
+          label="Manage Aggregated Actions"
+          class="btn "
+        ></button>
+        <button
+          pRipple
+          pButton
+          type="button"
+          (click)="edit()"
+          label="Edit Country Profile"
+          class="btn "
+        ></button>
+        <!-- <button pRipple pButton (click)="targets()" class="btn"  type="button"
+          label="Emission Reduction Targets"></button> -->
+      </div>
+    </p-tabView>
+  </div>
+ 
+
+
+
+
+
+
+</div>
+<p-toast ></p-toast>
+
+

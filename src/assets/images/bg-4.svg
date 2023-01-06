@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="778px" height="365px" viewBox="0 0 778 365" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Combined Shape</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Signup" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="01-website" transform="translate(-634.000000, -535.000000)" fill="#FFF5F5">
+            <path d="M1241.5,900 C1147.33545,900 1071,818.291967 1071,717.5 C1071,616.708033 1147.33545,535 1241.5,535 C1335.66455,535 1412,616.708033 1412,717.5 C1412,818.291967 1335.66455,900 1241.5,900 Z M634,535 L1241,535 L1241,900 L634,900 L634,535 Z" id="Combined-Shape" transform="translate(1023.000000, 717.500000) scale(-1, 1) translate(-1023.000000, -717.500000) "></path>
+        </g>
+    </g>
+</svg>
