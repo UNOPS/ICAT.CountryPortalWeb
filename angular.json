@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/web",
+            "outputPath": "dist/icat.countryportalweb",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -31,9 +31,9 @@
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss",
-              "node_modules/chart.js/dist/Chart.js"
+              "node_modules/chart.js/dist/chart.js"
             ],
-            "scripts": ["node_modules/chart.js/dist/Chart.js"]
+            "scripts": ["node_modules/chart.js/dist/chart.js"]
           },
           "configurations": {
             "production": {

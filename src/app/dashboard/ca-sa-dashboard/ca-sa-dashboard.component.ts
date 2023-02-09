@@ -5,13 +5,13 @@ import { AssesmentControllerServiceProxy, AssesmentResaultControllerServiceProxy
 import decode from 'jwt-decode';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { Chart } from 'chart.js';
+// import { Chart } from 'chart.js';
 
-declare module 'chart.js' {
-  interface TooltipPositionerMap {
-    myCustomPositioner: TooltipPositionerFunction<ChartType>;
-  }
-}
+// declare module 'chart.js' {
+//   interface TooltipPositionerMap {
+//     myCustomPositioner: TooltipPositionerFunction<ChartType>;
+//   }
+// }
 
 @Component({
   selector: 'app-ca-sa-dashboard',
