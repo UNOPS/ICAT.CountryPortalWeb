@@ -1,27 +1,22 @@
-
 .has-details {
-    position: relative;
-  }
-  
-  .details {
-    position: absolute;
-    top: 0;
-    /* transform: translateY(40%) scale(0); */
-    transition: transform 0.1s ease-in;
-    transform-origin: left;
-    display: none;
-    background: white;
-    z-index: 20;
-    min-width: 100%;
-    max-height: 500%;
-    padding: 1rem;
-    border: 1px solid black;
-  }
-  
-  .has-details:hover span {
-    display: inline;
-    overflow: scroll;
-   
-    /* transform: translateY(-20%) scale(1); */
-  }
-  
+  position: relative;
+}
+
+.details {
+  position: absolute;
+  top: 0;
+  transition: transform 0.1s ease-in;
+  transform-origin: left;
+  display: none;
+  background: white;
+  z-index: 20;
+  min-width: 100%;
+  max-height: 500%;
+  padding: 1rem;
+  border: 1px solid black;
+}
+
+.has-details:hover span {
+  display: inline;
+  overflow: scroll;
+}

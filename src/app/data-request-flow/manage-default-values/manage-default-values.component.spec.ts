@@ -8,9 +8,8 @@ describe('ManageDefaultValuesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ManageDefaultValuesComponent ]
-    })
-    .compileComponents();
+      declarations: [ManageDefaultValuesComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
-import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import {
   AssessmentYear,
@@ -33,15 +32,15 @@ export class RaiseConcernSectionComponent implements OnInit {
   lastConcernDate: Date = new Date();
   verificationStatusEnum = VerificationStatus;
 
-  commentRequried: boolean = false;
-  comment: string = '';
+  commentRequried = false;
+  comment = '';
 
   verificationDetail: VerificationDetail | undefined;
-  explanation: string = '';
+  explanation = '';
 
   constructor(
     private verificationProxy: VerificationControllerServiceProxy,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) {}
 
   ngOnInit(): void {}
@@ -51,8 +50,8 @@ export class RaiseConcernSectionComponent implements OnInit {
     this.comment = '';
 
     if (this.verificationDetails && this.verificationDetails.length > 0) {
-      let concernDetails = this.verificationDetails.find(
-        (a) => a.explanation !== undefined && a.explanation !== null
+      const concernDetails = this.verificationDetails.find(
+        (a) => a.explanation !== undefined && a.explanation !== null,
       );
 
       if (concernDetails && concernDetails.updatedDate !== undefined) {
@@ -60,7 +59,7 @@ export class RaiseConcernSectionComponent implements OnInit {
       }
 
       this.verificationDetail = this.verificationDetails.find(
-        (a) => a.verificationStage == this.verificationRound
+        (a) => a.verificationStage == this.verificationRound,
       );
 
       if (this.verificationDetail) {

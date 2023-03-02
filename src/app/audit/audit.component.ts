@@ -16,14 +16,14 @@ import {
 })
 export class AuditComponent implements OnInit {
   loading: boolean;
-  totalRecords: number = 0;
-  itemsPerPage: number = 0;
-  rows: number = 10;
+  totalRecords = 0;
+  itemsPerPage = 0;
+  rows = 10;
   last: number;
   event: any;
-  Date =new Date();
+  Date = new Date();
   status: string[] = [];
-  activitie:any[]=[];
+  activitie: any[] = [];
   searchText: string;
   activityList1: string[] = [];
   activityList: string[] = [];
@@ -46,45 +46,13 @@ export class AuditComponent implements OnInit {
     private router: Router,
     private serviceProxy: ServiceProxy,
     private auditproxy: AuditControllerServiceProxy,
-    private cdr: ChangeDetectorRef
-  ) { }
+    private cdr: ChangeDetectorRef,
+  ) {}
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
   }
 
-  ngOnInit(): void {
-    // this.serviceProxy.getManyBaseAuditControllerAudit(
-    //   undefined,
-    //   undefined,
-    //   undefined,
-    //   undefined,
-    //   undefined,
-    //   undefined,
-    //   100000,
-    //   0,
-    //   0,
-    //   0
-    //   )
-    //   .subscribe((res) => {
-
-
-    //     this.activitie = res.data;
-    //     console.log('this.activities', this.activitie)
-
-    //     for (let d of res.data) {
-    //       this.activityList.push(d.action);
-    //       // this.dateList.push(d.editedOn.toDate());
-    //       if (!this.userTypeList.includes(d.userType)) {
-    //         this.userTypeList.push(d.userType);
-    //       }
-    //       if (!this.status.includes(d.actionStatus)) {
-    //         this.status.push(d.actionStatus);
-    //       }
-    //       console.log(this.dateList);
-    //     }
-    //     console.log('activities', this.activityList);
-    //   });
-  }
+  ngOnInit(): void {}
 
   onactivityChange(event: any) {
     this.onSearch();
@@ -97,7 +65,7 @@ export class AuditComponent implements OnInit {
   }
 
   onSearch() {
-    let event: any = {};
+    const event: any = {};
     event.rows = this.rows;
     event.first = 0;
 
@@ -105,23 +73,18 @@ export class AuditComponent implements OnInit {
   }
 
   loadgridData = (event: LazyLoadEvent) => {
-    console.log('event Date', event);
     this.loading = true;
     this.totalRecords = 0;
 
-    let usertype = this.searchBy.usertype ? this.searchBy.usertype : '';
-    let action = this.searchBy.activity ? this.searchBy.activity : '';
-    let filtertext = this.searchBy.text ? this.searchBy.text : '';
+    const usertype = this.searchBy.usertype ? this.searchBy.usertype : '';
+    const action = this.searchBy.activity ? this.searchBy.activity : '';
+    const filtertext = this.searchBy.text ? this.searchBy.text : '';
 
-    console.log(
-      moment(this.searchBy.editedOn).format('YYYY-MM-DD'),
-      'jjjjjjjjjjjjjjjj'
-    );
-    let editedOn = this.searchBy.editedOn
+    const editedOn = this.searchBy.editedOn
       ? moment(this.searchBy.editedOn).format('YYYY-MM-DD')
       : '';
 
-    let pageNumber =
+    const pageNumber =
       event.first === 0 || event.first === undefined
         ? 1
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
@@ -134,25 +97,21 @@ export class AuditComponent implements OnInit {
           usertype,
           action,
           editedOn,
-          filtertext
+          filtertext,
         )
         .subscribe((a) => {
-          
           this.activities = a.items;
-          console.log("+++++++", this.activities.length)
-          for (let d of a.items) {
+
+          for (const d of a.items) {
             this.activityList.push(d.action);
-            // this.dateList.push(d.editedOn.toDate());
             if (!this.userTypeList.includes(d.userType)) {
               this.userTypeList.push(d.userType);
             }
             if (!this.status.includes(d.actionStatus)) {
               this.status.push(d.actionStatus);
             }
-            console.log(this.dateList);
           }
 
-          console.log(a, 'kk');
           this.totalRecords = a.meta.totalItems;
           this.itemsPerPage = a.meta.itemsPerPage;
           this.loading = false;

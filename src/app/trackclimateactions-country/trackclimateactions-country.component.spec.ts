@@ -8,9 +8,8 @@ describe('TrackclimateactionsCountryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TrackclimateactionsCountryComponent ]
-    })
-    .compileComponents();
+      declarations: [TrackclimateactionsCountryComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

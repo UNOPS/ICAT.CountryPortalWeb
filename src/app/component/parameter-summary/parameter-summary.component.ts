@@ -14,7 +14,6 @@ import {
   AssesmentControllerServiceProxy,
   Parameter,
   ParameterHistoryControllerServiceProxy,
-  ParameterRequestQaStatus,
   QualityCheckControllerServiceProxy,
   ServiceProxy,
 } from 'shared/service-proxies/service-proxies';
@@ -47,21 +46,20 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
 
   @Output() isReadyToCal = new EventEmitter<boolean>();
 
-  loading: boolean = false;
-  commentRequried: boolean = false;
+  loading = false;
+  commentRequried = false;
   drComment: string;
   selectdParameter: Parameter;
   isApprove: boolean;
   ref: DynamicDialogRef;
   paraId: number;
   requestHistoryList: any[] = [];
-  displayHistory: boolean = false;
+  displayHistory = false;
   @ViewChild('opDR') overlayDR: any;
-  userId: string = '';
+  userId = '';
   filteredUser: any;
   fullUser: string;
   assessmentYear: any;
-  //:boolean;
 
   constructor(
     private qaServiceProxy: QualityCheckControllerServiceProxy,
@@ -69,29 +67,26 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
     public dialogService: DialogService,
     private prHistoryProxy: ParameterHistoryControllerServiceProxy,
     private serviceProxy: ServiceProxy,
-    private assesmentProxy: AssesmentControllerServiceProxy
+    private assesmentProxy: AssesmentControllerServiceProxy,
   ) {}
 
   ngOnInit(): void {
-    console.log('parameters....m', this.parameters);
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
     this.userId = tokenPayload.usr;
-    console.log('tthis.userId..', this.userId);
 
     this.serviceProxy
       .getOneBaseAssessmentYearControllerAssessmentYear(
         this.assessmentYearId,
         undefined,
         undefined,
-        undefined
+        undefined,
       )
       .subscribe((res: any) => {
         this.assessmentYear = res;
-        console.log('Asseyear...', this.assessmentYear);
       });
 
-    let projfilter: string[] = new Array();
+    const projfilter: string[] = [];
     projfilter.push('email||$eq||' + this.userId);
 
     this.serviceProxy
@@ -105,13 +100,12 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.filteredUser = res.data;
         this.fullUser =
           this.filteredUser[0].firstName + ' ' + this.filteredUser[0].lastName;
-        console.log('filter user...', this.fullUser);
       });
   }
 
@@ -137,10 +131,9 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
     this.assesmentProxy
       .checkAssessmentReadyForCalculate(
         this.assessmentYear.assessment.id,
-        Number(this.assessmentYear.assessmentYear)
+        Number(this.assessmentYear.assessmentYear),
       )
       .subscribe((r) => {
-        console.log('checkAssessmentReadyForcal....', r);
         this.isReadyToCal.emit(r);
       });
   }
@@ -155,7 +148,7 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
       return;
     }
 
-    var qastatus = this.isApprove
+    const qastatus = this.isApprove
       ? QuAlityCheckStatus.Pass
       : QuAlityCheckStatus.Fail;
     this.qaServiceProxy
@@ -164,15 +157,10 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
         this.assessmentYearId,
         qastatus,
         this.drComment,
-        this.fullUser
+        this.fullUser,
       )
       .subscribe(
         (res: any) => {
-          // console.log("res...",res)
-          //  if(res.qaStatus == 4)
-          //  {
-          //    this.isDisable = true;
-          //  }
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -180,14 +168,13 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
             closable: true,
           });
 
-          var index = this.parameters.indexOf(this.selectdParameter);
+          const index = this.parameters.indexOf(this.selectdParameter);
 
           this.selectdParameter.parameterRequest.qaStatus = this.isApprove
             ? 4
             : 3;
 
-          // this.parameters.splice(index, 0, this.selectdParameter);
-          this.checkApproval(); //added by Kushan to fix Enable/Disable "Check Result" button on "Quality Control Details" page
+          this.checkApproval();
           this.overlayDR.hide();
         },
         (err) => {
@@ -197,7 +184,7 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
             detail: 'Internal server error, please try again.',
             sticky: true,
           });
-        }
+        },
       );
   }
 
@@ -212,38 +199,11 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
   }
 
   getInfo(obj: any) {
-    console.log('dataRequestList...', obj);
     this.paraId = obj.id;
-    console.log('this.paraId...', this.paraId);
 
-    // let x = 602;
-    this.prHistoryProxy
-      .getHistroyByid(this.paraId) // this.paraId
-      .subscribe((res) => {
-        this.requestHistoryList = res;
-
-        console.log('this.requestHistoryList...', this.requestHistoryList);
-      });
-    //  let filter1: string[] = [];
-    //  filter1.push('parameter.id||$eq||' + this.paraId);
-    //  this.serviceProxy
-    //  .getManyBaseParameterRequestControllerParameterRequest(
-    //    undefined,
-    //    undefined,
-    //    filter1,
-    //    undefined,
-    //    undefined,
-    //    undefined,
-    //    1000,
-    //    0,
-    //    0,
-    //    0
-    //  )
-    //  .subscribe((res: any) => {
-    //    this.requestHistoryList =res.data;
-
-    //    console.log('this.requestHistoryList...', this.requestHistoryList);
-    //  });
+    this.prHistoryProxy.getHistroyByid(this.paraId).subscribe((res) => {
+      this.requestHistoryList = res;
+    });
 
     this.displayHistory = true;
   }

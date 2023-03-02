@@ -9,16 +9,6 @@
         <div class="col-12 col-md-6">
           <div class="p-field">
             <label for="institution">Assign Institution </label>
-            <!-- <p-dropdown
-              [disabled]="editUserId > 0"
-              name="namehhhh"
-              [options]="institutions"
-              [(ngModel)]="user.institution"
-              #namehhhh="ngModel"
-              [filter]="false"
-              placeholder= {{user.institution.name}}
-              optionLabel="name"
-            ></p-dropdown> -->
 
             <input
               [disabled]="editUserId > 0"
@@ -40,14 +30,6 @@
         <div class="col-12 col-md-8">
           <div class="p-field">
             <label for="usertype">User Type </label>
-            <!-- <p-dropdown
-              [disabled]="editUserId > 0"
-              name="usertype"
-              [(ngModel)]="user.userType"
-              placeholder={{user.userType.name}}
-              optionLabel="name"
-              #fut="ngModel"
-            ></p-dropdown> -->
 
             <input
               [disabled]="editUserId > 0"
@@ -191,63 +173,36 @@
       </div>
     </div>
 
-    <!-- <div class="p-grid p-fluid col-md-9 col-sm-12">
-      <div class="row p-2">
-        <div class="col-12 col-md-8">
-          <div class="p-field">
-            <label for="photo">Uplaod profile photo</label>
-
-            <label class="image-upload-container btn btn-bwm">
-              <input #imageInput type="file" accept="image/*" />
-            </label>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
     <div class="row">
-      <div class="d-flex  col-2 justify-content-start mb-0 pl-2  ">
+      <div class="d-flex col-2 justify-content-start mb-0 pl-2">
         <button
-          class="btn btn-secondary text-uppercase ml-15 "
+          class="btn btn-secondary text-uppercase ml-15"
           (click)="onBackClick()"
         >
           Back
         </button>
       </div>
       <div
-      class="d-flex offset-2 col-2 justify-content-end p-button-vertical mb-0 pl-2"
+        class="d-flex offset-2 col-2 justify-content-end p-button-vertical mb-0 pl-2"
       >
         <button
-        pButton
-        pRipple
+          pButton
+          pRipple
           *ngIf="!isNewUser"
           [disabled]="itsMe || user.canNotDelete == true || checkRole"
           class="btn text-uppercase"
           type="button"
           (click)="confirmDeletUser()"
         >
-          {{isActive==0?'Deactivate':'Activate'}}
+          {{ isActive == 0 ? 'Deactivate' : 'Activate' }}
         </button>
       </div>
-      <!-- <div class="col-2 d-flex justify-content-end ml-4">
-            <button
-              [disabled]="coreatingUser || user.canNotDelete == true"
-              class="btn btn-primary text-uppercase btn-lg"
-              type="submit"
-            >
-              Save
-            </button>
-          </div> -->
     </div>
-    <!-- <div class="row">
-          <div *ngIf="coreatingUser" class="d-flex col-6 justify-content-end">
-            <p class="info-message text-warning mt-2" *ngIf="true">
-              please wait a moment...
-            </p>
-          </div>
-        </div> -->
   </div>
 </div>
 
-
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"  rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text"
+></p-confirmDialog>

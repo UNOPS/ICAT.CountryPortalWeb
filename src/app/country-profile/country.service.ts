@@ -4,16 +4,14 @@ import { Observable } from 'rxjs';
 import { Country } from './country';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CountryService {
+  private baseURL = 'http://localhost:8080/country-profile';
 
-  private baseURL = "http://localhost:8080/country-profile";
+  constructor(private httpClient: HttpClient) {}
 
-  constructor(private httpClient: HttpClient) { }
-
-  getCountryById(id: number): Observable<Country>{
+  getCountryById(id: number): Observable<Country> {
     return this.httpClient.get<Country>(`${this.baseURL}/${id}`);
   }
-
 }

@@ -1,6 +1,6 @@
 export class ExcecutiveSummaryGraph {
   year: string;
-  mac: number = 0;
-  anth: number = 0;
-  post: number = 0;
+  mac = 0;
+  anth = 0;
+  post = 0;
 }

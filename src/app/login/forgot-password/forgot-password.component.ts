@@ -20,11 +20,11 @@ export class ForgotPasswordComponent implements OnInit {
   isSubmitLogin: boolean;
   isInvalidCredential: boolean;
   email: string;
-  jobDone: Boolean;
+  jobDone: boolean;
 
   constructor(
     private logiLayoutService: LoginLayoutService,
-    private appControllServiceProxy: AuthControllerServiceProxy
+    private appControllServiceProxy: AuthControllerServiceProxy,
   ) {}
 
   ngOnInit(): void {}
@@ -36,8 +36,8 @@ export class ForgotPasswordComponent implements OnInit {
     this.logiLayoutService.toggleLoginForm(
       this.showLoginForm,
       this.showForgotPassword,
-      this.showSetPassword
-    ); // call login layout service
+      this.showSetPassword,
+    );
   }
 
   showSetPasswordForm() {
@@ -47,28 +47,25 @@ export class ForgotPasswordComponent implements OnInit {
     this.logiLayoutService.toggleLoginForm(
       this.showLoginForm,
       this.showForgotPassword,
-      this.showSetPassword
-    ); // call login layout service
+      this.showSetPassword,
+    );
   }
 
   resetPassword() {
-    // this.display = true;
     this.isSubmitLogin = true;
     if (!this.fFP.valid) {
       return;
     }
-    let request = new ForgotPasswordDto();
+    const request = new ForgotPasswordDto();
     request.email = this.email;
     this.jobDone = false;
     this.appControllServiceProxy.forgotPassword(request).subscribe(
       (res) => {
-        console.log(res);
         this.jobDone = true;
       },
       (error) => {
-        console.log(error);
-        this.jobDone = true; // user should not know invalis email issues
-      }
+        this.jobDone = true;
+      },
     );
   }
 }

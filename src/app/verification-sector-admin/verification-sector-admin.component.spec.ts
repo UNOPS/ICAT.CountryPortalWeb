@@ -8,9 +8,8 @@ describe('VerificationSectorAdminComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VerificationSectorAdminComponent ]
-    })
-    .compileComponents();
+      declarations: [VerificationSectorAdminComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

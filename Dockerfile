@@ -1,62 +1,63 @@
-# FROM node:12-slim
-# WORKDIR /usr/src/app
-# COPY package*.json ./
-# RUN npm install -g @angular/cli
-# RUN npm install -f
-# COPY . ./
-# RUN npm run build
+###################
+# BUILD FOR LOCAL DEVELOPMENT
+###################
 
+FROM node:18-alpine As development
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+# Create app directory
+WORKDIR /usr/src/app
 
-# FROM node AS node
-# COPY . ./
-# RUN npm install --force
-# RUN npm run build
-# WORKDIR /src
+# Copy application dependency manifests to the container image.
+# A wildcard is used to ensure copying both package.json AND package-lock.json (when available).
+# Copying this first prevents re-running npm install on every code change.
+COPY --chown=node:node package*.json ./
 
-# FROM node AS node
-# RUN mkdir -p /app
-# WORKDIR /app
-# COPY package.json /app
-# RUN npm install -f
-# COPY . /app
-# RUN npm run build --prod
+# Install app dependencies using the `npm ci` command instead of `npm install`
+RUN npm ci -f
 
-# # Stage 2
-# FROM nginx:1.17.1-alpine
-# COPY --from=node /app/docs /usr/share/nginx/html
+# Bundle app source
+COPY --chown=node:node . .
 
-#stage 1
-# FROM node:latest as node
-# WORKDIR /app
-# RUN npm install -g @angular/cli
+# Use the node user from the image (instead of the root user)
+USER node
 
-# COPY . .
-# RUN npm install -f
-# RUN npm run build
-# #stage 2
-# FROM nginx:alpine
-# COPY nginx.conf /etc/nginx/nginx.conf
-# COPY --from=node /app/dist/icat.countryportalweb /usr/share/nginx/html
+###################
+# BUILD FOR PRODUCTION
+###################
 
+FROM node:18-alpine As build
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
-FROM node AS builder
-COPY package.json package-lock.json ./
-RUN npm ci -f && mkdir /app && mv ./node_modules ./app
-WORKDIR /app
-COPY . .
-RUN npm run ng build -- --prod --output-path=dist
+WORKDIR /usr/src/app
 
+COPY --chown=node:node package*.json ./
 
-# STAGE 2: Deploy
+# In order to run `npm run build` we need access to the Nest CLI which is a dev dependency. In the previous development stage we ran `npm ci` which installed all dependencies, so we can copy over the node_modules directory from the development image
+COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
 
-FROM nginx:1.17-alpine
+COPY --chown=node:node . .
 
-COPY nginx/default.conf.template /etc/nginx/conf.d/
+# Run the build command which creates the production bundle
+RUN npm run build
 
-RUN rm -rf /usr/share/nginx/html/*
+# Set NODE_ENV environment variable
+ENV NODE_ENV production
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Running `npm ci` removes the existing node_modules directory and passing in --only=production ensures that only the production dependencies are installed. This ensures that the node_modules directory is as optimized as possible
+RUN npm ci -f --only=production && npm cache clean --force
 
-COPY run.sh /
+USER node
 
-CMD ["/run.sh"]
+###################
+# PRODUCTION
+###################
+
+FROM node:18-alpine As production
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+
+# Copy the bundled code from the build stage to the production image
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+
+# Start the server using the production build
+CMD [ "node", "dist/main.js" ]

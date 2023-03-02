@@ -6,17 +6,15 @@ import { UsersControllerServiceProxy } from './service-proxies/service-proxies';
   providedIn: 'root',
 })
 export class AppService {
-  public jwt: string = '';
+  public jwt = '';
   public userProfile: any = {};
 
   public isDataupdated = new BehaviorSubject<boolean>(true);
 
   constructor(
-    private usersControllerServiceProxy: UsersControllerServiceProxy
+    private usersControllerServiceProxy: UsersControllerServiceProxy,
   ) {
-    //this.update();
-
-    this.userProfile.username = localStorage.getItem('user_name'); // get the username
+    this.userProfile.username = localStorage.getItem('user_name');
   }
 
   update() {

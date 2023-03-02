@@ -47,7 +47,6 @@
                       />
                     </div>
                   </div>
-                  <!-- <img alt="My image name" src="./assets/images/icat-logo.jpg" height="70px" width="210px" class="header-logo"> -->
                 </div>
                 <div class="col-1"></div>
                 <div
@@ -171,7 +170,8 @@
                 </div>
                 <div class="col-12">
                   <p>
-                    This tool will facilitate to assess the cost of reducing  tCO₂e
+                    This tool will facilitate to assess the cost of reducing
+                    tCO₂e
                   </p>
                 </div>
               </div>
@@ -210,33 +210,13 @@
           <h2>Knowledge Base</h2>
           <div class="row">
             <div class="col mb-3">
-              <!--
-                            <div style="width: 1400px; height: 500px; text-align:center;margin:0; padding:0;">
-                                <ng-image-slider
-                                [images]="imageObject"
-                                [imagePopup]="true"
-                                [autoSlide]="1"
-                                [infinite]="true"
-                                [manageImageRatio]="false"
-                                [imageSize]="{ width: '394px', height: 500 ,space:3}"
-                                slideImage="1"
-                                #nav
-                                >
-                                </ng-image-slider>
-                            </div> 
-                        -->
-
-              <div
-               
-              >
+              <div>
                 <p-carousel
                   [value]="learningMaterial"
-                 
                   [numVisible]="3"
                   [numScroll]="3"
                   [circular]="true"
                   [autoplayInterval]="5000"
-                  
                 >
                   <ng-template pTemplate="header">
                     <h5>User Guidance</h5>
@@ -272,292 +252,31 @@
         </div>
       </section>
 
-      <!--
-        
-        <section class="py-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 d-flex flex-column justify-content-center">
-                        <h2>Highlights</h2>
-                        <span class="text-muted"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-6 mb-3">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <img src="assets/images/features-icon-1.svg">
-                                    </div>
-                                    <div class="col">
-                                        <h6 class="mb-0">40+</h6>
-                                        <small class="text-muted">ICAT Countries</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <img src="assets/images/features-icon-2.svg">
-                                    </div>
-                                    <div class="col">
-                                        <h6 class="mb-0">2 Million</h6>
-                                        <small class="text-muted">Users</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <img src="assets/images/features-icon-3.svg">
-                                    </div>
-                                    <div class="col">
-                                        <h6 class="mb-0">500+</h6>
-                                        <small class="text-muted">Client</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <img src="assets/images/features-icon-4.svg">
-                                    </div>
-                                    <div class="col">
-                                        <h6 class="mb-0">140</h6>
-                                        <small class="text-muted">Countries</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        -->
-        <!-- <section class="section-heighlight py-5" id="Case-studies">
-            <div class="container">
-                <div class="col-12">
-                    <h2>Case studies</h2>
-                </div>
-               <div class="card">
-                <p-dataView #dv [value]="methologies" [paginator]="false" [rows]="6" 
-                layout="grid">
-               
-                <ng-template let-car pTemplate="listItem">
-                    
-                </ng-template>
-                 <ng-template let-methology pTemplate="gridItem">
-                     <div class="col-12 md:col-4">
-                         <div class="product-grid-item card">
-                             <div class="product-grid-item-top">
-                                 <div>
-                                     <i class="pi pi-tag product-category-icon"></i>
-                                     <span class="product-category">{{methology.name}}</span>
-                                 </div>
-                                 
-                             </div>
-                             <div class="product-grid-item-content">
-                                 <img [src]="methology.baselineImage" [alt]="methology.name" (click)="viewPdf(methology)"/>
-                                 <div class="product-name">{{methology.displayName}}</div>
-                                
-                                 
-                             </div>
-                             <div class="product-grid-item-bottom">
-                                 
-                             </div>
-                         </div>
-                     </div>
-                 </ng-template>
-             </p-dataView>
-               </div>
-
-            </div>
-
-
-            
-        </section> -->
-        <section class="section-heighlight py-5" id="Case-studies">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-12">
-                                <h2>Methodologies</h2>
-                            </div>
-
-                         
-                            <div *ngFor="let methologie of methologies" class="col-4 mb-4">
-                                <div style="cursor:pointer" class="row">
-                                    <div class="col-8 mb-3">
-                                        <img src="https://act.campaign.gov.uk/wp-content/uploads/sites/25/2017/02/form_icon-1.jpg" class="w-100"
-                                            (click)="viewPdf(methologie)">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col text-break">
-                                        <h6>{{methologie.name}}</h6>
-                                        <small>
-                                            <p>
-                                                {{methologie.displayName}}
-                                            </p>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- <div class="col-12 mb-4">
-                                <div class="row">
-                                    <div class="col mb-3">
-                                        <img src="{{reportObject[1]?.thumbImage}}" class="w-100"
-                                            (click)="viewPdf(reportObject[1])">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h6>{{reportObject[1]?.title}}</h6>
-                                        <small>
-                                            <p>
-                                                {{reportObject[1]?.description}}
-                                            </p>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div> -->
-                        </div>
-                    </div>
-
-                    <!-- <div class="col-md-2">
-                    </div>
-
-                    <div class="col-md-5">
-                        <div class="row">
-                            <div class="col-12 mb-4">
-                                <div class="row">
-                                    <div class="col mb-3">
-                                        <img src="{{reportObject[2]?.thumbImage}}" class="w-100"
-                                            (click)="viewPdf(reportObject[2])">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h6>{{reportObject[2]?.title}}</h6>
-                                        <small>
-                                            <p>
-                                                {{reportObject[2]?.description}}
-                                            </p>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-12 mb-4">
-                                <div class="row">
-                                    <div class="col mb-3">
-                                        <img src="{{reportObject[3]?.thumbImage}}" class="w-100"
-                                            (click)="viewPdf(reportObject[3])">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h6>{{reportObject[3]?.title}}</h6>
-                                        <small>
-                                            <p>
-                                                {{reportObject[3]?.description}}
-                                            </p>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
-                <!-- <div class="col-12 mb-4">
-                  <div class="row">
-                    <div class="col mb-3">
-                      <img
-                        src="{{ reportObject[0]?.thumbImage }}"
-                        class="w-100"
-                        (click)="viewPdf(reportObject[0])"
-                      />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <h6>{{ reportObject[0]?.title }}</h6>
-                      <small>
-                        <p>
-                          {{ reportObject[0]?.description }}
-                        </p>
-                      </small>
-                    </div>
-                  </div>
-                </div> -->
-
-                <!-- <div class="col-12 mb-4">
-                  <div class="row">
-                    <div class="col mb-3">
-                      <img
-                        src="{{ reportObject[1]?.thumbImage }}"
-                        class="w-100"
-                        (click)="viewPdf(reportObject[1])"
-                      />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <h6>{{ reportObject[1]?.title }}</h6>
-                      <small>
-                        <p>
-                          {{ reportObject[1]?.description }}
-                        </p>
-                      </small>
-                    </div>
-                  </div>
-                </div> -->
-              <!-- </div>
-            </div>
-
-            <div class="col-md-2"></div>
-
-            <div class="col-md-5">
+      <section class="section-heighlight py-5" id="Case-studies">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
               <div class="row">
-                <div class="col-12 mb-4">
-                  <div class="row">
-                    <div class="col mb-3">
-                      <img
-                        src="{{ reportObject[2]?.thumbImage }}"
-                        class="w-100"
-                        (click)="viewPdf(reportObject[2])"
-                      />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <h6>{{ reportObject[2]?.title }}</h6>
-                      <small>
-                        <p>
-                          {{ reportObject[2]?.description }}
-                        </p>
-                      </small>
-                    </div>
-                  </div>
+                <div class="col-12">
+                  <h2>Methodologies</h2>
                 </div>
 
-                <div class="col-12 mb-4">
-                  <div class="row">
-                    <div class="col mb-3">
+                <div *ngFor="let methologie of methologies" class="col-4 mb-4">
+                  <div style="cursor: pointer" class="row">
+                    <div class="col-8 mb-3">
                       <img
-                        src="{{ reportObject[3]?.thumbImage }}"
+                        src="https://act.campaign.gov.uk/wp-content/uploads/sites/25/2017/02/form_icon-1.jpg"
                         class="w-100"
-                        (click)="viewPdf(reportObject[3])"
+                        (click)="viewPdf(methologie)"
                       />
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col">
-                      <h6>{{ reportObject[3]?.title }}</h6>
+                    <div class="col text-break">
+                      <h6>{{ methologie.name }}</h6>
                       <small>
                         <p>
-                          {{ reportObject[3]?.description }}
+                          {{ methologie.displayName }}
                         </p>
                       </small>
                     </div>
@@ -565,7 +284,8 @@
                 </div>
               </div>
             </div>
-          </div> -->
+          </div>
+
           <div class="row">
             <div class="col-12 d-flex justify-content-center">
               <button
@@ -625,8 +345,12 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <a href="mailto:info@climatesi.com"><small>Contact Us : </small></a>
-              <a href="mailto:info@climatesi.com"><small>info@climatesi.com</small> </a>
+              <a href="mailto:info@climatesi.com"
+                ><small>Contact Us : </small></a
+              >
+              <a href="mailto:info@climatesi.com"
+                ><small>info@climatesi.com</small>
+              </a>
             </div>
             <div>
               <a href="https://www.climatesi.com/index.php"
@@ -635,7 +359,8 @@
             </div>
             <div class="col-12">
               <a href="https://www.climatesi.com/index.php" class="mr-3"
-                ><small>ClimateSI</small></a>
+                ><small>ClimateSI</small></a
+              >
             </div>
           </div>
         </div>
@@ -660,16 +385,6 @@
                 />
               </div>
             </div>
-            <!-- <div class="col-12 mb-3">
-                        <a href="https://climateactiontransparency.org/">
-                            <img src="./assets/images/icat-logo.jpg" class="supported-logo" target="_blank">
-                        </a>
-                    </div> -->
-            <!-- <div class="col-12">
-                        <a href="https://www.unops.org/">
-                            <img src="./assets/images/unops-logo.jpg" class="supported-logo" target="_blank">
-                        </a>
-                    </div> -->
           </div>
           <div class="row">
             <div class="col-12">
@@ -685,8 +400,6 @@
               <a href="https://climateactiontransparency.org/" class="mr-3"
                 ><small>Initiative for Climate Action Transperancy</small></a
               >
-              <!-- <a href="#" class="mr-3"><small>UNFCCC</small></a>
-                        <a href="#" class="mr-3"><small>IPCC</small></a> -->
             </div>
           </div>
         </div>

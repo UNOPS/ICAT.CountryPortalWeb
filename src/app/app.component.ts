@@ -16,20 +16,19 @@ import { CountryModule } from './app-routing.module';
 })
 export class AppComponent implements OnInit {
   title = 'icat-country-portal-web-app';
-  togglemenu: boolean = true;
+  togglemenu = true;
   innerWidth = 0;
-  showLeftMenu: boolean = true;
-  showTopMenu: boolean = true;
-  fname: string = '';
-  lname: string = '';
-  urole: string = '';
+  showLeftMenu = true;
+  showTopMenu = true;
+  fname = '';
+  lname = '';
+  urole = '';
   anonimousId: any;
-  instName: string = '';
+  instName = '';
   moduleLevels: number[] = [1];
   models = CountryModule;
   userRoles: any[] = [];
   userRole: any = { name: 'Guest', role: '-1' };
-  //User Idle handle code
   userActivity: number;
   countryId: number;
   userInactive: Subject<any> = new Subject();
@@ -39,7 +38,6 @@ export class AppComponent implements OnInit {
     this.innerWidth = window.innerWidth;
   }
 
-  //user idle logout code
   @HostListener('window:mousemove')
   @HostListener('document:keypress')
   refreshUserState() {
@@ -47,13 +45,10 @@ export class AppComponent implements OnInit {
     this.setTimeout();
   }
 
-  /**
-   *
-   */
   constructor(
     private roleGuardService: RoleGuardService,
     private router: Router,
-    private sharedDataService: SharedDataService
+    private sharedDataService: SharedDataService,
   ) {
     this.userRoles = [
       { name: 'Country Admin', role: '1' },
@@ -67,18 +62,15 @@ export class AppComponent implements OnInit {
       { name: 'Data Entry Operator', role: '9' },
     ];
 
-    
-    this.router.events
-    .subscribe((event: any) => {
+    this.router.events.subscribe((event: any) => {
       if (event && event.url) {
-        console.log('event.url', event.url);
         this.showLeftMenu = true;
         this.showTopMenu = true;
-        
+
         if (event.url == '/login') {
           this.showLeftMenu = false;
           this.showTopMenu = false;
-          console.log('login', event.url);
+
           return;
         }
         if (event.url == '/landing-page') {
@@ -100,7 +92,6 @@ export class AppComponent implements OnInit {
           this.showLeftMenu = false;
           this.showTopMenu = false;
         }
-        //Sub pages from Landing Page
         if (event.url == '/landing-page#about-tool') {
           this.showLeftMenu = false;
           this.showTopMenu = false;
@@ -116,7 +107,6 @@ export class AppComponent implements OnInit {
           this.showTopMenu = false;
           return;
         }
-        //End Sub pages
         if (event.url == '/propose-project') {
           this.showLeftMenu = false;
           this.showTopMenu = false;
@@ -132,56 +122,40 @@ export class AppComponent implements OnInit {
           this.showTopMenu = false;
           return;
         }
-
-      
-    }
+      }
     });
   }
 
   ngOnInit() {
-    // rest of initialization code
     this.sharedDataService.currentMessage.subscribe((message: string) => {
       if (message == 'login_success') {
         this.setLoginRole();
       }
-    }); //<= Always get current value!
-
-    // const vv = this.roleGuardService.getAllRoles()
+    });
 
     this.innerWidth = window.innerWidth;
     this.setLoginRole();
 
-    //User idle timeout handle
     this.setTimeout();
     this.userInactive.subscribe(() => {
       this.logout();
     });
   }
 
-  //user idle timeout handling code
   setTimeout() {
-    //Note: below red line is not an issue.. do not remove..
     this.userActivity = setTimeout(() => {
-      console.log('this.userRole', this.userRole);
       if (this.userRole.role != -1) {
         this.userInactive.next(undefined);
-        console.log('logged out');
       }
     }, 600000);
   }
 
-  // getModel(a:number):boolean{
-  //   console.log('moduleLevels------', this.moduleLevels)
-  //  return this.moduleLevels.includes(a)
-  // }
   getModel = (a: number): boolean => this.moduleLevels.includes(a);
 
   setLoginRole() {
     const token = localStorage.getItem('access_token')!;
 
     const tokenPayload = decode<any>(token);
-
-    console.log('testload---------', tokenPayload);
 
     this.fname = tokenPayload.fname;
     this.lname = tokenPayload.lname;
@@ -190,42 +164,28 @@ export class AppComponent implements OnInit {
     this.instName = tokenPayload.instName ? tokenPayload.instName : '';
     this.moduleLevels = this.roleGuardService.checkModels();
     [1, 2, 3].some(this.getModel);
-    console.log('moduleLevels222------', this.models);
+
     if (this.roleGuardService.checkRoles(['Country Admin'])) {
       this.userRole = this.userRoles[0];
-      console.log('name------', this.userRole);
-      //this.router.navigate(['/home']);
     } else if (this.roleGuardService.checkRoles(['Verifier'])) {
       this.userRole = this.userRoles[1];
-      //this.router.navigate(['/institution-assigneddata']);
     } else if (this.roleGuardService.checkRoles(['Sector Admin'])) {
       this.userRole = this.userRoles[2];
-      console.log('name------', this.userRole);
-
-      //this.router.navigate(['/institution-home']);
     } else if (this.roleGuardService.checkRoles(['MRV Admin'])) {
       this.userRole = this.userRoles[3];
-      //this.router.navigate(['/institution-assigneddata']);
     } else if (this.roleGuardService.checkRoles(['Technical Team'])) {
       this.userRole = this.userRoles[4];
-      //this.router.navigate(['/institution-assigneddata']);
     } else if (this.roleGuardService.checkRoles(['Data Collection Team'])) {
       this.userRole = this.userRoles[5];
-      //this.router.navigate(['/institution-assigneddata']);
     } else if (this.roleGuardService.checkRoles(['QC Team'])) {
       this.userRole = this.userRoles[6];
-      //this.router.navigate(['/institution-assigneddata']);
     } else if (this.roleGuardService.checkRoles(['Institution Admin'])) {
       this.userRole = this.userRoles[7];
-      //this.router.navigate(['/ia-dashboard']);
     } else if (this.roleGuardService.checkRoles(['Data Entry Operator'])) {
       this.userRole = this.userRoles[8];
-      //this.router.navigate(['/institution-assigneddata']);
     }
   }
-  //logout
   logout() {
-    console.log('logout-------');
     localStorage.setItem('access_token', '');
     localStorage.setItem('user_name', '');
     this.userRole = { name: 'Guest', role: '-1' };

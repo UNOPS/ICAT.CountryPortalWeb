@@ -8,9 +8,8 @@ describe('QcHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ QcHistoryComponent ]
-    })
-    .compileComponents();
+      declarations: [QcHistoryComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

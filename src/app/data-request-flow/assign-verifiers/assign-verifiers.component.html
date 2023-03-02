@@ -38,7 +38,6 @@
             label="Search"
             (click)="onSearch()"
           ></button>
-          <!-- <p-toast position="top-right"></p-toast> -->
         </div>
       </div>
     </div>
@@ -53,33 +52,13 @@
         paginatorDropdownAppendTo="body"
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [rowsPerPageOptions]="[ 10, 25, 50]"
+        [rowsPerPageOptions]="[10, 25, 50]"
         [totalRecords]="totalRecords"
         [loading]="loading"
         [responsive]="true"
-        
         [(selection)]="selectedParameters"
       >
-        <!-- Table header start search -->
-
-        <!-- <p-table #tt [value]="climateactions" [columns]="cols" placeholder="Global Filter" [filter]="true" filterMatchMode="contains" >                                                          
-      <ng-template pTemplate="caption">
-          <div style="text-align: right">        
-              <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-              <input type="text" pInputText size="50" style="width:auto">
-          </div>
-      </ng-template> -->
-
-        <!-- Table header END Search -->
-
         <ng-template pTemplate="header">
-          <!-- <tr> 
-          <th *ngFor="let col of columns" [ngSwitch]="col.field">
-            <input *ngSwitchCase="'climateActionName'" pInputText type="text"
-              (input)="dt.filter($event.target.value, col.field, 'contains')" />
-          </th>
-        </tr> -->
-
           <tr>
             <th style="width: 3rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
@@ -94,10 +73,17 @@
         </ng-template>
         <ng-template pTemplate="body" let-parameters>
           <tr>
-
-            <ng-container *ngIf=" VerificationStatusEnum[parameters.verificationStatus] =='Pass' || VerificationStatusEnum[parameters.verificationStatus] =='Fail' ; else elsePassorFail">
+            <ng-container
+              *ngIf="
+                VerificationStatusEnum[parameters.verificationStatus] ==
+                  'Pass' ||
+                  VerificationStatusEnum[parameters.verificationStatus] ==
+                    'Fail';
+                else elsePassorFail
+              "
+            >
               <td>
-                <p-tableCheckbox  [disabled]="true"> </p-tableCheckbox>
+                <p-tableCheckbox [disabled]="true"> </p-tableCheckbox>
               </td>
             </ng-container>
             <ng-template #elsePassorFail>
@@ -105,10 +91,6 @@
                 <p-tableCheckbox [value]="parameters"> </p-tableCheckbox>
               </td>
             </ng-template>
-            
-
-
-
 
             <td>{{ parameters.assessment.Project.climateActionName }}</td>
             <td>
@@ -124,33 +106,30 @@
             <td>
               {{
                 parameters.verificationUser
-                  ? parameters.verificationUser.firstName+' '+parameters.verificationUser.lastName
-                  : ""
+                  ? parameters.verificationUser.firstName +
+                    ' ' +
+                    parameters.verificationUser.lastName
+                  : ''
               }}
             </td>
             <td>
-              {{ parameters.verificationDeadline | date: "dd-MM-yyyy " }}
+              {{ parameters.verificationDeadline | date : 'dd-MM-yyyy ' }}
             </td>
-            <!-- <td>{{ dataRequestList.id }}</td> -->
           </tr>
         </ng-template>
       </p-table>
       <div class="row">
-        <div class="col-md-10">
-
-        </div>
+        <div class="col-md-10"></div>
         <div class="col-md-2">
           <button
-          class="mt-2"
-          type="button"
-          pButton
-          pRipple
-          label="Send Now"
-          (click)="onAcceptClick()"
-        ></button>
-          </div>
-      
-       
+            class="mt-2"
+            type="button"
+            pButton
+            pRipple
+            label="Send Now"
+            (click)="onAcceptClick()"
+          ></button>
+        </div>
       </div>
     </div>
   </div>
@@ -199,7 +178,13 @@
           (click)="onAcceptConfirm()"
         ></button>
 
-        <button type="button" pButton pRipple label="Cancel" (click)="onCancelConfirm()"></button>
+        <button
+          type="button"
+          pButton
+          pRipple
+          label="Cancel"
+          (click)="onCancelConfirm()"
+        ></button>
       </div>
       <div class="col-5"></div>
     </div>

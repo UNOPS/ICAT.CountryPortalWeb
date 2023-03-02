@@ -4,14 +4,12 @@ import { QuAlityCheckStatus } from 'app/Model/QuAlityCheckStatus.enum';
 import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
 import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
 import {
   AssesmentControllerServiceProxy,
   AssesmentResaultControllerServiceProxy,
   Assessment,
   AssessmentResault,
   AssessmentYear,
-  AssessmentYearVerificationStatus,
   Parameter,
   ProjectionResault,
   ProjectionResaultControllerServiceProxy,
@@ -27,55 +25,55 @@ import {
   styleUrls: ['./verify-detail.component.css'],
 })
 export class VerifyDetailComponent implements OnInit {
-  assesMentYearId: number = 0;
-  verificationStatus: number = 0;
+  assesMentYearId = 0;
+  verificationStatus = 0;
   assementYear: AssessmentYear = new AssessmentYear();
   parameters: Parameter[] = [];
   baselineParameters: Parameter[] = [];
   projectParameters: Parameter[] = [];
   lekageParameters: Parameter[] = [];
   projectionParameters: Parameter[] = [];
-  loading: boolean = false;
+  loading = false;
   assessmentResult: AssessmentResault = new AssessmentResault();
   projectionResult: ProjectionResault[] = [];
   selectdProjectionResult: ProjectionResault;
-  isApprove: boolean = false;
+  isApprove = false;
   drComment = '';
-  commentRequried: boolean = false;
-  displayConcern: boolean = false;
+  commentRequried = false;
+  displayConcern = false;
 
   assesmentResultComment = '';
-  assesmentResultCommentRequried: boolean = false;
+  assesmentResultCommentRequried = false;
 
   selectdAssementType: number;
-  isApproveAssement: boolean = false;
+  isApproveAssement = false;
 
   VerificationStatusEnum = VerificationStatus;
   concernVerificationDetails: VerificationDetail[] | undefined;
   verificationDetails: VerificationDetail[] = [];
   verificationDetailsFromDb: VerificationDetail[] = [];
 
-  raiseConcernSection: string = '';
+  raiseConcernSection = '';
   concernIsMethodology: boolean;
   concernIsNdC: boolean;
   concernIsAssumption: boolean;
 
   loggedUser: User;
   flag: number;
-  assumption:string = '';
-  assessmentObjective:any
+  assumption = '';
+  assessmentObjective: any;
 
-  isBaseAccept:boolean = true;
-  isProjectAccept:boolean = true;
-  isLeckegeAccept:boolean = true;
-  isProjectionAccept:boolean = true;
+  isBaseAccept = true;
+  isProjectAccept = true;
+  isLeckegeAccept = true;
+  isProjectionAccept = true;
 
-  isNdcDisable:boolean = false;
-  isNdcDisableReject:boolean = false;
-  isMethodology:boolean = false;
-  isMethodologyReject:boolean = false;
-  isAssumptions:boolean = false;
-  isAssumptionsReject:boolean = false;
+  isNdcDisable = false;
+  isNdcDisableReject = false;
+  isMethodology = false;
+  isMethodologyReject = false;
+  isAssumptions = false;
+  isAssumptionsReject = false;
 
   @ViewChild('opDRPro') overlayDRPro: any;
   @ViewChild('opDRAss') overlayDRAssemnet: any;
@@ -90,14 +88,14 @@ export class VerifyDetailComponent implements OnInit {
     private messageService: MessageService,
     private verificationProxy: VerificationControllerServiceProxy,
     private confirmationService: ConfirmationService,
-    private serviceProxy: ServiceProxy
+    private serviceProxy: ServiceProxy,
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.assesMentYearId = params['id'];
       this.verificationStatus = params['verificationStatus'];
-      console.log("verificationStatus",this.verificationStatus)
+
       this.flag = params['flag'];
 
       this.proxy
@@ -105,7 +103,7 @@ export class VerifyDetailComponent implements OnInit {
           this.assesMentYearId,
           undefined,
           undefined,
-          undefined
+          undefined,
         )
         .subscribe((res) => {
           this.assementYear = res;
@@ -122,53 +120,49 @@ export class VerifyDetailComponent implements OnInit {
       .getVerificationDetails(this.assesMentYearId)
       .subscribe((res) => {
         this.verificationDetailsFromDb = res;
-        let ndcObj = this.verificationDetailsFromDb.find((o)=>o.isNDC == true);
-        if(ndcObj?.isAccepted == true)
-        {
+        const ndcObj = this.verificationDetailsFromDb.find(
+          (o) => o.isNDC == true,
+        );
+        if (ndcObj?.isAccepted == true) {
           this.isNdcDisable = true;
           this.isNdcDisableReject = true;
         }
-        if(ndcObj?.isAccepted == false)
-        {
+        if (ndcObj?.isAccepted == false) {
           this.isNdcDisable = true;
           this.isNdcDisableReject = true;
         }
 
-        let methObject = this.verificationDetailsFromDb.find((o)=>o.isMethodology == true);
-        if(methObject?.isAccepted == true)
-        {
+        const methObject = this.verificationDetailsFromDb.find(
+          (o) => o.isMethodology == true,
+        );
+        if (methObject?.isAccepted == true) {
           this.isMethodology = true;
           this.isMethodologyReject = true;
         }
-        if(methObject?.isAccepted == false)
-        {
+        if (methObject?.isAccepted == false) {
           this.isMethodology = true;
           this.isMethodologyReject = true;
         }
 
-        let assumpObject = this.verificationDetailsFromDb.find((o)=>o.isAssumption == true);
-        if(assumpObject?.isAccepted == true)
-        {
-          this. isAssumptions = true;
-          this. isAssumptionsReject = true;
+        const assumpObject = this.verificationDetailsFromDb.find(
+          (o) => o.isAssumption == true,
+        );
+        if (assumpObject?.isAccepted == true) {
+          this.isAssumptions = true;
+          this.isAssumptionsReject = true;
         }
-        if(assumpObject?.isAccepted == false)
-        {
-          this. isAssumptions = true;
-          this. isAssumptionsReject = true;
+        if (assumpObject?.isAccepted == false) {
+          this.isAssumptions = true;
+          this.isAssumptionsReject = true;
         }
       });
-
-
-  
   }
 
   loadUser() {
-    let userName = localStorage.getItem('user_name')!;
+    const userName = localStorage.getItem('user_name')!;
 
-    let filter1: string[] = [];
+    const filter1: string[] = [];
     filter1.push('username||$eq||' + userName);
-    // lmFilter.push('LearningMaterial.isPublish||$eq||' + 1);
 
     this.serviceProxy
       .getManyBaseUsersControllerUser(
@@ -181,7 +175,7 @@ export class VerifyDetailComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.loggedUser = res.data[0];
@@ -202,11 +196,10 @@ export class VerifyDetailComponent implements OnInit {
         this.assementYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
-        "1234"
+        '1234',
       )
       .subscribe((res) => {
         this.assessmentResult = res;
-        console.log(res);
       });
   }
 
@@ -214,7 +207,7 @@ export class VerifyDetailComponent implements OnInit {
     this.projectionResultProxy
       .getProjectionResult(
         this.assementYear.assessment.id,
-        Number(this.assementYear.assessmentYear)
+        Number(this.assementYear.assessmentYear),
       )
       .subscribe((res) => {
         this.projectionResult = res;
@@ -222,7 +215,7 @@ export class VerifyDetailComponent implements OnInit {
   }
 
   getParameters(asessmentYear: AssessmentYear) {
-    let filter: string[] = new Array();
+    const filter: string[] = [];
     filter.push('assessment.id||$eq||' + asessmentYear.assessment.id);
     filter.push('projectionYear||$eq||' + asessmentYear.assessmentYear);
 
@@ -237,12 +230,10 @@ export class VerifyDetailComponent implements OnInit {
         1000,
         0,
         0,
-        undefined
+        undefined,
       )
       .subscribe((res) => {
         asessmentYear.assessment.parameters = res.data;
-
-        console.log("veriifer parameters...",res.data);
       });
   }
 
@@ -250,95 +241,80 @@ export class VerifyDetailComponent implements OnInit {
     this.assesmentProxy
       .getAssment(
         this.assementYear.assessment.id,
-        this.assementYear.assessmentYear
+        this.assementYear.assessmentYear,
       )
       .subscribe((res) => {
-        console.log('rrrrrrrrrrrrrrrrr');
-        console.log("para next...",res);
-
         this.assementYear.assessment = res;
-        console.log("this.assementYear.assessment",  this.assementYear.assessment);
 
-      console.log("this.assementYear.assessment.id",this.assementYear.assessment.id)  
-
-
-        this.serviceProxy.getManyBaseAssessmentObjectiveControllerAssessmentObjective(
-          undefined,
-          undefined,
-          ["assessmentId||$eq||"+ this.assementYear.assessment.id],
-          undefined,
-          undefined,
-          undefined,
-          1000,
-          0,
-          0,
-          0
-
-          ).subscribe((res:any) => {
-            console.log('asssmntObjective----',res);
-
-           if( res.data[0])
-           {
-            this.assessmentObjective = res.data[0].objective;
-           }
-           else{
-             console.log("N/A")
-             this.assessmentObjective = "N/A"
-           }
-          console.log('asssmntObjectiveName----',this.assessmentObjective);
-        });
-
+        this.serviceProxy
+          .getManyBaseAssessmentObjectiveControllerAssessmentObjective(
+            undefined,
+            undefined,
+            ['assessmentId||$eq||' + this.assementYear.assessment.id],
+            undefined,
+            undefined,
+            undefined,
+            1000,
+            0,
+            0,
+            0,
+          )
+          .subscribe((res: any) => {
+            if (res.data[0]) {
+              this.assessmentObjective = res.data[0].objective;
+            } else {
+              this.assessmentObjective = 'N/A';
+            }
+          });
 
         this.parameters = this.assementYear.assessment.parameters;
 
         this.baselineParameters =
           this.assementYear.assessment.parameters.filter((p) => p.isBaseline);
-        
-        for (let base of this.baselineParameters){
-          if(base.isAcceptedByVerifier !=1){
-            this.isBaseAccept =false;
+
+        for (const base of this.baselineParameters) {
+          if (base.isAcceptedByVerifier != 1) {
+            this.isBaseAccept = false;
           }
         }
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
-          (p) => p.isProject
+          (p) => p.isProject,
         );
 
-        for (let base of this.projectParameters){
-          if(base.isAcceptedByVerifier !=1){
-            this.isProjectAccept =false;
+        for (const base of this.projectParameters) {
+          if (base.isAcceptedByVerifier != 1) {
+            this.isProjectAccept = false;
           }
         }
         this.lekageParameters = this.assementYear.assessment.parameters.filter(
-          (p) => p.isLekage
+          (p) => p.isLekage,
         );
 
-        for (let base of this.lekageParameters){
-          if(base.isAcceptedByVerifier !=1){
-            this.isLeckegeAccept =false;
+        for (const base of this.lekageParameters) {
+          if (base.isAcceptedByVerifier != 1) {
+            this.isLeckegeAccept = false;
           }
         }
-        
-        
+
         this.projectionParameters =
           this.assementYear.assessment.parameters.filter(
             (p) =>
               p.isProjection &&
-              p.projectionBaseYear == Number(this.assementYear.assessmentYear)
+              p.projectionBaseYear == Number(this.assementYear.assessmentYear),
           );
 
-          for (let base of this.projectionParameters){
-            if(base.isAcceptedByVerifier !=1){
-              this.isProjectionAccept =false;
-            }
+        for (const base of this.projectionParameters) {
+          if (base.isAcceptedByVerifier != 1) {
+            this.isProjectionAccept = false;
           }
-          console.log("__________",this.projectionParameters)
+        }
       });
   }
 
   detail(climateactions: any) {
     this.router.navigate(['/propose-project'], {
-      queryParams: { id: climateactions.id, flag:this.flag },
+      queryParams: { id: climateactions.id, flag: this.flag },
     });
   }
 
@@ -346,7 +322,7 @@ export class VerifyDetailComponent implements OnInit {
     this.verificationProxy
       .getVerificationDetails(this.assesMentYearId)
       .subscribe((a) => {
-        var notaccepted = a.filter((a) => !a.isAccepted);
+        const notaccepted = a.filter((a) => !a.isAccepted);
 
         if (
           notaccepted &&
@@ -357,17 +333,15 @@ export class VerifyDetailComponent implements OnInit {
         }
       });
 
-    //AssessmentYearVerificationStatus.NCRecieved;
-    let assessment = new Assessment();
+    const assessment = new Assessment();
     assessment.id = this.assementYear.assessment.id;
     this.assementYear.assessment = assessment;
     this.proxy
       .updateOneBaseAssessmentYearControllerAssessmentYear(
         this.assementYear.id,
-        this.assementYear
+        this.assementYear,
       )
       .subscribe((a) => {
-        //rederict to NC Report
         alert('updates');
       });
   }
@@ -417,7 +391,7 @@ export class VerifyDetailComponent implements OnInit {
       return;
     }
 
-    var qastatus = this.isApprove
+    const qastatus = this.isApprove
       ? QuAlityCheckStatus.Pass
       : QuAlityCheckStatus.Fail;
 
@@ -426,7 +400,7 @@ export class VerifyDetailComponent implements OnInit {
         this.selectdProjectionResult.id,
         this.selectdProjectionResult.projectionYear,
         qastatus,
-        this.drComment
+        this.drComment,
       )
       .subscribe(
         (res) => {
@@ -437,13 +411,11 @@ export class VerifyDetailComponent implements OnInit {
             closable: true,
           });
 
-          var index = this.projectionResult.indexOf(
-            this.selectdProjectionResult
+          const index = this.projectionResult.indexOf(
+            this.selectdProjectionResult,
           );
 
           this.selectdProjectionResult.qcStatus = this.isApprove ? 4 : 3;
-
-          // this.parameters.splice(index, 0, this.selectdParameter);
 
           this.overlayDRPro.hide();
         },
@@ -454,7 +426,7 @@ export class VerifyDetailComponent implements OnInit {
             detail: 'Internal server error, please try again.',
             sticky: true,
           });
-        }
+        },
       );
   }
 
@@ -464,7 +436,7 @@ export class VerifyDetailComponent implements OnInit {
       return;
     }
 
-    var qastatus = this.isApproveAssement
+    const qastatus = this.isApproveAssement
       ? QuAlityCheckStatus.Pass
       : QuAlityCheckStatus.Fail;
 
@@ -474,7 +446,7 @@ export class VerifyDetailComponent implements OnInit {
         this.assessmentResult.assessmentYear.id,
         qastatus,
         this.selectdAssementType,
-        this.assesmentResultComment
+        this.assesmentResultComment,
       )
       .subscribe(
         (res) => {
@@ -485,13 +457,9 @@ export class VerifyDetailComponent implements OnInit {
             closable: true,
           });
 
-          var index = this.projectionResult.indexOf(
-            this.selectdProjectionResult
+          const index = this.projectionResult.indexOf(
+            this.selectdProjectionResult,
           );
-
-          // this.projectionResult.qcStatus = this.isApprove ? 4 : 3;
-
-          // this.parameters.splice(index, 0, this.selectdParameter);
 
           this.overlayDRAssemnet.hide();
         },
@@ -502,11 +470,15 @@ export class VerifyDetailComponent implements OnInit {
             detail: 'Internal server error, please try again.',
             sticky: true,
           });
-        }
+        },
       );
   }
 
-  parameterAccept(isNdc: boolean, isMethodology: boolean , isAssumption:boolean) {
+  parameterAccept(
+    isNdc: boolean,
+    isMethodology: boolean,
+    isAssumption: boolean,
+  ) {
     this.confirmationService.confirm({
       message: 'Are sure you want to accept the parameter(s) ?',
       header: 'Accept Confirmation',
@@ -519,17 +491,16 @@ export class VerifyDetailComponent implements OnInit {
     });
   }
 
-  accept(IsNdc: boolean, isMethodology: boolean , isAssumption:boolean) {
-    let verificationDetails: VerificationDetail[] = [];
+  accept(IsNdc: boolean, isMethodology: boolean, isAssumption: boolean) {
+    const verificationDetails: VerificationDetail[] = [];
 
-    let currentVerification = this.verificationDetails.find(
+    const currentVerification = this.verificationDetails.find(
       (a) =>
         a.isNDC == IsNdc &&
-        a.isMethodology == isMethodology && 
+        a.isMethodology == isMethodology &&
         a.isAssumption == isAssumption &&
-        a.verificationStage == this.getverificationStage()
+        a.verificationStage == this.getverificationStage(),
     );
-//
     let vd = new VerificationDetail();
 
     if (currentVerification) {
@@ -540,7 +511,7 @@ export class VerifyDetailComponent implements OnInit {
       vd.createdOn = moment();
       vd.updatedDate = moment();
       vd.assessmentId = this.assementYear.assessment.id;
-      let assesmentYear = new AssessmentYear();
+      const assesmentYear = new AssessmentYear();
       assesmentYear.id = this.assementYear.id;
       vd.assessmentYear = assesmentYear;
       vd.year = Number(this.assementYear.assessmentYear);
@@ -551,31 +522,24 @@ export class VerifyDetailComponent implements OnInit {
       if (isMethodology) {
         vd.isMethodology = true;
       }
-      if(isAssumption){
+      if (isAssumption) {
         vd.isAssumption = true;
       }
 
-
-      if(IsNdc)
-      {
+      if (IsNdc) {
         this.isNdcDisable = true;
         this.isNdcDisableReject = true;
       }
 
-      if(isMethodology)
-      {
+      if (isMethodology) {
         this.isMethodology = true;
         this.isMethodologyReject = true;
       }
 
-      if(isAssumption)
-      {
+      if (isAssumption) {
         this.isAssumptions = true;
         this.isAssumptionsReject = true;
       }
-
-
-      
     }
 
     vd.verificationStage = this.getverificationStage();
@@ -614,23 +578,23 @@ export class VerifyDetailComponent implements OnInit {
     return stage;
   }
 
-  raiseConcern(isNdc: boolean, isMethodology: boolean, isAssumption:boolean) {
+  raiseConcern(isNdc: boolean, isMethodology: boolean, isAssumption: boolean) {
     if (isNdc) {
       this.raiseConcernSection = 'Aggregated Actions';
       this.concernVerificationDetails = this.verificationDetails.filter(
-        (a) => a.isNDC
+        (a) => a.isNDC,
       );
     }
     if (isMethodology) {
       this.raiseConcernSection = 'Methodology';
       this.concernVerificationDetails = this.verificationDetails.filter(
-        (a) => a.isMethodology
+        (a) => a.isMethodology,
       );
     }
     if (isAssumption) {
       this.raiseConcernSection = 'Assumption';
       this.concernVerificationDetails = this.verificationDetails.filter(
-        (a) => a.isAssumption
+        (a) => a.isAssumption,
       );
     }
 
@@ -639,20 +603,17 @@ export class VerifyDetailComponent implements OnInit {
     this.concernIsAssumption = isAssumption;
     this.displayConcern = true;
 
-    if(isNdc)
-    {
+    if (isNdc) {
       this.isNdcDisable = true;
       this.isNdcDisableReject = true;
     }
 
-    if(isMethodology)
-    {
+    if (isMethodology) {
       this.isMethodology = true;
       this.isMethodologyReject = true;
     }
 
-    if(isAssumption)
-    {
+    if (isAssumption) {
       this.isAssumptions = true;
       this.isAssumptionsReject = true;
     }

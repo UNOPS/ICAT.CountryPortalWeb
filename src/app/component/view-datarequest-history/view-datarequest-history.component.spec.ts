@@ -8,9 +8,8 @@ describe('ViewDatarequestHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ViewDatarequestHistoryComponent ]
-    })
-    .compileComponents();
+      declarations: [ViewDatarequestHistoryComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

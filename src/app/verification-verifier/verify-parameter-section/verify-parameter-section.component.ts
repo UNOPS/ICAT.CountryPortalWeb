@@ -5,16 +5,13 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
   AssessmentYear,
-  AssessmentYearVerificationStatus,
   Parameter,
   ParameterHistoryControllerServiceProxy,
-  ParameterRequestQaStatus,
   QualityCheckControllerServiceProxy,
   ServiceProxy,
   User,
   VerificationControllerServiceProxy,
   VerificationDetail,
-  VerificationDetailVerificationStatus,
 } from 'shared/service-proxies/service-proxies';
 
 @Component({
@@ -41,7 +38,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   parameters: Parameter[];
 
   @Input()
-  verificationStatus:number;
+  verificationStatus: number;
 
   @Input()
   ResultValue: any | undefined;
@@ -73,8 +70,8 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   @Input()
   verificationDetails: VerificationDetail[];
 
-  loading: boolean = false;
-  commentRequried: boolean = false;
+  loading = false;
+  commentRequried = false;
   drComment: string;
   selectdParameter: Parameter;
   isApprove: boolean;
@@ -82,8 +79,8 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   @ViewChild('opDR') overlayDR: any;
 
   selectedParameter: Parameter[] = [];
-  displayConcern: boolean = false;
-  raiseConcernSection: string = '';
+  displayConcern = false;
+  raiseConcernSection = '';
   concernVerificationDetails: VerificationDetail[];
   concernParam: Parameter | undefined;
   loggedUser: User;
@@ -91,9 +88,9 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   isParameter: boolean;
   isValue: boolean;
 
-  paraId:number;
+  paraId: number;
   requestHistoryList: any[] = [];
-  displayHistory:boolean = false;
+  displayHistory = false;
 
   isProjectionResult = false;
 
@@ -104,23 +101,19 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private verificationProxy: VerificationControllerServiceProxy,
     private serviceProxy: ServiceProxy,
-    private prHistoryProxy : ParameterHistoryControllerServiceProxy,
+    private prHistoryProxy: ParameterHistoryControllerServiceProxy,
   ) {}
 
   ngOnInit(): void {
-
     this.loadUser();
     if (this.multiResult) this.isProjectionResult = true;
-
-    console.log("verify parameters...",this.parameters)
   }
 
   loadUser() {
-    let userName = localStorage.getItem('user_name')!;
+    const userName = localStorage.getItem('user_name')!;
 
-    let filter1: string[] = [];
+    const filter1: string[] = [];
     filter1.push('username||$eq||' + userName);
-    // lmFilter.push('LearningMaterial.isPublish||$eq||' + 1);
 
     this.serviceProxy
       .getManyBaseUsersControllerUser(
@@ -133,16 +126,12 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.loggedUser = res.data[0];
       });
   }
-
-  // ngOnChanges(changes: any) {
-
-  // }
 
   ngOnDestroy() {
     if (this.ref) {
@@ -160,7 +149,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       return;
     }
 
-    var qastatus = this.isApprove
+    const qastatus = this.isApprove
       ? QuAlityCheckStatus.Pass
       : QuAlityCheckStatus.Fail;
     this.qaServiceProxy;
@@ -185,44 +174,14 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  getInfo(obj: any)
-  {
-       console.log("dataRequestList...",obj)
-       this.paraId = obj.id;
-       console.log("this.paraId...",this.paraId)
+  getInfo(obj: any) {
+    this.paraId = obj.id;
 
-      // let x = 602;
-       this.prHistoryProxy
-       .getHistroyByid(this.paraId)  // this.paraId
-       .subscribe((res) => {
-         
-        this.requestHistoryList =res;
-         
-       console.log('this.requestHistoryList...', this.requestHistoryList);
-       
-       });
-      //  let filter1: string[] = [];
-      //  filter1.push('parameter.id||$eq||' + this.paraId);
-      //  this.serviceProxy
-      //  .getManyBaseParameterRequestControllerParameterRequest(
-      //    undefined,
-      //    undefined,
-      //    filter1,
-      //    undefined,
-      //    undefined,
-      //    undefined,
-      //    1000,
-      //    0,
-      //    0,
-      //    0
-      //  )
-      //  .subscribe((res: any) => {
-      //    this.requestHistoryList =res.data;
-         
-      //    console.log('this.requestHistoryList...', this.requestHistoryList);
-      //  });
+    this.prHistoryProxy.getHistroyByid(this.paraId).subscribe((res) => {
+      this.requestHistoryList = res;
+    });
 
-       this.displayHistory = true;
+    this.displayHistory = true;
   }
 
   parameterAccept() {
@@ -233,35 +192,26 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       rejectIcon: 'icon-not-visible',
       accept: () => {
         this.acceptParametrs();
-
       },
       reject: () => {},
     });
   }
 
   acceptParametrs() {
-    let verificationDetails: VerificationDetail[] = [];
+    const verificationDetails: VerificationDetail[] = [];
 
     this.selectedParameter.map((v) => {
-
       v.isAcceptedByVerifier = 1;
 
       this.serviceProxy
-        .updateOneBaseParameterControllerParameter(
-          v.id,
-          v
-        )
-        .subscribe(
-          (res) => {
-          
-            });
-
+        .updateOneBaseParameterControllerParameter(v.id, v)
+        .subscribe((res) => {});
 
       let verificationDetail = undefined;
 
       if (this.verificationDetails) {
         verificationDetail = this.verificationDetails.find(
-          (a) => a.parameter && a.parameter.id == v.id
+          (a) => a.parameter && a.parameter.id == v.id,
         );
       }
       let vd = new VerificationDetail();
@@ -271,13 +221,13 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       } else {
         vd.userVerifier = this.loggedUser.id;
         vd.assessmentId = this.assessmentYear.assessment.id;
-        let assesmentYear = new AssessmentYear();
+        const assesmentYear = new AssessmentYear();
         assesmentYear.id = this.assessmentYear.id;
         vd.assessmentYear = assesmentYear;
         vd.year = Number(this.assessmentYear.assessmentYear);
         vd.createdOn = moment();
 
-        let param = new Parameter();
+        const param = new Parameter();
         param.id = v.id;
         vd.parameter = param;
 
@@ -313,7 +263,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
           detail: 'successfully Save.',
           closable: true,
         });
-        this.isAccept=true
+        this.isAccept = true;
       });
   }
 
@@ -335,16 +285,13 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   }
 
   raiseConcern(event: any, parameter: Parameter) {
-    console.log("my para...",parameter);
     this.raiseConcernSection = parameter.name;
     this.isParameter = true;
     this.isValue = false;
 
-    console.log('gggggggggggggggggggg');
-
     if (this.verificationDetails) {
       this.concernVerificationDetails = this.verificationDetails.filter(
-        (a) => !a.isResult && a.parameter && a.parameter.id == parameter.id
+        (a) => !a.isResult && a.parameter && a.parameter.id == parameter.id,
       );
     }
 
@@ -362,19 +309,19 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     if (this.verificationDetails) {
       if (this.isBaseline) {
         this.concernVerificationDetails = this.verificationDetails.filter(
-          (a) => a.isResult && a.isBaseline
+          (a) => a.isResult && a.isBaseline,
         );
       } else if (this.isProject) {
         this.concernVerificationDetails = this.verificationDetails.filter(
-          (a) => a.isResult && a.isProject
+          (a) => a.isResult && a.isProject,
         );
       } else if (this.isLekage) {
         this.concernVerificationDetails = this.verificationDetails.filter(
-          (a) => a.isResult && a.isLekage
+          (a) => a.isResult && a.isLekage,
         );
       } else if (this.isProjection) {
         this.concernVerificationDetails = this.verificationDetails.filter(
-          (a) => a.isResult && a.isProjection
+          (a) => a.isResult && a.isProjection,
         );
       }
     }

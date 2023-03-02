@@ -8,9 +8,8 @@ describe('ManagedatastatusComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ManagedatastatusComponent ]
-    })
-    .compileComponents();
+      declarations: [ManagedatastatusComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

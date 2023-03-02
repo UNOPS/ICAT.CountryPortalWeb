@@ -8,24 +8,24 @@
       <div class="p-grid p-fluid col-sm-12">
         <div class="row p-2">
           <div class="col-md-6">
-            <img src="{{country?.flagPath}}" alt="Image" class="img-fluid" />
+            <img src="{{ country?.flagPath }}" alt="Image" class="img-fluid" />
           </div>
           <div class="col-12 col-md-6">
             <div class="p-field">
-              <label for="countryname" readonly><b>{{ country?.name }}</b></label>
+              <label for="countryname" readonly
+                ><b>{{ country?.name }}</b></label
+              >
               <br />
-              <!-- <input
-            type="text"
-            name="countryname"
-            field="countryname"
-            class="p-inputtext"
-            style="width: 200%"
-            [(ngModel)]="country.description"
-            maxlength="300"
-              
-            /> -->
-              <textarea name="countryname" pattern="^[a-zA-Z0-9 ]{1,64}$" [(ngModel)]="country.description" rows="5"
-                cols="62" pInputTextarea length="300" autoResize="autoResize"></textarea>
+              <textarea
+                name="countryname"
+                pattern="^[a-zA-Z0-9 ]{1,64}$"
+                [(ngModel)]="country.description"
+                rows="5"
+                cols="62"
+                pInputTextarea
+                length="300"
+                autoResize="autoResize"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -38,11 +38,15 @@
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="nc"><b>National Communciation(s)</b></label>
-              <!-- {{documentsDocumentOwnerNC|json}} -->
-              <!-- <div class="col-12 wrapper-doc-upload mt-4"> -->
-                <div class="col-12  mt-4">
-                <app-document-upload [doucmentList]="documents" [documentOwner]="documentsDocumentOwnerNC"
-                  [documentOwnerId]="-4" [showUpload]="true" [showDeleteButton]="true" name="nc">
+              <div class="col-12 mt-4">
+                <app-document-upload
+                  [doucmentList]="documents"
+                  [documentOwner]="documentsDocumentOwnerNC"
+                  [documentOwnerId]="-4"
+                  [showUpload]="true"
+                  [showDeleteButton]="true"
+                  name="nc"
+                >
                 </app-document-upload>
               </div>
             </div>
@@ -51,10 +55,15 @@
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="bur"><b>Biennial Update Report(s)</b></label>
-              <!-- <div class="col-12 wrapper-doc-upload mt-4"> -->
-                <div class="col-12  mt-4">
-                <app-document-upload [doucmentList]="documents" [documentOwner]="documentsDocumentOwnerBUR"
-                  [documentOwnerId]="-5" [showUpload]="true" [showDeleteButton]="true" name="bur">
+              <div class="col-12 mt-4">
+                <app-document-upload
+                  [doucmentList]="documents"
+                  [documentOwner]="documentsDocumentOwnerBUR"
+                  [documentOwnerId]="-5"
+                  [showUpload]="true"
+                  [showDeleteButton]="true"
+                  name="bur"
+                >
                 </app-document-upload>
               </div>
             </div>
@@ -65,10 +74,15 @@
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="btc"><b>Biennial Transparency Report(s)</b></label>
-              <!-- <div class="col-12 wrapper-doc-upload mt-4"></div> -->
-              <div class="col-12  mt-4">
-                <app-document-upload [doucmentList]="documents" [documentOwner]="documentsDocumentOwnerBTR"
-                  [documentOwnerId]="-6" [showUpload]="true" [showDeleteButton]="true" name="btc">
+              <div class="col-12 mt-4">
+                <app-document-upload
+                  [doucmentList]="documents"
+                  [documentOwner]="documentsDocumentOwnerBTR"
+                  [documentOwnerId]="-6"
+                  [showUpload]="true"
+                  [showDeleteButton]="true"
+                  name="btc"
+                >
                 </app-document-upload>
               </div>
             </div>
@@ -77,168 +91,67 @@
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="ndc"><b>Aggregated Actions</b></label>
-              <!-- <div class="col-12 wrapper-doc-upload mt-4"> -->
-              <div class="col-12  mt-4">
-                <app-document-upload [doucmentList]="documents" [documentOwner]="documentsDocumentOwnerNDC"
-                  [documentOwnerId]="-7" [showUpload]="true" [showDeleteButton]="true" name="ndc">
+              <div class="col-12 mt-4">
+                <app-document-upload
+                  [doucmentList]="documents"
+                  [documentOwner]="documentsDocumentOwnerNDC"
+                  [documentOwnerId]="-7"
+                  [showUpload]="true"
+                  [showDeleteButton]="true"
+                  name="ndc"
+                >
                 </app-document-upload>
-
-
               </div>
             </div>
           </div>
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="ndc"><b>GHG Inventory</b></label>
-              <!-- <div class="col-12 wrapper-doc-upload mt-4"></div> -->
-              <div class="col-12  mt-4">
-                <app-document-upload [doucmentList]="documents" [documentOwner]="documentsDocumentOwnerGHG"
-                  [documentOwnerId]="-8" [showUpload]="true" [showDeleteButton]="true" name="ghg">
+              <div class="col-12 mt-4">
+                <app-document-upload
+                  [doucmentList]="documents"
+                  [documentOwner]="documentsDocumentOwnerGHG"
+                  [documentOwnerId]="-8"
+                  [showUpload]="true"
+                  [showDeleteButton]="true"
+                  name="ghg"
+                >
                 </app-document-upload>
-
-
               </div>
             </div>
           </div>
         </div>
       </div>
-      <br>
+      <br />
 
       <div class="text-end mb-2">
-        <button class="mr-10" pRipple pButton type="button" style=" margin-right: 1%;"(click)="back()" label="Back"></button>
-        <button pButton label="Save" style=" margin-left: 1%;" (click)="saveCountry(country)"></button>
+        <button
+          class="mr-10"
+          pRipple
+          pButton
+          type="button"
+          style="margin-right: 1%"
+          (click)="back()"
+          label="Back"
+        ></button>
+        <button
+          pButton
+          label="Save"
+          style="margin-left: 1%"
+          (click)="saveCountry(country)"
+        ></button>
       </div>
-     
-      
     </div>
 
-
-    <p-confirmDialog [style]="{ width: '50vw' }" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+    <p-confirmDialog
+      [style]="{ width: '50vw' }"
+      [baseZIndex]="10000"
+      rejectButtonStyleClass="p-button-text"
+    >
     </p-confirmDialog>
 
     <p-dialog [(visible)]="confirm">Country Saved Successfully!</p-dialog>
-    
-    <!-- <div class="card">
-      <div class="p-grid p-fluid col-sm-12">
-        <div class="row p-2">
-          <div class="col-12 col-md-6">
-            <div class="p-field">
-              <label for="submission"  ><b>Submissions of National Communication</b></label>
-              <i class="pi pi-cloud-upload" style="float:right; font-size: 1rem;" readonly ></i>
-              <input
-                type="text"
-                name="submission"
-                field="submission"
-                class="p-inputtext"
-                style="width: 200%"
-                placeholder="Submited documents are visible here"
-                readonly
-                 />
-            </div>
-          </div>
-  
-        </div>
-      </div>
-    </div> -->
-    <!-- <div class="card"> -->
-      <!-- <form #sData="ngForm" (ngSubmit)="saveForm(sData)" novalidate> -->
-
-      <!-- <div>{{sectors |json}}</div> -->
-      <!-- <p-tabView>
-        <p-tabPanel *ngFor="let sector of sectors; let i = index">
-          <ng-template pTemplate="header">
-            <label for="sector">{{ sector?.name }} </label>
-          </ng-template>
-
-          <div class="card" style="float: left; width: 49%">
-            <div class="p-grid p-fluid col-sm-12">
-              <div class="row p-2">
-                <div class="col-12 col-md-6">
-                  <div class="p-field">
-                    <label for="sector"><b>{{ sector?.name }}</b></label> -->
-                    <!-- <div> {{sector.description|json}}</div>
-              <div> {{sector.emissionSummary|json}} </div> -->
-                    <!-- <input
-                type="text"
-                name="{{ 'sector' + i }}" 
-                field="sector"
-                class="p-inputtext"
-                style="width: 200%"
-                [(ngModel)]="sector.description"
-                maxlength="300"
-                 /> -->
-
-                    <!-- <textarea name="{{ 'sector' + i }}" pattern="^[a-zA-Z0-9 ]{1,64}$" [(ngModel)]="sector.description"
-                      rows="5" cols="62" pInputTextarea length="300" autoResize="autoResize"></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" style="float: right; width: 50%">
-            <div class="p-grid p-fluid col-sm-12">
-              <div class="row p-2">
-                <div class="col-12 col-md-6">
-                  <div class="p-field">
-                    <label for="esummary"><b>Emission Reductions of Climate Actions</b></label> -->
-                    <!-- <input
-                type="text"
-                name="{{ 'esummary' + i }}"
-                field="esummary"
-                class="p-inputtext"
-                style="width: 200%"
-                #sectoremissionSummary="ngModel"
-                [(ngModel)]="sector.emissionSummary"
-              readonly
-                 /> -->
-                    <!-- <textarea name="{{ 'esummary' + i }}" [(ngModel)]="sector.emissionSummary" rows="5" cols="62"
-                      pInputTextarea length="300" autoResize="autoResize"></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </p-tabPanel>
-      </p-tabView>
-      <p-dialog [(visible)]="confirmSector">Sectors Saved Successfully!</p-dialog> -->
-
-      <!-- <div class="card" style="float:right; width:50%">
-      <div class="p-grid p-fluid col-sm-12">
-        <div class="row p-2">
-          <div class="col-12 col-md-6">
-            <div class="p-field">
-              <label for="ndc"  ><b>NDCs under {{sector?.name}}</b></label>
-              <i class="pi pi-cloud-upload" style="float:right" readonly></i>
-              <input
-                type="text"
-                name="ndc"
-                field="ndc"
-                class="p-inputtext"
-                style="width: 200%"
-                [(ngModel)]="sector.ndcDocuments"
-                readonly
-                 />
-            </div>
-          </div>
-  
-        </div>
-      </div>
-    </div> -->
-
-      <!-- </form> -->
-    <!-- </div> -->
-    
   </form>
-    <!-- <div class="d-flex flex-row-reverse mt-2 mb-2">
-     
-      <button pButton type="button" label="Save2" (click)="saveSector(sectors)" class="mr-10"></button>
-    </div> -->
-
-
-  
-
-  
 </div>
 
 <p-toast></p-toast>

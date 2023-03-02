@@ -55,9 +55,9 @@ export class RaiseConcernComponent implements OnInit {
 
   lastConcernDate: Date = new Date();
 
-  commentRequried: boolean = false;
-  comment: string = '';
-  verificationRound: number = 0;
+  commentRequried = false;
+  comment = '';
+  verificationRound = 0;
   verificationDetail: VerificationDetail | undefined;
   loggedUser: User;
 
@@ -65,15 +65,14 @@ export class RaiseConcernComponent implements OnInit {
     private verificationProxy: VerificationControllerServiceProxy,
     private messageService: MessageService,
     private router: Router,
-    private serviceProxy: ServiceProxy
+    private serviceProxy: ServiceProxy,
   ) {}
 
   ngOnInit(): void {
-    let userName = localStorage.getItem('user_name')!;
+    const userName = localStorage.getItem('user_name')!;
 
-    let filter1: string[] = [];
+    const filter1: string[] = [];
     filter1.push('username||$eq||' + userName);
-    // lmFilter.push('LearningMaterial.isPublish||$eq||' + 1);
 
     this.serviceProxy
       .getManyBaseUsersControllerUser(
@@ -86,7 +85,7 @@ export class RaiseConcernComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.loggedUser = res.data[0];
@@ -110,8 +109,8 @@ export class RaiseConcernComponent implements OnInit {
     }
 
     if (this.verificationDetails && this.verificationDetails.length > 0) {
-      let concernDetails = this.verificationDetails.find(
-        (a) => a.explanation !== undefined && a.explanation !== null
+      const concernDetails = this.verificationDetails.find(
+        (a) => a.explanation !== undefined && a.explanation !== null,
       );
 
       if (concernDetails && concernDetails.updatedDate !== undefined) {
@@ -119,7 +118,7 @@ export class RaiseConcernComponent implements OnInit {
       }
 
       this.verificationDetail = this.verificationDetails.find(
-        (a) => a.verificationStage == this.verificationRound
+        (a) => a.verificationStage == this.verificationRound,
       );
 
       if (this.verificationDetail) {
@@ -136,7 +135,7 @@ export class RaiseConcernComponent implements OnInit {
       this.commentRequried = false;
     }
 
-    let verificationDetails: VerificationDetail[] = [];
+    const verificationDetails: VerificationDetail[] = [];
 
     let vd = new VerificationDetail();
 
@@ -147,7 +146,7 @@ export class RaiseConcernComponent implements OnInit {
       vd.createdOn = moment();
       vd.assessmentId = this.assesmentYear.assessment.id;
       vd.userVerifier = this.loggedUser.id;
-      let assesmentYear = new AssessmentYear();
+      const assesmentYear = new AssessmentYear();
       assesmentYear.id = this.assesmentYear.id;
       vd.assessmentYear = assesmentYear;
       vd.year = Number(this.assesmentYear.assessmentYear);
@@ -165,7 +164,7 @@ export class RaiseConcernComponent implements OnInit {
       }
 
       if (this.isParameter) {
-        let param = new Parameter();
+        const param = new Parameter();
         param.id = this.parameter.id;
         vd.parameter = param;
       }
@@ -182,8 +181,6 @@ export class RaiseConcernComponent implements OnInit {
     this.verificationProxy
       .saveVerificationDetails(verificationDetails)
       .subscribe((a) => {
-        console.log(4);
-
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -191,9 +188,5 @@ export class RaiseConcernComponent implements OnInit {
           closable: true,
         });
       });
-
-    // this.router.navigate(['/non-conformance'], {
-    //    queryParams: { id: this.assesmentYear.id },
-    //  });
   }
 }

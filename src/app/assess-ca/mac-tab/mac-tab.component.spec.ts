@@ -8,9 +8,8 @@ describe('MacTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MacTabComponent ]
-    })
-    .compileComponents();
+      declarations: [MacTabComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

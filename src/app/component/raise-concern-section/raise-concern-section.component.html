@@ -21,7 +21,7 @@
         <div>
           <label for="projStatus">Date :</label>
           <label for="projStatus">{{
-            lastConcernDate | date: "yyyy-MM-dd "
+            lastConcernDate | date : 'yyyy-MM-dd '
           }}</label>
         </div>
       </div>
@@ -71,7 +71,7 @@
           <label for="projStatus">{{
             verificationDetail !== undefined
               ? verificationStatusEnum[verificationDetail.verificationStatus]
-              : ""
+              : ''
           }}</label>
         </div>
       </div>

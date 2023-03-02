@@ -8,9 +8,8 @@ describe('MacAssessmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MacAssessmentComponent ]
-    })
-    .compileComponents();
+      declarations: [MacAssessmentComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

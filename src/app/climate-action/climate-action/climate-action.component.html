@@ -1,9 +1,9 @@
 <div class="container pl-20 pr-20">
-  <h4 class="mt-4"> All Specific Climate Actions</h4>
+  <h4 class="mt-4">All Specific Climate Actions</h4>
   <div class="p-grid p-fluid card">
     <div class="row mb-3">
       <div class="col-md-4">
-        <div class="p-field" *ngIf="this.userRole != 'Institution Admin' ">
+        <div class="p-field" *ngIf="this.userRole != 'Institution Admin'">
           <label for="projStatus">Sector</label>
           <p-dropdown
             name="sectortype"
@@ -18,7 +18,6 @@
           >
           </p-dropdown>
         </div>
-
       </div>
       <div class="col-md-4">
         <div class="p-field">
@@ -36,7 +35,6 @@
           >
           </p-dropdown>
         </div>
-
       </div>
 
       <div class="col-md-4">
@@ -51,7 +49,7 @@
             pInputText
           />
           <button
-            type="button" 
+            type="button"
             pButton
             pRipple
             label="Search"
@@ -63,61 +61,12 @@
 
     <div class="row mb-4">
       <div class="col-md-4">
-        <div class="col-12">
-          <!-- <div class="p-field">
-            <label for="projStatus">Filter By Mitigation Action</label>
-            <p-dropdown
-              name="mitigationtype"
-              [options]="mitigationActionList"
-              [(ngModel)]="searchBy.mitigationAction"
-              #fsector="ngModel"
-              [showClear]="true"
-              [filter]="true"
-              placeholder="Select .."
-              optionLabel="name"
-              (ngModelChange)="onMAChange($event)"
-            >
-            </p-dropdown>
-          </div> -->
-        </div>
+        <div class="col-12"></div>
       </div>
-      <div class="col-md-4">
-        <!-- <div class="p-field">
-          <label for="projStatus">Sector</label>
-          <p-dropdown
-            name="sectortype"
-            [options]="sectorList"
-            [(ngModel)]="searchBy.sector"
-            #fsector="ngModel"
-            [showClear]="true"
-            [filter]="true"
-            placeholder="Select .."
-            optionLabel="name"
-            (ngModelChange)="onSectorChange($event)"
-          >
-          </p-dropdown>
-        </div> -->
-      </div>
+      <div class="col-md-4"></div>
 
-      <div class="col-md-4">
-        <!-- <div class="p-field">
-          <label for="projStatus">Status</label>
-          <p-dropdown
-            name="statustype"
-            [options]="projectStatusList"
-            [(ngModel)]="searchBy.status"
-            #fsector="ngModel"
-            [showClear]="true"
-            [filter]="true"
-            placeholder="Select .."
-            optionLabel="name"
-            (ngModelChange)="onStatusChange($event)"
-          >
-          </p-dropdown>
-        </div> -->
-      </div>
+      <div class="col-md-4"></div>
     </div>
-    <!-- <div> {{climateactions|json}} </div> -->
     <div class="row p-2">
       <p-table
         #table
@@ -133,26 +82,7 @@
         [loading]="loading"
         [responsive]="true"
       >
-        <!-- Table header start search -->
-
-        <!-- <p-table #tt [value]="climateactions" [columns]="cols" placeholder="Global Filter" [filter]="true" filterMatchMode="contains" >                                                          
-      <ng-template pTemplate="caption">
-          <div style="text-align: right">        
-              <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-              <input type="text" pInputText size="50" style="width:auto">
-          </div>
-      </ng-template> -->
-
-        <!-- Table header END Search -->
-
         <ng-template pTemplate="header">
-          <!-- <tr> 
-          <th *ngFor="let col of columns" [ngSwitch]="col.field">
-            <input *ngSwitchCase="'climateActionName'" pInputText type="text"
-              (input)="dt.filter($event.target.value, col.field, 'contains')" />
-          </th>
-        </tr> -->
-
           <tr>
             <th>
               <div class="col-sm-2" style="width: 70.666667%">
@@ -173,7 +103,6 @@
             </th>
             <th>Specific Climate action</th>
             <th>Sector</th>
-            <!-- <th>Type of Mitigation Action</th> -->
             <th>Status of the Project</th>
             <th>Project Proponent</th>
             <th>Date Updated</th>
@@ -194,20 +123,29 @@
 
             <td>{{ climateactions.climateActionName }}</td>
             <td>{{ climateactions.sector?.name }}</td>
-            <!-- <td>{{ climateactions.mitigationAction?.name }}</td> -->
             <td>{{ climateactions.projectStatus?.name }}</td>
             <td>{{ climateactions.contactPersoFullName }}</td>
-            <td>{{ climateactions.editedOn | date: "yyyy-MM-dd" }}</td>
+            <td>{{ climateactions.editedOn | date : 'yyyy-MM-dd' }}</td>
             <ng-container *ngIf="this.loggedUser?.userType!?.id! == 1">
               <td
-              (mouseenter) ="showDialog(climateactions)"
-              (mouseleave) ="hideDialog()"
-              class="reasonDialog"
+                (mouseenter)="showDialog(climateactions)"
+                (mouseleave)="hideDialog()"
+                class="reasonDialog"
               >
-              {{(climateactions.projectApprovalStatus?.id == undefined || climateactions.projectApprovalStatus?.id == 4)?'Proposed':(climateactions.projectApprovalStatus.id == 3?'Data Requested':(climateactions.projectApprovalStatus.id == 1?'Accept':(climateactions.projectApprovalStatus.id == 5?'Active':'Reject')))}}
+                {{
+                  climateactions.projectApprovalStatus?.id == undefined ||
+                  climateactions.projectApprovalStatus?.id == 4
+                    ? 'Proposed'
+                    : climateactions.projectApprovalStatus.id == 3
+                    ? 'Data Requested'
+                    : climateactions.projectApprovalStatus.id == 1
+                    ? 'Accept'
+                    : climateactions.projectApprovalStatus.id == 5
+                    ? 'Active'
+                    : 'Reject'
+                }}
               </td>
             </ng-container>
-            
           </tr>
         </ng-template>
       </p-table>
@@ -215,6 +153,10 @@
   </div>
 </div>
 
-<p-dialog header={{this.titleInDialog}} [(visible)]="display" [style]="{width: '40vw'}">
-  {{this.reason}}
+<p-dialog
+  header="{{ this.titleInDialog }}"
+  [(visible)]="display"
+  [style]="{ width: '40vw' }"
+>
+  {{ this.reason }}
 </p-dialog>

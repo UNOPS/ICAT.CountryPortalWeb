@@ -8,9 +8,8 @@ describe('GhgImpactComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GhgImpactComponent ]
-    })
-    .compileComponents();
+      declarations: [GhgImpactComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -8,13 +8,14 @@ describe('SummarytrackclimateactionsCountryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SummarytrackclimateactionsCountryComponent ]
-    })
-    .compileComponents();
+      declarations: [SummarytrackclimateactionsCountryComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SummarytrackclimateactionsCountryComponent);
+    fixture = TestBed.createComponent(
+      SummarytrackclimateactionsCountryComponent,
+    );
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

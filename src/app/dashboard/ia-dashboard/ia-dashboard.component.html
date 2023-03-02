@@ -1,210 +1,164 @@
 <div>
   <div class="dahsboard-header">
-    <h1>Hello {{userName}} !</h1>
+    <h1>Hello {{ userName }} !</h1>
     <h2>We are on a mission to help take actions against climate change.</h2>
   </div>
-  <!-- <div class="dashboard-wrapper container pl-20 pr-20"> -->
-    <div class="container pl-20 pr-20">
+  <div class="container pl-20 pr-20">
     <div class="row">
-      <!-- <div class="col-md-12"> -->
-      
-
-
-        <!-- <div class="row"> -->
-
-        <div class="col-md-6">
-          <div *ngIf="parameterList.length==0" class="card">
-            <p-messages severity="warn" >
-              <ng-template pTemplate>
-                  <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
-                  <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
-                  <div class="ml-2">There are no  data request data to show.</div>
-              </ng-template>
+      <div class="col-md-6">
+        <div *ngIf="parameterList.length == 0" class="card">
+          <p-messages severity="warn">
+            <ng-template pTemplate>
+              <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
+              <div class="ml-2">There are no data request data to show.</div>
+            </ng-template>
           </p-messages>
-  
-          </div>
-          <div *ngIf="parameterList.length>0" class="card">
-            <div class="row justify-content-center">
-              <div class="col-lg-4 col-md-5 col-sm-5 col-5" >
-                <h6>Data Requests</h6>
-              </div>
-                    
-                </div>
-  
-            
-            <p-chart
-              type="bar"
-              [data]="basicData"
-              [options]="basicOptions1"
-            ></p-chart>
-          </div>
         </div>
-
-<!-- </div> -->
-        
-
-        <!-- <div *ngIf="climateactions.length>0" class="card"> -->
-
-          <!-- <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-12 col-sm-6 col-6" >
-              <h6>Climate Actions</h6>
+        <div *ngIf="parameterList.length > 0" class="card">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-5 col-sm-5 col-5">
+              <h6>Data Requests</h6>
             </div>
-                  
-              </div> -->
-          
-              <div class="col-md-6">
-                <div *ngIf="climateactions.length==0" class="card">
-                  <p-messages severity="warn" >
-                    <ng-template pTemplate>
-                        <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
-                        <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
-                        <div class="ml-2">There are no  data Specific Climate Actions to show.</div>
-                    </ng-template>
-                </p-messages>
-        
-                </div>
-              <div *ngIf="climateactions.length>0" class="card">
-                <div class="row justify-content-center" >
-                  <div class="col-md-5 "><h6>Specific Climate Actions</h6></div>
-                  
-                </div>
-                <div class="row">
-                  <p-table 
-                  [value]="climateactions"
-                  [lazy]="true"
-                  (onLazyLoad)="loadgridDataCA($event)"
-                  [paginator]="true"
-                  paginatorDropdownAppendTo="body"
-                  [showCurrentPageReport]="true"
-                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                  [rowsPerPageOptions]="[ 10, 25, 50]"
-                  [totalRecords]="totalRecordsCA"
-                  [loading]="loadingCA"
-                  [rows]="rows"
-  
-                  >
-                <ng-template pTemplate="header">
-                  <tr>
-                 
-                    <th>Specific Climate Actions</th>
-                    <th>Proposed Date</th>
-                    <th>Implementing Status</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-climateactions>
-                      <tr>
-                     
-            
-                        <td>{{ climateactions.climateActionName }}</td>
-                        <td>{{ climateactions.proposeDateofCommence| date: "dd-MM-yyyy " }}</td>
-                        <td>{{ climateactions.projectStatus.name }}</td>
-                
-                      </tr>
-                    </ng-template>
-              </p-table>
-
-
-                </div>
-              
           </div>
 
+          <p-chart
+            type="bar"
+            [data]="basicData"
+            [options]="basicOptions1"
+          ></p-chart>
         </div>
-       
-      <!-- </div> -->
+      </div>
 
-
-    
-
-
+      <div class="col-md-6">
+        <div *ngIf="climateactions.length == 0" class="card">
+          <p-messages severity="warn">
+            <ng-template pTemplate>
+              <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
+              <div class="ml-2">
+                There are no data Specific Climate Actions to show.
+              </div>
+            </ng-template>
+          </p-messages>
+        </div>
+        <div *ngIf="climateactions.length > 0" class="card">
+          <div class="row justify-content-center">
+            <div class="col-md-5"><h6>Specific Climate Actions</h6></div>
+          </div>
+          <div class="row">
+            <p-table
+              [value]="climateactions"
+              [lazy]="true"
+              (onLazyLoad)="loadgridDataCA($event)"
+              [paginator]="true"
+              paginatorDropdownAppendTo="body"
+              [showCurrentPageReport]="true"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [rowsPerPageOptions]="[10, 25, 50]"
+              [totalRecords]="totalRecordsCA"
+              [loading]="loadingCA"
+              [rows]="rows"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Specific Climate Actions</th>
+                  <th>Proposed Date</th>
+                  <th>Implementing Status</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-climateactions>
+                <tr>
+                  <td>{{ climateactions.climateActionName }}</td>
+                  <td>
+                    {{
+                      climateactions.proposeDateofCommence
+                        | date : 'dd-MM-yyyy '
+                    }}
+                  </td>
+                  <td>{{ climateactions.projectStatus.name }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="row">
       <div class="col-md-12">
-
-        <div *ngIf="bauValLst.length==0" class="card">
-          <p-messages severity="warn" >
+        <div *ngIf="bauValLst.length == 0" class="card">
+          <p-messages severity="warn">
             <ng-template pTemplate>
-                <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
-                <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
-                <div class="ml-2">There are no  Emission Reduction Targets data to show.</div>
-            </ng-template>
-        </p-messages>
-
-        </div>
-        <div *ngIf="bauValLst.length>0" class="card">
-          <div class="row justify-content-center">
-            <div class="col-lg-5 col-md-8 col-sm-5  col-5" >
-              <h6>Emission Reduction Targets </h6>
-            </div>
-                  
+              <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
+              <div class="ml-2">
+                There are no Emission Reduction Targets data to show.
               </div>
-              <!-- <div class="row justify-content-center">
-                <div class="col-lg-5 col-md-6 col-sm-7 col-7" >
-                  <h6>{{sector}} Sector Emission Scenario </h6>
-                </div>
-                      
-                  </div> -->
-       
-
-          
-          <p-chart type="line" [data]="lineStylesData" [options]="basicOptions2"></p-chart>
-          <p><strong>Note:</strong> Only the emission reductions of Climate Actions calculated Ex-post using the Tool are reflected in the Actual Emissions curve</p>
-
-          <!-- <canvas id="chart"></canvas> -->
+            </ng-template>
+          </p-messages>
         </div>
-       
+        <div *ngIf="bauValLst.length > 0" class="card">
+          <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-8 col-sm-5 col-5">
+              <h6>Emission Reduction Targets</h6>
+            </div>
+          </div>
+
+          <p-chart
+            type="line"
+            [data]="lineStylesData"
+            [options]="basicOptions2"
+          ></p-chart>
+          <p>
+            <strong>Note:</strong> Only the emission reductions of Climate
+            Actions calculated Ex-post using the Tool are reflected in the
+            Actual Emissions curve
+          </p>
+        </div>
       </div>
       <div class="col-md-12">
-        <div *ngIf="activeprojects.length==0"  class="card">
+        <div *ngIf="activeprojects.length == 0" class="card">
           <div class="row">
-            <p-messages severity="warn" >
+            <p-messages severity="warn">
               <ng-template pTemplate>
-                  <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
-                  <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
-                  <div class="ml-2">There are no  active projects data to show.</div>
+                <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
+                <div class="ml-2">
+                  There are no active projects data to show.
+                </div>
               </ng-template>
-          </p-messages>
-  
-           </div> 
-
-
-
+            </p-messages>
+          </div>
         </div>
 
-        <div *ngIf="activeprojects.length> 0" class="card">
-
-         
-          <div  class="row justify-content-center">
-            <div class="col-lg-3 col-md-4 col-sm-6  col-5" >
+        <div *ngIf="activeprojects.length > 0" class="card">
+          <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-5">
               <h6>Active Projects</h6>
             </div>
-                  
-              </div>
-         
-
-        
-       <div  class="row">
-        <div class="col">
-          
-            <label style="margin-right: 5%;" for="projStatus">Aggregated Actions</label>
-            <p-dropdown
-              name="ndc"
-              [options]="ndcList"
-              [(ngModel)]="searchBy.ndc"
-              #fndc="ngModel"
-              [showClear]="true"
-              [filter]="true"
-              placeholder="Select .."
-              optionLabel="name"
-              (ngModelChange)="onndcChange($event)"
-            >
-            </p-dropdown>
           </div>
+
+          <div class="row">
             <div class="col">
-       
-              <label style="margin-right: 5%;" for="projStatus">Action Areas</label>
+              <label style="margin-right: 5%" for="projStatus"
+                >Aggregated Actions</label
+              >
               <p-dropdown
-               [disabled]="subndcList.length>0"
+                name="ndc"
+                [options]="ndcList"
+                [(ngModel)]="searchBy.ndc"
+                #fndc="ngModel"
+                [showClear]="true"
+                [filter]="true"
+                placeholder="Select .."
+                optionLabel="name"
+                (ngModelChange)="onndcChange($event)"
+              >
+              </p-dropdown>
+            </div>
+            <div class="col">
+              <label style="margin-right: 5%" for="projStatus"
+                >Action Areas</label
+              >
+              <p-dropdown
+                [disabled]="subndcList.length > 0"
                 name="subndc"
                 [options]="subndcList"
                 [(ngModel)]="searchBy.subndc"
@@ -216,38 +170,29 @@
                 (ngModelChange)="onsubndcChange($event)"
               >
               </p-dropdown>
-           
-             </div>
-        
-      </div>
+            </div>
+          </div>
 
-      
-
-          <div  class="row p-2">
-            <p-table 
-            #dt
-                p-table
-                #table
-                [value]="activeprojects"
-                [lazy]="true"
-                (onLazyLoad)="loadgridData($event)"
-                [paginator]="true"
-                [rows]="rows"
-                [showCurrentPageReport]="true"
-                paginatorDropdownAppendTo="body"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [rowsPerPageOptions]="[5, 10, 50]"
-                [totalRecords]="totalRecords"
-                [loading]="loading"
-                [responsive]="true">
+          <div class="row p-2">
+            <p-table
+              #dt
+              p-table
+              #table
+              [value]="activeprojects"
+              [lazy]="true"
+              (onLazyLoad)="loadgridData($event)"
+              [paginator]="true"
+              [rows]="rows"
+              [showCurrentPageReport]="true"
+              paginatorDropdownAppendTo="body"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [rowsPerPageOptions]="[5, 10, 50]"
+              [totalRecords]="totalRecords"
+              [loading]="loading"
+              [responsive]="true"
+            >
               <ng-template pTemplate="header">
-              
-
                 <tr>
-                  <!-- <th>
-                    <div class="col-sm-2" >
-                    </div>
-                  </th> -->
                   <th>Specific Climate Actions</th>
                   <th>Emission Reduction Target (tCO₂e)</th>
                   <th>Target Year Range</th>
@@ -257,18 +202,16 @@
               </ng-template>
               <ng-template pTemplate="body" let-activeprojects>
                 <tr>
-                  <td>{{activeprojects.name}}</td>
-                  <td>{{activeprojects.ertarget  | number: '2.'}}</td>
-                  <td>{{activeprojects.targetyear}}</td>
-                  <td>{{activeprojects.erarchievment  | number: '2.'}}</td>
-                  <td>{{activeprojects.archivmentyear}}</td>
+                  <td>{{ activeprojects.name }}</td>
+                  <td>{{ activeprojects.ertarget | number : '2.' }}</td>
+                  <td>{{ activeprojects.targetyear }}</td>
+                  <td>{{ activeprojects.erarchievment | number : '2.' }}</td>
+                  <td>{{ activeprojects.archivmentyear }}</td>
                 </tr>
               </ng-template>
             </p-table>
           </div>
         </div>
-
-        
       </div>
     </div>
   </div>

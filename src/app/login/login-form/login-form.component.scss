@@ -1,18 +1,28 @@
-
 .hide {
   display: none;
 }
-.inner-addon { 
-    position: relative; 
+.inner-addon {
+  position: relative;
 }
-.inner-addon .pi, .inner-addon .pi {
+.inner-addon .pi,
+.inner-addon .pi {
   position: absolute;
   padding: 10px 10px;
   z-index: 100;
   cursor: pointer;
 }
-.left-addon .pi, .left-addon .pi  { left:  0px; }
-.right-addon .pi, .right-addon .pi { right: 0px; }
+.left-addon .pi,
+.left-addon .pi {
+  left: 0px;
+}
+.right-addon .pi,
+.right-addon .pi {
+  right: 0px;
+}
 
-.left-addon input  { padding-left:  30px; }
-.right-addon input { padding-right: 30px; }
+.left-addon input {
+  padding-left: 30px;
+}
+.right-addon input {
+  padding-right: 30px;
+}

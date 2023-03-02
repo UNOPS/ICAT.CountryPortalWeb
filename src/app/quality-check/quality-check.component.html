@@ -7,16 +7,16 @@
           <div class="p-field">
             <label for="projStatus">Climate action</label>
             <p-dropdown
-            name="climateActiontype"
-            [options]='climateAction'
-            [(ngModel)]="searchBy.climateaction"
-            #fsector="ngModel"
-            [showClear]="true"
-            [filter]="true"
-            placeholder="Select .."
-            (ngModelChange)="onCAChange($event)"
-          >
-          </p-dropdown>
+              name="climateActiontype"
+              [options]="climateAction"
+              [(ngModel)]="searchBy.climateaction"
+              #fsector="ngModel"
+              [showClear]="true"
+              [filter]="true"
+              placeholder="Select .."
+              (ngModelChange)="onCAChange($event)"
+            >
+            </p-dropdown>
           </div>
         </div>
       </div>
@@ -80,11 +80,9 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6"  
-      >
+      <div class="col-md-6">
         <div class="col-12">
-          <div class="p-field"
-          >
+          <div class="p-field">
             <label for="projStatus">Action Areas</label>
             <p-dropdown
               name="projStatus"
@@ -103,7 +101,10 @@
       </div>
     </div>
 
-    <div class="row p-2" [ngStyle]="{'margin-bottom': itemsPerPage === 1?'100px':'unset'}">
+    <div
+      class="row p-2"
+      [ngStyle]="{ 'margin-bottom': itemsPerPage === 1 ? '100px' : 'unset' }"
+    >
       <p-table
         #table
         [value]="parameteters"
@@ -140,18 +141,17 @@
             <td>
               {{
                 param.qaAssighnDate === null
-                  ? "-"
-                  : (param.qaAssighnDate | date: "dd-MM-yyyy ")
+                  ? '-'
+                  : (param.qaAssighnDate | date : 'dd-MM-yyyy ')
               }}
             </td>
             <td>
               {{
                 param.qaDeadline === null
-                  ? "-"
-                  : (param.qaDeadline | date: "dd-MM-yyyy ")
+                  ? '-'
+                  : (param.qaDeadline | date : 'dd-MM-yyyy ')
               }}
             </td>
-            <!-- <td>{{ ParameterRequestQaStatus.Fail }}</td> -->
             <td>{{ QuAlityCheckStatusEnum[param.qaStatus] }}</td>
             <td>
               <button
@@ -163,8 +163,8 @@
                 {{
                   QuAlityCheckStatusEnum[param.qaStatus] ===
                   QuAlityCheckStatusEnum[QuAlityCheckStatusEnum.Pass]
-                    ? "View"
-                    : "Check"
+                    ? 'View'
+                    : 'Check'
                 }}
               </button>
             </td>

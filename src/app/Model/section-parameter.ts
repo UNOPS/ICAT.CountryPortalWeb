@@ -1,18 +1,18 @@
 import Parameter from './parameter';
 
 class SectionParameter {
-  public parameterHeader: string = '';
+  public parameterHeader = '';
   public parameters: Parameter[] = [];
 
-  public route: string = '';
-  public vehical: string = '';
-  public fuel: string = '';
-  public powerPlant: string = '';
-  public feedstock: string = '';
-  public soil: string = '';
-  public stratum: string = '';
-  public residue: string = '';
-  public landClearance:string = '';
+  public route = '';
+  public vehical = '';
+  public fuel = '';
+  public powerPlant = '';
+  public feedstock = '';
+  public soil = '';
+  public stratum = '';
+  public residue = '';
+  public landClearance = '';
 }
 
 export default SectionParameter;

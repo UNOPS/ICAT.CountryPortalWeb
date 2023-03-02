@@ -10,10 +10,10 @@ class ParameterDimensionSelection {
 
   public oneFeedstock: any = '';
   public feedstock: any = [];
- 
+
   public oneSoil: any = '';
   public soil: any = [];
- 
+
   public oneResidue: any = '';
   public residue: any = [];
 
@@ -22,31 +22,25 @@ class ParameterDimensionSelection {
 
   public onelandClearance: any = '';
   public landClearance: any = [];
- 
-
 
   public powerPlan: any = '';
 
-  public newVehical: string = '';
-  public newFuel: string = '';
-  public newFeedstock: string = '';
-  public newSoil: string = '';
-  public newResidue: string = '';
-  public newLandClearance: string = '';
+  public newVehical = '';
+  public newFuel = '';
+  public newFeedstock = '';
+  public newSoil = '';
+  public newResidue = '';
+  public newLandClearance = '';
 
-
-
-
-  public canAddVehical: boolean = false;
-  public canAddFuel: boolean = false;
-  public canAddFeedstock: boolean = false;
-  public canAddSoil: boolean = false;
-  public canAddResidue: boolean = false;
-  public canAddLandClearance: boolean = false;
-  
+  public canAddVehical = false;
+  public canAddFuel = false;
+  public canAddFeedstock = false;
+  public canAddSoil = false;
+  public canAddResidue = false;
+  public canAddLandClearance = false;
 
   createNew(): ParameterDimensionSelection {
-    let emptydi = new ParameterDimensionSelection();
+    const emptydi = new ParameterDimensionSelection();
     return emptydi;
   }
 }

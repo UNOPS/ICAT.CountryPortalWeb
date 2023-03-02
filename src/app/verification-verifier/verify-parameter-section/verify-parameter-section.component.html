@@ -13,25 +13,25 @@
       "
     >
       <div class="col-12" *ngIf="flag != 1">
-        <button *ngIf="verificationStatus !=3"
+        <button
+          *ngIf="verificationStatus != 3"
           type="button"
           [disabled]="selectedParameter.length < 1 || isAccept"
           pButton
           pRipple
           (click)="parameterAccept()"
         >
-          <!-- Accept -->
-          {{isAccept ? "Accepted" : "Accept"}} 
+          {{ isAccept ? 'Accepted' : 'Accept' }}
         </button>
-        <button *ngIf="verificationStatus ==3"
+        <button
+          *ngIf="verificationStatus == 3"
           type="button"
           [disabled]="true"
           pButton
           pRipple
           (click)="parameterAccept()"
         >
-          <!-- Accept -->
-          {{isAccept ? "Accepted" : "Accept"}} 
+          {{ isAccept ? 'Accepted' : 'Accept' }}
         </button>
       </div>
     </div>
@@ -54,72 +54,79 @@
       <ng-template pTemplate="header">
         <tr>
           <div *ngIf="flag != 1">
-          <th>
-            
-          </th>
+            <th></th>
           </div>
           <th>Parameter</th>
           <th>Accepted</th>
           <th>Data Provider</th>
           <th>Activity Data</th>
           <th>Unit</th>
-          <!-- <th></th> -->
           <th>Info</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-param>
         <tr>
           <div *ngIf="flag != 1">
-          <td>
-            <p-checkbox
-              [binary]="true"
-              (onChange)="checkboxCheck($event, param)"
-              name="groupname"
-              value="check"
-            ></p-checkbox>
-          </td>
-        </div>    
+            <td>
+              <p-checkbox
+                [binary]="true"
+                (onChange)="checkboxCheck($event, param)"
+                name="groupname"
+                value="check"
+              ></p-checkbox>
+            </td>
+          </div>
           <td>{{ param.name }}</td>
-          
-          <ng-container *ngIf=" param.isAcceptedByVerifier == 1; else elseBlockvery">
-           <td>
-             <i class="pi pi-check" style="font-size: 1rem"></i>
+
+          <ng-container
+            *ngIf="param.isAcceptedByVerifier == 1; else elseBlockvery"
+          >
+            <td>
+              <i class="pi pi-check" style="font-size: 1rem"></i>
             </td>
           </ng-container>
           <ng-template #elseBlockvery>
-           <td>
-             <i class="pi pi-times" style="font-size: 1rem"></i>
+            <td>
+              <i class="pi pi-times" style="font-size: 1rem"></i>
             </td>
           </ng-template>
 
-
-          <td>{{ param.institution?.name == undefined ?'N/A':param.institution?.name }}</td>
+          <td>
+            {{
+              param.institution?.name == undefined
+                ? 'N/A'
+                : param.institution?.name
+            }}
+          </td>
           <td>{{ param.value }}</td>
           <td>{{ param.uomDataEntry }}</td>
 
-          
           <td
             *ngIf="
               (!isAdmin ||
-              (assessmentYear !== undefined &&
-                assessmentYear?.verificationStatus! > 1 &&
-                isAdmin) ) && flag != 1
+                (assessmentYear !== undefined &&
+                  assessmentYear?.verificationStatus! > 1 &&
+                  isAdmin)) &&
+              flag != 1
             "
           >
-          
-            <button  *ngIf="verificationStatus !=3"
+            <button
+              *ngIf="verificationStatus != 3"
               pButton
               pRipple
-              [disabled]="param.isAcceptedByVerifier == 1?true:false"
+              [disabled]="param.isAcceptedByVerifier == 1 ? true : false"
               type="button"
               label="Raise Concern"
               (click)="raiseConcern($event, param)"
               class="p-button-info"
             ></button>
-          
           </td>
           <td>
-            <i class="pi pi-ellipsis-v" style="font-size: 2rem" (click)="getInfo(param)"></i>
+            <i
+              class="pi pi-ellipsis-v"
+              style="font-size: 2rem"
+              (click)="getInfo(param)"
+            ></i>
           </td>
         </tr>
       </ng-template>
@@ -158,7 +165,7 @@
           </div>
         </div>
         <div
-          class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10" 
+          class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
         >
           <button
             class="btn btn-primary text-uppercase"
@@ -179,7 +186,10 @@
     </p-overlayPanel>
   </div>
 
-  <div class="row mb-3" *ngIf="assessmentYear.assessment.assessmentType != 'MAC'">
+  <div
+    class="row mb-3"
+    *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
+  >
     <div *ngIf="!isProjectionResult">
       <div class="col-md-8">
         <div class="col-12">
@@ -248,11 +258,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="col-md-2">
-      <div class="col-12">
-        <button type="button" pButton pRipple>Action</button>
-      </div>
-    </div> -->
 
     <div
       class="col-md-2 d-flex align-items-end"
@@ -262,48 +267,25 @@
           assessmentYear?.verificationStatus! > 1 &&
           isAdmin)
       "
-    >
-      <!-- <div class="col-12" *ngIf="flag != 1" >
-        <button
-          type="button"
-          pButton
-          pRipple
-          (click)="raiseConcernResult($event)"
-        >
-          Raise Concern
-        </button>
-      </div> -->
-    </div>
+    ></div>
   </div>
 </div>
 
-<p-dialog
-  header="Raise Concern"
-  [(visible)]="displayConcern"
-  appendTo="body"
->
-<div class="container" style="width: 600px; height: 500px">
-  <app-raise-concern
-    [area]="raiseConcernSection"
-    [verificationDetails]="concernVerificationDetails"
-    [assesmentYear]="assessmentYear"
-    [isParameter]="isParameter"
-    [isResult]="isValue"
-    [parameter]="concernParam!"
-    [isBaseline]="isBaseline"
-    [isLekage]="isLekage"
-    [isProject]="isProject"
-    [isProjection]="isProjection"
-  ></app-raise-concern>
-</div>
-  <!-- <ng-template pTemplate="footer">
-    <p-button
-      icon="pi pi-check"
-      (click)="displayConcern = false"
-      label="Complete"
-      styleClass="p-button-text"
-    ></p-button>
-  </ng-template> -->
+<p-dialog header="Raise Concern" [(visible)]="displayConcern" appendTo="body">
+  <div class="container" style="width: 600px; height: 500px">
+    <app-raise-concern
+      [area]="raiseConcernSection"
+      [verificationDetails]="concernVerificationDetails"
+      [assesmentYear]="assessmentYear"
+      [isParameter]="isParameter"
+      [isResult]="isValue"
+      [parameter]="concernParam!"
+      [isBaseline]="isBaseline"
+      [isLekage]="isLekage"
+      [isProject]="isProject"
+      [isProjection]="isProjection"
+    ></app-raise-concern>
+  </div>
 </p-dialog>
 <p-dialog
   header="Data Request History"
@@ -312,14 +294,12 @@
   [style]="{ width: '50vw' }"
   [draggable]="false"
   [resizable]="false"
-  
 >
-<div class="container" style="width: 600px; height: 500px">
-  <app-view-datarequest-history
-    [parameterId]="paraId"
-    [listOfHistory] = "requestHistoryList"
-  >
-
-  </app-view-datarequest-history>
+  <div class="container" style="width: 600px; height: 500px">
+    <app-view-datarequest-history
+      [parameterId]="paraId"
+      [listOfHistory]="requestHistoryList"
+    >
+    </app-view-datarequest-history>
   </div>
 </p-dialog>

@@ -3,18 +3,17 @@
     <div class="col-md-4">
       <h4>{{ header }}</h4>
     </div>
-    <div class="col-12 col-md-2" *ngIf="assessmentType != 'MAC' ">
+    <div class="col-12 col-md-2" *ngIf="assessmentType != 'MAC'">
       <div class="p-field">
         <button
-        pButton
-        pRipple
-        label="Equation"
-        type="button"
-        style="margin-right: 10px"
-        
-        class="p-button-raised"
-        (click)="toOpenImage()"
-      ></button>
+          pButton
+          pRipple
+          label="Equation"
+          type="button"
+          style="margin-right: 10px"
+          class="p-button-raised"
+          (click)="toOpenImage()"
+        ></button>
       </div>
     </div>
   </div>
@@ -46,69 +45,81 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-param>
-        <ng-container *ngIf="param.institution?.name != null ">
-        <tr>
-          <td>{{ param.name }}</td>
-          <td>{{ param.institution?.name }}</td>
-          <td>{{ param.value }}</td>
-          <td>{{ param.uomDataEntry }}</td>
-          <td>{{ param.conversionValue }}</td>
-          <td>{{ param.uomDataRequest }}</td>
-          <td>
-            <table>
-              <tr>
-                <td>
-                  <button
-                    type="button"
-                    [disabled] ="param?.parameterRequest?.qaStatus == 4 || param?.parameterRequest?.qaStatus == 3? true: false"
-                    pButton
-                    pRipple
-                    (click)="approve(param)"
-                    (click)="opDR.toggle($event); onRowSelect(param, true)"
-                    (click)="checkApproval()"
-                  >
-                    {{
-                      param.parameterRequest?.qaStatus === 4
-                        ? "Approved"
-                        : "Approve"
-                    }}
-                  </button>
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    [disabled] ="param?.parameterRequest?.qaStatus == 4 || param?.parameterRequest?.qaStatus == 3? true: false"
-                    pButton
-                    pRipple
-                    (click)="opDR.toggle($event); onRowSelect(param, false)"
-                  >
-                    {{
-                      param.parameterRequest?.qaStatus === 3
-                        ? "Rejected"
-                        : "Reject"
-                    }}
-                  </button>
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    pButton
-                    pRipple
-                    (click)="historyClick(param)"
-                  >
-
-                    Check History
-                  </button>
-                </td>
-                
-              </tr>
-            </table>
-          </td>
-          <td>
-            <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getInfo(param)"></i>
-          </td>
-        </tr>
-      </ng-container>
+        <ng-container *ngIf="param.institution?.name != null">
+          <tr>
+            <td>{{ param.name }}</td>
+            <td>{{ param.institution?.name }}</td>
+            <td>{{ param.value }}</td>
+            <td>{{ param.uomDataEntry }}</td>
+            <td>{{ param.conversionValue }}</td>
+            <td>{{ param.uomDataRequest }}</td>
+            <td>
+              <table>
+                <tr>
+                  <td>
+                    <button
+                      type="button"
+                      [disabled]="
+                        param?.parameterRequest?.qaStatus == 4 ||
+                        param?.parameterRequest?.qaStatus == 3
+                          ? true
+                          : false
+                      "
+                      pButton
+                      pRipple
+                      (click)="approve(param)"
+                      (click)="opDR.toggle($event); onRowSelect(param, true)"
+                      (click)="checkApproval()"
+                    >
+                      {{
+                        param.parameterRequest?.qaStatus === 4
+                          ? 'Approved'
+                          : 'Approve'
+                      }}
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      [disabled]="
+                        param?.parameterRequest?.qaStatus == 4 ||
+                        param?.parameterRequest?.qaStatus == 3
+                          ? true
+                          : false
+                      "
+                      pButton
+                      pRipple
+                      (click)="opDR.toggle($event); onRowSelect(param, false)"
+                    >
+                      {{
+                        param.parameterRequest?.qaStatus === 3
+                          ? 'Rejected'
+                          : 'Reject'
+                      }}
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      pButton
+                      pRipple
+                      (click)="historyClick(param)"
+                    >
+                      Check History
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <i
+                class="pi pi-ellipsis-v"
+                style="font-size: 1rem"
+                (click)="getInfo(param)"
+              ></i>
+            </td>
+          </tr>
+        </ng-container>
       </ng-template>
     </p-table>
 
@@ -171,14 +182,12 @@
   header="Data Request History"
   [(visible)]="displayHistory"
   appendTo="body"
-  
 >
-<div class="container" style="width: 600px; height: 500px">
-  <app-view-datarequest-history
-    [parameterId]="paraId"
-    [listOfHistory] = "requestHistoryList"
-  >
-
-  </app-view-datarequest-history>
+  <div class="container" style="width: 600px; height: 500px">
+    <app-view-datarequest-history
+      [parameterId]="paraId"
+      [listOfHistory]="requestHistoryList"
+    >
+    </app-view-datarequest-history>
   </div>
 </p-dialog>
