@@ -33,7 +33,6 @@ import {
 import Parameter from 'app/Model/parameter';
 import ParameterSections from 'app/Model/parameter-sections';
 import SectionParameter from 'app/Model/section-parameter';
-
 import { NgForm } from '@angular/forms';
 import { ProjectIndicaters } from 'app/Model/projection-indicaters.enum';
 import { EasyofuseDatacollection } from 'app/Model/easy-of-use-data-Collection.enum';
@@ -225,7 +224,7 @@ export class GhgAssessmentComponent implements OnInit {
   projectDuration: number;
 
   mitigationActionType: MitigationActionType[] = [];
-  assessmentObjective: AssessmentObjective[] = [];
+  assessmentObjectiveList: AssessmentObjective[] = [];
   selectedMitigationActionType: MitigationActionType | undefined;
 
   applicability: ApplicabilityEntity[] = [];
@@ -530,7 +529,7 @@ export class GhgAssessmentComponent implements OnInit {
         0,
       )
       .subscribe((res: any) => {
-        this.assessmentObjective = res.data;
+        this.assessmentObjectiveList = res.data;
       });
 
     const intTypeFilter: string[] = [];
@@ -918,14 +917,14 @@ export class GhgAssessmentComponent implements OnInit {
   getMethodologyParam(): Observable<any> {
     const Url =
       environment.baseUrlJsonFile + '/' + this.selectedMethodology.name;
-    const headers = new HttpHeaders().set('api-key', '1234');
+    const headers = new HttpHeaders().set('api-key', environment.apiKey1);
     const file = undefined;
     return this.http.get(Url, { headers: headers });
   }
 
   postParamToCalculation(parameters: any): Observable<any> {
     const Url = environment.baseUrlJsonFile + '/methodology';
-    const headers = new HttpHeaders().set('api-key', '1234');
+    const headers = new HttpHeaders().set('api-key', environment.apiKey1);
     const file = undefined;
 
     return this.http.post(Url, parameters, { headers: headers });
@@ -3179,15 +3178,18 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   getAssessmentResult(assessmentId: number) {
-    const filter: string[] = [];
-
     this.assessmentYearProxy
       .getAllByAssessmentId(assessmentId)
       .subscribe((res) => {
         const assesYear = res;
 
         this.assessmentResultProxy
-          .getAssessmentResult(assessmentId, assesYear[0].ay_id, true, '1234')
+          .getAssessmentResult(
+            assessmentId,
+            assesYear[0].ay_id,
+            true,
+            environment.apiKey1,
+          )
           .subscribe((res) => {});
       });
   }
@@ -3376,7 +3378,7 @@ export class GhgAssessmentComponent implements OnInit {
 
   Changeobjective(event: any) {
     if (event.filter.length >= 3) {
-      const vValue = this.assessmentObjective.find(
+      const vValue = this.assessmentObjectiveList.find(
         (a: any) => a.name === event.filter,
       );
       if (vValue === undefined || vValue === null) {
@@ -3392,7 +3394,7 @@ export class GhgAssessmentComponent implements OnInit {
   addObjective() {
     const assessmentObjective = new AssessmentObjective();
     assessmentObjective.objective = this.newObjective;
-    this.assessmentObjective.push(assessmentObjective);
+    this.assessmentObjectiveList.push(assessmentObjective);
     this.showAddObjective = false;
     this.newObjective = '';
   }

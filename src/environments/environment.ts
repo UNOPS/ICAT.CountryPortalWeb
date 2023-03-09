@@ -1,13 +1,20 @@
 export const environment = {
-  production: false,
-  baseUrlAPI: 'http://localhost:8080',
-  baseUrlAPIDocUploadAPI: 'http://localhost:8080/document/upload2',
+  production: true,
+  baseUrlAPI: process.env.NG_APP_COUNTRY_SERVICE_URL,
+  baseUrlAPIDocdownloadAPI:
+    process.env.NG_APP_COUNTRY_SERVICE_URL + 'document/downloadDocument',
+  baseUrlAPIDocUploadAPI:
+    process.env.NG_APP_COUNTRY_SERVICE_URL + 'document/upload2',
   baseUrlAPIDocUploadAnonymousAPI:
-    'http://localhost:8080/document/uploadFileAnonymous',
-  baseUrlAPIDocdownloadAPI: 'http://localhost:8080/document/downloadDocument',
+    process.env.NG_APP_COUNTRY_SERVICE_URL + 'document/uploadFileAnonymous',
+  baseUrlJsonFile: process.env.NG_APP_CAL_ENGINE_URL + '/filename',
+  baseUrlMac: process.env.NG_APP_CAL_ENGINE_URL + '/mac',
+  baseUrlExcelUpload:
+    process.env.NG_APP_COUNTRY_SERVICE_URL + 'parameter/upload',
   baseUrlAPIDocReportChartDownloadAPI:
-    'http://localhost:8080/report/chartDataImage',
-  baseUrlExcelUpload: 'http://localhost:8080/parameter/upload',
-  baseUrlMac: 'https://icat-ca-tool.climatesi.com/cal-engine/mac',
-  baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
+    process.env.NG_APP_COUNTRY_SERVICE_URL + 'report/chartDataImage',
+  baseUrlPMU: process.env.NG_APP_PMU_BASE_URL,
+  baseUrlCountryWeb: process.env.NG_APP_COUNTRY_WEB_URL,
+  apiKey1: process.env.NG_APP_API_KEY_1,
+  apiKey2: process.env.NG_APP_API_KEY_2,
 };

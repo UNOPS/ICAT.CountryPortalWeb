@@ -21,6 +21,7 @@ import {
   VerificationControllerServiceProxy,
   VerificationDetail,
 } from 'shared/service-proxies/service-proxies';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-verify-detail-sectorAdmin',
@@ -182,7 +183,7 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
         this.assessmentYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
-        '1234',
+        environment.apiKey1,
       )
       .subscribe((res) => {
         this.assessmentResult = res;

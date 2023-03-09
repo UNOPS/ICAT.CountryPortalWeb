@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
+import { environment } from 'environments/environment';
 
 import {
   Assessment,
@@ -207,7 +208,7 @@ export class ActiveClimateActionComponent implements OnInit, AfterViewInit {
           this.asseStatus,
           this.sectorId,
           asseType,
-          '1234',
+          environment.apiKey1,
         )
         .subscribe((a) => {
           this.climateactions = a.items;

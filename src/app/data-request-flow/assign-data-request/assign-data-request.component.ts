@@ -20,6 +20,7 @@ import {
   ServiceProxy,
   UsersControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-assign-data-request',
@@ -93,7 +94,7 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
     filter2.push('projectApprovalStatus.id||$eq||' + 5);
 
     this.parameterProxy
-      .getAssignDateRequest(0, 0, '', 0, this.userName, '1234')
+      .getAssignDateRequest(0, 0, '', 0, this.userName, environment.apiKey1)
       .subscribe((res) => {
         for (const a of res.items) {
           if (a.parameterId.Assessment !== null) {
@@ -163,7 +164,7 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
           filtertext,
           climateActionId,
           this.userName,
-          '1234',
+          environment.apiKey1,
         )
         .subscribe((a) => {
           if (a) {

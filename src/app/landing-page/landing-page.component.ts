@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { environment } from 'environments/environment';
 import * as moment from 'moment';
 
 import {
@@ -219,6 +220,6 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
   }
 
   toPMU() {
-    window.location.href = String(process.env['PMU_BASE_URL']);
+    window.location.href = environment.baseUrlPMU;
   }
 }

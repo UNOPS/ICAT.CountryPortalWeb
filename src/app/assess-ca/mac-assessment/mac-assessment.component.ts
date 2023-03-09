@@ -641,7 +641,10 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
                   this.createdMacAssessmentYearId = this.createdMacAssessmentYear.id;
 
                   const macUrl = environment.baseUrlMac;
-                  const headers = new HttpHeaders().set('api-key', '1234');
+                  const headers = new HttpHeaders().set(
+                    'api-key',
+                    environment.apiKey1,
+                  );
 
                   this.httpClient
                     .post<any>(macUrl, this.macValue, { headers: headers })

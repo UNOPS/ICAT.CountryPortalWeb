@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
-
+import { environment } from 'environments/environment';
 import {
   Project,
   ProjectApprovalStatus,
@@ -134,7 +134,7 @@ export class AllClimateActionComponent implements OnInit, AfterViewInit {
         projectApprovalStatusId,
         currentProgress,
         this.sectorId,
-        '1234',
+        environment.apiKey1,
       )
       .subscribe((a) => {
         this.climateactions = a.items;
@@ -175,7 +175,7 @@ export class AllClimateActionComponent implements OnInit, AfterViewInit {
           projectApprovalStatusId,
           currentProgress,
           this.sectorId,
-          '1234',
+          environment.apiKey1,
         )
         .subscribe((a) => {
           this.climateactions = a.items;

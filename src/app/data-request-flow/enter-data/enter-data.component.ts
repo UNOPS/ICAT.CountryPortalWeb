@@ -135,7 +135,15 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
     filter2.push('projectApprovalStatus.id||$eq||' + 5);
 
     this.projectProxy
-      .getEnterDataParameter(0, 0, '', 0, '', this.userName, '1234')
+      .getEnterDataParameter(
+        0,
+        0,
+        '',
+        0,
+        '',
+        this.userName,
+        environment.apiKey1,
+      )
       .subscribe((res: any) => {
         for (const a of res.items) {
           if (a.parameterId.Assessment !== null) {
@@ -233,7 +241,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
           climateActionId,
           year,
           this.userName,
-          '1234',
+          environment.apiKey1,
         )
         .subscribe((a) => {
           if (a) {

@@ -17,6 +17,7 @@ import {
   MessageService,
 } from 'primeng/api';
 import decode from 'jwt-decode';
+import { environment } from 'environments/environment.prod';
 @Component({
   selector: 'app-review-data',
   templateUrl: './review-data.component.html',
@@ -120,7 +121,16 @@ export class ReviewDataComponent implements OnInit {
       });
 
     this.parameterProxy
-      .getReviewDataRequest(0, 0, '', 0, '', '', this.userName, '1234')
+      .getReviewDataRequest(
+        0,
+        0,
+        '',
+        0,
+        '',
+        '',
+        this.userName,
+        environment.apiKey1,
+      )
       .subscribe((res: any) => {
         for (const a of res.items) {
           if (a.parameter.Assessment !== null) {
@@ -258,7 +268,7 @@ export class ReviewDataComponent implements OnInit {
           year,
           type,
           this.userName,
-          '1234',
+          environment.apiKey1,
         )
         .subscribe((a) => {
           if (a) {

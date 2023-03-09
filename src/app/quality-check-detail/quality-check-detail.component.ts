@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuAlityCheckStatus } from 'app/Model/QuAlityCheckStatus.enum';
-
 import { environment } from 'environments/environment';
 import { MessageService } from 'primeng/api';
 import {
@@ -296,7 +295,7 @@ export class QualityCheckDetailComponent implements OnInit {
         this.assessmentYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
-        '1234',
+        environment.apiKey1,
       )
       .subscribe((res) => {
         this.assessmentResult = res;
@@ -503,7 +502,7 @@ export class QualityCheckDetailComponent implements OnInit {
         };
 
         const macUrl = environment.baseUrlMac;
-        const headers = new HttpHeaders().set('api-key', '1234');
+        const headers = new HttpHeaders().set('api-key', environment.apiKey1);
 
         this.httpClient
           .post<any>(macUrl, this.macValue, { headers: headers })

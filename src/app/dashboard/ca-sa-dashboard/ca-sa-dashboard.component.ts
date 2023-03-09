@@ -19,6 +19,7 @@ import {
   SubNdc,
 } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-ca-sa-dashboard',
@@ -444,7 +445,7 @@ export class CASADashboardComponent implements OnInit {
             ['1 ', '5'],
             0,
             0,
-            '1234',
+            environment.apiKey1,
           )
           .subscribe((res) => {
             this.projects = res.items;
@@ -652,7 +653,7 @@ export class CASADashboardComponent implements OnInit {
         projectApprovalStatusId,
         ndcId,
         subNdcId,
-        '1234',
+        environment.apiKey1,
       )
 
       .subscribe((a) => {

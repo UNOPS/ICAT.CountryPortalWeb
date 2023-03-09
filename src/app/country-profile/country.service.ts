@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 import { Country } from './country';
 
@@ -7,7 +8,7 @@ import { Country } from './country';
   providedIn: 'root',
 })
 export class CountryService {
-  private baseURL = 'http://localhost:8080/country-profile';
+  private baseURL = environment.baseUrlCountryWeb + '/country-profile';
 
   constructor(private httpClient: HttpClient) {}
 

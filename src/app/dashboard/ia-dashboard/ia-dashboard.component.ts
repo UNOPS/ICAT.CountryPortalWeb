@@ -23,6 +23,7 @@ import {
   UserType,
 } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
+import { environment } from 'environments/environment';
 @Component({
   selector: 'app-ia-dashboard',
   templateUrl: './ia-dashboard.component.html',
@@ -491,7 +492,7 @@ export class IaDashboardComponent implements OnInit {
         [],
         0,
         0,
-        '1234',
+        environment.apiKey1,
       )
       .subscribe((res: any) => {
         this.climateactions = res.items;
@@ -524,7 +525,7 @@ export class IaDashboardComponent implements OnInit {
           projectApprovalStatusId,
           ndcId,
           subNdcId,
-          '1234',
+          environment.apiKey1,
         )
         .subscribe((a) => {
           this.activeprojectsload = [];

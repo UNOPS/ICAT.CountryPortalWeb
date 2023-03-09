@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import { Project, ServiceProxy } from 'shared/service-proxies/service-proxies';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-data-request',
@@ -93,7 +94,7 @@ export class DataRequestComponent implements OnInit, AfterViewInit {
 
   async ngOnInit(): Promise<void> {
     this.parameterRqstProxy
-      .getNewDataRequestForClimateList(0, 0, '', 0, '', 0, '1234')
+      .getNewDataRequestForClimateList(0, 0, '', 0, '', 0, environment.apiKey1)
       .subscribe((res) => {
         for (const a of res.items) {
           if (a.parameter.Assessment !== null) {
@@ -112,7 +113,7 @@ export class DataRequestComponent implements OnInit, AfterViewInit {
       });
     setTimeout(() => {
       this.parameterRqstProxy
-        .getNewDataRequest(1, this.rows, '', 0, '', 0, '1234')
+        .getNewDataRequest(1, this.rows, '', 0, '', 0, environment.apiKey1)
         .subscribe((a) => {
           if (a) {
             this.dataRequestList = a.items;
@@ -392,7 +393,7 @@ export class DataRequestComponent implements OnInit, AfterViewInit {
           climateActionId,
           year,
           institutionId,
-          '1234',
+          environment.apiKey1,
         )
         .subscribe((a) => {
           if (a) {
