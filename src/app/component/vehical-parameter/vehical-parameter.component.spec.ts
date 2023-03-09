@@ -8,9 +8,8 @@ describe('VehicalParameterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VehicalParameterComponent ]
-    })
-    .compileComponents();
+      declarations: [VehicalParameterComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -3,7 +3,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 @Injectable()
 export class SharedDataService {
   constructor() {}
-  //Using any
   public editDataDetails: any = [];
   public subject = new Subject<any>();
   private loginMessage = new BehaviorSubject(this.editDataDetails);

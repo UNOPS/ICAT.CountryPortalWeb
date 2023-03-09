@@ -10,7 +10,6 @@ class ParameterSections {
   public soilSection: ParameterSection;
   public residueSection: ParameterSection;
   public landClearanceSection: ParameterSection;
-
 }
 
 export default ParameterSections;

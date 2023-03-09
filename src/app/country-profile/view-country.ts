@@ -1,2 +1,1 @@
-export class ViewCountry {
-}
+export class ViewCountry {}

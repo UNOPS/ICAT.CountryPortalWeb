@@ -1,10 +1,10 @@
 <div class="container">
   <h4 class="mt-4">
     {{
-      this.assementYear !== undefined
-        ? "Verification " +
-          VerificationStatusEnum[this.assementYear.verificationStatus]
-        : "Verification "
+      this.assessmentYear !== undefined
+        ? 'Verification ' +
+          VerificationStatusEnum[this.assessmentYear.verificationStatus]
+        : 'Verification '
     }}
   </h4>
   <div class="p-grid p-fluid card">
@@ -18,7 +18,7 @@
               type="text"
               name="ndc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment.project?.climateActionName!"
+              [(ngModel)]="assessmentYear.assessment.project?.climateActionName!"
               class="p-inputtext"
               pInputText
             />
@@ -32,14 +32,17 @@
             pRipple
             type="button"
             icon="pi pi-eye"
-            (click)="detail(assementYear.assessment.project)"
+            (click)="detail(assessmentYear.assessment.project)"
             class="p-button-rounded p-button-text"
           ></button>
         </div>
       </div>
     </div>
 
-    <div class="row mb-3" *ngIf="this.assementYear.assessment.assessmentType != 'MAC'">
+    <div
+      class="row mb-3"
+      *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
+    >
       <div class="col-md-4">
         <div class="col-12">
           <div class="p-field">
@@ -49,7 +52,7 @@
               type="text"
               name="ndc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment?.ndc!?.name!"
+              [(ngModel)]="assessmentYear.assessment?.ndc!?.name!"
               class="p-inputtext"
               pInputText
             />
@@ -65,7 +68,7 @@
               type="text"
               name="subNDc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment?.subNdc!?.name!"
+              [(ngModel)]="assessmentYear.assessment?.subNdc!?.name!"
               class="p-inputtext"
               pInputText
             />
@@ -75,23 +78,23 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
         >
           <button
             type="button"
             [disabled]="isNdcDisable"
             pButton
             pRipple
-            (click)="parameterAccept(true, false,false)"
+            (click)="parameterAccept(true, false, false)"
           >
-            {{isNdcDisable == true?'Accepted':'Accept'}}
+            {{ isNdcDisable == true ? 'Accepted' : 'Accept' }}
           </button>
         </div>
       </div>
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
         >
           <button
             type="button"
@@ -116,7 +119,7 @@
               type="text"
               name="ndc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment?.assessmentType!"
+              [(ngModel)]="assessmentYear.assessment?.assessmentType!"
               class="p-inputtext"
               pInputText
             />
@@ -125,36 +128,42 @@
       </div>
     </div>
 
-    <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType != 'MAC' ">
+    <div
+      class="row mb-3"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
+    >
       <div class="col-md-5">
         <div class="col-5">
           <label> <strong>Emission Reduction </strong> </label>
           <input
-              [disabled]="true"
-              type="text"
-              name="ereduction"
-              #ereduction="ngModel"
-              [(ngModel)]="assessmentResult.totalEmission!"
-              class="p-inputtext"
-              pInputText
-            />
+            [disabled]="true"
+            type="text"
+            name="ereduction"
+            #ereduction="ngModel"
+            [(ngModel)]="assessmentResult.totalEmission!"
+            class="p-inputtext"
+            pInputText
+          />
         </div>
       </div>
     </div>
 
-    <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType != 'MAC' ">
+    <div
+      class="row mb-3"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
+    >
       <div class="col-md-5">
         <div class="col-5">
           <label> <strong>Base Year </strong> </label>
           <input
-              [disabled]="true"
-              type="text"
-              name="baseasseYear"
-              #baseasseYear="ngModel"
-              [(ngModel)]="assementYear.assessment.baseYear!"
-              class="p-inputtext"
-              pInputText
-            />
+            [disabled]="true"
+            type="text"
+            name="baseasseYear"
+            #baseasseYear="ngModel"
+            [(ngModel)]="assessmentYear.assessment.baseYear!"
+            class="p-inputtext"
+            pInputText
+          />
         </div>
       </div>
     </div>
@@ -168,7 +177,7 @@
               type="text"
               name="yaer"
               #chgEmission="ngModel"
-              [(ngModel)]=" assementYear.assessmentYear"
+              [(ngModel)]="assessmentYear.assessmentYear"
               class="p-inputtext"
               pInputText
             />
@@ -177,35 +186,10 @@
       </div>
     </div>
 
-
-
-    <!-- <div class="row mb-3" *ngIf="this.assementYear.assessment.assessmentType != 'MAC'">
-      <div class="col-md-5">
-        <div class="col-5">
-          <label> Base Year - {{ assementYear.assessment.baseYear }} </label>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- <div class="row mb-3">
-      <div class="col-md-5">
-        <div class="col-5">
-          <label for="projStatus"><strong>Assessment Year</strong></label
-          >
-          <input
-              [disabled]="true"
-              type="text"
-              name="asseYear"
-              #asseYear="ngModel"
-              [(ngModel)]="assementYear.assessmentYear!"
-              class="p-inputtext"
-              pInputText
-            />
-        </div>
-      </div>
-    </div> -->
-
-    <div class="row mb-3" *ngIf="this.assementYear.assessment.assessmentType != 'MAC'">
+    <div
+      class="row mb-3"
+      *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
+    >
       <div class="col-md-8">
         <div class="col-12">
           <div class="p-field">
@@ -215,7 +199,7 @@
               type="text"
               name="meth"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment.methodology?.displayName!"
+              [(ngModel)]="assessmentYear.assessment.methodology?.displayName!"
               class="p-inputtext"
               pInputText
             />
@@ -225,7 +209,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
         >
           <button
             type="button"
@@ -234,41 +218,32 @@
             pRipple
             (click)="parameterAccept(false, true, false)"
           >
-            {{isMethodology ? "Accepted" : "Accept"}}
+            {{ isMethodology ? 'Accepted' : 'Accept' }}
           </button>
         </div>
       </div>
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
         >
           <button
             type="button"
             [disabled]="isMethodologyReject"
             pButton
             pRipple
-            (click)="raiseConcern(false, true,false)"
+            (click)="raiseConcern(false, true, false)"
           >
             Raise Concern
           </button>
         </div>
       </div>
-      <!-- <div class="col-md-2">
-        <div class="col-12">
-          <button
-            pButton
-            pRipple
-            type="button"
-            icon="pi pi-eye"
-            (click)="detail()"
-            class="p-button-rounded p-button-text"
-          ></button>
-        </div>
-      </div> -->
     </div>
 
-    <div class="row mb-3" *ngIf="this.assementYear.assessment.assessmentType != 'MAC'">
+    <div
+      class="row mb-3"
+      *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
+    >
       <div class="col-md-10">
         <div class="col-12">
           <div class="p-field">
@@ -285,25 +260,13 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-2">
-        <div class="col-12">
-          <button
-            pButton
-            pRipple
-            type="button"
-            icon="pi pi-eye"
-            (click)="detail()"
-            class="p-button-rounded p-button-text"
-          ></button>
-        </div>
-      </div> -->
     </div>
 
     <div class="row mb-3">
       <app-verify-parameter-section
         header="Baseline Parameter"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.baselineScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.baselineScenario"
         [parameters]="baselineParameters"
         ResultLabel="Baseline emission"
         [ResultValue]="assessmentResult.baselineResult"
@@ -311,15 +274,15 @@
         [isBaseline]="true"
         [isAccept]="isBaseAccept"
         [flag]="flag"
-        [verificationStatus] ="verificationStatus"
+        [verificationStatus]="verificationStatus"
       ></app-verify-parameter-section>
     </div>
 
     <div class="row mb-3">
       <app-verify-parameter-section
         header="Project Parameter"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.projectScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.projectScenario"
         [parameters]="projectParameters"
         ResultLabel="Project emission"
         [ResultValue]="assessmentResult.projectResult"
@@ -328,7 +291,7 @@
         [isAdmin]="false"
         [isAccept]="isProjectAccept"
         [flag]="flag"
-        [verificationStatus] ="verificationStatus"
+        [verificationStatus]="verificationStatus"
       ></app-verify-parameter-section>
     </div>
 
@@ -336,8 +299,8 @@
       <app-verify-parameter-section
         *ngIf="lekageParameters.length > 0"
         header="Leakage Parameter"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.lekageScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.lekageScenario"
         [parameters]="lekageParameters"
         ResultLabel="Leakage emission"
         [ResultValue]="assessmentResult.lekageResult"
@@ -345,7 +308,7 @@
         [isLekage]="true"
         [flag]="flag"
         [isAccept]="isLeckegeAccept"
-        [verificationStatus] ="verificationStatus"
+        [verificationStatus]="verificationStatus"
       ></app-verify-parameter-section>
     </div>
 
@@ -353,7 +316,7 @@
       <app-verify-parameter-section
         *ngIf="projectionParameters.length > 0"
         header="Projection Parameter"
-        [assessmentYear]="assementYear"
+        [assessmentYear]="assessmentYear"
         [scenario]=""
         [parameters]="projectionParameters"
         ResultLabel="Projected Emission Reduction"
@@ -363,69 +326,65 @@
         [isProjection]="true"
         [flag]="flag"
         [isAccept]="isProjectionAccept"
-        [verificationStatus] ="verificationStatus"
+        [verificationStatus]="verificationStatus"
       ></app-verify-parameter-section>
     </div>
 
-    
     <div class="container pl-20 pr-20">
       <h4 class="mt-4">Assumption</h4>
       <div class="p-grid p-fluid card">
         <div class="row p-2">
-        <div class="col-8">
-          <div class="p-field">
-            <textarea
-              
-              name="RelevantindirectSD"
-              placeholder="Please Enter Your Assumption here"
-              [(ngModel)]="this.assementYear.assessmentAssumption!"
-              [readonly]="true"
-              rows="5"
-              cols="62"
-              pInputTextarea
-              autoResize="autoResize"
-              class="p-inputtext"
-            ></textarea>
+          <div class="col-8">
+            <div class="p-field">
+              <textarea
+                name="RelevantindirectSD"
+                placeholder="Please Enter Your Assumption here"
+                [(ngModel)]="this.assessmentYear.assessmentAssumption!"
+                [readonly]="true"
+                rows="5"
+                cols="62"
+                pInputTextarea
+                autoResize="autoResize"
+                class="p-inputtext"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="col-2">
+            <button
+              *ngIf="
+                verificationStatus != 3 &&
+                verificationStatus != 7 &&
+                verificationStatus != 6
+              "
+              type="button"
+              [disabled]="isAssumptions"
+              pButton
+              pRipple
+              (click)="parameterAccept(false, false, true)"
+            >
+              {{ isAssumptions ? 'Accepted' : 'Accept' }}
+            </button>
+          </div>
+          <div class="col-2">
+            <button
+              *ngIf="
+                verificationStatus != 3 &&
+                verificationStatus != 7 &&
+                verificationStatus != 6
+              "
+              type="button"
+              [disabled]="isAssumptionsReject"
+              pButton
+              pRipple
+              (click)="raiseConcern(false, true, true)"
+            >
+              Raise Concern
+            </button>
           </div>
         </div>
-        
-
-        <div class="col-2">
-          
-          <button *ngIf="verificationStatus !=3 && verificationStatus !=7 && verificationStatus !=6"
-          type="button"
-          [disabled]="isAssumptions"
-          pButton
-          pRipple
-          (click)="parameterAccept(false,false,true)"
-        >
-         {{isAssumptions ? "Accepted" :"Accept" }} 
-        </button>
-        </div>
-        <div class="col-2">
-          <button *ngIf="verificationStatus !=3 && verificationStatus !=7 && verificationStatus !=6"
-            type="button"
-            [disabled]="isAssumptionsReject"
-            pButton
-            pRipple
-            (click)="raiseConcern(false, true,true)"
-          >
-            Raise Concern
-          </button>
-         </div>
-        </div>
       </div>
-    </div>    
-
-    <!-- <div class="row mb-3">
-      <app-parameter-summary
-        *ngIf="projectionParameters.length > 0"
-        header="Projection Parameter"
-        [scenario]=""
-        [assessmentYearId]="assesMentYearId"
-        [parameters]="projectionParameters"
-      ></app-parameter-summary>
-    </div> -->
+    </div>
 
     <div class="row mb-3">
       <div
@@ -444,7 +403,6 @@
           (click)="toNonConformance()"
         >
           Report
-          <!-- {{parameters.find(m => m.parameterRequest.qaStatus !== 4) === undefined ? 'Calculate' :  'Submit'}} -->
         </button>
       </div>
     </div>
@@ -452,30 +410,16 @@
   <p-toast position="top-right"></p-toast>
 </div>
 
-<p-dialog
-  header="Raise Concern"
-  [(visible)]="displayConcern"
-  appendTo="body"
-
->
-<div class="container" style="width: 600px; height: 500px">
-  <app-raise-concern
-    [area]="raiseConcernSection"
-    [verificationDetails]="concernVerificationDetails"
-    [assesmentYear]="assementYear"
-    [isNdC]="concernIsNdC"
-    [isMethodology]="concernIsMethodology"
-  ></app-raise-concern>
-
-</div>
-  <!-- <ng-template pTemplate="footer">
-    <p-button
-      icon="pi pi-check"
-      (click)="displayConcern = false"
-      label="Complete"
-      styleClass="p-button-text"
-    ></p-button>
-  </ng-template> -->
+<p-dialog header="Raise Concern" [(visible)]="displayConcern" appendTo="body">
+  <div class="container" style="width: 600px; height: 500px">
+    <app-raise-concern
+      [area]="raiseConcernSection"
+      [verificationDetails]="concernVerificationDetails"
+      [assessmentYear]="assessmentYear"
+      [isNdC]="concernIsNdC"
+      [isMethodology]="concernIsMethodology"
+    ></app-raise-concern>
+  </div>
 </p-dialog>
 
 <p-confirmDialog

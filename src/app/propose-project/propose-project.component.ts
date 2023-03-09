@@ -10,7 +10,6 @@ import {
   FinancingScheme,
   Institution,
   Ndc,
-  NdcControllerServiceProxy,
   Project,
   ProjectApprovalStatus,
   ProjectControllerServiceProxy,
@@ -21,17 +20,13 @@ import {
   SubNdc,
   User,
   SectorControllerServiceProxy,
-  UsersControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
-import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import jspdf from 'jspdf';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import decode from 'jwt-decode';
-
-/// <reference types="googlemaps" />
 
 @Component({
   selector: 'app-propose-project',
@@ -40,13 +35,13 @@ import decode from 'jwt-decode';
   providers: [MessageService],
 })
 export class ProposeProjectComponent implements OnInit {
-  isSaving: boolean = false;
+  isSaving = false;
   project: Project = new Project();
   selectedcitie: any = {};
   ndcList: Ndc[];
   options: any;
   relatedItem: Project[] = [];
-  exsistingPrpject: boolean = false;
+  exsistingPrpject = false;
   countryList: Country[] = [];
   projectOwnerList: ProjectOwner[] = [];
   projectStatusList: ProjectStatus[] = [];
@@ -55,54 +50,54 @@ export class ProposeProjectComponent implements OnInit {
   documents: Documents[] = [];
   documentsDocumentOwner: DocumentsDocumentOwner =
     DocumentsDocumentOwner.Project;
-  editEntytyId: number = 0;
-  anonymousEditEntytyId: number = 0;
-  documentOwnerId: number = 0;
+  editEntytyId = 0;
+  anonymousEditEntytyId = 0;
+  documentOwnerId = 0;
   proposeDateofCommence: Date;
   endDateofCommence: Date;
-  isLoading: boolean = false;
-  isDownloading: boolean = true;
-  isDownloadMode: number = 0;
-  flag: number = 0;
-  isCity: number = 0;
+  isLoading = false;
+  isDownloading = true;
+  isDownloadMode = 0;
+  flag = 0;
+  isCity = 0;
   isMapped: number;
   likelyHood: number;
   isLikelyhoodFromDb: number;
   isPoliticalPreferenceFromDb: number;
   isFinancialFeciabilityFromDb: number;
   isAvailabiltyOfTEchFromDb: number;
-  isPoliticalPreference: number = 1;
-  isFinancialFeciability: number = 1;
-  isAvailabiltyOfTEch: number = 1;
+  isPoliticalPreference = 1;
+  isFinancialFeciability = 1;
+  isAvailabiltyOfTEch = 1;
   selectedProject: Project;
-  originalNdc: string = '';
-  originalSubNdc: string = '';
-  commentForJustification: string = '';
-  originalApprovalStatus: string = '';
-  updatedApprovalStatus: string = '';
+  originalNdc = '';
+  originalSubNdc = '';
+  commentForJustification = '';
+  originalApprovalStatus = '';
+  updatedApprovalStatus = '';
   historyList: any[] = [];
   ndcupdatehistoryList: any[] = [];
   statusupdatehistoryList: any[] = [];
-  proposedDate: string = '';
-  isActionButtonSectionEnabled: boolean = false;
-  userName: string = '';
+  proposedDate = '';
+  isActionButtonSectionEnabled = false;
+  userName = '';
   drCommentRequried: boolean;
   drComment: string;
   rejectCommentRequried: boolean;
   rejectComment: string;
   loggedUser: User;
-  fullname: string = '';
-  isGHG: number = 0;
+  fullname = '';
+  isGHG = 0;
   selectedApproch: string;
   approachList: string[] = ['AR1', 'AR2', 'AR3', 'AR4', 'AR5'];
 
   institutionList: Institution[] = [];
-  institutionTypeID: number = 3;
+  institutionTypeID = 3;
   selectedInstitution: Institution;
   selectedDocuments: Documents[] = [];
-  counID:number;
+  counID: number;
 
-  isSector: boolean = false;
+  isSector = false;
 
   @ViewChild('gmap') gmap: any;
   @ViewChild('op') overlay: any;
@@ -127,27 +122,22 @@ export class ProposeProjectComponent implements OnInit {
     private location: Location,
     private messageService: MessageService,
     private projectProxy: ProjectControllerServiceProxy,
-    private sectorProxy: SectorControllerServiceProxy
-  ) // private usersControllerServiceProxy: UsersControllerServiceProxy,
-  // private ndcProxy:NdcControllerServiceProxy
-  {}
+    private sectorProxy: SectorControllerServiceProxy,
+  ) {}
 
   ngOnInit(): void {
     const token = localStorage.getItem('access_token')!;
     const countryId = token ? decode<any>(token).countryId : 0;
-    this.counID= countryId;
+    this.counID = countryId;
     this.userName = localStorage.getItem('user_name')!;
-    let filterUser: string[] = [];
+    const filterUser: string[] = [];
     filterUser.push('username||$eq||' + this.userName);
-    
 
-    if (countryId>0){
+    if (countryId > 0) {
       this.sectorProxy.getCountrySector(countryId).subscribe((res: any) => {
         this.sectorList = res;
-        console.log("++++" ,this.sectorList)
       });
     }
-    
 
     this.serviceProxy
       .getManyBaseUsersControllerUser(
@@ -160,13 +150,12 @@ export class ProposeProjectComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.loggedUser = res.data[0];
         this.fullname =
           this.loggedUser.firstName + ' ' + this.loggedUser.lastName;
-        // console.log("this.loggedUser...",this.fullname)
       });
 
     this.route.queryParams.subscribe((params) => {
@@ -193,17 +182,15 @@ export class ProposeProjectComponent implements OnInit {
           countryId,
           undefined,
           undefined,
-          undefined
+          undefined,
         )
         .subscribe((res) => {
           this.project.country = res;
           this.isSector = true;
-          // console.log('tokenPayloadmasssge',res);
         });
     } else {
       this.project.country = new Country();
     }
-    // this.project.country = new Country();
 
     this.options = {
       center: { lat: 18.7322, lng: 15.4542 },
@@ -213,26 +200,9 @@ export class ProposeProjectComponent implements OnInit {
     this.project.longitude = 0.0;
     this.project.latitude = 0.0;
 
-    let countryaFilter: string[] = new Array();
+    const countryaFilter: string[] = [];
 
     countryaFilter.push('country.id||$eq||' + 1);
-    // this.serviceProxy
-    //   .getManyBaseProjectControllerProject(
-    //     undefined,
-    //     undefined,
-    //     countryaFilter,
-    //     undefined,
-    //     ['climateActionName,ASC'],
-    //     ['country'],
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    //   .subscribe((res: any) => {
-    //     console.log('***************************');
-    //     console.log(res.data);
-    //   });
 
     this.serviceProxy
       .getManyBaseCountryControllerCountry(
@@ -245,7 +215,7 @@ export class ProposeProjectComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.countryList = res.data;
@@ -262,7 +232,7 @@ export class ProposeProjectComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.projectOwnerList = res.data;
@@ -279,7 +249,7 @@ export class ProposeProjectComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.projectStatusList = res.data;
@@ -296,34 +266,28 @@ export class ProposeProjectComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
-        
-        // this.sectorList = res.data;
-
         if (token && this.editEntytyId && this.editEntytyId > 0) {
           this.serviceProxy
             .getOneBaseProjectControllerProject(
               this.editEntytyId,
               undefined,
               undefined,
-              0
+              0,
             )
             .subscribe(async (res1) => {
               this.project = res1;
               this.project.ndc = res1.ndc;
-              this.project.sector =res1.sector;
+              this.project.sector = res1.sector;
               const latitude = parseFloat(this.project.latitude + '');
               const longitude = parseFloat(this.project.longitude + '');
               await this.addMarker(longitude, latitude);
-              // console.log(latitude);
-              // console.log(longitude);
 
-              let map = this.gmap.getMap();
+              const map = this.gmap.getMap();
               this.updateMapBoundaries(map, longitude, latitude);
 
-              console.log('ths.project,,,..', this.project);
               this.likelyHood = this.project.likelyhood;
               this.isPoliticalPreference = this.project.politicalPreference;
               this.isFinancialFeciability = this.project.financialFecialbility;
@@ -342,33 +306,30 @@ export class ProposeProjectComponent implements OnInit {
                 this.project?.financialFecialbility;
               this.isAvailabiltyOfTEchFromDb =
                 this.project.availabilityOfTechnology;
-              var sector = this.sectorList.find(
-                (a) => a.id === this.project?.sector?.id
+              const sector = this.sectorList.find(
+                (a) => a.id === this.project?.sector?.id,
               );
-              // this.project.sector = sector != undefined ? sector : new Sector();
-              console.log('this.project.sector...', this.project.sector);
+
               this.onSectorChange(true);
               this.proposeDateofCommence = new Date(
                 this.project.proposeDateofCommence.year(),
                 this.project.proposeDateofCommence.month(),
-                this.project.proposeDateofCommence.date()
+                this.project.proposeDateofCommence.date(),
               );
               this.endDateofCommence = new Date(
                 this.project.endDateofCommence.year(),
                 this.project.endDateofCommence.month(),
-                this.project.endDateofCommence.date()
+                this.project.endDateofCommence.date(),
               );
 
               this.isLoading = false;
               if (this.flag == 1) {
-                //this.isDownloading = false;
                 this.originalNdc = this.project.ndc?.name;
                 this.originalSubNdc = this.project.subNdc?.name;
               }
 
-              let histryFilter: string[] = new Array();
+              const histryFilter: string[] = [];
               histryFilter.push('project.id||$eq||' + this.project.id);
-              //console.log("id......",this.project.id)
               this.serviceProxy
                 .getManyBaseCaActionHistoryControllerCaActionHistory(
                   undefined,
@@ -380,30 +341,21 @@ export class ProposeProjectComponent implements OnInit {
                   1000,
                   0,
                   0,
-                  0
+                  0,
                 )
                 .subscribe((res: any) => {
                   this.historyList = res.data;
                   this.ndcupdatehistoryList = this.historyList.filter(
-                    (o) => o.isNdcAndSubNdc == 1
+                    (o) => o.isNdcAndSubNdc == 1,
                   );
                   this.statusupdatehistoryList = this.historyList.filter(
-                    (o) => o.isApprovalAction == 1
+                    (o) => o.isApprovalAction == 1,
                   );
-                  console.log('this.historyList..', res.data);
                 });
             });
         }
 
-        //Anonymous form
         if (this.anonymousEditEntytyId && this.anonymousEditEntytyId > 0) {
-          // this.serviceProxy
-          //   .getOneBaseProjectControllerProject(
-          //     this.anonymousEditEntytyId,
-          //     undefined,
-          //     undefined,
-          //     0
-          //   )
           this.projectProxy
             .getProjectByIdAnonymous(this.anonymousEditEntytyId)
             .subscribe(async (res) => {
@@ -411,13 +363,10 @@ export class ProposeProjectComponent implements OnInit {
               const latitude = parseFloat(this.project.latitude + '');
               const longitude = parseFloat(this.project.longitude + '');
               await this.addMarker(longitude, latitude);
-              // console.log(latitude);
-              // console.log(longitude);
 
-              let map = this.gmap.getMap();
+              const map = this.gmap.getMap();
               this.updateMapBoundaries(map, longitude, latitude);
 
-              console.log('ths.project,,,..', this.project);
               this.likelyHood = this.project.likelyhood;
               this.isPoliticalPreference = this.project.politicalPreference;
               this.isFinancialFeciability = this.project.financialFecialbility;
@@ -436,22 +385,10 @@ export class ProposeProjectComponent implements OnInit {
                 this.project?.financialFecialbility;
               this.isAvailabiltyOfTEchFromDb =
                 this.project.availabilityOfTechnology;
-              var sector = this.sectorList.find(
-                (a) => a.id === this.project?.sector?.id
+              const sector = this.sectorList.find(
+                (a) => a.id === this.project?.sector?.id,
               );
-              // this.project.sector = sector != undefined ? sector : new Sector();
-              // console.log('this.project.sector...', this.project.sector);
-              // this.onSectorChange(true);
-              // this.proposeDateofCommence = new Date(
-              //   this.project.proposeDateofCommence.year(),
-              //   this.project.proposeDateofCommence.month(),
-              //   this.project.proposeDateofCommence.date()
-              // );
-              // this.endDateofCommence = new Date(
-              //   this.project.endDateofCommence.year(),
-              //   this.project.endDateofCommence.month(),
-              //   this.project.endDateofCommence.date()
-              // );
+
               this.project.climateActionName = '';
               this.project.telephoneNumber = '';
 
@@ -461,7 +398,7 @@ export class ProposeProjectComponent implements OnInit {
                     countryId,
                     undefined,
                     undefined,
-                    undefined
+                    undefined,
                   )
                   .subscribe((res) => {
                     this.project.country = res;
@@ -474,14 +411,12 @@ export class ProposeProjectComponent implements OnInit {
 
               this.isLoading = false;
               if (this.flag == 1) {
-                //this.isDownloading = false;
                 this.originalNdc = this.project.ndc?.name;
                 this.originalSubNdc = this.project.subNdc?.name;
               }
 
-              let histryFilter: string[] = new Array();
+              const histryFilter: string[] = [];
               histryFilter.push('project.id||$eq||' + this.project.id);
-              //console.log("id......",this.project.id)
               this.serviceProxy
                 .getManyBaseCaActionHistoryControllerCaActionHistory(
                   undefined,
@@ -493,17 +428,16 @@ export class ProposeProjectComponent implements OnInit {
                   1000,
                   0,
                   0,
-                  0
+                  0,
                 )
                 .subscribe((res: any) => {
                   this.historyList = res.data;
                   this.ndcupdatehistoryList = this.historyList.filter(
-                    (o) => o.isNdcAndSubNdc == 1
+                    (o) => o.isNdcAndSubNdc == 1,
                   );
                   this.statusupdatehistoryList = this.historyList.filter(
-                    (o) => o.isApprovalAction == 1
+                    (o) => o.isApprovalAction == 1,
                   );
-                  console.log('this.historyList..', res.data);
                 });
             });
         }
@@ -520,7 +454,7 @@ export class ProposeProjectComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.projectApprovalStatus = res.data;
@@ -537,16 +471,16 @@ export class ProposeProjectComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.financingSchemeList = res.data;
       });
 
-    let institutionListFilter: string[] = new Array();
+    const institutionListFilter: string[] = [];
 
     institutionListFilter.push('type.Id||$eq||' + this.institutionTypeID);
-    console.log(institutionListFilter);
+
     this.serviceProxy
       .getManyBaseInstitutionControllerInstitution(
         undefined,
@@ -558,16 +492,14 @@ export class ProposeProjectComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.institutionList = res.data;
-        console.log('list of institutions', this.institutionList);
-        // this.project.mappedInstitution
       });
 
     if (this.editEntytyId != 0) {
-      let docFilter: string[] = new Array();
+      const docFilter: string[] = [];
 
       docFilter.push('documentOwnerId||$eq||' + this.editEntytyId);
       this.serviceProxy
@@ -581,17 +513,15 @@ export class ProposeProjectComponent implements OnInit {
           1000,
           0,
           0,
-          0
+          0,
         )
         .subscribe((res: any) => {
           this.selectedDocuments = res.data;
-          console.log('selectedDocuments...', this.selectedDocuments);
         });
     }
 
-    //Anonymous form
     if (this.anonymousEditEntytyId != 0) {
-      let docFilter: string[] = new Array();
+      const docFilter: string[] = [];
 
       docFilter.push('documentOwnerId||$eq||' + this.anonymousEditEntytyId);
       this.serviceProxy
@@ -605,45 +535,32 @@ export class ProposeProjectComponent implements OnInit {
           1000,
           0,
           0,
-          0
+          0,
         )
         .subscribe((res: any) => {
           this.selectedDocuments = res.data;
-          console.log('selectedDocuments...', this.selectedDocuments);
         });
     }
   }
-  changInstitute(event: any) {
-    console.log(this.project.mappedInstitution);
-  }
+  changInstitute(event: any) {}
 
-  //
   saveForm(formData: NgForm) {
-    console.log('hii');
-    console.log(formData.form.valid)
-    console.log(formData)
     if (this.exsistingPrpject) {
       return;
     }
     if (this.project.sector) {
-      let sector = new Sector();
+      const sector = new Sector();
       sector.id = this.project.sector.id;
       this.project.sector = sector;
     }
-   
 
     this.project.proposeDateofCommence = moment(this.proposeDateofCommence);
     this.project.endDateofCommence = moment(this.endDateofCommence);
-    // this.project.mappedInstitution=this.selectedInstitution;/
-
-    //     console.log("project")
-    //  console.log(this.project)
-    //  console.log(this.selectedInstitution)
 
     if (this.project.ndc) {
       this.project.currentNdc = this.project.ndc.name;
       this.project.previousNdc = this.project.ndc.name;
-      let ndc = new Ndc();
+      const ndc = new Ndc();
       ndc.id = this.project.ndc?.id;
       this.project.ndc = ndc;
     }
@@ -651,27 +568,27 @@ export class ProposeProjectComponent implements OnInit {
     if (this.project.subNdc) {
       this.project.currentSubNdc = this.project.subNdc.name;
       this.project.previousSubNdc = this.project.subNdc.name;
-      let subned = new SubNdc();
+      const subned = new SubNdc();
       subned.id = this.project.subNdc?.id;
       this.project.subNdc = subned;
     }
 
     if (this.project.institution) {
-      let insti = new Institution();
+      const insti = new Institution();
       insti.id = this.project.mappedInstitution?.id;
       this.project.mappedInstitution = insti;
     }
 
     if (formData.form.valid && this.project.id > 0) {
       if (this.anonymousEditEntytyId > 0) {
-        let prAprSts = new ProjectApprovalStatus();
+        const prAprSts = new ProjectApprovalStatus();
         prAprSts.id = 4;
         this.project.projectApprovalStatus = prAprSts;
         this.projectProxy.updateProjectAnonymous(this.project).subscribe(
           (res) => {
             if (res == true) {
               this.isSaving = true;
-              console.log('update', res);
+
               this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
@@ -695,16 +612,15 @@ export class ProposeProjectComponent implements OnInit {
               detail: 'Internal server error, please try again.',
               sticky: true,
             });
-          }
+          },
         );
       } else {
-        // console.log('formData.form.valid', formData.form.valid);
         this.serviceProxy
           .updateOneBaseProjectControllerProject(this.project.id, this.project)
           .subscribe(
             (res) => {
               this.isSaving = true;
-              console.log('update', res);
+
               this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
@@ -720,45 +636,12 @@ export class ProposeProjectComponent implements OnInit {
                 detail: 'Internal server error, please try again.',
                 sticky: true,
               });
-            }
-            // (res) => {
-            //   this.confirmationService.confirm({
-            //     message: 'Save success !',
-            //     header: 'Save',
-            //     acceptIcon: 'icon-not-visible',
-            //     rejectIcon: 'icon-not-visible',
-            //     rejectButtonStyleClass: 'p-button-text',
-            //     rejectVisible: false,
-            //     acceptLabel: 'Ok',
-            //     accept: () => {
-            //       //this.onBackClick();
-            //     },
-            //     reject: () => {},
-            //   });
-            // },
-            // (error) => {
-            //   this.confirmationService.confirm({
-            //     message: 'An error occurred, please try again.',
-            //     header: 'Error',
-            //     acceptIcon: 'icon-not-visible',
-            //     rejectIcon: 'icon-not-visible',
-            //     rejectButtonStyleClass: 'p-button-text',
-            //     rejectVisible: false,
-            //     acceptLabel: 'Ok',
-            //     accept: () => {
-            //       //this.onBackClick();
-            //     },
-            //     reject: () => {},
-            //   });
-
-            //   console.log('Error', error);
-            //   this.isSaving = false;
-            // }
+            },
           );
       }
     } else {
       if (formData.form.valid) {
-        let prAprSts = new ProjectApprovalStatus();
+        const prAprSts = new ProjectApprovalStatus();
         prAprSts.id = 4;
         this.project.projectApprovalStatus = prAprSts;
 
@@ -767,7 +650,6 @@ export class ProposeProjectComponent implements OnInit {
           .createOneBaseProjectControllerProject(this.project)
           .subscribe(
             (res) => {
-              console.log('save', res);
               this.isSaving = true;
               this.messageService.add({
                 severity: 'success',
@@ -784,42 +666,33 @@ export class ProposeProjectComponent implements OnInit {
                 detail: 'Please Fill All Mandatory Fileds',
                 sticky: true,
               });
-            }
+            },
           );
-
-        console.log(formData);
       }
     }
   }
 
   onnameKeyDown(event: any) {
-    console.log('============= Event ===============');
-
-    let skipWord = ['of', 'the', 'in', 'On', '-', '_', '/'];
-    let searchText = this.removeFromString(
+    const skipWord = ['of', 'the', 'in', 'On', '-', '_', '/'];
+    const searchText = this.removeFromString(
       skipWord,
-      this.project.climateActionName
+      this.project.climateActionName,
     ).trim();
 
     if (!searchText || searchText?.length < 4) {
-      console.log('========== Return');
       this.relatedItem = [];
       return;
     }
 
     this.exsistingPrpject = false;
 
-    let words = searchText.split(' ');
+    const words = searchText.split(' ');
 
-    let orfilter: string[] = new Array();
-    // for (const w of words) {
-    //   orfilter.push('climateActionName||$cont||' + w.trim());
-    // }
-    let filter: string[] = new Array();
-    if(this.counID > 0){
+    const orfilter: string[] = [];
+    const filter: string[] = [];
+    if (this.counID > 0) {
       filter.push('country.id||$eq||' + this.counID);
     }
-    
 
     filter.push('climateActionName||$cont||' + searchText);
 
@@ -834,21 +707,16 @@ export class ProposeProjectComponent implements OnInit {
         10,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res) => {
         if (this.project.climateActionName && res) {
           this.relatedItem = res.data;
-          console.log(
-            this.relatedItem.find(
-              (a) => a.climateActionName === this.project.climateActionName
-            )
-          );
           if (
             this.relatedItem.find(
               (a) =>
                 a.climateActionName.toLocaleLowerCase() ===
-                this.project.climateActionName.toLocaleLowerCase()
+                this.project.climateActionName.toLocaleLowerCase(),
             )
           ) {
             this.exsistingPrpject = true;
@@ -868,10 +736,11 @@ export class ProposeProjectComponent implements OnInit {
 
     this.onSectorChange(event);
 
-    this.sectorProxy.getCountrySector(this.project.country.id).subscribe((res: any) => {
-      this.sectorList = res;
-      console.log("++++" ,this.sectorList)
-    });
+    this.sectorProxy
+      .getCountrySector(this.project.country.id)
+      .subscribe((res: any) => {
+        this.sectorList = res;
+      });
   }
 
   onSectorChange(event: any) {
@@ -890,16 +759,18 @@ export class ProposeProjectComponent implements OnInit {
           1000,
           0,
           0,
-          0
+          0,
         )
         .subscribe((res: any) => {
           this.ndcList = res.data;
           if (event === true) {
-            var ndc = this.ndcList?.find((a) => a.id === this.project?.ndc?.id);
+            const ndc = this.ndcList?.find(
+              (a) => a.id === this.project?.ndc?.id,
+            );
             this.project.ndc = ndc !== undefined ? ndc : new Ndc();
             if (this.project.subNdc) {
-              var subNdc: SubNdc = this.project.ndc.subNdc?.find(
-                (a) => a.id === this.project.subNdc.id
+              const subNdc: SubNdc = this.project.ndc.subNdc?.find(
+                (a) => a.id === this.project.subNdc.id,
               )!;
               this.project.subNdc = subNdc;
             }
@@ -911,32 +782,23 @@ export class ProposeProjectComponent implements OnInit {
   }
 
   escape(s: string) {
-    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
   }
 
   removeFromString(arr: string[], str: string) {
-    let escapedArr = arr.map((v) => escape(v));
-    let regex = new RegExp(
+    const escapedArr = arr.map((v) => escape(v));
+    const regex = new RegExp(
       '(?:^|\\s)' + escapedArr.join('|') + '(?!\\S)',
-      'gi'
+      'gi',
     );
     return str.replace(regex, '');
   }
 
-  /**
-   * set project location coordinates on select through map
-   * @param longitude
-   * @param latitude
-   */
   setCoordinatesToProject = (longitude: number, latitude: number) => {
     this.project.latitude = latitude;
     this.project.longitude = longitude;
   };
 
-  /**
-   * on click on the map
-   * @param event
-   */
   async handleMapClick(event: any) {
     if (!this.editEntytyId || this.editEntytyId == 0) {
       const latitude = event.latLng.lat();
@@ -944,23 +806,18 @@ export class ProposeProjectComponent implements OnInit {
       await this.addMarker(longitude, latitude);
       this.setCoordinatesToProject(longitude, latitude);
 
-      let map = this.gmap.getMap();
+      const map = this.gmap.getMap();
       this.updateMapBoundaries(map, longitude, latitude);
     }
   }
 
-  /**
-   * update coordinates on drop marker
-   * @param event
-   */
   handleMarkerDragEnd(event: any) {
     if (!this.editEntytyId || this.editEntytyId == 0) {
       const latitude = event.originalEvent.latLng.lat();
       const longitude = event.originalEvent.latLng.lng();
-      //this.addMarker(longitude, latitude);
       this.setCoordinatesToProject(longitude, latitude);
 
-      let map = this.gmap.getMap();
+      const map = this.gmap.getMap();
       this.updateMapBoundaries(map, longitude, latitude);
     }
   }
@@ -969,19 +826,11 @@ export class ProposeProjectComponent implements OnInit {
     const latitude = Number(this.project.latitude);
     const longitude = Number(this.project.longitude);
     await this.addMarker(longitude, latitude);
-    console.log(latitude);
-    console.log(longitude);
 
-    let map = this.gmap.getMap();
+    const map = this.gmap.getMap();
     this.updateMapBoundaries(map, longitude, latitude);
   }
 
-  /**
-   * update map boundaries on coordinates change
-   * @param map
-   * @param longitude
-   * @param latitude
-   */
   updateMapBoundaries = (map: any, longitude: any, latitude: any) => {
     if (longitude && latitude) {
       map.setCenter({ lat: latitude, lng: longitude });
@@ -999,13 +848,8 @@ export class ProposeProjectComponent implements OnInit {
     }
   };
 
-  /**
-   * add marker on map
-   * @param longitude
-   * @param latitude
-   */
   async addMarker(longitude: number, latitude: number) {
-    var marker = await new google.maps.Marker({
+    const marker = await new google.maps.Marker({
       position: { lat: latitude, lng: longitude },
       title: this.project.climateActionName,
       draggable: true,
@@ -1013,12 +857,8 @@ export class ProposeProjectComponent implements OnInit {
     this.overlays = [marker];
   }
 
-  /**
-   * on change the latitude input value
-   * @param event
-   */
   onLatitudeChange = async (event: any) => {
-    let map = this.gmap.getMap();
+    const map = this.gmap.getMap();
     if (event.value && this.project.longitude) {
       const latitude = Number(event.value);
       const longitude = Number(this.project.longitude);
@@ -1029,12 +869,8 @@ export class ProposeProjectComponent implements OnInit {
     }
   };
 
-  /**
-   * on change the longitude input value
-   * @param event
-   */
   onLongitudeChange = async (event: any) => {
-    let map = this.gmap.getMap();
+    const map = this.gmap.getMap();
     if (event.value && this.project.latitude) {
       const latitude = Number(this.project.latitude);
       const longitude = Number(event.value);
@@ -1048,19 +884,19 @@ export class ProposeProjectComponent implements OnInit {
   back() {
     this.location.back();
   }
-  confirmBack(label:string) {
+  confirmBack(label: string) {
     this.confirmationService.confirm({
-        message:(label=='cancel'?'Your filled data will be lost. ':'') + 'Are you sure that you want to proceed?',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.location.back();
-        },
-        reject: (type: any) => {
-           
-        }
+      message:
+        (label == 'cancel' ? 'Your filled data will be lost. ' : '') +
+        'Are you sure that you want to proceed?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.location.back();
+      },
+      reject: (type: any) => {},
     });
-}
+  }
   onRowSelect(event: any) {
     this.selectedProject = event;
   }
@@ -1086,23 +922,20 @@ export class ProposeProjectComponent implements OnInit {
         this.updatedApprovalStatus = 'Data Request';
       }
 
-      let status = this.projectApprovalStatus.find(
-        (a) => a.id === aprovalStatus
+      const status = this.projectApprovalStatus.find(
+        (a) => a.id === aprovalStatus,
       );
 
-      // project.projectApprovalStatus = status === undefined ? (null as any) : status;
       if (aprovalStatus === 1) {
-        // window.alert(project.projectApprovalStatus.name)
         this.confirmationService.confirm({
           message:
             'Are you sure you want to approve ' +
             project.climateActionName +
             ' ?',
           accept: () => {
-            //window.alert(project.projectApprovalStatus)
             project.projectApprovalStatus =
               status === undefined ? (null as any) : status;
-            console.log('my project..,', project);
+
             this.updateStatus(project, aprovalStatus);
           },
           reject: () => {},
@@ -1148,32 +981,27 @@ export class ProposeProjectComponent implements OnInit {
   }
 
   updateStatus(project: Project, aprovalStatus: number) {
-    let sector = new Sector();
+    const sector = new Sector();
     sector.id = project.sector.id;
     project.sector = sector;
 
     project.proposeDateofCommence = moment(this.proposeDateofCommence);
     project.endDateofCommence = moment(this.endDateofCommence);
-    // this.project.mappedInstitution=this.selectedInstitution;/
-
-    //     console.log("project")
-    //  console.log(this.project)
-    //  console.log(this.selectedInstitution)
 
     if (project.ndc) {
-      let ndc = new Ndc();
+      const ndc = new Ndc();
       ndc.id = project.ndc?.id;
       project.ndc = ndc;
     }
 
     if (project.subNdc) {
-      let subned = new SubNdc();
+      const subned = new SubNdc();
       subned.id = project.subNdc?.id;
       project.subNdc = subned;
     }
 
     if (project.institution) {
-      let insti = new Institution();
+      const insti = new Institution();
       insti.id = project.mappedInstitution?.id;
       project.mappedInstitution = insti;
     }
@@ -1182,51 +1010,22 @@ export class ProposeProjectComponent implements OnInit {
     project.likelyhood = this.likelyHood;
     project.availabilityOfTechnology = this.isAvailabiltyOfTEch;
     project.financialFecialbility = this.isFinancialFeciability;
-    // project.actionJustification = this.commentForJustification;
     project.isMappedCorrectly = this.isMapped;
-    console.log('project.actionJustification..', project.actionJustification);
 
     this.serviceProxy
       .updateOneBaseProjectControllerProject(project.id, project)
       .subscribe(
         (res) => {
-          // window.alert("yess..")
-          // console.log(res);
-
-          let actionObject = new CaActionHistory();
+          const actionObject = new CaActionHistory();
           actionObject.isApprovalAction = 1;
           actionObject.previousAction = this.originalApprovalStatus;
           actionObject.currentAction = this.updatedApprovalStatus;
           actionObject.actionUser = this.fullname;
-          //  actionObject.isNdcAndSubNdc = 1;
-          //  actionObject.currentNdcs = this.project.currentNdc;
-          //  actionObject.previousNdcs = this.project.previousNdc;
-          //  actionObject.currentSubNdcs = this.project.currentSubNdc;
-          //  actionObject.previousSubNdcs = this.project.previousSubNdc;
           actionObject.project = this.project;
 
           this.serviceProxy
             .createOneBaseCaActionHistoryControllerCaActionHistory(actionObject)
-            .subscribe(
-              (res) => {
-                console.log('save', res);
-                // this.messageService.add({
-                //   severity: 'success',
-                //   summary: 'Success',
-                //   detail: 'project  has save successfully',
-                //   closable: true,
-                // });
-              }
-
-              // (err) => {
-              //   this.messageService.add({
-              //     severity: 'error',
-              //     summary: 'Error.',
-              //     detail: 'Internal server error, please try again.',
-              //     sticky: true,
-              //   });
-              // }
-            );
+            .subscribe((res) => {});
 
           this.messageService.add({
             severity: 'success',
@@ -1241,14 +1040,13 @@ export class ProposeProjectComponent implements OnInit {
           });
         },
         (err) => {
-          //window.alert("nooo..")
           this.messageService.add({
             severity: 'error',
             summary: 'Error.',
             detail: 'Internal server error, please try again.',
             sticky: true,
           });
-        }
+        },
       );
   }
 
@@ -1285,7 +1083,6 @@ export class ProposeProjectComponent implements OnInit {
       this.rejectCommentRequried = true;
     } else {
       this.selectedProject.projectRejectComment = this.rejectComment;
-      //this.updateProjectApprovalStatus(this.selectedProject, 2);
     }
   }
 
@@ -1317,27 +1114,20 @@ export class ProposeProjectComponent implements OnInit {
   }
 
   toUpdateNdcs() {
-    console.log('this.project....', this.project);
-
-    let sector = new Sector();
+    const sector = new Sector();
     sector.id = this.project.sector.id;
     sector.name = this.project.sector.name;
     this.project.sector = sector;
 
     this.project.proposeDateofCommence = moment(this.proposeDateofCommence);
     this.project.endDateofCommence = moment(this.endDateofCommence);
-    // this.project.mappedInstitution=this.selectedInstitution;/
-
-    //     console.log("project")
-    //  console.log(this.project)
-    //  console.log(this.selectedInstitution)
 
     if (this.project.ndc) {
       this.project.currentNdc = this.project.ndc.name;
       this.project.previousNdc = this.originalNdc;
       this.originalNdc = this.project.ndc.name;
 
-      let ndc = new Ndc();
+      const ndc = new Ndc();
       ndc.id = this.project.ndc?.id;
       ndc.name = this.project.ndc?.name;
       this.project.ndc = ndc;
@@ -1348,25 +1138,24 @@ export class ProposeProjectComponent implements OnInit {
       this.project.previousSubNdc = this.originalSubNdc;
       this.originalSubNdc = this.project.subNdc.name;
 
-      let subned = new SubNdc();
+      const subned = new SubNdc();
       subned.id = this.project.subNdc?.id;
       subned.name = this.project.subNdc?.name;
       this.project.subNdc = subned;
     }
 
     if (this.project.institution) {
-      let insti = new Institution();
+      const insti = new Institution();
       insti.id = this.project.mappedInstitution?.id;
       this.project.mappedInstitution = insti;
     }
-
 
     if (this.project.id > 0) {
       this.serviceProxy
         .updateOneBaseProjectControllerProject(this.project.id, this.project)
         .subscribe(
           (res) => {
-            let historyObject = new CaActionHistory();
+            const historyObject = new CaActionHistory();
             historyObject.isNdcAndSubNdc = 1;
             historyObject.currentNdcs = this.project.currentNdc;
             historyObject.previousNdcs = this.project.previousNdc;
@@ -1377,35 +1166,16 @@ export class ProposeProjectComponent implements OnInit {
 
             this.serviceProxy
               .createOneBaseCaActionHistoryControllerCaActionHistory(
-                historyObject
+                historyObject,
               )
-              .subscribe(
-                (res) => {
-                  console.log('save', res);
-                  // this.messageService.add({
-                  //   severity: 'success',
-                  //   summary: 'Success',
-                  //   detail: 'project  has save successfully',
-                  //   closable: true,
-                  // });
-                }
+              .subscribe((res) => {});
 
-                // (err) => {
-                //   this.messageService.add({
-                //     severity: 'error',
-                //     summary: 'Error.',
-                //     detail: 'Internal server error, please try again.',
-                //     sticky: true,
-                //   });
-                // }
-              );
-
-            console.log('update....', res, this.project);
-            this.isMapped = 1
+            this.isMapped = 1;
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
-              detail: 'Aggregated Actions and SubNdc  has updated successfully ',
+              detail:
+                'Aggregated Actions and SubNdc  has updated successfully ',
               closable: true,
             });
           },
@@ -1417,7 +1187,7 @@ export class ProposeProjectComponent implements OnInit {
               detail: 'Internal server error, please try again.',
               sticky: true,
             });
-          }
+          },
         );
     }
   }
@@ -1427,32 +1197,7 @@ export class ProposeProjectComponent implements OnInit {
     this.isDownloading = true;
 
     setTimeout(() => {
-      // var data = document.getElementById('content')!;
-
-      //  html2canvas(data).then((canvas) => {
-      //    var imaWidth = 120; //123
-      //    var pageHeight = 400; //500
-      //   // var imgHeight = (canvas.height * imaWidth) / canvas.width;
-      //   var imgHeight = 800;
-      //   // console.log('size', canvas.height); // 4346
-      //   // console.log('size....', canvas.width); //2006
-      //    var heightLeft = imgHeight;
-      //    var text =
-      //      'Downolad date ' +
-      //      moment().format('YYYY-MM-DD HH:mm:ss');
-
-      //    const contentDataURL = canvas.toDataURL('image/png');
-      //    let pdf = new jsPDF('p', 'mm', 'a4');
-      //    var position = 0;
-      //    pdf.addImage(contentDataURL, 'PNG', 10, position, imaWidth, imgHeight);
-      //    pdf.text(text, 297, 297);
-      //    pdf.save('');
-      //  });
-
-      // var divHeight = $('#pdfTable').height();
-      // var divWidth = $('#pdfTable').width();
-
-      var data = document.getElementById('content')!;
+      const data = document.getElementById('content')!;
 
       html2canvas(data).then((canvas) => {
         const componentWidth = data.offsetWidth;

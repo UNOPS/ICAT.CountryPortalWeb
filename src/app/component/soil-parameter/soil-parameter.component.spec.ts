@@ -8,9 +8,8 @@ describe('SoilParameterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SoilParameterComponent ]
-    })
-    .compileComponents();
+      declarations: [SoilParameterComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

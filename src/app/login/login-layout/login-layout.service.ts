@@ -21,11 +21,9 @@ export class LoginLayoutService {
   toggleLoginForm(
     showLoginForm: any,
     showForgotPassword: any,
-    showSetPassword: any
+    showSetPassword: any,
   ) {
-    // used show hide login and forgot password forms
     this.showForgotPassword.next(showForgotPassword);
     this.showLoginForm.next(showLoginForm);
-    //this.showSetPassword.next(showSetPassword);
   }
 }

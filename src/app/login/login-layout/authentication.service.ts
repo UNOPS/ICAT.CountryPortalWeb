@@ -7,7 +7,6 @@ export class AuthenticationService {
   public hideSidebar = new BehaviorSubject<boolean>(false);
 
   authenticate(isLoggedIn: boolean, hideSidebar: boolean) {
-    console.log(isLoggedIn);
     this.isLoggedIn.next(isLoggedIn);
     this.hideSidebar.next(hideSidebar);
   }

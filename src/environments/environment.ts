@@ -1,29 +1,20 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
 export const environment = {
-  production: false,
-  baseUrlAPI: 'http://localhost:7080',
-  // baseUrlAPI: 'https://icat-ca-tool.climatesi.com/web-api',
-  baseUrlAPIDocUploadAPI: 'http://localhost:7080/document/upload2',
-  baseUrlAPIDocUploadAnonymousAPI: 'http://localhost:7080/document/uploadFileAnonymous',
-  baseUrlAPIDocdownloadAPI: 'http://localhost:7080/document/downloadDocument',
-  baseUrlAPIDocReportChartDownloadAPI: 'http://localhost:7080/report/chartDataImage',
-//  baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
-  baseUrlExcelUpload: 'http://localhost:7080/parameter/upload',
-  baseUrlMac: 'https://icat-ca-tool.climatesi.com/cal-engine/mac',
-  baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
-  // baseUrlMac: 'https://icat-ca-tool.climatesi.com/cal-engine/mac',
+  production: true,
+  baseUrlAPI: process.env.NG_APP_COUNTRY_SERVICE_URL,
+  baseUrlAPIDocdownloadAPI:
+    process.env.NG_APP_COUNTRY_SERVICE_URL + '/document/downloadDocument',
+  baseUrlAPIDocUploadAPI:
+    process.env.NG_APP_COUNTRY_SERVICE_URL + '/document/upload2',
+  baseUrlAPIDocUploadAnonymousAPI:
+    process.env.NG_APP_COUNTRY_SERVICE_URL + '/document/uploadFileAnonymous',
+  baseUrlJsonFile: process.env.NG_APP_CAL_ENGINE_URL + '/filename',
+  baseUrlMac: process.env.NG_APP_CAL_ENGINE_URL + '/mac',
+  baseUrlExcelUpload:
+    process.env.NG_APP_COUNTRY_SERVICE_URL + '/parameter/upload',
+  baseUrlAPIDocReportChartDownloadAPI:
+    process.env.NG_APP_COUNTRY_SERVICE_URL + '/report/chartDataImage',
+  baseUrlPMU: process.env.NG_APP_PMU_BASE_URL,
+  baseUrlCountryWeb: process.env.NG_APP_COUNTRY_WEB_URL,
+  apiKey1: process.env.NG_APP_API_KEY_1,
+  apiKey2: process.env.NG_APP_API_KEY_2,
 };
-
-
-// baseUrlAPI: 'http://3.110.188.89:7080',
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI .

@@ -8,9 +8,8 @@ describe('EnterDataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EnterDataComponent ]
-    })
-    .compileComponents();
+      declarations: [EnterDataComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -20,60 +20,55 @@ export class VehicalParameterComponent implements OnInit {
   IsProposal: boolean;
 
   @Input()
-  isDisableforSubmitButton:boolean;
+  isDisableforSubmitButton: boolean;
 
   @Input()
   infos: any;
   @Input()
-  isSubmitted: boolean
+  isSubmitted: boolean;
 
-  userCountryId:number = 0;
-  userSectorId:number = 0;
+  userCountryId = 0;
+  userSectorId = 0;
 
   instiTutionList: Institution[];
-  isHistoricalValue: boolean = false;
+  isHistoricalValue = false;
 
   constructor(
     private serviceProxy: ServiceProxy,
-    private instituationProxy: InstitutionControllerServiceProxy
+    private instituationProxy: InstitutionControllerServiceProxy,
   ) {}
 
   ngOnInit(): void {
-
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
-    this.userCountryId  = tokenPayload.countryId;
+    this.userCountryId = tokenPayload.countryId;
     this.userSectorId = tokenPayload.sectorId;
 
-    console.log("country id  ovindu...",this.userCountryId)
     this.instituationProxy
-      .getInstitutionforAssesment()
+      .getInstitutionforAssessment()
       .subscribe((res: any) => {
         this.instiTutionList = res;
-
-        // if(this.instiTutionList.length != 0 && this.userCountryId != 0)
-        // {
-        //   this.instiTutionList = this.instiTutionList.filter((o)=>o.country?.id == this.userCountryId);
-        // }
-        
-       
-        console.log("vehicle ins  ovindu...",this.instiTutionList)
       });
   }
 
-  onSelectHistoricalVal(event:any, idxSec:any, idxPara:any){
-    console.log(event.value.value)
-    this.parameterSection.vehicalSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
+  onSelectHistoricalVal(event: any, idxSec: any, idxPara: any) {
+    this.parameterSection.vehicalSection.sectionparameters[idxSec].parameters[
+      idxPara
+    ]['value'] = event.value.value;
   }
 
-  changeUnit(e: any, idxSec:any, idxPara:any ){
-    console.log(e.value)
-    let values = this.parameterSection.vehicalSection.sectionparameters[idxSec].parameters[idxPara].historicalValues.filter(
-      (val) => val.unit === this.parameterSection.vehicalSection.sectionparameters[idxSec].parameters[idxPara].UOM
-    )
-    values.sort((a: any,b: any) => b.year - a.year);
-    this.parameterSection.vehicalSection.sectionparameters[idxSec].parameters[idxPara].displayhisValues = values
-
+  changeUnit(e: any, idxSec: any, idxPara: any) {
+    const values = this.parameterSection.vehicalSection.sectionparameters[
+      idxSec
+    ].parameters[idxPara].historicalValues.filter(
+      (val) =>
+        val.unit ===
+        this.parameterSection.vehicalSection.sectionparameters[idxSec]
+          .parameters[idxPara].UOM,
+    );
+    values.sort((a: any, b: any) => b.year - a.year);
+    this.parameterSection.vehicalSection.sectionparameters[idxSec].parameters[
+      idxPara
+    ].displayhisValues = values;
   }
-
 }

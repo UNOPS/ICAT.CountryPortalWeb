@@ -8,9 +8,8 @@ describe('MacAssessmentApprovedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MacAssessmentApprovedComponent ]
-    })
-    .compileComponents();
+      declarations: [MacAssessmentApprovedComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

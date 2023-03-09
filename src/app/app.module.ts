@@ -9,8 +9,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditCountryComponent } from './country-profile/edit-country/edit-country.component';
 import { ClimateActionComponent } from './climate-action/climate-action/climate-action.component';
-// import { TokenInterceptor } from 'src/shared/token-interceptor ';
-import { HttpClientJsonpModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { PaginatorModule } from 'primeng/paginator';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -37,16 +36,14 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
-import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ChartModule } from 'primeng/chart';
 import { TreeModule } from 'primeng/tree';
-
 import { GMapModule } from 'primeng/gmap';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProposeProjectComponent } from './propose-project/propose-project.component';
 import { ViewCountryComponent } from './country-profile/view-country/view-country.component';
-
 import { environment } from '../environments/environment';
 import { CountryNdcComponent } from './country-ndc/country-ndc.component';
 import {
@@ -60,7 +57,7 @@ import {
   AuthControllerServiceProxy,
   InstitutionControllerServiceProxy,
   AuditControllerServiceProxy,
-  AssesmentControllerServiceProxy,
+  AssessmentControllerServiceProxy,
   ParameterControllerServiceProxy,
   AssessmentYearControllerServiceProxy,
   ParameterRequestControllerServiceProxy,
@@ -68,8 +65,8 @@ import {
   VerificationControllerServiceProxy,
   NdcControllerServiceProxy,
   ReportControllerServiceProxy,
-  AssesmentResaultControllerServiceProxy,
-  ProjectionResaultControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
+  ProjectionResultControllerServiceProxy,
   SectorControllerServiceProxy,
   UnitConversionControllerServiceProxy,
   UserTypeControllerServiceProxy,
@@ -79,7 +76,6 @@ import {
   ApplicabilityControllerServiceProxy,
   TrackClimateControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
-import { HttpClient } from '@angular/common/http';
 import { ProjectInformationComponent } from './climate-action/project-information/project-information.component';
 import { MethodologiesComponent } from './methodologies/methodologies.component';
 import { AddNdcComponent } from './country-ndc/add-ndc/add-ndc.component';
@@ -94,7 +90,6 @@ import { LoginLayoutService } from './login/login-layout/login-layout.service';
 import { LoginFormComponent } from './login/login-form/login-form.component';
 import { InstitutionListComponent } from './institution/institution-list/institution-list.component';
 import { EditInstitutionComponent } from './institution/edit-institution/edit-institution.component';
-// import { ViewInstitutionComponent } from './institution/view-institution/view-institution.component';
 import { AllClimateActionComponent } from './all-climate-action/all-climate-action.component';
 import { ActiveClimateActionComponent } from './active-climate-action/active-climate-action.component';
 import { UserListComponent } from './user/user-list/user-list.component';
@@ -105,30 +100,15 @@ import { LearningMaterialComponent } from './learning-material/learning-material
 import { DocumentComponent } from './learning-material/document/document.component';
 import { ProposedResultComponent } from './climate-action-result/proposed-result/proposed-result.component';
 import { ActiveResultComponent } from './climate-action-result/active-result/active-result.component';
-// import { CaResultComponent } from './view-climate-action-results/ca-result/ca-result.component';
 import { AllResultComponent } from './climate-action-result/all-result/all-result.component';
-import {
-  NbLayoutDirectionService,
-  NbMenuModule,
-  NbOverlay,
-  NbOverlayModule,
-  NbOverlayService,
-  NbPositionBuilderService,
-  NbSidebarModule,
-  NbThemeModule,
-  NbToastrModule,
-  NbToastrService,
-  NbLayoutModule,
-} from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule } from '@nebular/theme';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MessagesModule } from 'primeng/messages';
 import { TableModule } from 'primeng/table';
-
 import { FuelParameterComponent } from './component/fuel-parameter/fuel-parameter.component';
 import { PowerPlantParameterComponent } from './component/power-plant-parameter/power-plant-parameter.component';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { ManagedatastatusComponent } from './managedatastatus/managedatastatus.component';
-
 import { DashboardModule } from './dashboard/dashboard.module';
 import { GhgAssessmentComponent } from './component/ghg-assessment/ghg-assessment.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
@@ -161,7 +141,6 @@ import { FinalReportComponent } from './report/final-report/final-report.compone
 import { AssignVerifiersComponent } from './data-request-flow/assign-verifiers/assign-verifiers.component';
 import { VerifyCaComponent } from './verification-verifier/verify/verify-ca.component';
 import { VerifyHistoryComponent } from './verification-verifier/verify-history/verify-history.component';
-
 import { VerificationSectorAdminComponent } from './verification-sector-admin/verification-sector-admin.component';
 import { NonconformanceReportComponent } from './nonconformance-report/nonconformance-report.component';
 import { SectorComponent } from './sector/sector.component';
@@ -171,7 +150,7 @@ import { VerifyDetailComponent } from './verification-verifier/verify-detail/ver
 import { VerifyParameterSectionComponent } from './verification-verifier/verify-parameter-section/verify-parameter-section.component';
 import { RoleGuardService } from './auth/role-guard.service';
 import { RaiseConcernComponent } from './component/raise-concern/raise-concern.component';
-import { VerifyDetailComponentSectorAdmin } from './verification-sector-admin/verify-detail/verify-detail.component';
+import { VerifyDetailSectorAdminComponent } from './verification-sector-admin/verify-detail/verify-detail.component';
 import { VerifyParameterSectionAdminComponent } from './verification-sector-admin/verify-parameter-section-admin/verify-parameter-section-admin.component';
 import { RaiseConcernAdminComponent } from './component/raise-concern-admin/raise-concern-admin.component';
 import { RaiseConcernSectionComponent } from './component/raise-concern-section/raise-concern-section.component';
@@ -179,17 +158,15 @@ import { TokenInterceptor } from './shared/token-interceptor ';
 import { SharedDataService } from 'shared/shared-data-services';
 import { ViewDatarequestHistoryComponent } from './component/view-datarequest-history/view-datarequest-history.component';
 import { DefaultValueFormComponent } from './data-request-flow/manage-default-values/default-value-form/default-value-form.component';
-import {MessageModule} from 'primeng/message';
 import { FeedstockParameterComponent } from './component/feedstock-parameter/feedstock-parameter.component';
 import { SoilParameterComponent } from './component/soil-parameter/soil-parameter.component';
 import { StratumParameterComponent } from './component/stratum-parameter/stratum-parameter.component';
 import { ResidueParameterComponent } from './component/residue-parameter/residue-parameter.component';
-import {PasswordModule} from 'primeng/password';
+import { PasswordModule } from 'primeng/password';
 
-export function getRemoteServiceBaseUrl(): string {
+export function getRemoteServiceBaseUrl(): any {
   return environment.baseUrlAPI;
 }
-
 
 @NgModule({
   declarations: [
@@ -267,7 +244,7 @@ export function getRemoteServiceBaseUrl(): string {
     VerifyDetailComponent,
     VerifyParameterSectionComponent,
     RaiseConcernComponent,
-    VerifyDetailComponentSectorAdmin,
+    VerifyDetailSectorAdminComponent,
     VerifyParameterSectionAdminComponent,
     RaiseConcernAdminComponent,
     RaiseConcernSectionComponent,
@@ -278,7 +255,6 @@ export function getRemoteServiceBaseUrl(): string {
     SoilParameterComponent,
     StratumParameterComponent,
     ResidueParameterComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -324,7 +300,6 @@ export function getRemoteServiceBaseUrl(): string {
     BrowserAnimationsModule,
     AppRoutingModule,
     MessagesModule,
-    // MessageModule,
     ToastModule,
     NbThemeModule.forRoot({ name: 'default' }),
     NbLayoutModule,
@@ -332,7 +307,7 @@ export function getRemoteServiceBaseUrl(): string {
     PaginatorModule,
     CarouselModule,
     DynamicDialogModule,
-    PasswordModule
+    PasswordModule,
   ],
   providers: [
     LoginLayoutService,
@@ -347,7 +322,7 @@ export function getRemoteServiceBaseUrl(): string {
     AuthControllerServiceProxy,
     InstitutionControllerServiceProxy,
     AuditControllerServiceProxy,
-    AssesmentControllerServiceProxy,
+    AssessmentControllerServiceProxy,
     ParameterControllerServiceProxy,
     ParameterRequestControllerServiceProxy,
     AssessmentYearControllerServiceProxy,
@@ -355,8 +330,8 @@ export function getRemoteServiceBaseUrl(): string {
     VerificationControllerServiceProxy,
     NdcControllerServiceProxy,
     ReportControllerServiceProxy,
-    AssesmentResaultControllerServiceProxy,
-    ProjectionResaultControllerServiceProxy,
+    AssessmentResultControllerServiceProxy,
+    ProjectionResultControllerServiceProxy,
     UnitConversionControllerServiceProxy,
     UserTypeControllerServiceProxy,
     TrackClimateControllerServiceProxy,

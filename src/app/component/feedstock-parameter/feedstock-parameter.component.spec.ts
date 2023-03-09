@@ -8,9 +8,8 @@ describe('FeedstockParameterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FeedstockParameterComponent ]
-    })
-    .compileComponents();
+      declarations: [FeedstockParameterComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

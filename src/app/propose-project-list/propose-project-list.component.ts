@@ -12,18 +12,16 @@ import {
   LazyLoadEvent,
   MessageService,
 } from 'primeng/api';
-// import { strictEqual } from 'assert';
 import {
-  MitigationActionType,
   Project,
   ProjectApprovalStatus,
   ProjectControllerServiceProxy,
-  ProjectOwner,
   ProjectStatus,
   Sector,
   ServiceProxy,
 } from 'shared/service-proxies/service-proxies';
 import * as XLSX from 'xlsx';
+import { environment } from 'environments/environment.prod';
 @Component({
   selector: 'app-propose-project-list',
   templateUrl: './propose-project-list.component.html',
@@ -40,7 +38,6 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
   cols: any;
   columns: any;
   options: any;
-  // sectorList: string[] = new Array();
   sectorList: Sector[] = [];
   projectStatusList: ProjectStatus[] = [];
   projectApprovalStatus: ProjectApprovalStatus[];
@@ -50,9 +47,9 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
   searchText: string;
 
   loading: boolean;
-  totalRecords: number = 0;
-  isActive: boolean = false;
-  rows: number = 10;
+  totalRecords = 0;
+  isActive = false;
+  rows = 10;
   last: number;
   event: any;
 
@@ -62,15 +59,15 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
     ApprovalStatus: null,
   };
 
-  countryId: number = 0; // should assign particular country id from login
-  sectorId: number = 0; // should assign particular sector id from login
+  countryId = 0;
+  sectorId = 0;
 
   rejectComment: string;
   rejectCommentRequried: boolean;
   selectedProject: Project;
   selectedProjects: any[] = [];
-  fileName: string = 'Climate Actions Details.xlsx';
-  isChecked: boolean = true;
+  fileName = 'Climate Actions Details.xlsx';
+  isChecked = true;
   @ViewChild('op') overlay: any;
 
   drComment: string;
@@ -84,8 +81,8 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
     { name: 'test 2', id: 2 },
   ];
 
-  statusList: string[] = new Array();
-  flag: number = 1;
+  statusList: string[] = [];
+  flag = 1;
   selectedCities: string[] = [];
   caList: climateAction[] = [];
   conList: conatctDetails[] = [];
@@ -101,7 +98,7 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
     private projectProxy: ProjectControllerServiceProxy,
     private cdr: ChangeDetectorRef,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) {}
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
@@ -111,13 +108,7 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
     this.selectedProject = event;
   }
 
-  onRowSelected(event: Project) {
-    // this.checkedProjects.push(event);
-    // console.log('this.checkedProjects...',this.checkedProjects);
-    // const key = 'id';
-    // const arrayUniqueByKey = [...new Map(this.checkedProjects.map((item:any) =>[item[key], item])).values()];
-    // console.log('arrayUniqueByKey...',arrayUniqueByKey);
-  }
+  onRowSelected(event: Project) {}
 
   rejectWithComment() {
     if (
@@ -160,35 +151,33 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
   }
 
   onSearch() {
-    let event: any = {};
+    const event: any = {};
     event.rows = this.rows;
     event.first = 0;
 
     this.loadgridData(event);
   }
 
-  // /////////////////////////////////////////////
-
   loadgridData = (event: LazyLoadEvent) => {
     this.loading = true;
     this.totalRecords = 0;
 
-    let statusId = this.searchBy.status ? this.searchBy.status.id : 0;
-    let currentProgress = this.searchBy.currentProgress
+    const statusId = this.searchBy.status ? this.searchBy.status.id : 0;
+    const currentProgress = this.searchBy.currentProgress
       ? this.searchBy.currentProgress
       : '';
-    let projectApprovalStatusId = this.searchBy.ApprovalStatus
+    const projectApprovalStatusId = this.searchBy.ApprovalStatus
       ? this.searchBy.ApprovalStatus.id
       : 0;
-    console.log('projectApprovalStatusId..', projectApprovalStatusId);
-    let filtertext = this.searchBy.text ? this.searchBy.text : '';
 
-    let pageNumber =
+    const filtertext = this.searchBy.text ? this.searchBy.text : '';
+
+    const pageNumber =
       event.first === 0 || event.first === undefined
         ? 1
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
     this.rows = event.rows === undefined ? 10 : event.rows;
-    let Active = 0;
+    const Active = 0;
     setTimeout(() => {
       this.projectProxy
         .getProjectList(
@@ -199,16 +188,14 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
           projectApprovalStatusId,
           currentProgress,
           Active,
-          // this.countryId,
           this.sectorId,
-          '1234'
+          environment.apiKey1,
         )
         .subscribe((a) => {
           this.climateactions = a.items;
 
           this.totalRecords = a.meta.totalItems;
           this.loading = false;
-          console.log('this.climateactions..', this.climateactions);
         });
     }, 1);
   };
@@ -220,22 +207,22 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
         undefined,
         undefined,
         undefined,
-        ["name,ASC"],
+        ['name,ASC'],
         undefined,
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.projectApprovalStatus = res.data;
-        
-
       });
   }
 
   updateProjectApprovalStatus(project: Project, aprovalStatus: number) {
-    let status = this.projectApprovalStatus.find((a) => a.id === aprovalStatus);
+    const status = this.projectApprovalStatus.find(
+      (a) => a.id === aprovalStatus,
+    );
     project.projectApprovalStatus =
       status === undefined ? (null as any) : status;
     if (aprovalStatus === 1) {
@@ -264,7 +251,6 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
       .updateOneBaseProjectControllerProject(project.id, project)
       .subscribe(
         (res) => {
-          console.log(res);
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -284,7 +270,7 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
             detail: 'Internal server error, please try again.',
             sticky: true,
           });
-        }
+        },
       );
   }
 
@@ -312,11 +298,7 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
   }
 
   addproject() {
-    // this.router.navigate(['/propose-project']);
-    //let prAprSts = new ProjectApprovalStatus();
-    // prAprSts.id = 4;
-    //this.project.projectApprovalStatus = prAprSts;
-    let project: Project = new Project();
+    const project: Project = new Project();
     project.climateActionName = 'Anonymous Climate Action';
     project.telephoneNumber = '999999999999';
     project.proposeDateofCommence = moment(Date.now());
@@ -324,13 +306,12 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
 
     this.serviceProxy.createOneBaseProjectControllerProject(project).subscribe(
       (res) => {
-        console.log('save', res);
         this.router.navigate(['/propose-project'], {
           queryParams: { anonymousId: res.id },
         });
       },
 
-      (err) => {}
+      (err) => {},
     );
   }
 
@@ -340,10 +321,6 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // applyFilterGlobal($event, stringVal) {
-  //   this.dt.filterGlobal(($event.target as HTMLInputElement).value, 'contains');
-  // }
-
   detail(climateactions: Project) {
     this.router.navigate(['/propose-project'], {
       queryParams: { id: climateactions.id, flag: this.flag },
@@ -351,27 +328,21 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
   }
 
   removeFromString(arr: string[], str: string) {
-    let escapedArr = arr.map((v) => escape(v));
-    let regex = new RegExp(
+    const escapedArr = arr.map((v) => escape(v));
+    const regex = new RegExp(
       '(?:^|\\s)' + escapedArr.join('|') + '(?!\\S)',
-      'gi'
+      'gi',
     );
     return str.replace(regex, '');
   }
 
   toGhGAsse() {
-    this.router.navigate(['/ghg-impact'], {
-      // queryParams: { id: climateactions.id },
-    });
+    this.router.navigate(['/ghg-impact'], {});
   }
 
   async toDownloadCAs() {
-    // console.log("12345.....",this.selectedProjects[0].projectOwer)
-
-    for (let x of this.selectedProjects) {
-      // console.log("selectedProjects..",x)
-
-      let ca: climateAction = {
+    for (const x of this.selectedProjects) {
+      const ca: climateAction = {
         Climate_Action_Name: '',
         Country: '',
         Current_tatus_of_the_Climate_Action: '',
@@ -381,7 +352,7 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
         Scope_of_the_Climate_Action: '',
       };
 
-      let conDetails: conatctDetails = {
+      const conDetails: conatctDetails = {
         Contact_Person_FullName: '',
         Email: '',
         Contact_Person_Designation: '',
@@ -390,14 +361,14 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
         project_Proponent: '',
       };
 
-      let generalDetails: generalDetailsOfCA = {
+      const generalDetails: generalDetailsOfCA = {
         Propose_Date_of_Commence: '',
         Duration: '',
         Objective_of_the_Climate_Action: '',
         Project_owner: '',
       };
 
-      let locate: locationMap = {
+      const locate: locationMap = {
         Sub_National_Levl1: '',
         Sub_National_Levl2: '',
         Sub_National_Levl3: '',
@@ -405,7 +376,7 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
         Latitude: '',
       };
 
-      let outcome: outcomes = {
+      const outcome: outcomes = {
         Outcome: '',
         Current_Progress: '',
         GHG_Emission_Reduction: '',
@@ -414,14 +385,14 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
         Indirect_SDBenefit: '',
       };
 
-      let stkholders: stakeholders = {
+      const stkholders: stakeholders = {
         Implementing_Entity: '',
         Executing_Entity: '',
         Parties_Involved: '',
         Beneficiaries: '',
       };
 
-      let financialBAckground: financialBackground = {
+      const financialBAckground: financialBackground = {
         Donors: '',
         Investors: '',
         Funding_Organization: '',
@@ -489,32 +460,30 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     const ws_ca: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.caList);
     const ws_conDetails: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
-      this.conList
+      this.conList,
     );
     const ws_generalDetailsList: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
-      this.generalDetailsList
+      this.generalDetailsList,
     );
     const ws_locationDetailsList: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
-      this.locationDetailsList
+      this.locationDetailsList,
     );
     const ws_outcomesList: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
-      this.outcomesList
+      this.outcomesList,
     );
     const ws_stakeholderList: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
-      this.stakeholderList
+      this.stakeholderList,
     );
     const ws_financilaBackgroundList: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
-      this.financilaBackgroundList
+      this.financilaBackgroundList,
     );
-
-    // const ws1: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.excellist);
 
     XLSX.utils.book_append_sheet(wb, ws_ca, 'Climate Action');
     XLSX.utils.book_append_sheet(wb, ws_conDetails, 'Contact Details');
     XLSX.utils.book_append_sheet(
       wb,
       ws_generalDetailsList,
-      'General Details of CA'
+      'General Details of CA',
     );
     XLSX.utils.book_append_sheet(wb, ws_locationDetailsList, 'Location');
     XLSX.utils.book_append_sheet(wb, ws_outcomesList, 'Outcomes_Benefits');
@@ -522,20 +491,12 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
     XLSX.utils.book_append_sheet(
       wb,
       ws_financilaBackgroundList,
-      'Financial Background'
+      'Financial Background',
     );
 
-    //XLSX.utils.book_append_sheet(wb, ws1, "test2");
-    /* save to file */
     if (this.selectedProjects.length > 0) {
       XLSX.writeFile(wb, this.fileName);
     } else {
-      // this.messageService.add({
-      //   severity: 'error',
-      //   summary: 'Error.',
-      //   detail: 'Internal server error, please try again.',
-      //   sticky: true,
-      // });
       this.messageService.add({
         severity: 'warn',
         summary: 'Warn',

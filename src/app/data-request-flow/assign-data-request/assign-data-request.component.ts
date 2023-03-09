@@ -13,18 +13,14 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import decode from 'jwt-decode';
-// import { strictEqual } from 'assert';
 import {
-  MitigationActionType,
   ParameterRequestControllerServiceProxy,
   Project,
   ProjectControllerServiceProxy,
-  ProjectOwner,
-  ProjectStatus,
-  Sector,
   ServiceProxy,
   UsersControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-assign-data-request',
@@ -34,11 +30,8 @@ import {
 export class AssignDataRequestComponent implements OnInit, AfterViewInit {
   userList: User[];
 
-
   climateactions: Project[];
   assignCAArray: any[] = [];
-
-
 
   selectedAssignDataRequest: Project[];
   selectedParameters: any[];
@@ -47,14 +40,14 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
   assignDataRequestList: any[];
   selectedDeadline: Date;
   minDate: Date;
-  confirm1: boolean = false;
+  confirm1 = false;
   userName: string;
 
   searchText: string;
 
   loading: boolean;
-  totalRecords: number = 0;
-  rows: number = 10;
+  totalRecords = 0;
+  rows = 10;
   last: number;
   event: any;
 
@@ -64,13 +57,13 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
   };
 
   first = 0;
-  paraId:number;
+  paraId: number;
   requestHistoryList: any[] = [];
-  displayHistory:boolean = false;
-  climateActionListFromBackend:any[]=[];
-  userCountryId:number = 0;
-  userSectorId:number = 0;
-  climateactionsList:any[] = [];
+  displayHistory = false;
+  climateActionListFromBackend: any[] = [];
+  userCountryId = 0;
+  userSectorId = 0;
+  climateactionsList: any[] = [];
   constructor(
     private router: Router,
     private serviceProxy: ServiceProxy,
@@ -78,138 +71,61 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
     private parameterProxy: ParameterRequestControllerServiceProxy,
     private usersControllerServiceProxy: UsersControllerServiceProxy,
     private messageService: MessageService,
-    private prHistoryProxy : ParameterHistoryControllerServiceProxy,
-    private climateProxy:ProjectControllerServiceProxy
-    
+    private prHistoryProxy: ParameterHistoryControllerServiceProxy,
+    private climateProxy: ProjectControllerServiceProxy,
   ) {}
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
   }
 
   async ngOnInit(): Promise<void> {
-    // this.totalRecords = 0;
     this.userName = localStorage.getItem('user_name')!;
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
-    this.userCountryId  = tokenPayload.countryId;
+    this.userCountryId = tokenPayload.countryId;
     this.userSectorId = tokenPayload.sectorId;
 
-   // let res2:any;
-    this.climateActionListFromBackend = await this.parameterProxy.getClimateActionByDataRequestStatus().toPromise();
-    //console.log("ca from backend...",res2)
-      //this.assessmentList = res2;
-    // this.serviceProxy
-    //   .getManyBaseProjectControllerProject(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['editedOn,DESC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    //   .subscribe((res: any) => {
-    //     this.climateactions = res.data;
-    //     this.totalRecords = res.totalRecords;
-    //     if (res.totalRecords !== null) {
-    //       this.last = res.count;
-    //     } else {
-    //       this.last = 0;
-    //     }
+    this.climateActionListFromBackend = await this.parameterProxy
+      .getClimateActionByDataRequestStatus()
+      .toPromise();
 
-    //     console.log('climateactions', res.data);
-    //   });
-
-    let filter2: string[] = new Array();
+    const filter2: string[] = [];
 
     filter2.push('projectApprovalStatus.id||$eq||' + 5);
 
-    // this.serviceProxy
-    //   .getManyBaseProjectControllerProject(
-    //     undefined,
-    //     undefined,
-    //     filter2,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-      // this.climateProxy.getProjectsForCountrySectorInstitution(1,10000,0,[],0,0)
-      // .subscribe((res: any) => {
-      
-        
-      //   this.climateactions = res.items;
-      //   // console.log("country....", this.climateactions);
-      //   // this.climateactionsList = this.climateactions.filter((o)=>o.country.id == this.userCountryId);
-      //   // this.climateactions = this.climateActionListFromBackend;
-      //   console.log('my list....s', res.data);
-      // });
-      this.parameterProxy
-      .getAssignDateRequest(
-        0,
-        0,
-        '',
-        0,
-        this.userName,
-        "1234"
-      )
+    this.parameterProxy
+      .getAssignDateRequest(0, 0, '', 0, this.userName, environment.apiKey1)
       .subscribe((res) => {
-       
-        for(let a of res.items){
-          // console.log("test countrya",a)
-          
+        for (const a of res.items) {
           if (a.parameterId.Assessment !== null) {
             if (
               !this.assignCAArray.includes(
-                a.parameterId.Assessment.Prject
-                  .climateActionName
+                a.parameterId.Assessment.Prject.climateActionName,
               )
             ) {
-             
               this.assignCAArray.push(
-                a.parameterId.Assessment.Prject
-                  .climateActionName
+                a.parameterId.Assessment.Prject.climateActionName,
               );
-              this.climateactionsList.push(
-               a.parameterId.Assessment.Prject
-              );
+              this.climateactionsList.push(a.parameterId.Assessment.Prject);
             }
           }
-        
-          
-          
         }
-       
       });
-
-
 
     this.usersControllerServiceProxy
       .usersByInstitution(1, 1000, '', 9, this.userName)
       .subscribe((res: any) => {
         this.userList = res.items;
-        // this.totalRecords = res.itemCount;
-
-        console.log('this.userList', this.userList);
       });
   }
 
   onCAChange(event: any) {
-    console.log('selectedUser', this.selectedUser);
-
     this.onSearch();
   }
 
   onAssignClick() {
     if (this.selectedParameters.length > 0) {
       this.confirm1 = true;
-     
     }
   }
 
@@ -218,34 +134,29 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
   }
 
   onSearch() {
-    let event: any = {};
+    const event: any = {};
     event.rows = this.rows;
     event.first = 0;
 
     this.loadgridData(event);
   }
 
-  // /////////////////////////////////////////////
-
   loadgridData = (event: LazyLoadEvent) => {
-    console.log('event Date', event);
     this.loading = true;
     this.totalRecords = 0;
 
-    let climateActionId = this.searchBy.climateAction
+    const climateActionId = this.searchBy.climateAction
       ? this.searchBy.climateAction.id
       : 0;
 
-    let filtertext = this.searchBy.text ? this.searchBy.text : '';
+    const filtertext = this.searchBy.text ? this.searchBy.text : '';
 
-    let pageNumber =
+    const pageNumber =
       event.first === 0 || event.first === undefined
         ? 1
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
     this.rows = event.rows === undefined ? 10 : event.rows;
     setTimeout(() => {
-      console.log('climateActionId', climateActionId);
-
       this.parameterProxy
         .getAssignDateRequest(
           pageNumber,
@@ -253,10 +164,9 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
           filtertext,
           climateActionId,
           this.userName,
-          "1234"
+          environment.apiKey1,
         )
         .subscribe((a) => {
-          console.log('aa', a);
           if (a) {
             this.assignDataRequestList = a.items;
             this.totalRecords = a.meta.totalItems;
@@ -269,10 +179,6 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
   addproject() {
     this.router.navigate(['/propose-project']);
   }
-
-  // applyFilterGlobal($event, stringVal) {
-  //   this.dt.filterGlobal(($event.target as HTMLInputElement).value, 'contains');
-  // }
 
   detail() {
     this.router.navigate(['/project-information']);
@@ -290,45 +196,14 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
     this.first = 0;
   }
 
+  getInfo(obj: any) {
+    this.paraId = obj.parameterId.id;
 
-  getInfo(obj: any)
-  {
-       console.log("dataRequestList...",obj)
-       this.paraId = obj.parameterId.id;
-       console.log("this.paraId...",this.paraId)
+    this.prHistoryProxy.getHistroyByid(this.paraId).subscribe((res) => {
+      this.requestHistoryList = res;
+    });
 
-      // let x = 602;
-       this.prHistoryProxy
-       .getHistroyByid(this.paraId)  // this.paraId
-       .subscribe((res) => {
-         
-        this.requestHistoryList =res;
-         
-       console.log('this.requestHistoryList...', this.requestHistoryList);
-       
-       });
-      //  let filter1: string[] = [];
-      //  filter1.push('parameter.id||$eq||' + this.paraId);
-      //  this.serviceProxy
-      //  .getManyBaseParameterRequestControllerParameterRequest(
-      //    undefined,
-      //    undefined,
-      //    filter1,
-      //    undefined,
-      //    undefined,
-      //    undefined,
-      //    1000,
-      //    0,
-      //    0,
-      //    0
-      //  )
-      //  .subscribe((res: any) => {
-      //    this.requestHistoryList =res.data;
-         
-      //    console.log('this.requestHistoryList...', this.requestHistoryList);
-      //  });
-
-       this.displayHistory = true;
+    this.displayHistory = true;
   }
 
   isLastPage(): boolean {
@@ -342,48 +217,47 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
   }
 
   search() {
-    let a: any = {};
+    const a: any = {};
     a.rows = this.rows;
     a.first = 0;
-
-    // this.onClimateActionStatusChange(a);
   }
 
   removeFromString(arr: string[], str: string) {
-    let escapedArr = arr.map((v) => escape(v));
-    let regex = new RegExp(
+    const escapedArr = arr.map((v) => escape(v));
+    const regex = new RegExp(
       '(?:^|\\s)' + escapedArr.join('|') + '(?!\\S)',
-      'gi'
+      'gi',
     );
     return str.replace(regex, '');
   }
   onClickSave(status: number) {
-    let userId: number = this.selectedUser ? this.selectedUser.id : 0;
-    let idList = new Array<number>();
+    const userId: number = this.selectedUser ? this.selectedUser.id : 0;
+    const idList = new Array<number>();
     if (userId > 0 && this.selectedParameters.length > 0) {
-      console.log('userId', userId);
       for (let index = 0; index < this.selectedParameters.length; index++) {
         const element = this.selectedParameters[index];
         idList.push(element.id);
       }
 
-      let inputParameters = new UpdateDeadlineDto();
+      const inputParameters = new UpdateDeadlineDto();
       inputParameters.ids = idList;
       inputParameters.userId = userId;
       inputParameters.status = status;
       inputParameters.deadline = moment(this.selectedDeadline);
-      console.log('inputParameters', inputParameters);
+
       this.parameterProxy.updateDeadlineDataEntry(inputParameters).subscribe(
         (res) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: status==3?'A Data Entry Operator is saved successfully':'A Data Entry Operator is assigned successfully',
+            detail:
+              status == 3
+                ? 'A Data Entry Operator is saved successfully'
+                : 'A Data Entry Operator is assigned successfully',
           });
           this.selectedParameters = [];
           this.onSearch();
           this.confirm1 = false;
-          
         },
         (err) => {
           this.messageService.add({
@@ -391,7 +265,7 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
             summary: 'Error.',
             detail: 'Internal server error, please try again.',
           });
-        }
+        },
       );
     }
   }

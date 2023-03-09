@@ -1,29 +1,11 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
-import {
-  ConfirmationService,
-  LazyLoadEvent,
-  MessageService,
-} from 'primeng/api';
+import { LazyLoadEvent } from 'primeng/api';
 
 import {
-  AssesmentControllerServiceProxy,
   Assessment,
   AssessmentYear,
-  MitigationActionType,
-  Project,
-  ProjectApprovalStatus,
-  ProjectControllerServiceProxy,
-  ProjectOwner,
-  ProjectStatus,
-  Sector,
   ServiceProxy,
   VerificationControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
@@ -31,125 +13,98 @@ import {
 @Component({
   selector: 'app-verify-history',
   templateUrl: './verify-history.component.html',
-  styleUrls: ['./verify-history.component.css']
+  styleUrls: ['./verify-history.component.css'],
 })
-export class VerifyHistoryComponent implements OnInit
-{
+export class VerifyHistoryComponent implements OnInit {
+  VerificationStatusEnum = VerificationStatus;
 
- VerificationStatusEnum = VerificationStatus;
+  verificationStatus: string[] = [
+    VerificationStatus[VerificationStatus.Pending],
+    VerificationStatus[VerificationStatus['Pre Assessment']],
+    VerificationStatus[VerificationStatus['NC Recieved']],
+    VerificationStatus[VerificationStatus['Initial Assessment']],
+    VerificationStatus[VerificationStatus['Final Assessment']],
+    VerificationStatus[VerificationStatus.Fail],
+    VerificationStatus[VerificationStatus['Pass']],
+  ];
 
-verificationStatus: string[] = [
-  VerificationStatus[VerificationStatus.Pending],
-  VerificationStatus[VerificationStatus['Pre Assessment']],
-  VerificationStatus[VerificationStatus['NC Recieved']],
-  VerificationStatus[VerificationStatus['Initial Assessment']],
-  VerificationStatus[VerificationStatus['Final Assessment']],
-  VerificationStatus[VerificationStatus.Fail],
-  VerificationStatus[VerificationStatus['Pass']]
-];
+  searchBy: any = {
+    status: null,
+    text: null,
+  };
+  loading: boolean;
+  totalRecords = 0;
+  isActive = false;
+  rows = 10;
+  last: number;
+  event: any;
+  paras: AssessmentYear[] = [];
+  assessmentList: Assessment[] = [];
+  blank = '';
 
-searchBy: any = {
-  status: null,
-  text: null,
-};
-loading: boolean;
-totalRecords: number = 0;
-isActive: boolean = false;
-rows: number = 10;
-last: number;
-event: any;
-paras: AssessmentYear[] = [];
-assessmentList: Assessment[] = [];
-blank:string='';
+  @ViewChild('op') overlay: any;
+  constructor(
+    private router: Router,
+    private serviceProxy: ServiceProxy,
+    private vrServiceProxy: VerificationControllerServiceProxy,
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
+  ) {}
 
-@ViewChild('op') overlay: any;
-constructor(
-  private router: Router,
-  private serviceProxy: ServiceProxy,
-  private vrServiceProxy: VerificationControllerServiceProxy,
-  private cdr: ChangeDetectorRef,
-  private route: ActivatedRoute
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
+  }
 
-) { }
+  ngOnInit(): void {
+    this.onSearch();
+  }
 
-ngAfterViewInit(): void {
-  this.cdr.detectChanges();
-}
+  onStatusChange($event: any) {
+    this.onSearch();
+  }
 
-ngOnInit(): void {
- console.log(this.verificationStatus, VerificationStatus[VerificationStatus.Pending], VerificationStatus.Pending)
+  onSearch() {
+    const event: any = {};
+    event.rows = this.rows;
+    event.first = 0;
 
-  this.onSearch();
-}
+    this.loadgridData(event);
+  }
 
+  loadgridData = (event: LazyLoadEvent) => {
+    this.totalRecords = 0;
 
+    const statusId = this.searchBy.status
+      ? Number(VerificationStatus[this.searchBy.status])
+      : 0;
 
-onStatusChange($event: any) {
-  this.onSearch();
-}
+    const filtertext = this.searchBy.text ? this.searchBy.text : '';
 
+    const pageNumber =
+      event.first === 0 || event.first === undefined
+        ? 1
+        : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
+    this.rows = event.rows === undefined ? 10 : event.rows;
+    setTimeout(() => {
+      this.vrServiceProxy
+        .getVRParameters(pageNumber, this.rows, statusId, filtertext)
+        .subscribe((a) => {
+          this.paras = a.items.filter(
+            (o: any) => o.verificationStatus == 6 || o.verificationStatus == 7,
+          );
 
-onSearch() {
-  let event: any = {};
-  event.rows = this.rows;
-  event.first = 0;
+          this.totalRecords = this.paras.length;
+        });
+    }, 1);
+  };
 
-  this.loadgridData(event);
-}
-
-
-
-
-loadgridData = (event: LazyLoadEvent) => {
- // this.loading = true;
-  this.totalRecords = 0;
-
-  console.log(this.searchBy);
-  let statusId = this.searchBy.status
-    ? Number(VerificationStatus[this.searchBy.status])
-    : 0;
-    console.log("110011",statusId)
-  let filtertext = this.searchBy.text ? this.searchBy.text : '';
-  console.log("2222",filtertext)
-  let pageNumber =
-    event.first === 0 || event.first === undefined
-      ? 1
-      : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
-  this.rows = event.rows === undefined ? 10 : event.rows;
-  let Active = 0;
-  setTimeout(() => {
-    this.vrServiceProxy
-      .getVRParameters(
-        pageNumber,
-        this.rows,
-        statusId,
-        filtertext,
-      )
-      .subscribe((a) => {
-       // this.paras = a.items;
-        this.paras = a.items.filter((o: any)=>o.verificationStatus == 6 || o.verificationStatus == 7 );
-        console.log('hey aassse year',this.paras)
-        this.totalRecords =this.paras.length;
-      //  this.loading = false;
-      });
-  }, 1);
-};
-
-
-statusClick(event: any, object: AssessmentYear) {
-  // if (
-  //   this.QuAlityCheckStatusEnum[object.qaStatus] !==
-  //   this.QuAlityCheckStatusEnum[this.QuAlityCheckStatusEnum.Pass]
-  // ) {
-  //   this.router.navigate(['/qc/detail'], {
-  //     queryParams: { id: object.id },
-  //   });
-  // }
-
-  this.router.navigate(['verification-verifier/detail'], {
-    queryParams: { id: object.id , verificationStatus:object.verificationStatus, flag:1 },
-  });
-}
-
-
+  statusClick(event: any, object: AssessmentYear) {
+    this.router.navigate(['verification-verifier/detail'], {
+      queryParams: {
+        id: object.id,
+        verificationStatus: object.verificationStatus,
+        flag: 1,
+      },
+    });
+  }
 }

@@ -8,9 +8,8 @@ describe('RaiseConcernComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RaiseConcernComponent ]
-    })
-    .compileComponents();
+      declarations: [RaiseConcernComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,4 +1,4 @@
-<form #fData="ngForm" (ngSubmit)="createAssementCA(fData)" >
+<form #fData="ngForm" (ngSubmit)="createAssessmentCA(fData)">
   <div class="p-grid p-fluid col-sm-12">
     <div class="row p-2 mt-4">
       <div class="col-12 col-md-3">
@@ -67,15 +67,6 @@
             appendTo="body"
           ></p-dropdown>
         </div>
-        <!-- <p
-            class="info-message text-danger"
-            *ngIf="
-              !selectedNdc &&
-              (fData.submitted || ndc.touched || ndc.dirty)
-            "
-          >
-            This is a mandatory field
-          </p> -->
       </div>
     </div>
     <div class="row p-2">
@@ -100,15 +91,6 @@
             appendTo="body"
           ></p-dropdown>
         </div>
-        <!-- <p
-            class="info-message text-danger"
-            *ngIf="
-              !selctedSubNdc &&
-              (fData.submitted || subndc.touched || subndc.dirty)
-            "
-          >
-            This is a mandatory field
-          </p> -->
       </div>
     </div>
     <div class="row p-2">
@@ -127,14 +109,6 @@
             [disabled]="isDisableforSubmitButton"
             [required]="true"
           ></p-calendar>
-          <!-- <p-calendar
-                  placeholder="DD/MM/YYYY"
-                  view="year"
-                  dateFormat="yy"
-                  name="propsedDate"
-                  #propsedDate="ngModel"
-                  [(ngModel)]="baseYear"
-                ></p-calendar> -->
         </div>
         <p
           class="info-message text-danger"
@@ -159,7 +133,7 @@
             [options]="years"
             [disabled]="isDisableforSubmitButton"
             [(ngModel)]="selectYears"
-            (ngModelChange)="onAssesmentYearChange($event)"
+            (ngModelChange)="onAssessmentYearChange($event)"
             [required]="true"
           ></p-multiSelect>
         </div>
@@ -176,20 +150,20 @@
       <div class="col-12 col-md-7" *ngIf="IsProposal">
         <div>
           <p-calendar
-            [(ngModel)]="assesmentYear"
+            [(ngModel)]="assessmentYear"
             name="multiYear"
             #multiYear="ngModel"
             view="year"
             dateFormat="yy"
             [disabled]="isDisableforSubmitButton"
-            (ngModelChange)="onAssesmentYearChange($event)"
+            (ngModelChange)="onAssessmentYearChange($event)"
             [required]="true"
           ></p-calendar>
         </div>
         <p
           class="info-message text-danger"
           *ngIf="
-            !assesmentYear &&
+            !assessmentYear &&
             (fData.submitted || multiYear.touched || multiYear.dirty)
           "
         >
@@ -221,14 +195,14 @@
           </p-inputNumber>
         </div>
         <p
-        class="info-message text-danger"
-        *ngIf="
-        !projectDuration &&
-          (fData.submitted || projDuration.touched || projDuration.dirty)
-        "
-      >
-        This is a mandatory field
-      </p>
+          class="info-message text-danger"
+          *ngIf="
+            !projectDuration &&
+            (fData.submitted || projDuration.touched || projDuration.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
       </div>
     </div>
     <div class="row p-2">
@@ -251,14 +225,14 @@
           ></p-calendar>
         </div>
         <p
-        class="info-message text-danger"
-        *ngIf="
-        !proposeDateofCommence &&
-          (fData.submitted || propsedDate.touched || propsedDate.dirty)
-        "
-      >
-        This is a mandatory field
-      </p>
+          class="info-message text-danger"
+          *ngIf="
+            !proposeDateofCommence &&
+            (fData.submitted || propsedDate.touched || propsedDate.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
       </div>
     </div>
     <div class="row p-2">
@@ -271,9 +245,9 @@
         <div>
           <p-multiSelect
             appendTo="body"
-            #assementObjective="ngModel"
-            name="assementObjective"
-            [options]="assesmentObjective"
+            #assessmentObjective="ngModel"
+            name="assessmentObjective"
+            [options]="assessmentObjectiveList"
             optionLabel="objective"
             [disabled]="isDisableforSubmitButton"
             [(ngModel)]="selectedObjective"
@@ -282,21 +256,6 @@
           ></p-multiSelect>
         </div>
       </div>
-      <!-- <div
-        class="p-2 col-md-2 d-flex align-items-center"
-        *ngIf="showAddObjective"
-      >
-        <div>
-          <button
-            pButton
-            pRipple
-            type="button"
-            icon="pi pi-plus-circle"
-            class="p-button-rounded"
-            (click)="addObjective()"
-          ></button>
-        </div>
-      </div> -->
     </div>
     <div class="row p-2">
       <div class="col-12 col-md-3">
@@ -319,21 +278,19 @@
           ></p-dropdown>
         </div>
         <p
-        class="info-message text-danger"
-        *ngIf="
-        !selectedApproch &&
-          (fData.submitted || Approach.touched || Approach.dirty)
-        "
-      >
-        This is a mandatory field
-      </p>
-        
-        <br>
-          <div>
-            
-            <p style="color:red;">{{ this.warningMessage}}</p>
-          </div>
-        
+          class="info-message text-danger"
+          *ngIf="
+            !selectedApproch &&
+            (fData.submitted || Approach.touched || Approach.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
+
+        <br />
+        <div>
+          <p style="color: red">{{ this.warningMessage }}</p>
+        </div>
       </div>
     </div>
 
@@ -354,10 +311,15 @@
             (ngModelChange)="isGuidedSelectionChange($event)"
           ></p-radioButton>
 
-          <label for="city1">Guided Selection <div type="button"  class="pi pi-info-circle" pTooltip="Please check the applicability criteria of methodology to specifications of your climate actions" ></div>
+          <label for="city1"
+            >Guided Selection
+            <div
+              type="button"
+              class="pi pi-info-circle"
+              pTooltip="Please check the applicability criteria of methodology to specifications of your climate actions"
+            ></div>
           </label>
         </div>
-        
       </div>
 
       <div class="col-12 col-md-4">
@@ -397,14 +359,14 @@
           ></p-dropdown>
         </div>
         <p
-        class="info-message text-danger"
-        *ngIf="
-        !selectedMitigationActionType &&
-          (fData.submitted || mAtype.touched || mAtype.dirty)
-        "
-      >
-        This is a mandatory field
-      </p>
+          class="info-message text-danger"
+          *ngIf="
+            !selectedMitigationActionType &&
+            (fData.submitted || mAtype.touched || mAtype.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
       </div>
     </div>
     <div class="row p-2 ml-10" *ngIf="isGuidedSelection?.toString() === 'true'">
@@ -424,19 +386,19 @@
             [(ngModel)]="selectedApplicability"
             [disabled]="isDisableforSubmitButton"
             optionLabel="name"
-            (ngModelChange)="onApplicationAssesmentChange($event)"
+            (ngModelChange)="onApplicationAssessmentChange($event)"
             [required]="true"
           ></p-multiSelect>
         </div>
         <p
-        class="info-message text-danger"
-        *ngIf="
-        selectedApplicability?.length === 0 &&
-          (fData.submitted || mAtype1.touched || mAtype1.dirty)
-        "
-      >
-        This is a mandatory field
-      </p>
+          class="info-message text-danger"
+          *ngIf="
+            selectedApplicability?.length === 0 &&
+            (fData.submitted || mAtype1.touched || mAtype1.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
       </div>
     </div>
     <div class="row p-2 ml-10" *ngIf="isGuidedSelection?.toString() === 'true'">
@@ -461,21 +423,20 @@
           ></p-dropdown>
         </div>
         <p
-        class="info-message text-danger"
-        *ngIf="
-        !selectedEasyofdataCollection &&
-          (fData.submitted || mAtype3.touched || mAtype3.dirty)
-        "
-      >
-        This is a mandatory field
-      </p>
+          class="info-message text-danger"
+          *ngIf="
+            !selectedEasyofdataCollection &&
+            (fData.submitted || mAtype3.touched || mAtype3.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
       </div>
     </div>
     <div class="row p-2 ml-10">
       <div class="col-12 col-md-3">
         <div>
           <label for="projectownership">Methodology* </label>
-
         </div>
       </div>
       <div class="col-12 col-md-7">
@@ -498,17 +459,19 @@
 
       <div class="col-12 col-md-2">
         <div>
-          <div *ngIf="hasPrevActiveCA && !IsProposal"  >
-            <div class="col-1"> <div style="font-size: 2em;"  type="button"  class="pi pi-info-circle "
-               pTooltip="You can only select the methodology that was used for previous assessment" >
+          <div *ngIf="hasPrevActiveCA && !IsProposal">
+            <div class="col-1">
+              <div
+                style="font-size: 2em"
+                type="button"
+                class="pi pi-info-circle"
+                pTooltip="You can only select the methodology that was used for previous assessment"
+              ></div>
             </div>
           </div>
         </div>
-
-        </div>
       </div>
     </div>
-    <!-- ----------------Route list maintain ------------------------>
     <div>
       <div class="row p-2 ml-20" *ngIf="useRoute">
         <hr />
@@ -572,8 +535,6 @@
       </div>
     </div>
 
-    <!-- ----------------PowerPlant list add ----------------------------->
-
     <div class="row p-2 ml-20" *ngIf="usePowerPlant">
       <hr />
       <div class="col-12 col-md-3">
@@ -634,70 +595,71 @@
         </div>
       </div>
     </div>
-        <!-- ----------------stratum  list maintain ------------------------>
-        <div>
-          <div class="row p-2 ml-20" *ngIf="useStratum">
-            <hr />
-            <div class="col-12 col-md-3">
-              <div>
-                <h6>Enter Stratum </h6>
-              </div>
+    <div>
+      <div class="row p-2 ml-20" *ngIf="useStratum">
+        <hr />
+        <div class="col-12 col-md-3">
+          <div>
+            <h6>Enter Stratum</h6>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="useStratum">
+        <div
+          class="row p-2 ml-30"
+          *ngFor="let stratum of stratums; let i = index"
+        >
+          <div class="col-12 col-md-2 ml-30">
+            <div>
+              <label for="{{ 'stratum' + i }}">Stratum </label>
             </div>
           </div>
-          <div *ngIf="useStratum">
-            
-            <div class="row p-2 ml-30" *ngFor="let stratum of stratums; let i = index">
-              <div class="col-12 col-md-2 ml-30">
-                <div>
-                  <label for="{{ 'stratum' + i }}">Stratum </label>
-                </div>
-              </div>
-              <div class="col-12 col-md-5">
-                <div>
-                  <input
-                    type="text"
-                    name="{{ 'stratum' + i }}"
-                    class="p-inputtext"
-                    #routei="ngModel"
-                    [(ngModel)]="stratum.name"
-                    [readonly]="!routePowerPlantMaintain"
-                    pInputText
-                  />
-                </div>
-              </div>
-              <div
-                class="col-12 col-md-2"
-                *ngIf="routePowerPlantMaintain && stratums!.length - 1 === i"
-              >
-                <div class="p-field d-flex align-items-center">
-                  <button
-                    pButton
-                    pRipple
-                    type="button"
-                    icon="pi pi-plus-circle"
-                    class="p-button-rounded p-button-text"
-                    (click)="addStratum()"
-                  ></button>
-                </div>
-              </div>
-              <div
-                class="col-12 col-md-2"
-                *ngIf="routePowerPlantMaintain && stratums!.length - 1 !== i"
-              >
-                <div class="p-field">
-                  <button
-                    pButton
-                    pRipple
-                    type="button"
-                    icon="pi pi-minus-circle"
-                    class="p-button-rounded p-button-text"
-                    (click)="removeStratum(i)"
-                  ></button>
-                </div>
-              </div>
+          <div class="col-12 col-md-5">
+            <div>
+              <input
+                type="text"
+                name="{{ 'stratum' + i }}"
+                class="p-inputtext"
+                #routei="ngModel"
+                [(ngModel)]="stratum.name"
+                [readonly]="!routePowerPlantMaintain"
+                pInputText
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-md-2"
+            *ngIf="routePowerPlantMaintain && stratums!.length - 1 === i"
+          >
+            <div class="p-field d-flex align-items-center">
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-plus-circle"
+                class="p-button-rounded p-button-text"
+                (click)="addStratum()"
+              ></button>
+            </div>
+          </div>
+          <div
+            class="col-12 col-md-2"
+            *ngIf="routePowerPlantMaintain && stratums!.length - 1 !== i"
+          >
+            <div class="p-field">
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-minus-circle"
+                class="p-button-rounded p-button-text"
+                (click)="removeStratum(i)"
+              ></button>
             </div>
           </div>
         </div>
+      </div>
+    </div>
 
     <div class="row p-2" *ngIf="usePowerPlant || useRoute || useStratum">
       <div class="d-flex justify-content-end">
@@ -726,14 +688,17 @@
       </div>
     </div>
 
-    <div *ngIf="(!usePowerPlant && !useRoute && !useStratum) || !isSaveRoutePowerplantStratum">
-      <!--------------------------------- Baseline ---------------------------->
+    <div
+      *ngIf="
+        (!usePowerPlant && !useRoute && !useStratum) ||
+        !isSaveRoutePowerplantStratum
+      "
+    >
       <div *ngIf="baslineParam !== undefined && baslineParam.length > 0">
         <hr />
         <div class="row p-2">
           <div class="col-12 col-md-3">
             <div>
-              
               <h6>Baseline</h6>
             </div>
           </div>
@@ -770,17 +735,24 @@
           <div
             class="d-flex flex-row row"
             *ngIf="
-              (blHasVehicale || blHasFuel || blHasRoute || blHasPowerPlant || blHasStratum || blHasSoil || blHasResidue || blHasFeedstock || blHasLandClearance) &&
+              (blHasVehicale ||
+                blHasFuel ||
+                blHasRoute ||
+                blHasPowerPlant ||
+                blHasStratum ||
+                blHasSoil ||
+                blHasResidue ||
+                blHasFeedstock ||
+                blHasLandClearance) &&
               item.vehical.name !== 'Common'
             "
           >
-          <!-- feedstock was added newly -->
-          <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasFeedstock">
-            <div class="p-2">
-              <div>
-                <label for="{{ 'feedstock' + i }}">Feedstock Type</label>
-              
-                <p-dropdown
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasFeedstock">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'feedstock' + i }}">Feedstock Type</label>
+
+                  <p-dropdown
                     placeholder="Select Feedstock"
                     name="{{ 'feedstock' + i }}"
                     #vehical="ngModel"
@@ -791,35 +763,38 @@
                     [editable]="true"
                     [disabled]="!baselineShowMaintain"
                     (onChange)="
-                    ChangeDimensionFeedstockType($event, blFeedstockValue, item)
+                      ChangeDimensionFeedstockType(
+                        $event,
+                        blFeedstockValue,
+                        item
+                      )
                     "
                   ></p-dropdown>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddFeedstock"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionFeedstockValue(item, blFeedstockValue)"
+                  ></button>
+                </div>
               </div>
             </div>
-            <div
-              class="p-2 d-flex align-items-center"
-              *ngIf="item.canAddFeedstock"
-            >
-              <div>
-                <button
-                  pButton
-                  pRipple
-                  type="button"
-                  icon="pi pi-plus-circle"
-                  class="btn btn-primary btn-block text-uppercase btn-lg"
-                  (click)="addDimensionFeedstockValue(item, blFeedstockValue)"
-                ></button>
-              </div>
-            </div>
-          </div>
-
 
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasVehicale">
               <div class="p-2">
                 <div *ngIf="!blHasVehicaleMulti">
                   <label for="{{ 'vehicle' + i }}">Vehicle</label>
                   <p-dropdown
-                  id="{{ 'vehicle' + i }}"
+                    id="{{ 'vehicle' + i }}"
                     placeholder="Select Vehicle"
                     name="{{ 'vehicle' + i }}"
                     #vehical="ngModel"
@@ -838,19 +813,23 @@
                 <div *ngIf="blHasVehicaleMulti">
                   <label for="{{ 'Vehicle' + i }}">Vehicle</label>
                   <p-multiSelect
-                  id="{{ 'Vehicle' + i }}"
-                  placeholder="Select Vehicles"
-                  name="{{ 'Vehicle' + i }}"
-                  #fuel="ngModel"
-                  [(ngModel)]="item.vehicals"
-                  [options]="getOptions(blVehicalValue)"
-                  optionLabel="name"
-                  [disabled]="!baselineShowMaintain"
-                  (onFilter)="
-                  ChangeDimensionVehicalTypeMulti($event, blVehicalValue, item)
-                  "
-                  (onChange)="onbaseFuelChange()"
-                ></p-multiSelect>
+                    id="{{ 'Vehicle' + i }}"
+                    placeholder="Select Vehicles"
+                    name="{{ 'Vehicle' + i }}"
+                    #fuel="ngModel"
+                    [(ngModel)]="item.vehicals"
+                    [options]="getOptions(blVehicalValue)"
+                    optionLabel="name"
+                    [disabled]="!baselineShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionVehicalTypeMulti(
+                        $event,
+                        blVehicalValue,
+                        item
+                      )
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
                 </div>
               </div>
               <div
@@ -907,7 +886,6 @@
                 </div>
               </div>
             </div>
-            <!-- newly added dimentions -->
 
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasResidue">
               <div class="p-2">
@@ -983,13 +961,15 @@
               </div>
             </div>
 
-
-          
-
-            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasLandClearance">
+            <div
+              class="d-flex flex-wrap p-2 col-md-3"
+              *ngIf="blHasLandClearance"
+            >
               <div class="p-2">
                 <div>
-                  <label for="{{ 'landclearance' + i }}">LandClearance Type</label>
+                  <label for="{{ 'landclearance' + i }}"
+                    >LandClearance Type</label
+                  >
                   <p-multiSelect
                     id="{{ 'landclearance' + i }}"
                     placeholder="Select LandClearance Type"
@@ -1000,7 +980,11 @@
                     optionLabel="name"
                     [disabled]="!baselineShowMaintain"
                     (onFilter)="
-                      ChangeDimensionLandClearanceType($event, blLandClearanceValue, item)
+                      ChangeDimensionLandClearanceType(
+                        $event,
+                        blLandClearanceValue,
+                        item
+                      )
                     "
                     (onChange)="onbaseFuelChange()"
                   ></p-multiSelect>
@@ -1017,16 +1001,13 @@
                     type="button"
                     icon="pi pi-plus-circle"
                     class="btn btn-primary btn-block text-uppercase btn-lg"
-                    (click)="addDimensionLandClearanceValue(item, blLandClearanceValue)"
+                    (click)="
+                      addDimensionLandClearanceValue(item, blLandClearanceValue)
+                    "
                   ></button>
                 </div>
               </div>
             </div>
-
-
-
-
-
 
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasRoute">
               <div class="p-2">
@@ -1045,8 +1026,6 @@
               </div>
             </div>
 
-
-     <!-- add new dimention -->
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasStratum">
               <div class="p-2">
                 <div>
@@ -1063,13 +1042,6 @@
                 </div>
               </div>
             </div>
-
-
-
-
-
-
-
 
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasPowerPlant">
               <div class="p-2">
@@ -1089,12 +1061,14 @@
               </div>
             </div>
 
-            <div class="d-flex flex-wrap p-2  col-md-3">
+            <div class="d-flex flex-wrap p-2 col-md-3">
               <div
                 class="p-2 d-flex align-items-center"
                 *ngIf="
-                  baselineShowMaintain && ((basllineSelection!.length - 1 === i && !hasCommonBaseline) ||
-                  (basllineSelection!.length - 2 === i && hasCommonBaseline))
+                  baselineShowMaintain &&
+                  ((basllineSelection!.length - 1 === i &&
+                    !hasCommonBaseline) ||
+                    (basllineSelection!.length - 2 === i && hasCommonBaseline))
                 "
               >
                 <div class="p-field">
@@ -1111,8 +1085,10 @@
               <div
                 class="p-2"
                 *ngIf="
-                  baselineShowMaintain && ((basllineSelection!.length - 1 !== i && !hasCommonBaseline) ||
-                  (basllineSelection!.length - 2 !== i && hasCommonBaseline))
+                  baselineShowMaintain &&
+                  ((basllineSelection!.length - 1 !== i &&
+                    !hasCommonBaseline) ||
+                    (basllineSelection!.length - 2 !== i && hasCommonBaseline))
                 "
               >
                 <div class="p-field">
@@ -1137,7 +1113,7 @@
                 pButton
                 pRipple
                 type="button"
-                [disabled]="baselineScenario != '' ?false:true"
+                [disabled]="baselineScenario != '' ? false : true"
                 (click)="baslineGenrate()"
                 class="btn btn-primary btn-block text-uppercase btn-lg"
               >
@@ -1158,7 +1134,6 @@
             </div>
           </div>
         </div>
-        <!-- Route Parameters-->
         <app-route-parameter
           [parameterSection]="blParameters"
           [IsProposal]="IsProposal"
@@ -1167,7 +1142,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-route-parameter>
-        <!-- Vehical Parameters-->
         <app-vehical-parameter
           [parameterSection]="blParameters"
           [IsProposal]="IsProposal"
@@ -1182,7 +1156,6 @@
           [infos]="infos"
           [isSubmitted]="isSubmitted"
         ></app-fuel-parameter>
-        <!-- power plant-->
         <app-power-plant-parameter
           [parameterSection]="blParameters"
           [IsProposal]="IsProposal"
@@ -1191,7 +1164,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-power-plant-parameter>
-        <!-- feedstock parameters -->
         <app-feedstock-parameter
           [parameterSection]="blParameters"
           [IsProposal]="IsProposal"
@@ -1200,7 +1172,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-feedstock-parameter>
-        <!-- stratum parameters -->
         <app-stratum-parameter
           [parameterSection]="blParameters"
           [IsProposal]="IsProposal"
@@ -1209,7 +1180,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-stratum-parameter>
-        <!-- soil parameters -->
         <app-soil-parameter
           [parameterSection]="blParameters"
           [IsProposal]="IsProposal"
@@ -1218,7 +1188,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-soil-parameter>
-        <!-- residue parameters -->
         <app-residue-parameter
           [parameterSection]="blParameters"
           [IsProposal]="IsProposal"
@@ -1228,8 +1197,6 @@
         >
         </app-residue-parameter>
       </div>
-
-      <!--------------------------------- Project ---------------------------->
 
       <div *ngIf="ProjectParam !== undefined && ProjectParam.length > 0">
         <hr />
@@ -1268,50 +1235,61 @@
           <div
             class="d-flex flex-row row"
             *ngIf="
-              (prHasVehicale || prHasFuel || prHasRoute || prHasPowerPlant || prHasFeedstock ||prHasSoil||prHasStratum||prHasResidue||prHasLandClearance) &&
+              (prHasVehicale ||
+                prHasFuel ||
+                prHasRoute ||
+                prHasPowerPlant ||
+                prHasFeedstock ||
+                prHasSoil ||
+                prHasStratum ||
+                prHasResidue ||
+                prHasLandClearance) &&
               item.vehical.name !== 'Common'
             "
           >
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasFeedstock">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'prfeedstock' + i }}">Feedstock Type</label>
 
-          <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasFeedstock">
-            <div class="p-2">
-              <div>
-                <label for="{{ 'prfeedstock' + i }}">Feedstock Type</label>
-             
-                <p-dropdown
-                placeholder="Select Feedstock"
-                name="{{ 'prfeedstock' + i }}"
-                #vehical="ngModel"
-                [(ngModel)]="item.oneFeedstock"
-                [autoDisplayFirst]="false"
-                [options]="getOptions(prFeedstockValue)"
-                optionLabel="name"
-                [editable]="true"
-                [disabled]="!projectShowMaintain"
-                (onChange)="
-                ChangeDimensionFeedstockType($event, prFeedstockValue, item)
-                "
-              ></p-dropdown>
+                  <p-dropdown
+                    placeholder="Select Feedstock"
+                    name="{{ 'prfeedstock' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.oneFeedstock"
+                    [autoDisplayFirst]="false"
+                    [options]="getOptions(prFeedstockValue)"
+                    optionLabel="name"
+                    [editable]="true"
+                    [disabled]="!projectShowMaintain"
+                    (onChange)="
+                      ChangeDimensionFeedstockType(
+                        $event,
+                        prFeedstockValue,
+                        item
+                      )
+                    "
+                  ></p-dropdown>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddFeedstock"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionFeedstockValue(item, prFeedstockValue)"
+                  ></button>
+                </div>
               </div>
             </div>
-            <div
-              class="p-2 d-flex align-items-center"
-              *ngIf="item.canAddFeedstock"
-            >
-              <div>
-                <button
-                  pButton
-                  pRipple
-                  type="button"
-                  icon="pi pi-plus-circle"
-                  class="btn btn-primary btn-block text-uppercase btn-lg"
-                  (click)="addDimensionFeedstockValue(item, prFeedstockValue)"
-                ></button>
-              </div>
-            </div>
-          </div>
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasVehicale">
-              <div class="p-2 ">
+              <div class="p-2">
                 <div *ngIf="!prHasVehicaleMulti">
                   <label for="{{ 'ppl' + i }}">Vehicle</label>
                   <p-dropdown
@@ -1332,25 +1310,26 @@
                   ></p-dropdown>
                 </div>
 
-
-            
-
                 <div *ngIf="prHasVehicaleMulti">
                   <label for="{{ 'Vehicle' + i }}">Vehicle</label>
                   <p-multiSelect
-                  id="{{ 'Vehicle' + i }}"
-                  placeholder="Select Vehicles"
-                  name="{{ 'Vehicle' + i }}"
-                  #fuel="ngModel"
-                  [(ngModel)]="item.vehicals"
-                  [options]="getOptions(prVehicalValue)"
-                  optionLabel="name"
-                  [disabled]="!projectShowMaintain"
-                  (onFilter)="
-                  ChangeDimensionVehicalTypeMulti($event, prVehicalValue, item)
-                  "
-                  (onChange)="onbaseFuelChange()"
-                ></p-multiSelect>
+                    id="{{ 'Vehicle' + i }}"
+                    placeholder="Select Vehicles"
+                    name="{{ 'Vehicle' + i }}"
+                    #fuel="ngModel"
+                    [(ngModel)]="item.vehicals"
+                    [options]="getOptions(prVehicalValue)"
+                    optionLabel="name"
+                    [disabled]="!projectShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionVehicalTypeMulti(
+                        $event,
+                        prVehicalValue,
+                        item
+                      )
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
                 </div>
               </div>
               <div
@@ -1406,10 +1385,6 @@
                 </div>
               </div>
             </div>
-  
-            <!-- newly added dimentions -->
-
-
 
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasResidue">
               <div class="p-2">
@@ -1485,13 +1460,15 @@
               </div>
             </div>
 
-
-           
-
-            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasLandClearance">
+            <div
+              class="d-flex flex-wrap p-2 col-md-3"
+              *ngIf="blHasLandClearance"
+            >
               <div class="p-2">
                 <div>
-                  <label for="{{ 'prlandclearance' + i }}">LandClearance Type</label>
+                  <label for="{{ 'prlandclearance' + i }}"
+                    >LandClearance Type</label
+                  >
                   <p-multiSelect
                     id="{{ 'prlandclearance' + i }}"
                     placeholder="Select LandClearance Type"
@@ -1502,7 +1479,11 @@
                     optionLabel="name"
                     [disabled]="!projectShowMaintain"
                     (onFilter)="
-                      ChangeDimensionLandClearanceType($event, prLandClearanceValue, item)
+                      ChangeDimensionLandClearanceType(
+                        $event,
+                        prLandClearanceValue,
+                        item
+                      )
                     "
                     (onChange)="onbaseFuelChange()"
                   ></p-multiSelect>
@@ -1519,17 +1500,13 @@
                     type="button"
                     icon="pi pi-plus-circle"
                     class="btn btn-primary btn-block text-uppercase btn-lg"
-                    (click)="addDimensionLandClearanceValue(item, prLandClearanceValue)"
+                    (click)="
+                      addDimensionLandClearanceValue(item, prLandClearanceValue)
+                    "
                   ></button>
                 </div>
               </div>
             </div>
-
-
-
-
-
-
 
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasRoute">
               <div class="p-2">
@@ -1548,23 +1525,22 @@
               </div>
             </div>
 
-                <!-- add new dimention -->
-                <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasStratum">
-                  <div class="p-2">
-                    <div>
-                      <label for="{{ 'prstratum' + i }}">Stratum</label>
-                      <p-multiSelect
-                        placeholder="Select Stratum"
-                        name="{{ 'prstratum' + i }}"
-                        #vehical="ngModel"
-                        [(ngModel)]="item.stratum"
-                        [options]="stratums"
-                        [disabled]="!projectShowMaintain"
-                        optionLabel="name"
-                      ></p-multiSelect>
-                    </div>
-                  </div>
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasStratum">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'prstratum' + i }}">Stratum</label>
+                  <p-multiSelect
+                    placeholder="Select Stratum"
+                    name="{{ 'prstratum' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.stratum"
+                    [options]="stratums"
+                    [disabled]="!projectShowMaintain"
+                    optionLabel="name"
+                  ></p-multiSelect>
                 </div>
+              </div>
+            </div>
 
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasPowerPlant">
               <div class="p-2">
@@ -1590,8 +1566,9 @@
               <div
                 class="p-2 d-flex align-items-center"
                 *ngIf="
-                  projectShowMaintain && ((projectSelection!.length - 1 === i && !hasCommonProject) ||
-                  (projectSelection!.length - 2 === i && hasCommonProject))
+                  projectShowMaintain &&
+                  ((projectSelection!.length - 1 === i && !hasCommonProject) ||
+                    (projectSelection!.length - 2 === i && hasCommonProject))
                 "
               >
                 <div class="p-field">
@@ -1608,8 +1585,9 @@
               <div
                 class="p-2"
                 *ngIf="
-                  projectShowMaintain && ((projectSelection!.length - 1 !== i && !hasCommonProject) ||
-                  (projectSelection!.length - 2 !== i && hasCommonProject))
+                  projectShowMaintain &&
+                  ((projectSelection!.length - 1 !== i && !hasCommonProject) ||
+                    (projectSelection!.length - 2 !== i && hasCommonProject))
                 "
               >
                 <div class="p-field">
@@ -1633,7 +1611,7 @@
                 pButton
                 pRipple
                 type="button"
-                [disabled]="ProjectScenario != ''?false:true"
+                [disabled]="ProjectScenario != '' ? false : true"
                 (click)="projectGenrate()"
                 class="btn btn-primary btn-block text-uppercase btn-lg"
               >
@@ -1654,7 +1632,6 @@
             </div>
           </div>
         </div>
-        <!-- Route Parameters-->
         <app-route-parameter
           [parameterSection]="prParameters"
           [IsProposal]="IsProposal"
@@ -1663,7 +1640,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-route-parameter>
-        <!-- Vehical Parameters-->
         <app-vehical-parameter
           [parameterSection]="prParameters"
           [IsProposal]="IsProposal"
@@ -1671,7 +1647,6 @@
           [infos]="infos"
           [isSubmitted]="isSubmitted"
         ></app-vehical-parameter>
-        <!-- Vehical Parameters-->
         <app-fuel-parameter
           [parameterSection]="prParameters"
           [IsProposal]="IsProposal"
@@ -1679,7 +1654,6 @@
           [infos]="infos"
           [isSubmitted]="isSubmitted"
         ></app-fuel-parameter>
-        <!-- power plant-->
         <app-power-plant-parameter
           [parameterSection]="prParameters"
           [IsProposal]="IsProposal"
@@ -1688,7 +1662,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-power-plant-parameter>
-        <!-- feedstock parameters -->
         <app-feedstock-parameter
           [parameterSection]="prParameters"
           [IsProposal]="IsProposal"
@@ -1697,7 +1670,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-feedstock-parameter>
-        <!-- stratum parameters -->
         <app-stratum-parameter
           [parameterSection]="prParameters"
           [IsProposal]="IsProposal"
@@ -1706,7 +1678,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-stratum-parameter>
-        <!-- soil parameters -->
         <app-soil-parameter
           [parameterSection]="prParameters"
           [IsProposal]="IsProposal"
@@ -1715,7 +1686,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-soil-parameter>
-        <!-- residue parameters -->
         <app-residue-parameter
           [parameterSection]="prParameters"
           [IsProposal]="IsProposal"
@@ -1725,8 +1695,6 @@
         >
         </app-residue-parameter>
       </div>
-
-      <!--------------------------------- Lekage ---------------------------->
 
       <div *ngIf="lekageParam !== undefined && lekageParam.length > 0">
         <hr />
@@ -1763,48 +1731,59 @@
           <div
             class="d-flex flex-row row"
             *ngIf="
-              (lkHasVehicale || lkHasFuel || lkHasRoute || lkHasPowerPlant||lkHasFeedstock||lkHasSoil||lkHasStratum||lkHasResidue||lkHasLandClearance) &&
+              (lkHasVehicale ||
+                lkHasFuel ||
+                lkHasRoute ||
+                lkHasPowerPlant ||
+                lkHasFeedstock ||
+                lkHasSoil ||
+                lkHasStratum ||
+                lkHasResidue ||
+                lkHasLandClearance) &&
               item.vehical.name !== 'Common'
             "
           >
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasFeedstock">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'lkfeedstock' + i }}">Feedstock Type</label>
 
-          <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasFeedstock">
-            <div class="p-2">
-              <div>
-                <label for="{{ 'lkfeedstock' + i }}">Feedstock Type</label>
-
-                <p-dropdown
-                placeholder="Select Feedstock"
-                name="{{ 'lkfeedstock' + i }}"
-                #vehical="ngModel"
-                [(ngModel)]="item.oneFeedstock"
-                [autoDisplayFirst]="false"
-                [options]="getOptions(lkFeedstockValue)"
-                optionLabel="name"
-                [editable]="true"
-                [disabled]="!lekageShowMaintain"
-                (onChange)="
-                ChangeDimensionFeedstockType($event, lkFeedstockValue, item)
-                "
-              ></p-dropdown>
+                  <p-dropdown
+                    placeholder="Select Feedstock"
+                    name="{{ 'lkfeedstock' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.oneFeedstock"
+                    [autoDisplayFirst]="false"
+                    [options]="getOptions(lkFeedstockValue)"
+                    optionLabel="name"
+                    [editable]="true"
+                    [disabled]="!lekageShowMaintain"
+                    (onChange)="
+                      ChangeDimensionFeedstockType(
+                        $event,
+                        lkFeedstockValue,
+                        item
+                      )
+                    "
+                  ></p-dropdown>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddFeedstock"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionFeedstockValue(item, lkFeedstockValue)"
+                  ></button>
+                </div>
               </div>
             </div>
-            <div
-              class="p-2 d-flex align-items-center"
-              *ngIf="item.canAddFeedstock"
-            >
-              <div>
-                <button
-                  pButton
-                  pRipple
-                  type="button"
-                  icon="pi pi-plus-circle"
-                  class="btn btn-primary btn-block text-uppercase btn-lg"
-                  (click)="addDimensionFeedstockValue(item, lkFeedstockValue)"
-                ></button>
-              </div>
-            </div>
-          </div>
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasVehicale">
               <div class="p-2">
                 <div>
@@ -1847,13 +1826,12 @@
             </div>
 
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasFuel">
-              
-                  <label for="{{ 'lkpu' + i }}">Fuel Type</label>
-               
+              <label for="{{ 'lkpu' + i }}">Fuel Type</label>
+
               <div class="p-2">
                 <div>
                   <p-multiSelect
-                  id="{{ 'lkpu' + i }}"
+                    id="{{ 'lkpu' + i }}"
                     placeholder="Select Fuel Type"
                     name="{{ 'lkpu' + i }}"
                     #vehical="ngModel"
@@ -1885,17 +1863,12 @@
               </div>
             </div>
 
-            <!-- newly added dimentions -->
-
-
-
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasResidue">
               <div class="p-2">
                 <div>
                   <label for="{{ 'lkresidue' + i }}">Residue Type</label>
                   <p-multiSelect
                     id="{{ 'lkresidue' + i }}"
-                    
                     placeholder="Select Residue Type"
                     name="{{ 'lkresidue' + i }}"
                     #residue="ngModel"
@@ -1964,13 +1937,15 @@
               </div>
             </div>
 
-
-          
-
-            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasLandClearance">
+            <div
+              class="d-flex flex-wrap p-2 col-md-3"
+              *ngIf="lkHasLandClearance"
+            >
               <div class="p-2">
                 <div>
-                  <label for="{{ 'lklandclearance' + i }}">LandClearance Type</label>
+                  <label for="{{ 'lklandclearance' + i }}"
+                    >LandClearance Type</label
+                  >
                   <p-multiSelect
                     id="{{ 'lklandclearance' + i }}"
                     placeholder="Select LandClearance Type"
@@ -1981,7 +1956,11 @@
                     optionLabel="name"
                     [disabled]="!lekageShowMaintain"
                     (onFilter)="
-                      ChangeDimensionLandClearanceType($event, lkLandClearanceValue, item)
+                      ChangeDimensionLandClearanceType(
+                        $event,
+                        lkLandClearanceValue,
+                        item
+                      )
                     "
                     (onChange)="onbaseFuelChange()"
                   ></p-multiSelect>
@@ -1998,14 +1977,13 @@
                     type="button"
                     icon="pi pi-plus-circle"
                     class="btn btn-primary btn-block text-uppercase btn-lg"
-                    (click)="addDimensionLandClearanceValue(item, lkLandClearanceValue)"
+                    (click)="
+                      addDimensionLandClearanceValue(item, lkLandClearanceValue)
+                    "
                   ></button>
                 </div>
               </div>
             </div>
-
-
-
 
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasRoute">
               <div class="p-2">
@@ -2028,25 +2006,22 @@
               </div>
             </div>
 
-
-            
-                <!-- add new dimention -->
-                <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasStratum">
-                  <div class="p-2">
-                    <div>
-                      <label for="{{ 'lkstratum' + i }}">Stratum</label>
-                      <p-multiSelect
-                        placeholder="Select Stratum"
-                        name="{{ 'lkstratum' + i }}"
-                        #vehical="ngModel"
-                        [(ngModel)]="item.stratum"
-                        [options]="stratums"
-                        [disabled]="!lekageShowMaintain"
-                        optionLabel="name"
-                      ></p-multiSelect>
-                    </div>
-                  </div>
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasStratum">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'lkstratum' + i }}">Stratum</label>
+                  <p-multiSelect
+                    placeholder="Select Stratum"
+                    name="{{ 'lkstratum' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.stratum"
+                    [options]="stratums"
+                    [disabled]="!lekageShowMaintain"
+                    optionLabel="name"
+                  ></p-multiSelect>
                 </div>
+              </div>
+            </div>
 
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasPowerPlant">
               <div class="p-2">
@@ -2073,8 +2048,11 @@
             <div class="d-flex flex-wrap p-2 col-md-3">
               <div
                 class="p-2 d-flex align-items-center"
-                *ngIf="lekageShowMaintain && ((lekageSelection!.length - 1 === i && !hasCommonLeakage) ||
-                (lekageSelection!.length - 2 === i && hasCommonLeakage))"
+                *ngIf="
+                  lekageShowMaintain &&
+                  ((lekageSelection!.length - 1 === i && !hasCommonLeakage) ||
+                    (lekageSelection!.length - 2 === i && hasCommonLeakage))
+                "
               >
                 <div class="p-field">
                   <button
@@ -2089,8 +2067,11 @@
               </div>
               <div
                 class="p-2"
-                *ngIf="lekageShowMaintain && ((lekageSelection!.length - 1 !== i && !hasCommonLeakage) ||
-                (lekageSelection!.length - 2 !== i && hasCommonLeakage))"
+                *ngIf="
+                  lekageShowMaintain &&
+                  ((lekageSelection!.length - 1 !== i && !hasCommonLeakage) ||
+                    (lekageSelection!.length - 2 !== i && hasCommonLeakage))
+                "
               >
                 <div class="p-field">
                   <button
@@ -2112,10 +2093,10 @@
               <button
                 pButton
                 pRipple
-                [disabled]="LeakageScenario != '' ?false:true"
+                [disabled]="LeakageScenario != '' ? false : true"
                 type="button"
                 (click)="lekageGenrate()"
-               class="btn btn-primary btn-block text-uppercase btn-lg"
+                class="btn btn-primary btn-block text-uppercase btn-lg"
               >
                 Generate
               </button>
@@ -2127,7 +2108,7 @@
                 type="button"
                 [disabled]="isDisableforSubmitButton"
                 (click)="lekageGenrate()"
-               class="btn btn-primary btn-block text-uppercase btn-lg"
+                class="btn btn-primary btn-block text-uppercase btn-lg"
               >
                 Edit
               </button>
@@ -2135,7 +2116,6 @@
           </div>
         </div>
 
-        <!-- Route Parameters-->
         <app-route-parameter
           [parameterSection]="lkParameters"
           [IsProposal]="IsProposal"
@@ -2144,7 +2124,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-route-parameter>
-        <!-- Vehical Parameters-->
         <app-vehical-parameter
           [parameterSection]="lkParameters"
           [IsProposal]="IsProposal"
@@ -2152,7 +2131,6 @@
           [infos]="infos"
           [isSubmitted]="isSubmitted"
         ></app-vehical-parameter>
-        <!-- Vehical Parameters-->
         <app-fuel-parameter
           [parameterSection]="lkParameters"
           [IsProposal]="IsProposal"
@@ -2160,7 +2138,6 @@
           [infos]="infos"
           [isSubmitted]="isSubmitted"
         ></app-fuel-parameter>
-        <!-- power plant-->
         <app-power-plant-parameter
           [parameterSection]="lkParameters"
           [IsProposal]="IsProposal"
@@ -2169,7 +2146,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-power-plant-parameter>
-        <!-- feedstock parameters -->
         <app-feedstock-parameter
           [parameterSection]="lkParameters"
           [IsProposal]="IsProposal"
@@ -2178,7 +2154,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-feedstock-parameter>
-        <!-- stratum parameters -->
         <app-stratum-parameter
           [parameterSection]="lkParameters"
           [IsProposal]="IsProposal"
@@ -2187,7 +2162,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-stratum-parameter>
-        <!-- soil parameters -->
         <app-soil-parameter
           [parameterSection]="lkParameters"
           [IsProposal]="IsProposal"
@@ -2196,7 +2170,6 @@
           [isSubmitted]="isSubmitted"
         >
         </app-soil-parameter>
-        <!-- residue parameters -->
         <app-residue-parameter
           [parameterSection]="lkParameters"
           [IsProposal]="IsProposal"
@@ -2207,7 +2180,6 @@
         </app-residue-parameter>
       </div>
     </div>
-    <!--------------------------------- Projection ---------------------------->
 
     <div *ngIf="selectedApproch === 'Ex-ante'">
       <hr />
@@ -2248,15 +2220,6 @@
             [options]="projectionBaseyears"
             [(ngModel)]="ProjectionbaseYear"
           ></p-dropdown>
-          <!-- <p-calendar
-            [(ngModel)]="ProjectionbaseYear"
-            name="baseYear"
-            view="year"
-            dateFormat="yy"
-            [minDate]="projectionBaseMinDate"
-            [maxDate]="projectionBaseMaxDate"
-            [showOtherMonths]="false"
-          ></p-calendar> -->
         </div>
       </div>
       <div class="row p-2">
@@ -2266,11 +2229,11 @@
               {{
                 selectedprojectIndicater
                   ? ProjectIndicaterEnum[
-                      ProjectIndicaterEnum["Population Growth (POP)"]
+                      ProjectIndicaterEnum['Population Growth (POP)']
                     ] === selectedprojectIndicater
-                    ? "POP of "
-                    : "GDP of "
-                  : ""
+                    ? 'POP of '
+                    : 'GDP of '
+                  : ''
               }}Projection Base Year</label
             >
           </div>
@@ -2324,18 +2287,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-md-2">
-          <!-- <div class="p-field-checkbox">
-            <p-checkbox
-              name="pBYPDDefaul"
-              [(ngModel)]="pBYPDDefaultValue"
-              [binary]="true"
-              inputId="binary"
-              label="Default Values"
-            ></p-checkbox>
-            
-          </div> -->
-        </div>
+        <div class="col-12 col-md-2"></div>
       </div>
       <div class="row p-2" *ngIf="!IsProposal">
         <div class="col-12 col-md-3">
@@ -2377,28 +2329,17 @@
               {{
                 selectedprojectIndicater
                   ? ProjectIndicaterEnum[
-                      ProjectIndicaterEnum["Population Growth (POP)"]
+                      ProjectIndicaterEnum['Population Growth (POP)']
                     ] === selectedprojectIndicater
-                    ? "POP of "
-                    : "GDP of "
-                  : ""
+                    ? 'POP of '
+                    : 'GDP of '
+                  : ''
               }}Projection Year</label
             >
           </div>
         </div>
         <div class="col-12 col-md-7">
           <div *ngIf="!IsProposal">
-            <!-- <div *ngIf="p.isDefaultValue">
-              <p-dropdown
-              placeholder="Select Default value"
-              name="{{ 'p' + i }}"
-              [autoDisplayFirst]="false"
-              [(ngModel)]="selectdProjectionYeardefaultValue"
-              [autoDisplayFirst]="false"
-              [options]="ProjectionYeardefaultValues"
-              optionLabel="name"
-            ></p-dropdown>
-            </div> -->
             <div>
               <p-dropdown
                 placeholder="Select Institution"
@@ -2412,17 +2353,6 @@
             </div>
           </div>
           <div *ngIf="IsProposal">
-            <!-- <div *ngIf="p.isDefaultValue">
-              <p-dropdown
-                placeholder="Select Default value"
-                name="{{ 'p' + i }}"
-                [autoDisplayFirst]="false"
-                [(ngModel)]="selectdProjectionYeardefaultValue"
-                [autoDisplayFirst]="false"
-                [options]="ProjectionYeardefaultValues"
-                optionLabel="name"
-              ></p-dropdown>
-            </div> -->
             <div>
               <input
                 type="text"
@@ -2436,33 +2366,13 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="row p-2">
-        <div class="col-12 col-md-3">
-          <div>
-            <label for="pbyH">Projection Base Years</label>
-          </div>
-        </div>
-        <div class="col-12 col-md-7">
-          <div>
-            <div>
-              <p-multiSelect
-                name="pbyH"
-                [options]="years"
-                [(ngModel)]="projectionBaseYearsHistoric"
-              ></p-multiSelect>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
-  
+
   <div
     class="col-12 col-md-5"
     *ngIf="
-      !showBaslineGenrate &&
-      !showProjectGenrate ||
+      (!showBaslineGenrate && !showProjectGenrate) ||
       !showLekageGenrate ||
       selectedApproch === 'Ex-ante'
     "
@@ -2474,7 +2384,7 @@
       type="submit"
       [disabled]="isDisableforSubmitButton"
     >
-      {{ IsProposal ? "Calculate" : "Send to DC Team" }}
+      {{ IsProposal ? 'Calculate' : 'Send to DC Team' }}
     </button>
     <button
       *ngIf="isSave && IsProposal"

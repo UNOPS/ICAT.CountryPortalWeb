@@ -67,22 +67,19 @@
         <div class="p-field">
           <label for="projYear">Type</label>
           <p-dropdown
-            name="assesmentType"
+            name="assessmentType"
             [options]="assessmentType"
             [(ngModel)]="searchBy.type"
             #fsector="ngModel"
             [showClear]="true"
             [filter]="true"
             placeholder="Select .."
-            
             (ngModelChange)="onYearChange($event)"
           >
           </p-dropdown>
         </div>
       </div>
     </div>
-
-    <!-- <div> {{climateactions|json}} </div> -->
 
     <div class="row p-2">
       <p-table
@@ -94,32 +91,13 @@
         [rows]="rows"
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [rowsPerPageOptions]="[ 10, 25, 50]"
+        [rowsPerPageOptions]="[10, 25, 50]"
         [totalRecords]="totalRecords"
         [loading]="loading"
         [responsive]="true"
         [(selection)]="selectedParameters"
       >
-        <!-- Table header start search -->
-
-        <!-- <p-table #tt [value]="climateactions" [columns]="cols" placeholder="Global Filter" [filter]="true" filterMatchMode="contains" >                                                          
-      <ng-template pTemplate="caption">
-          <div style="text-align: right">        
-              <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-              <input type="text" pInputText size="50" style="width:auto">
-          </div>
-      </ng-template> -->
-
-        <!-- Table header END Search -->
-
         <ng-template pTemplate="header">
-          <!-- <tr> 
-          <th *ngFor="let col of columns" [ngSwitch]="col.field">
-            <input *ngSwitchCase="'climateActionName'" pInputText type="text"
-              (input)="dt.filter($event.target.value, col.field, 'contains')" />
-          </th>
-        </tr> -->
-
           <tr>
             <th style="width: 3rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
@@ -145,54 +123,57 @@
             </td>
             <td>
               {{
-                dataRequestList.parameter.Assessment?.Prject!?.climateActionName!
+                dataRequestList.parameter.Assessment?.Prject!
+                  ?.climateActionName!
               }}
             </td>
             <td>{{ dataRequestList.parameter.Assessment?.assessmentType! }}</td>
             <td>
-              {{ dataRequestList.parameter.isAlternative ? "Alternative" : "" }}
-              {{ dataRequestList.parameter.isBaseline ? "Baseline" : "" }}
-              {{ dataRequestList.parameter.isProject ? "Project" : "" }}
-              {{ dataRequestList.parameter.isLekage ? "Lekage" : "" }}
-              {{ dataRequestList.parameter.isProjection ? "Projection" : "" }}
+              {{ dataRequestList.parameter.isAlternative ? 'Alternative' : '' }}
+              {{ dataRequestList.parameter.isBaseline ? 'Baseline' : '' }}
+              {{ dataRequestList.parameter.isProject ? 'Project' : '' }}
+              {{ dataRequestList.parameter.isLekage ? 'Lekage' : '' }}
+              {{ dataRequestList.parameter.isProjection ? 'Projection' : '' }}
             </td>
             <td>{{ dataRequestList.parameter.name }}</td>
             <td>{{ dataRequestList.parameter.value }}</td>
             <td>{{ dataRequestList.parameter.uomDataEntry }}</td>
 
-
-
-
-            <ng-container *ngIf=" dataRequestList.parameter?.DefaultValue?.year! == undefined ; else elseBlockYear">
+            <ng-container
+              *ngIf="
+                dataRequestList.parameter?.DefaultValue?.year! == undefined;
+                else elseBlockYear
+              "
+            >
               <td>
                 {{
                   dataRequestList?.parameter!?.Assessment!?.AssessmentYear!
                     ?.assessmentYear!
                 }}
               </td>
-             </ng-container>
-             <ng-template #elseBlockYear>  
+            </ng-container>
+            <ng-template #elseBlockYear>
               <td>
-                {{
-                  dataRequestList.parameter?.DefaultValue?.year!
-                }}
+                {{ dataRequestList.parameter?.DefaultValue?.year! }}
               </td>
-             </ng-template>
+            </ng-template>
 
-
-
-            <td>{{ dataRequestList.deadline | date: "dd-MM-yyyy " }}</td>
+            <td>{{ dataRequestList.deadline | date: 'dd-MM-yyyy ' }}</td>
 
             <td>
               {{
                 dataRequestList.parameter.Assessment?.User!
                   ? dataRequestList.parameter.Assessment?.User!?.firstName!
-                  : ""
+                  : ''
               }}
             </td>
-            <td>{{ dataRequestList.createdOn | date: "dd-MM-yyyy " }}</td>
+            <td>{{ dataRequestList.createdOn | date: 'dd-MM-yyyy ' }}</td>
             <td>
-              <i class="pi pi-ellipsis-v" style="font-size: 2rem" (click)="getInfo(dataRequestList)"></i>
+              <i
+                class="pi pi-ellipsis-v"
+                style="font-size: 2rem"
+                (click)="getInfo(dataRequestList)"
+              ></i>
             </td>
           </tr>
         </ng-template>
@@ -269,7 +250,6 @@
     <div class="row mb-2">
       <div class="col-3"></div>
       <div class="col-4">
-       
         <button
           type="button"
           pButton
@@ -278,9 +258,14 @@
           style="margin-right: 10px"
           (click)="onRejectConfirm(-8)"
         ></button>
-      
 
-        <button type="button" pButton pRipple label="Cancel" (click)="onReject()"></button>
+        <button
+          type="button"
+          pButton
+          pRipple
+          label="Cancel"
+          (click)="onReject()"
+        ></button>
       </div>
       <div class="col-5"></div>
     </div>
@@ -288,7 +273,6 @@
 </p-dialog>
 <p-confirmDialog header="Climate Action" icon="pi pi-exclamation-triangle">
 </p-confirmDialog>
-
 
 <p-dialog
   header="Data Request History"
@@ -298,12 +282,9 @@
   [draggable]="false"
   [resizable]="false"
 >
-  
   <app-view-datarequest-history
     [parameterId]="paraId"
-    [listOfHistory] = "requestHistoryList"
+    [listOfHistory]="requestHistoryList"
   >
-
   </app-view-datarequest-history>
-  
 </p-dialog>
