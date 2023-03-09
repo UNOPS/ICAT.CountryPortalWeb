@@ -5,16 +5,16 @@ import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
 import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import {
-  AssesmentControllerServiceProxy,
-  AssesmentResaultControllerServiceProxy,
+  AssessmentControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
   Assessment,
-  AssessmentResault,
+  AssessmentResult,
   AssessmentYear,
   Ndc,
   Parameter,
   Project,
-  ProjectionResault,
-  ProjectionResaultControllerServiceProxy,
+  ProjectionResult,
+  ProjectionResultControllerServiceProxy,
   ServiceProxy,
   SubNdc,
   User,
@@ -30,27 +30,27 @@ import {
 export class VerifyDetailSectorAdminComponent implements OnInit {
   assesMentYearId = 0;
   verificationStatus = 0;
-  assementYear: AssessmentYear = new AssessmentYear();
+  assessmentYear: AssessmentYear = new AssessmentYear();
   parameters: Parameter[] = [];
   baselineParameters: Parameter[] = [];
   projectParameters: Parameter[] = [];
   lekageParameters: Parameter[] = [];
   projectionParameters: Parameter[] = [];
   loading = false;
-  assessmentResult: AssessmentResault = new AssessmentResault();
-  projectionResult: ProjectionResault[] = [];
-  selectdProjectionResult: ProjectionResault;
+  assessmentResult: AssessmentResult = new AssessmentResult();
+  projectionResult: ProjectionResult[] = [];
+  selectdProjectionResult: ProjectionResult;
   isApprove = false;
   drComment = '';
   commentRequried = false;
   displayConcern = false;
   flag = 1;
-  assesmentResultComment = '';
-  assesmentResultCommentRequried = false;
+  assessmentResultComment = '';
+  assessmentResultCommentRequried = false;
   assessmentObjective: any;
 
-  selectdAssementType: number;
-  isApproveAssement = false;
+  selectdAssessmentType: number;
+  isApproveAssessment = false;
 
   ndcList: Ndc[];
   selectedNdc: Ndc;
@@ -73,9 +73,9 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private assesmentProxy: AssesmentControllerServiceProxy,
-    private assesmentResaultProxy: AssesmentResaultControllerServiceProxy,
-    private projectionResultProxy: ProjectionResaultControllerServiceProxy,
+    private assessmentProxy: AssessmentControllerServiceProxy,
+    private assessmentResultProxy: AssessmentResultControllerServiceProxy,
+    private projectionResultProxy: ProjectionResultControllerServiceProxy,
     private router: Router,
     private messageService: MessageService,
     private verificationProxy: VerificationControllerServiceProxy,
@@ -113,13 +113,13 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
           undefined,
         )
         .subscribe((res) => {
-          this.assementYear = res;
+          this.assessmentYear = res;
 
           this.serviceProxy
             .getManyBaseAssessmentObjectiveControllerAssessmentObjective(
               undefined,
               undefined,
-              ['assessmentId||$eq||' + this.assementYear?.assessment?.id],
+              ['assessmentId||$eq||' + this.assessmentYear?.assessment?.id],
               undefined,
               undefined,
               undefined,
@@ -136,9 +136,9 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
               }
             });
 
-          this.getAssesment();
+          this.getAssessment();
           this.getProjectionResult();
-          this.getAssesmentResult(false);
+          this.getAssessmentResult(false);
           this.getVerificationDetail();
         });
     });
@@ -176,10 +176,10 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
       });
   }
 
-  getAssesmentResult(isCalculate: boolean) {
-    this.assesmentResaultProxy
-      .getAssesmentResult(
-        this.assementYear.assessment.id,
+  getAssessmentResult(isCalculate: boolean) {
+    this.assessmentResultProxy
+      .getAssessmentResult(
+        this.assessmentYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
         '1234',
@@ -192,8 +192,8 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
   getProjectionResult() {
     this.projectionResultProxy
       .getProjectionResult(
-        this.assementYear.assessment.id,
-        Number(this.assementYear.assessmentYear),
+        this.assessmentYear.assessment.id,
+        Number(this.assessmentYear.assessmentYear),
       )
       .subscribe((res) => {
         this.projectionResult = res;
@@ -223,43 +223,43 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
       });
   }
 
-  getAssesment() {
-    this.assesmentProxy
+  getAssessment() {
+    this.assessmentProxy
       .getAssment(
-        this.assementYear.assessment.id,
-        this.assementYear.assessmentYear,
+        this.assessmentYear.assessment.id,
+        this.assessmentYear.assessmentYear,
       )
       .subscribe((res) => {
-        this.assementYear.assessment = res;
+        this.assessmentYear.assessment = res;
 
-        this.parameters = this.assementYear.assessment.parameters;
+        this.parameters = this.assessmentYear.assessment.parameters;
 
-        this.baselineParameters =
-          this.assementYear.assessment.parameters.filter((p) => p.isBaseline);
+        this.baselineParameters = this.assessmentYear.assessment.parameters.filter(
+          (p) => p.isBaseline,
+        );
 
-        this.projectParameters = this.assementYear.assessment.parameters.filter(
+        this.projectParameters = this.assessmentYear.assessment.parameters.filter(
           (p) => p.isProject,
         );
-        this.lekageParameters = this.assementYear.assessment.parameters.filter(
+        this.lekageParameters = this.assessmentYear.assessment.parameters.filter(
           (p) => p.isLekage,
         );
 
-        this.projectionParameters =
-          this.assementYear.assessment.parameters.filter(
-            (p) =>
-              p.isProjection &&
-              p.projectionBaseYear == Number(this.assementYear.assessmentYear),
-          );
-        const p = this.assementYear.assessment.parameters.filter(
+        this.projectionParameters = this.assessmentYear.assessment.parameters.filter(
+          (p) =>
+            p.isProjection &&
+            p.projectionBaseYear == Number(this.assessmentYear.assessmentYear),
+        );
+        const p = this.assessmentYear.assessment.parameters.filter(
           (p) => p.isProjection,
         );
 
         this.selectedNdc = this.ndcList.find(
-          (a) => a.id == this.assementYear.assessment.ndc?.id,
+          (a) => a.id == this.assessmentYear.assessment.ndc?.id,
         )!;
 
         this.selectedSubNdc = this.selectedNdc?.subNdc.find(
-          (a) => a.id == this.assementYear.assessment.subNdc?.id,
+          (a) => a.id == this.assessmentYear.assessment.subNdc?.id,
         )!;
       });
   }
@@ -285,8 +285,8 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
   }
 
   onRowSelectAssessment(event: any, isApprove: boolean) {
-    this.selectdAssementType = event;
-    this.isApproveAssement = isApprove;
+    this.selectdAssessmentType = event;
+    this.isApproveAssessment = isApprove;
   }
 
   OnShowOerlayDR() {
@@ -295,13 +295,13 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
   }
 
   OnShowOerlayDRAssessment() {
-    this.assesmentResultComment = '';
-    this.assesmentResultCommentRequried = false;
+    this.assessmentResultComment = '';
+    this.assessmentResultCommentRequried = false;
   }
 
-  approve(parameter: ProjectionResault) {}
+  approve(parameter: ProjectionResult) {}
 
-  reject(parameter: ProjectionResault) {}
+  reject(parameter: ProjectionResult) {}
 
   drWithComment() {
     if (!this.isApprove && this.drComment === '') {
@@ -348,23 +348,23 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
       );
   }
 
-  drWithCommentAssesment() {
-    if (!this.isApproveAssement && this.assesmentResultComment === '') {
+  drWithCommentAssessment() {
+    if (!this.isApproveAssessment && this.assessmentResultComment === '') {
       this.commentRequried = true;
       return;
     }
 
-    const qastatus = this.isApproveAssement
+    const qastatus = this.isApproveAssessment
       ? QuAlityCheckStatus.Pass
       : QuAlityCheckStatus.Fail;
 
-    this.assesmentResaultProxy
-      .updateQCStatusAssesmentResult(
+    this.assessmentResultProxy
+      .updateQCStatusAssessmentResult(
         this.assessmentResult.id,
         this.assessmentResult.assessmentYear.id,
         qastatus,
-        this.selectdAssementType,
-        this.assesmentResultComment,
+        this.selectdAssessmentType,
+        this.assessmentResultComment,
       )
       .subscribe(
         (res) => {
@@ -420,11 +420,11 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
       vd.createdOn = moment();
       vd.updatedDate = moment();
       vd.userVerifier = this.loggedUser.id;
-      vd.assessmentId = this.assementYear.assessment.id;
-      const assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assementYear.id;
-      vd.assessmentYear = assesmentYear;
-      vd.year = Number(this.assementYear.assessmentYear);
+      vd.assessmentId = this.assessmentYear.assessment.id;
+      const assessmentYear = new AssessmentYear();
+      assessmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assessmentYear;
+      vd.year = Number(this.assessmentYear.assessmentYear);
 
       if (IsNdc) {
         vd.isNDC = true;
@@ -434,10 +434,10 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
       }
     }
 
-    if (this.assementYear.verificationStatus === 1) {
+    if (this.assessmentYear.verificationStatus === 1) {
       vd.verificationStatus = 2;
       vd.verificationStage = 1;
-    } else if (this.assementYear.verificationStatus === 3) {
+    } else if (this.assessmentYear.verificationStatus === 3) {
       vd.verificationStatus = 4;
       vd.verificationStage = 2;
     } else {
@@ -464,14 +464,14 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
   getverificationStage() {
     let stage = 0;
     if (
-      this.assementYear.verificationStatus === 1 ||
-      this.assementYear.verificationStatus === 2 ||
-      this.assementYear.verificationStatus === 3
+      this.assessmentYear.verificationStatus === 1 ||
+      this.assessmentYear.verificationStatus === 2 ||
+      this.assessmentYear.verificationStatus === 3
     ) {
       stage = 1;
-    } else if (this.assementYear.verificationStatus === 4) {
+    } else if (this.assessmentYear.verificationStatus === 4) {
       stage = 2;
-    } else if (this.assementYear.verificationStatus === 5) {
+    } else if (this.assessmentYear.verificationStatus === 5) {
       stage = 3;
     }
 
@@ -505,15 +505,15 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
   }
 
   sendForVerification() {
-    this.assementYear.verificationStatus = 2;
-    this.assementYear.assessmentAssumption = this.assumption;
+    this.assessmentYear.verificationStatus = 2;
+    this.assessmentYear.assessmentAssumption = this.assumption;
     const assessment = new Assessment();
-    assessment.id = this.assementYear.assessment.id;
-    this.assementYear.assessment = assessment;
+    assessment.id = this.assessmentYear.assessment.id;
+    this.assessmentYear.assessment = assessment;
     this.serviceProxy
       .updateOneBaseAssessmentYearControllerAssessmentYear(
-        this.assementYear.id,
-        this.assementYear,
+        this.assessmentYear.id,
+        this.assessmentYear,
       )
       .subscribe((a) => {
         this.messageService.add({
@@ -528,15 +528,15 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
   }
 
   async ndcAction() {
-    const action = `Ndc changed  Original Value : ${this.assementYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n
-      Sub Ndc changed  Original Value : ${this.assementYear.assessment.project.subNdc.name} New Value : ${this.selectedSubNdc.name} \n`;
+    const action = `Ndc changed  Original Value : ${this.assessmentYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n
+      Sub Ndc changed  Original Value : ${this.assessmentYear.assessment.project.subNdc.name} New Value : ${this.selectedSubNdc.name} \n`;
 
-    this.assementYear.assessment.project.ndc = this.selectedNdc;
-    this.assementYear.assessment.project.subNdc = this.selectedSubNdc;
+    this.assessmentYear.assessment.project.ndc = this.selectedNdc;
+    this.assessmentYear.assessment.project.subNdc = this.selectedSubNdc;
 
     const project: Project = await this.serviceProxy
       .getOneBaseProjectControllerProject(
-        this.assementYear.assessment.project.id,
+        this.assessmentYear.assessment.project.id,
         undefined,
         undefined,
         undefined,
@@ -563,7 +563,7 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
 
   toNonConformance() {
     this.router.navigate(['/non-conformance'], {
-      queryParams: { id: this.assementYear.id, flag: 'sec-admin' },
+      queryParams: { id: this.assessmentYear.id, flag: 'sec-admin' },
     });
   }
 
@@ -591,19 +591,19 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
 
     if (currentVerification) {
       vd = currentVerification;
-      const assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assementYear.id;
-      vd.assessmentYear = assesmentYear;
+      const assessmentYear = new AssessmentYear();
+      assessmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assessmentYear;
       vd.updatedDate = moment();
     } else {
       vd.createdOn = moment();
       vd.updatedDate = moment();
       vd.userVerifier = this.loggedUser.id;
-      vd.assessmentId = this.assementYear.assessment.id;
-      const assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assementYear.id;
-      vd.assessmentYear = assesmentYear;
-      vd.year = Number(this.assementYear.assessmentYear);
+      vd.assessmentId = this.assessmentYear.assessment.id;
+      const assessmentYear = new AssessmentYear();
+      assessmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assessmentYear;
+      vd.year = Number(this.assessmentYear.assessmentYear);
 
       if (IsNdc) {
         vd.isNDC = true;

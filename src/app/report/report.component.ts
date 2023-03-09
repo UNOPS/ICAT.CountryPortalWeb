@@ -191,7 +191,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     }
 
     this.serviceProxy
-      .getManyBaseAssesmentControllerAssessment(
+      .getManyBaseAssessmentControllerAssessment(
         undefined,
         undefined,
         undefined,
@@ -257,7 +257,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
       this.onSectorChange(this.selectedSector);
     }
   }
-  onselectedAssesmentType(selectedType: any) {
+  onselectedAssessmentType(selectedType: any) {
     if (
       selectedType.includes(this.typePair[3]) &&
       !selectedType.includes(this.typePair[1])
@@ -629,8 +629,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     this.reportPdfFile.climateAction = this.summeryReportPDF.projIds.toString();
     this.reportPdfFile.reportName = this.summeryReportPDF.reportName;
     this.reportPdfFile.countryId = currentUser.countryId;
-    this.reportPdfFile.assesmentType =
-      this.summeryReportPDF.assessType.toString();
+    this.reportPdfFile.assessmentType = this.summeryReportPDF.assessType.toString();
     this.reportPdfFile.generateReportName = res.fileName;
 
     const resultPdfData = await this.reportProxy

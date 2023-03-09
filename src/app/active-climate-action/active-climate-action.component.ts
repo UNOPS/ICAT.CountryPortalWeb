@@ -107,7 +107,7 @@ export class ActiveClimateActionComponent implements OnInit, AfterViewInit {
       });
 
     this.serviceProxy
-      .getManyBaseAssesmentControllerAssessment(
+      .getManyBaseAssessmentControllerAssessment(
         undefined,
         undefined,
         undefined,
@@ -217,7 +217,7 @@ export class ActiveClimateActionComponent implements OnInit, AfterViewInit {
             const filter1: string[] = [];
             filter1.push('project.id||$eq||' + o.id);
             this.serviceProxy
-              .getManyBaseAssesmentControllerAssessment(
+              .getManyBaseAssessmentControllerAssessment(
                 undefined,
                 undefined,
                 filter1,

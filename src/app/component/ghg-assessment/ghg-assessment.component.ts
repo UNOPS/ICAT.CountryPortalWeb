@@ -20,11 +20,11 @@ import {
   DefaultValue,
   ApplicabilityEntity,
   ParameterControllerServiceProxy,
-  AssesmentResaultControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
   AssessmentYearControllerServiceProxy,
   InstitutionControllerServiceProxy,
   ProjectApprovalStatus,
-  AssesmentControllerServiceProxy,
+  AssessmentControllerServiceProxy,
   ApplicabilityControllerServiceProxy,
   DefaultValueControllerServiceProxy,
   User,
@@ -66,7 +66,7 @@ export class GhgAssessmentComponent implements OnInit {
   climateActions: Project[] = [];
   selectedClimateAction: Project;
   baseYear: Date;
-  assesmentYear: Date;
+  assessmentYear: Date;
   years: SelectItem[] = [];
   selectYears: number[];
   selectedObjective: AssessmentObjective[] = [];
@@ -225,7 +225,7 @@ export class GhgAssessmentComponent implements OnInit {
   projectDuration: number;
 
   mitigationActionType: MitigationActionType[] = [];
-  assesmentObjective: AssessmentObjective[] = [];
+  assessmentObjective: AssessmentObjective[] = [];
   selectedMitigationActionType: MitigationActionType | undefined;
 
   applicability: ApplicabilityEntity[] = [];
@@ -298,7 +298,7 @@ export class GhgAssessmentComponent implements OnInit {
   projectApprovalStatus: ProjectApprovalStatus[];
 
   selectedAssessementByCA: Assessment[] = [];
-  assementYearAndTypeObjectList: any[] = [];
+  assessmentYearAndTypeObjectList: any[] = [];
   warningMessage: any = '';
   isDisableforSubmitButton = false;
   isSubmitted = false;
@@ -335,10 +335,10 @@ export class GhgAssessmentComponent implements OnInit {
     private http: HttpClient,
     private defaultValueControllerServiceProxy: DefaultValueControllerServiceProxy,
     private messageService: MessageService,
-    private assesmentResaultProxy: AssesmentResaultControllerServiceProxy,
-    private assesmentYearProxy: AssessmentYearControllerServiceProxy,
+    private assessmentResultProxy: AssessmentResultControllerServiceProxy,
+    private assessmentYearProxy: AssessmentYearControllerServiceProxy,
     private instituationProxy: InstitutionControllerServiceProxy,
-    private assessmentProxy: AssesmentControllerServiceProxy,
+    private assessmentProxy: AssessmentControllerServiceProxy,
     private applicabilityControllerServiceProxy: ApplicabilityControllerServiceProxy,
   ) {}
 
@@ -530,7 +530,7 @@ export class GhgAssessmentComponent implements OnInit {
         0,
       )
       .subscribe((res: any) => {
-        this.assesmentObjective = res.data;
+        this.assessmentObjective = res.data;
       });
 
     const intTypeFilter: string[] = [];
@@ -572,8 +572,10 @@ export class GhgAssessmentComponent implements OnInit {
         this.ProjectParam = this.getParam('project', methParam.methodology);
         this.lekageParam = this.getParam('leakage', methParam.methodology);
 
-        [this.blHasVehicale, this.blHasVehicaleMulti] =
-          this.isHaveDiminsionType(this.vehicle, this.baslineParam);
+        [
+          this.blHasVehicale,
+          this.blHasVehicaleMulti,
+        ] = this.isHaveDiminsionType(this.vehicle, this.baslineParam);
         this.blVehicalValue = this.getDiminsionTypeValue(
           this.vehicle,
           this.baslineParam,
@@ -588,8 +590,10 @@ export class GhgAssessmentComponent implements OnInit {
           this.baslineParam,
         );
 
-        [this.blHasPowerPlant, this.blHasPowerPlantMulti] =
-          this.isHaveDiminsionType(this.power, this.baslineParam);
+        [
+          this.blHasPowerPlant,
+          this.blHasPowerPlantMulti,
+        ] = this.isHaveDiminsionType(this.power, this.baslineParam);
 
         [this.blHasRoute, this.blHasRouteMulti] = this.isHaveDiminsionType(
           this.route,
@@ -619,22 +623,28 @@ export class GhgAssessmentComponent implements OnInit {
           this.baslineParam,
         );
 
-        [this.blHasFeedstock, this.blHasFeedstockMulti] =
-          this.isHaveDiminsionType(this.feedstock, this.baslineParam);
+        [
+          this.blHasFeedstock,
+          this.blHasFeedstockMulti,
+        ] = this.isHaveDiminsionType(this.feedstock, this.baslineParam);
         this.blFeedstockValue = this.getDiminsionTypeValue(
           this.feedstock,
           this.baslineParam,
         );
 
-        [this.blHasLandClearance, this.blHasLandClearanceMulti] =
-          this.isHaveDiminsionType(this.landclearance, this.baslineParam);
+        [
+          this.blHasLandClearance,
+          this.blHasLandClearanceMulti,
+        ] = this.isHaveDiminsionType(this.landclearance, this.baslineParam);
         this.blLandClearanceValue = this.getDiminsionTypeValue(
           this.landclearance,
           this.baslineParam,
         );
 
-        [this.prHasVehicale, this.prHasVehicaleMulti] =
-          this.isHaveDiminsionType(this.vehicle, this.ProjectParam);
+        [
+          this.prHasVehicale,
+          this.prHasVehicaleMulti,
+        ] = this.isHaveDiminsionType(this.vehicle, this.ProjectParam);
         this.prVehicalValue = this.getDiminsionTypeValue(
           this.vehicle,
           this.ProjectParam,
@@ -680,22 +690,28 @@ export class GhgAssessmentComponent implements OnInit {
           this.ProjectParam,
         );
 
-        [this.prHasFeedstock, this.prHasFeedstockMulti] =
-          this.isHaveDiminsionType(this.feedstock, this.ProjectParam);
+        [
+          this.prHasFeedstock,
+          this.prHasFeedstockMulti,
+        ] = this.isHaveDiminsionType(this.feedstock, this.ProjectParam);
         this.prFeedstockValue = this.getDiminsionTypeValue(
           this.feedstock,
           this.ProjectParam,
         );
 
-        [this.prHasLandClearance, this.prHasLandClearanceMulti] =
-          this.isHaveDiminsionType(this.landclearance, this.ProjectParam);
+        [
+          this.prHasLandClearance,
+          this.prHasLandClearanceMulti,
+        ] = this.isHaveDiminsionType(this.landclearance, this.ProjectParam);
         this.prLandClearanceValue = this.getDiminsionTypeValue(
           this.landclearance,
           this.ProjectParam,
         );
 
-        [this.lkHasVehicale, this.lkHasVehicaleMulti] =
-          this.isHaveDiminsionType(this.vehicle, this.lekageParam);
+        [
+          this.lkHasVehicale,
+          this.lkHasVehicaleMulti,
+        ] = this.isHaveDiminsionType(this.vehicle, this.lekageParam);
         this.lkVehicalValue = this.getDiminsionTypeValue(
           this.vehicle,
           this.lekageParam,
@@ -708,8 +724,10 @@ export class GhgAssessmentComponent implements OnInit {
           this.fuel,
           this.lekageParam,
         );
-        [this.lkHasPowerPlant, this.lkHasPowerPlantMulti] =
-          this.isHaveDiminsionType(this.power, this.lekageParam);
+        [
+          this.lkHasPowerPlant,
+          this.lkHasPowerPlantMulti,
+        ] = this.isHaveDiminsionType(this.power, this.lekageParam);
 
         [this.lkHasRoute, this.lkHasRouteMulti] = this.isHaveDiminsionType(
           this.route,
@@ -738,15 +756,19 @@ export class GhgAssessmentComponent implements OnInit {
           this.lekageParam,
         );
 
-        [this.lkHasFeedstock, this.lkHasFeedstockMulti] =
-          this.isHaveDiminsionType(this.feedstock, this.lekageParam);
+        [
+          this.lkHasFeedstock,
+          this.lkHasFeedstockMulti,
+        ] = this.isHaveDiminsionType(this.feedstock, this.lekageParam);
         this.lkFeedstockValue = this.getDiminsionTypeValue(
           this.feedstock,
           this.lekageParam,
         );
 
-        [this.lkHasLandClearance, this.lkHasLandClearanceMulti] =
-          this.isHaveDiminsionType(this.landclearance, this.lekageParam);
+        [
+          this.lkHasLandClearance,
+          this.lkHasLandClearanceMulti,
+        ] = this.isHaveDiminsionType(this.landclearance, this.lekageParam);
         this.lkLandClearanceValue = this.getDiminsionTypeValue(
           this.landclearance,
           this.lekageParam,
@@ -1242,8 +1264,7 @@ export class GhgAssessmentComponent implements OnInit {
                 (b) => b.vehical.id === vehicalCommon.id,
               );
               if (commonEntered.length === 0) {
-                const tempCommon =
-                  new ParameterDimensionSelection().createNew();
+                const tempCommon = new ParameterDimensionSelection().createNew();
                 tempCommon.vehical = vehicalCommon;
                 this.basllineSelection.push(tempCommon);
                 this.hasCommonBaseline = true;
@@ -1268,12 +1289,11 @@ export class GhgAssessmentComponent implements OnInit {
               this.basllineSelection[0].vehicals.unshift(fuelCommon);
             }
 
-            const vehicalSection =
-              this.genrateVehicalParameterSectionWhenHasFeedstock(
-                this.basllineSelection,
-                vehicalParam,
-                'Vehicle Info',
-              );
+            const vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
+              this.basllineSelection,
+              vehicalParam,
+              'Vehicle Info',
+            );
 
             this.blParameters.vehicalSection = vehicalSection;
           }
@@ -1300,12 +1320,11 @@ export class GhgAssessmentComponent implements OnInit {
               this.basllineSelection[0].fuel.unshift(fuelCommon);
             }
 
-            const fuelSection =
-              this.genrateFuelParameterSectionWhenHasFeedstock(
-                this.basllineSelection,
-                fuelParam,
-                'Fuel Info',
-              );
+            const fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
+              this.basllineSelection,
+              fuelParam,
+              'Fuel Info',
+            );
             this.blParameters.fuelSection = fuelSection;
           }
         }
@@ -1382,12 +1401,11 @@ export class GhgAssessmentComponent implements OnInit {
             );
           }
 
-          const landClearanceSection =
-            this.genrateLandClearanceParameterSection(
-              this.basllineSelection,
-              landClearanceParam,
-              'Land Clearance Info',
-            );
+          const landClearanceSection = this.genrateLandClearanceParameterSection(
+            this.basllineSelection,
+            landClearanceParam,
+            'Land Clearance Info',
+          );
           this.blParameters.landClearanceSection = landClearanceSection;
         }
 
@@ -1481,12 +1499,11 @@ export class GhgAssessmentComponent implements OnInit {
             this.projectSelection[0].vehicals.unshift(vehicalCommon);
           }
 
-          const vehicalSection =
-            this.genrateVehicalParameterSectionWhenHasFeedstock(
-              this.projectSelection,
-              vehicalParam,
-              'Vehicle Info',
-            );
+          const vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
+            this.projectSelection,
+            vehicalParam,
+            'Vehicle Info',
+          );
 
           this.prParameters.vehicalSection = vehicalSection;
         }
@@ -1656,8 +1673,7 @@ export class GhgAssessmentComponent implements OnInit {
                 (l) => l.vehical.id === vehicalCommon.id,
               );
               if (commonEntered.length === 0) {
-                const tempCommon =
-                  new ParameterDimensionSelection().createNew();
+                const tempCommon = new ParameterDimensionSelection().createNew();
                 tempCommon.vehical = vehicalCommon;
                 this.hasCommonLeakage = true;
                 this.lekageSelection.push(tempCommon);
@@ -1681,12 +1697,11 @@ export class GhgAssessmentComponent implements OnInit {
               this.lekageSelection[0].vehicals.unshift(vehicalCommon);
             }
 
-            const vehicalSection =
-              this.genrateVehicalParameterSectionWhenHasFeedstock(
-                this.lekageSelection,
-                vehicalParam,
-                'Vehicle Info',
-              );
+            const vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
+              this.lekageSelection,
+              vehicalParam,
+              'Vehicle Info',
+            );
 
             this.lkParameters.vehicalSection = vehicalSection;
           }
@@ -1712,12 +1727,11 @@ export class GhgAssessmentComponent implements OnInit {
               this.lekageSelection[0].fuel.unshift(fuelCommon);
             }
 
-            const fuelSection =
-              this.genrateFuelParameterSectionWhenHasFeedstock(
-                this.lekageSelection,
-                fuelParam,
-                'Fuel Info',
-              );
+            const fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
+              this.lekageSelection,
+              fuelParam,
+              'Fuel Info',
+            );
             this.lkParameters.fuelSection = fuelSection;
           }
         }
@@ -1791,12 +1805,11 @@ export class GhgAssessmentComponent implements OnInit {
             this.lekageSelection[0].landClearance.unshift(landClearanceCommon);
           }
 
-          const landClearanceSection =
-            this.genrateLandClearanceParameterSection(
-              this.lekageSelection,
-              landClearanceParam,
-              'Land Clearance Info',
-            );
+          const landClearanceSection = this.genrateLandClearanceParameterSection(
+            this.lekageSelection,
+            landClearanceParam,
+            'Land Clearance Info',
+          );
           this.lkParameters.landClearanceSection = landClearanceSection;
         }
 
@@ -2503,7 +2516,7 @@ export class GhgAssessmentComponent implements OnInit {
           'Assessment.assessmentType||$in||' + this.approachList,
         );
       this.serviceProxy
-        .getManyBaseAssesmentControllerAssessment(
+        .getManyBaseAssessmentControllerAssessment(
           undefined,
           undefined,
           filterProject,
@@ -2520,8 +2533,8 @@ export class GhgAssessmentComponent implements OnInit {
 
           const yearList: any[] = [];
           let uniqueYearList: any[] = [];
-          for (const assement of this.selectedAssessementByCA) {
-            for (const years of assement.assessmentYear) {
+          for (const assessment of this.selectedAssessementByCA) {
+            for (const years of assessment.assessmentYear) {
               yearList.push(years.assessmentYear);
             }
           }
@@ -2601,7 +2614,7 @@ export class GhgAssessmentComponent implements OnInit {
 
   onChangeAssessmentType() {
     if (this.IsProposal == false) {
-      const result = this.assementYearAndTypeObjectList.find(
+      const result = this.assessmentYearAndTypeObjectList.find(
         (o) => o.assessmentType == this.selectedApproch,
       );
 
@@ -2635,7 +2648,7 @@ export class GhgAssessmentComponent implements OnInit {
     }
   }
 
-  async createAssementCA(data: NgForm) {
+  async createAssessmentCA(data: NgForm) {
     this.requiredParas = true;
     if (this.IsProposal) {
       this.selectYears = [];
@@ -2683,17 +2696,17 @@ export class GhgAssessmentComponent implements OnInit {
       assessment.methodologyCode = this.methodologyCode;
       assessment.methodologyVersion = this.methodologyVersion;
 
-      const assesmentYars: AssessmentYear[] = [];
+      const assessmentYars: AssessmentYear[] = [];
       const parameters: Parameter_Server[] = [];
 
       if (this.IsProposal) {
-        this.selectYears.push(this.assesmentYear.getFullYear());
+        this.selectYears.push(this.assessmentYear.getFullYear());
       }
 
       this.selectYears.map((y: any) => {
         const ae = new AssessmentYear();
         ae.assessmentYear = y;
-        assesmentYars.push(ae);
+        assessmentYars.push(ae);
 
         if (this.blParameters !== undefined && this.blParameters !== null) {
           if (
@@ -3004,7 +3017,7 @@ export class GhgAssessmentComponent implements OnInit {
         }
       });
 
-      assessment.assessmentYear = assesmentYars;
+      assessment.assessmentYear = assessmentYars;
       assessment.parameters = parameters;
 
       const paramSuffix =
@@ -3073,7 +3086,7 @@ export class GhgAssessmentComponent implements OnInit {
 
       if (this.requiredParas) {
         this.serviceProxy
-          .createOneBaseAssesmentControllerAssessment(assessment)
+          .createOneBaseAssessmentControllerAssessment(assessment)
           .subscribe(
             (res: any) => {
               this.isDisableforSubmitButton = true;
@@ -3127,7 +3140,7 @@ export class GhgAssessmentComponent implements OnInit {
                 });
 
                 this.savedAsessment = res;
-                this.getAssesmentResult(res.id);
+                this.getAssessmentResult(res.id);
                 this.isSave = true;
               } else {
                 this.messageService.add({
@@ -3137,7 +3150,7 @@ export class GhgAssessmentComponent implements OnInit {
                 });
 
                 this.savedAsessment = res;
-                this.getAssesmentResult(res.id);
+                this.getAssessmentResult(res.id);
                 this.isSave = true;
               }
             },
@@ -3155,26 +3168,26 @@ export class GhgAssessmentComponent implements OnInit {
     }
   }
 
-  updateAssesmentProject(assessment: Assessment) {
+  updateAssessmentProject(assessment: Assessment) {
     const proj = new Project();
     proj.id = assessment.project.id;
     assessment.project = proj;
 
     this.serviceProxy
-      .updateOneBaseAssesmentControllerAssessment(assessment.id, assessment)
+      .updateOneBaseAssessmentControllerAssessment(assessment.id, assessment)
       .subscribe((res: any) => {});
   }
 
-  getAssesmentResult(assesmentId: number) {
+  getAssessmentResult(assessmentId: number) {
     const filter: string[] = [];
 
-    this.assesmentYearProxy
-      .getAllByAssessmentId(assesmentId)
+    this.assessmentYearProxy
+      .getAllByAssessmentId(assessmentId)
       .subscribe((res) => {
         const assesYear = res;
 
-        this.assesmentResaultProxy
-          .getAssesmentResult(assesmentId, assesYear[0].ay_id, true, '1234')
+        this.assessmentResultProxy
+          .getAssessmentResult(assessmentId, assesYear[0].ay_id, true, '1234')
           .subscribe((res) => {});
       });
   }
@@ -3185,7 +3198,7 @@ export class GhgAssessmentComponent implements OnInit {
     isProject: boolean,
     islekage: boolean,
     isProjection: boolean,
-    assesmentYear: number,
+    assessmentYear: number,
     countryCode: string,
   ) {
     const parameters: Parameter_Server[] = [];
@@ -3200,7 +3213,7 @@ export class GhgAssessmentComponent implements OnInit {
           const param = this.createServerParam(
             p,
             sp,
-            assesmentYear,
+            assessmentYear,
             undefined,
             false,
             isBaseline,
@@ -3215,7 +3228,7 @@ export class GhgAssessmentComponent implements OnInit {
               const altParam = this.createServerParam(
                 p,
                 sp,
-                assesmentYear,
+                assessmentYear,
                 param,
                 true,
                 isBaseline,
@@ -3236,7 +3249,7 @@ export class GhgAssessmentComponent implements OnInit {
   createServerParam(
     p: Parameter,
     sp: SectionParameter,
-    assesmentYear: number,
+    assessmentYear: number,
     pp: Parameter_Server | undefined,
     isAlternative: boolean,
     isBaseline: boolean,
@@ -3277,7 +3290,7 @@ export class GhgAssessmentComponent implements OnInit {
       param.parentParameter = pp!;
     }
     param.baseYear = this.baseYear.getFullYear();
-    param.assessmentYear = assesmentYear;
+    param.assessmentYear = assessmentYear;
     param.useDefaultValue = p.useDefaultValue;
     param.isBaseline = isBaseline;
     param.isProject = isProject;
@@ -3363,7 +3376,7 @@ export class GhgAssessmentComponent implements OnInit {
 
   Changeobjective(event: any) {
     if (event.filter.length >= 3) {
-      const vValue = this.assesmentObjective.find(
+      const vValue = this.assessmentObjective.find(
         (a: any) => a.name === event.filter,
       );
       if (vValue === undefined || vValue === null) {
@@ -3377,9 +3390,9 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   addObjective() {
-    const assesmentObjective = new AssessmentObjective();
-    assesmentObjective.objective = this.newObjective;
-    this.assesmentObjective.push(assesmentObjective);
+    const assessmentObjective = new AssessmentObjective();
+    assessmentObjective.objective = this.newObjective;
+    this.assessmentObjective.push(assessmentObjective);
     this.showAddObjective = false;
     this.newObjective = '';
   }
@@ -3479,7 +3492,7 @@ export class GhgAssessmentComponent implements OnInit {
     }
   }
 
-  onApplicationAssesmentChange($event: any) {
+  onApplicationAssessmentChange($event: any) {
     this.filterMethodology();
 
     for (const item of this.methodologys) {
@@ -3504,25 +3517,25 @@ export class GhgAssessmentComponent implements OnInit {
       this.router.navigate(['/result'], {
         queryParams: {
           id: this.savedAsessment.id,
-          yr: this.assesmentYear.getFullYear(),
+          yr: this.assessmentYear.getFullYear(),
         },
       });
     }, 2000);
   }
 
-  async onAssesmentYearChange(event: any) {
+  async onAssessmentYearChange(event: any) {
     this.projectionBaseyears = [];
     if (this.IsProposal) {
-      this.projectionBaseyears.push(this.assesmentYear.getFullYear());
+      this.projectionBaseyears.push(this.assessmentYear.getFullYear());
       this.ProjectionbaseYear = this.projectionBaseyears[0];
     } else {
       this.projectionBaseyears.push(...this.selectYears);
 
       this.warningMessage = '';
       this.selectedApproch = '';
-      this.assementYearAndTypeObjectList = [];
+      this.assessmentYearAndTypeObjectList = [];
       for (const year of this.selectYears) {
-        const res2 = await this.assesmentYearProxy
+        const res2 = await this.assessmentYearProxy
           .getAssessmentByYearAndProjectId(
             year.toString(),
             this.selectedClimateAction.id,
@@ -3532,7 +3545,7 @@ export class GhgAssessmentComponent implements OnInit {
         const objAsseType = { year: 0, assessmentType: '' };
         objAsseType['year'] = year;
         objAsseType['assessmentType'] = res2?.Assessment?.assessmentType;
-        this.assementYearAndTypeObjectList.push(objAsseType);
+        this.assessmentYearAndTypeObjectList.push(objAsseType);
       }
     }
   }

@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 
 import {
-  AssesmentControllerServiceProxy,
+  AssessmentControllerServiceProxy,
   Assessment,
   Country,
   LearningMaterial,
@@ -65,7 +65,7 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     private serviceProxy: ServiceProxy,
-    private AssessmentProxy: AssesmentControllerServiceProxy,
+    private AssessmentProxy: AssessmentControllerServiceProxy,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
   ) {}
@@ -219,6 +219,6 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
   }
 
   toPMU() {
-    window.location.href = 'https://icat-ca-tool.climatesi.com/pmu-app';
+    window.location.href = String(process.env['PMU_BASE_URL']);
   }
 }

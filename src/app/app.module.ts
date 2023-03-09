@@ -57,7 +57,7 @@ import {
   AuthControllerServiceProxy,
   InstitutionControllerServiceProxy,
   AuditControllerServiceProxy,
-  AssesmentControllerServiceProxy,
+  AssessmentControllerServiceProxy,
   ParameterControllerServiceProxy,
   AssessmentYearControllerServiceProxy,
   ParameterRequestControllerServiceProxy,
@@ -65,8 +65,8 @@ import {
   VerificationControllerServiceProxy,
   NdcControllerServiceProxy,
   ReportControllerServiceProxy,
-  AssesmentResaultControllerServiceProxy,
-  ProjectionResaultControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
+  ProjectionResultControllerServiceProxy,
   SectorControllerServiceProxy,
   UnitConversionControllerServiceProxy,
   UserTypeControllerServiceProxy,
@@ -164,7 +164,7 @@ import { StratumParameterComponent } from './component/stratum-parameter/stratum
 import { ResidueParameterComponent } from './component/residue-parameter/residue-parameter.component';
 import { PasswordModule } from 'primeng/password';
 
-export function getRemoteServiceBaseUrl(): string {
+export function getRemoteServiceBaseUrl(): any {
   return environment.baseUrlAPI;
 }
 
@@ -322,7 +322,7 @@ export function getRemoteServiceBaseUrl(): string {
     AuthControllerServiceProxy,
     InstitutionControllerServiceProxy,
     AuditControllerServiceProxy,
-    AssesmentControllerServiceProxy,
+    AssessmentControllerServiceProxy,
     ParameterControllerServiceProxy,
     ParameterRequestControllerServiceProxy,
     AssessmentYearControllerServiceProxy,
@@ -330,8 +330,8 @@ export function getRemoteServiceBaseUrl(): string {
     VerificationControllerServiceProxy,
     NdcControllerServiceProxy,
     ReportControllerServiceProxy,
-    AssesmentResaultControllerServiceProxy,
-    ProjectionResaultControllerServiceProxy,
+    AssessmentResultControllerServiceProxy,
+    ProjectionResultControllerServiceProxy,
     UnitConversionControllerServiceProxy,
     UserTypeControllerServiceProxy,
     TrackClimateControllerServiceProxy,

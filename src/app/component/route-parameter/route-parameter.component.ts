@@ -43,7 +43,7 @@ export class RouteParameterComponent implements OnInit {
     this.userSectorId = tokenPayload.sectorId;
 
     this.instituationProxy
-      .getInstitutionforAssesment()
+      .getInstitutionforAssessment()
       .subscribe((res: any) => {
         this.instiTutionList = res;
       });

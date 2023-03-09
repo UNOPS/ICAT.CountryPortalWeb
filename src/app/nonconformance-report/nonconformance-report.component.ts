@@ -75,9 +75,9 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
   assumptionList: any;
 
   assesMentYearId: any;
-  recievdAssementYear: any;
+  recievdAssessmentYear: any;
   assessmentId: any;
-  assementYear: AssessmentYear = new AssessmentYear();
+  assessmentYear: AssessmentYear = new AssessmentYear();
   flag: string;
   isVerificationHistory: number;
 
@@ -121,15 +121,15 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
           undefined,
         )
         .subscribe((res) => {
-          this.assementYear = res;
+          this.assessmentYear = res;
 
-          this.recievdAssementYear = this.assementYear.assessmentYear;
-          this.assessmentId = this.assementYear.assessment.id;
+          this.recievdAssessmentYear = this.assessmentYear.assessmentYear;
+          this.assessmentId = this.assessmentYear.assessment.id;
 
           this.assYearProxy
             .getVerificationDeatilsByAssessmentIdAndAssessmentYear(
               this.assessmentId,
-              this.recievdAssementYear,
+              this.recievdAssessmentYear,
             )
             .subscribe(
               (a) => {
@@ -300,21 +300,21 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
 
   toChangeStatus() {
     if (this.flag == 'sec-admin') {
-      this.assementYear.verificationStatus = 2;
-      this.assementYear.editedOn = moment();
+      this.assessmentYear.verificationStatus = 2;
+      this.assessmentYear.editedOn = moment();
 
       if (this.roundOneHeadTable != undefined) {
-        this.assementYear.verificationStatus = 4;
+        this.assessmentYear.verificationStatus = 4;
       }
 
       if (this.roundTwoHeadTable != undefined) {
-        this.assementYear.verificationStatus = 5;
+        this.assessmentYear.verificationStatus = 5;
       }
 
       this.serviceProxy
         .updateOneBaseAssessmentYearControllerAssessmentYear(
-          this.assementYear.id,
-          this.assementYear,
+          this.assessmentYear.id,
+          this.assessmentYear,
         )
         .subscribe((res) => {
           this.messageService.add({
@@ -324,37 +324,37 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
           });
         });
     } else {
-      this.assementYear.verificationStatus = 1;
-      this.assementYear.editedOn = moment();
+      this.assessmentYear.verificationStatus = 1;
+      this.assessmentYear.editedOn = moment();
 
       if (this.roundOneHeadTable != undefined) {
         if (this.roundOneList.length != 0) {
-          this.assementYear.verificationStatus = 3;
+          this.assessmentYear.verificationStatus = 3;
         } else {
-          this.assementYear.verificationStatus = 7;
+          this.assessmentYear.verificationStatus = 7;
         }
       }
 
       if (this.roundTwoHeadTable != undefined) {
         if (this.roundTwoList.length != 0) {
-          this.assementYear.verificationStatus = 3;
+          this.assessmentYear.verificationStatus = 3;
         } else {
-          this.assementYear.verificationStatus = 7;
+          this.assessmentYear.verificationStatus = 7;
         }
       }
 
       if (this.roundThreeHeadTable != undefined) {
         if (this.roundThreeList.length != 0) {
-          this.assementYear.verificationStatus = 6;
+          this.assessmentYear.verificationStatus = 6;
         } else {
-          this.assementYear.verificationStatus = 7;
+          this.assessmentYear.verificationStatus = 7;
         }
       }
 
       this.serviceProxy
         .updateOneBaseAssessmentYearControllerAssessmentYear(
-          this.assementYear.id,
-          this.assementYear,
+          this.assessmentYear.id,
+          this.assessmentYear,
         )
         .subscribe((res) => {
           this.messageService.add({
@@ -370,13 +370,13 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
     if (this.flag == 'sec-admin') {
       this.router.navigate(['/verification-sector-admin/detail'], {
         queryParams: {
-          id: this.assementYear.id,
+          id: this.assessmentYear.id,
         },
       });
     } else {
       this.router.navigate(['/verification-verifier/detail'], {
         queryParams: {
-          id: this.assementYear.id,
+          id: this.assessmentYear.id,
         },
       });
     }

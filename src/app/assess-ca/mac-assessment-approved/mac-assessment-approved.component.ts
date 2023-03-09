@@ -18,7 +18,7 @@ import {
   Project,
   ServiceProxy,
   Parameter as Parameter_Server,
-  AssesmentControllerServiceProxy,
+  AssessmentControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 @Component({
@@ -152,7 +152,7 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
 
   constructor(
     private serviceProxy: ServiceProxy,
-    private assesmentServiceProxy: AssesmentControllerServiceProxy,
+    private assessmentServiceProxy: AssessmentControllerServiceProxy,
     private cdr: ChangeDetectorRef,
     private messageService: MessageService,
     private router: Router,
@@ -277,14 +277,12 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
       this.slectedProject.proposeDateofCommence,
     ).format('YYYY-MM-DD');
 
-    this.baseScenarioTotalInvestment =
-      this.slectedProject.baseScenarioTotalInvestment;
-    this.projectScenarioTotalInvestment =
-      this.slectedProject.projectScenarioTotalInvestment;
+    this.baseScenarioTotalInvestment = this.slectedProject.baseScenarioTotalInvestment;
+    this.projectScenarioTotalInvestment = this.slectedProject.projectScenarioTotalInvestment;
     this.baseScenarioProjectLife = this.slectedProject.baseScenarioProjectLife;
     this.duration = this.slectedProject.duration;
 
-    this.assesmentServiceProxy
+    this.assessmentServiceProxy
       .assessmentForMAC(this.slectedProject.id)
       .subscribe((res: any) => {
         this.assessments = res;
@@ -320,7 +318,7 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
       filter1.push('assessmentYear.assessmentYear||$eq||' + yr);
 
     this.serviceProxy
-      .getManyBaseAssesmentControllerAssessment(
+      .getManyBaseAssessmentControllerAssessment(
         undefined,
         undefined,
         filter1,
@@ -393,7 +391,7 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: `There is no result for selected assessment in assesment year ${ass.assessmentYear[0].assessmentYear}. `,
+            detail: `There is no result for selected assessment in assessment year ${ass.assessmentYear[0].assessmentYear}. `,
             closable: true,
           });
           return;
@@ -407,22 +405,25 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
         assessment.projectStartDate = moment(
           this.slectedProject.proposeDateofCommence,
         );
-        assessment.emmisionReductionValue =
-          this.selectedApproch[x]?.assessmentResult[0].totalEmission;
-        assessment.ghgAssessTypeForMac =
-          this.selectedApproch[x]?.assessmentType;
+        assessment.emmisionReductionValue = this.selectedApproch[
+          x
+        ]?.assessmentResult[0].totalEmission;
+        assessment.ghgAssessTypeForMac = this.selectedApproch[
+          x
+        ]?.assessmentType;
         assessment.assessmentType = 'MAC';
         assessment.project = this.slectedProject;
         assessment.isProposal = this.IsProposal;
 
-        const assesmentYars: AssessmentYear[] = [];
+        const assessmentYars: AssessmentYear[] = [];
         const assessmentObjective: AssessmentObjective[] = [];
         const parameters: Parameter_Server[] = [];
         const ae = new AssessmentYear();
         const ao = new AssessmentObjective();
-        ae.assessmentYear =
-          this.selectedApproch[x].assessmentYear[0].assessmentYear;
-        assesmentYars.push(ae);
+        ae.assessmentYear = this.selectedApproch[
+          x
+        ].assessmentYear[0].assessmentYear;
+        assessmentYars.push(ae);
         ao.objective = this.objectiveOfAsse;
         assessmentObjective.push(ao);
 
@@ -738,12 +739,12 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
           parameters.push(...psAnnualFuelParams!);
         }
 
-        assessment.assessmentYear = assesmentYars;
+        assessment.assessmentYear = assessmentYars;
         assessment.assessmentObjective = assessmentObjective;
         assessment.parameters = parameters;
 
         this.serviceProxy
-          .createOneBaseAssesmentControllerAssessment(assessment)
+          .createOneBaseAssessmentControllerAssessment(assessment)
           .subscribe((res: any) => {
             this.isDisableSaveButton = true;
             this.messageService.add({
@@ -769,7 +770,7 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
     isProject: boolean,
     islekage: boolean,
     isProjection: boolean,
-    assesmentYear: string,
+    assessmentYear: string,
   ) {
     const parameters: Parameter_Server[] = [];
 
@@ -779,7 +780,7 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
       value,
       uomDataEntry,
       uomDataRequest,
-      assesmentYear,
+      assessmentYear,
       undefined,
       false,
       isBaseline,
@@ -797,7 +798,7 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
     value: string,
     uomDataEntry: string,
     uomDataRequest: string,
-    assesmentYear: string,
+    assessmentYear: string,
     pp: Parameter_Server | undefined,
     isAlternative: boolean,
     isBaseline: boolean,
@@ -813,7 +814,7 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
     param.uomDataRequest = uomDataRequest;
     param.isAlternative = isAlternative;
 
-    param.assessmentYear = +assesmentYear;
+    param.assessmentYear = +assessmentYear;
     param.isBaseline = isBaseline;
     param.isProject = isProject;
     param.isLekage = islekage;

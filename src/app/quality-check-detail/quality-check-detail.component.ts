@@ -6,15 +6,15 @@ import { QuAlityCheckStatus } from 'app/Model/QuAlityCheckStatus.enum';
 import { environment } from 'environments/environment';
 import { MessageService } from 'primeng/api';
 import {
-  AssesmentControllerServiceProxy,
-  AssesmentResaultControllerServiceProxy,
+  AssessmentControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
   Assessment,
-  AssessmentResault,
+  AssessmentResult,
   AssessmentYear,
   Parameter,
   ParameterControllerServiceProxy,
-  ProjectionResault,
-  ProjectionResaultControllerServiceProxy,
+  ProjectionResult,
+  ProjectionResultControllerServiceProxy,
   AssessmentYearControllerServiceProxy,
   ServiceProxy,
 } from 'shared/service-proxies/service-proxies';
@@ -26,25 +26,25 @@ import {
 })
 export class QualityCheckDetailComponent implements OnInit {
   assesMentYearId = 0;
-  assementYear: AssessmentYear = new AssessmentYear();
+  assessmentYear: AssessmentYear = new AssessmentYear();
   parameters: Parameter[] = [];
   baselineParameters: Parameter[] = [];
   projectParameters: Parameter[] = [];
   lekageParameters: Parameter[] = [];
   projectionParameters: Parameter[] = [];
   loading = false;
-  assessmentResult: AssessmentResault = new AssessmentResault();
-  projectionResult: ProjectionResault[] = [];
-  selectdProjectionResult: ProjectionResault;
+  assessmentResult: AssessmentResult = new AssessmentResult();
+  projectionResult: ProjectionResult[] = [];
+  selectdProjectionResult: ProjectionResult;
   isApprove = false;
   drComment = '';
   commentRequried = false;
 
-  assesmentResultComment = '';
-  assesmentResultCommentRequried = false;
+  assessmentResultComment = '';
+  assessmentResultCommentRequried = false;
 
-  selectdAssementType: number;
-  isApproveAssement = false;
+  selectdAssessmentType: number;
+  isApproveAssessment = false;
   flag: number;
   macValList: any;
   discountrate: any = null;
@@ -101,11 +101,11 @@ export class QualityCheckDetailComponent implements OnInit {
   ispstacResultButtonsDisableReject = false;
   isProjectionResultButtonsDisable = false;
   isProjectionResultButtonsDisableReject = false;
-  asseResultFromDB: AssessmentResault;
+  asseResultFromDB: AssessmentResult;
 
   isSubmitButtondisable = false;
 
-  isApproveAllAssesmentResult = false;
+  isApproveAllAssessmentResult = false;
   verificationStatusIsNull = false;
   @ViewChild('opDRPro') overlayDRPro: any;
   @ViewChild('opDRAss') overlayDRAssemnet: any;
@@ -113,9 +113,9 @@ export class QualityCheckDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private proxy: ServiceProxy,
-    private assesmentProxy: AssesmentControllerServiceProxy,
-    private assesmentResaultProxy: AssesmentResaultControllerServiceProxy,
-    private projectionResultProxy: ProjectionResaultControllerServiceProxy,
+    private assessmentProxy: AssessmentControllerServiceProxy,
+    private assessmentResultProxy: AssessmentResultControllerServiceProxy,
+    private projectionResultProxy: ProjectionResultControllerServiceProxy,
     private assessmentYearControllerServiceProxy: AssessmentYearControllerServiceProxy,
     private router: Router,
     private messageService: MessageService,
@@ -136,28 +136,28 @@ export class QualityCheckDetailComponent implements OnInit {
           undefined,
         )
         .subscribe((res) => {
-          this.assementYear = res;
+          this.assessmentYear = res;
           if (
-            this.assementYear.qaStatus == 3 ||
-            this.assementYear.qaStatus == 4
+            this.assessmentYear.qaStatus == 3 ||
+            this.assessmentYear.qaStatus == 4
           ) {
             this.isSubmitButtondisable = true;
           }
-          this.asseYearId = this.assementYear.id;
-          this.asseId = this.assementYear.assessment.id;
+          this.asseYearId = this.assessmentYear.id;
+          this.asseId = this.assessmentYear.assessment.id;
 
           if (
-            this.assementYear.verificationStatus == undefined ||
-            this.assementYear.verificationStatus == null
+            this.assessmentYear.verificationStatus == undefined ||
+            this.assessmentYear.verificationStatus == null
           ) {
             this.verificationStatusIsNull = true;
           }
 
           const filterResult: string[] = [];
           filterResult.push('assessmentYear.id||$eq||' + this.asseYearId) &
-            filterResult.push('assement.id||$eq||' + this.asseId);
+            filterResult.push('assessment.id||$eq||' + this.asseId);
           this.serviceProxy
-            .getManyBaseAssesmentResaultControllerAssessmentResault(
+            .getManyBaseAssessmentResultControllerAssessmentResult(
               undefined,
               undefined,
               filterResult,
@@ -242,15 +242,14 @@ export class QualityCheckDetailComponent implements OnInit {
                   this.isbstacResultButtonsDisableReject = true;
                 }
 
-                this.isApproveAllAssesmentResult =
-                  await this.assesmentResaultProxy
-                    .checkAllQCApprovmentAssessmentResult(this.asseResult[0].id)
-                    .toPromise();
+                this.isApproveAllAssessmentResult = await this.assessmentResultProxy
+                  .checkAllQCApprovmentAssessmentResult(this.asseResult[0].id)
+                  .toPromise();
               } else {
-                this.assesmentProxy
+                this.assessmentProxy
                   .checkAssessmentReadyForCalculate(
-                    this.assementYear.assessment.id,
-                    Number(this.assementYear.assessmentYear),
+                    this.assessmentYear.assessment.id,
+                    Number(this.assessmentYear.assessmentYear),
                   )
                   .subscribe((r) => {
                     this.isReadyToCAl = r;
@@ -259,9 +258,9 @@ export class QualityCheckDetailComponent implements OnInit {
             });
 
           const filterProjectionResult: string[] = [];
-          filterProjectionResult.push('assement.id||$eq||' + this.asseId);
+          filterProjectionResult.push('assessment.id||$eq||' + this.asseId);
           this.serviceProxy
-            .getManyBaseProjectionResaultControllerProjectionResault(
+            .getManyBaseProjectionResultControllerProjectionResult(
               undefined,
               undefined,
               filterProjectionResult,
@@ -284,17 +283,17 @@ export class QualityCheckDetailComponent implements OnInit {
               }
             });
 
-          this.getAssesment();
-          this.getAssesmentResult(false);
+          this.getAssessment();
+          this.getAssessmentResult(false);
           this.getProjectionResult();
         });
     });
   }
 
-  getAssesmentResult(isCalculate: boolean) {
-    this.assesmentResaultProxy
-      .getAssesmentResult(
-        this.assementYear.assessment.id,
+  getAssessmentResult(isCalculate: boolean) {
+    this.assessmentResultProxy
+      .getAssessmentResult(
+        this.assessmentYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
         '1234',
@@ -303,7 +302,7 @@ export class QualityCheckDetailComponent implements OnInit {
         this.assessmentResult = res;
 
         if (isCalculate) {
-          this.getAssesmentResult(false);
+          this.getAssessmentResult(false);
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -317,8 +316,8 @@ export class QualityCheckDetailComponent implements OnInit {
   getProjectionResult() {
     this.projectionResultProxy
       .getProjectionResult(
-        this.assementYear.assessment.id,
-        Number(this.assementYear.assessmentYear),
+        this.assessmentYear.assessment.id,
+        Number(this.assessmentYear.assessmentYear),
       )
       .subscribe((res) => {
         this.projectionResult = res;
@@ -364,46 +363,40 @@ export class QualityCheckDetailComponent implements OnInit {
       });
   }
 
-  getAssesment() {
-    this.assesmentProxy
+  getAssessment() {
+    this.assessmentProxy
       .getAssment(
-        this.assementYear.assessment.id,
-        this.assementYear.assessmentYear,
+        this.assessmentYear.assessment.id,
+        this.assessmentYear.assessmentYear,
       )
       .subscribe((res) => {
-        this.assementYear.assessment = res;
+        this.assessmentYear.assessment = res;
 
-        this.baseImage =
-          this.assementYear.assessment?.methodology?.baselineImage;
-        this.projectImage =
-          this.assementYear.assessment?.methodology?.projectImage;
-        this.projectionImage =
-          this.assementYear.assessment?.methodology?.projectionImage;
-        this.leakageImage =
-          this.assementYear.assessment?.methodology?.leakageImage;
-        this.resultImage =
-          this.assementYear.assessment?.methodology?.resultImage;
-        this.methodDocument =
-          this.assementYear.assessment?.methodology?.documents;
-        this.assessmentType = this.assementYear.assessment?.assessmentType;
+        this.baseImage = this.assessmentYear.assessment?.methodology?.baselineImage;
+        this.projectImage = this.assessmentYear.assessment?.methodology?.projectImage;
+        this.projectionImage = this.assessmentYear.assessment?.methodology?.projectionImage;
+        this.leakageImage = this.assessmentYear.assessment?.methodology?.leakageImage;
+        this.resultImage = this.assessmentYear.assessment?.methodology?.resultImage;
+        this.methodDocument = this.assessmentYear.assessment?.methodology?.documents;
+        this.assessmentType = this.assessmentYear.assessment?.assessmentType;
 
-        this.parameters = this.assementYear.assessment.parameters;
+        this.parameters = this.assessmentYear.assessment.parameters;
 
-        this.baselineParameters =
-          this.assementYear.assessment.parameters.filter((p) => p.isBaseline);
+        this.baselineParameters = this.assessmentYear.assessment.parameters.filter(
+          (p) => p.isBaseline,
+        );
 
-        this.projectParameters = this.assementYear.assessment.parameters.filter(
+        this.projectParameters = this.assessmentYear.assessment.parameters.filter(
           (p) => p.isProject,
         );
-        this.lekageParameters = this.assementYear.assessment.parameters.filter(
+        this.lekageParameters = this.assessmentYear.assessment.parameters.filter(
           (p) => p.isLekage,
         );
-        this.projectionParameters =
-          this.assementYear.assessment.parameters.filter(
-            (p) =>
-              p.isProjection &&
-              p.projectionBaseYear == Number(this.assementYear.assessmentYear),
-          );
+        this.projectionParameters = this.assessmentYear.assessment.parameters.filter(
+          (p) =>
+            p.isProjection &&
+            p.projectionBaseYear == Number(this.assessmentYear.assessmentYear),
+        );
       });
   }
 
@@ -414,8 +407,8 @@ export class QualityCheckDetailComponent implements OnInit {
   }
 
   submit() {
-    if (this.assementYear.assessment.assessmentType != 'MAC') {
-      this.getAssesmentResult(true);
+    if (this.assessmentYear.assessment.assessmentType != 'MAC') {
+      this.getAssessmentResult(true);
     } else {
       this.toCalMacResult();
     }
@@ -425,7 +418,7 @@ export class QualityCheckDetailComponent implements OnInit {
 
   toCalMacResult() {
     const filter1: string[] = [];
-    filter1.push('assessment.id||$eq||' + this.assementYear.assessment.id);
+    filter1.push('assessment.id||$eq||' + this.assessmentYear.assessment.id);
     this.serviceProxy
       .getManyBaseParameterControllerParameter(
         undefined,
@@ -452,7 +445,7 @@ export class QualityCheckDetailComponent implements OnInit {
           ).value,
           reduction: this.macValList.find((o: any) => o.name == 'Reduction')
             .value,
-          year: this.assementYear.assessmentYear,
+          year: this.assessmentYear.assessmentYear,
           baseline: {
             bsTotalInvestment: Number(
               this.macValList.find(
@@ -519,20 +512,23 @@ export class QualityCheckDetailComponent implements OnInit {
               this.macResult = res;
 
               setTimeout(() => {
-                const assessmentResult = new AssessmentResault();
-                assessmentResult.bsTotalAnnualCost =
-                  this.macResult['baseLineAnnualCost'];
-                assessmentResult.psTotalAnnualCost =
-                  this.macResult['projecrAnnualCost'];
-                assessmentResult.costDifference =
-                  this.macResult['totalAnnualCost'];
+                const assessmentResult = new AssessmentResult();
+                assessmentResult.bsTotalAnnualCost = this.macResult[
+                  'baseLineAnnualCost'
+                ];
+                assessmentResult.psTotalAnnualCost = this.macResult[
+                  'projecrAnnualCost'
+                ];
+                assessmentResult.costDifference = this.macResult[
+                  'totalAnnualCost'
+                ];
                 assessmentResult.macResult = this.macResult['mac'];
                 assessmentResult.assessmentYear.id = this.assesMentYearId;
-                assessmentResult.assement.id = this.assementYear.assessment.id;
+                assessmentResult.assessment.id = this.assessmentYear.assessment.id;
                 this.assessmentResult = assessmentResult;
 
                 this.serviceProxy
-                  .createOneBaseAssesmentResaultControllerAssessmentResault(
+                  .createOneBaseAssessmentResultControllerAssessmentResult(
                     this.assessmentResult,
                   )
                   .subscribe((res: any) => {
@@ -540,7 +536,7 @@ export class QualityCheckDetailComponent implements OnInit {
                       window.location.reload();
                     }
                     this.serviceProxy
-                      .getManyBaseAssesmentControllerAssessment(
+                      .getManyBaseAssessmentControllerAssessment(
                         undefined,
                         undefined,
                         undefined,
@@ -595,7 +591,7 @@ export class QualityCheckDetailComponent implements OnInit {
   }
 
   calculateButtonDisable() {
-    if (this.assementYear.assessment.assessmentType == 'MAC') {
+    if (this.assessmentYear.assessment.assessmentType == 'MAC') {
       return false;
     } else {
       return !this.isAllSubmit();
@@ -615,9 +611,9 @@ export class QualityCheckDetailComponent implements OnInit {
   }
 
   onRowSelectAssessment(event: any, isApprove: boolean) {
-    this.selectdAssementType = event;
+    this.selectdAssessmentType = event;
 
-    this.isApproveAssement = isApprove;
+    this.isApproveAssessment = isApprove;
   }
 
   OnShowOerlayDR() {
@@ -626,13 +622,13 @@ export class QualityCheckDetailComponent implements OnInit {
   }
 
   OnShowOerlayDRAssessment() {
-    this.assesmentResultComment = '';
-    this.assesmentResultCommentRequried = false;
+    this.assessmentResultComment = '';
+    this.assessmentResultCommentRequried = false;
   }
 
-  approve(parameter: ProjectionResault) {}
+  approve(parameter: ProjectionResult) {}
 
-  reject(parameter: ProjectionResault) {}
+  reject(parameter: ProjectionResult) {}
 
   drWithComment() {
     if (!this.isApprove && this.drComment === '') {
@@ -683,23 +679,23 @@ export class QualityCheckDetailComponent implements OnInit {
       );
   }
 
-  drWithCommentAssesment() {
-    if (!this.isApproveAssement && this.assesmentResultComment === '') {
+  drWithCommentAssessment() {
+    if (!this.isApproveAssessment && this.assessmentResultComment === '') {
       this.commentRequried = true;
       return;
     }
 
-    const qastatus = this.isApproveAssement
+    const qastatus = this.isApproveAssessment
       ? QuAlityCheckStatus.Pass
       : QuAlityCheckStatus.Fail;
 
-    this.assesmentResaultProxy
-      .updateQCStatusAssesmentResult(
+    this.assessmentResultProxy
+      .updateQCStatusAssessmentResult(
         this.assessmentResult.id,
         this.assessmentResult.assessmentYear.id,
         qastatus,
-        this.selectdAssementType,
-        this.assesmentResultComment,
+        this.selectdAssessmentType,
+        this.assessmentResultComment,
       )
       .subscribe(
         async (res: any) => {
@@ -777,45 +773,48 @@ export class QualityCheckDetailComponent implements OnInit {
             this.selectdProjectionResult,
           );
 
-          if (this.selectdAssementType === 1) {
+          if (this.selectdAssessmentType === 1) {
             this.assessmentResult.qcStatusBaselineResult = this
-              .isApproveAssement
+              .isApproveAssessment
               ? 4
               : 3;
-          } else if (this.selectdAssementType === 2) {
-            this.assessmentResult.qcStatuProjectResult = this.isApproveAssement
+          } else if (this.selectdAssessmentType === 2) {
+            this.assessmentResult.qcStatuProjectResult = this
+              .isApproveAssessment
               ? 4
               : 3;
-          } else if (this.selectdAssementType === 3) {
-            this.assessmentResult.qcStatusLekageResult = this.isApproveAssement
+          } else if (this.selectdAssessmentType === 3) {
+            this.assessmentResult.qcStatusLekageResult = this
+              .isApproveAssessment
               ? 4
               : 3;
-          } else if (this.selectdAssementType === 4) {
-            this.assessmentResult.qcStatusTotalEmission = this.isApproveAssement
+          } else if (this.selectdAssessmentType === 4) {
+            this.assessmentResult.qcStatusTotalEmission = this
+              .isApproveAssessment
               ? 4
               : 3;
-          } else if (this.selectdAssementType === 6) {
-            this.assessmentResult.qcStatusmacResult = this.isApproveAssement
+          } else if (this.selectdAssessmentType === 6) {
+            this.assessmentResult.qcStatusmacResult = this.isApproveAssessment
               ? 4
               : 3;
-          } else if (this.selectdAssementType === 7) {
+          } else if (this.selectdAssessmentType === 7) {
             this.assessmentResult.qcStatuscostDifference = this
-              .isApproveAssement
+              .isApproveAssessment
               ? 4
               : 3;
-          } else if (this.selectdAssementType === 8) {
+          } else if (this.selectdAssessmentType === 8) {
             this.assessmentResult.qcStatuspsTotalAnnualCost = this
-              .isApproveAssement
+              .isApproveAssessment
               ? 4
               : 3;
-          } else if (this.selectdAssementType === 9) {
+          } else if (this.selectdAssessmentType === 9) {
             this.assessmentResult.qcStatusbsTotalAnnualCost = this
-              .isApproveAssement
+              .isApproveAssessment
               ? 4
               : 3;
           }
 
-          this.isApproveAllAssesmentResult = await this.assesmentResaultProxy
+          this.isApproveAllAssessmentResult = await this.assessmentResultProxy
             .checkAllQCApprovmentAssessmentResult(this.assessmentResult.id)
             .toPromise();
 
@@ -838,26 +837,26 @@ export class QualityCheckDetailComponent implements OnInit {
     let isallPass =
       para.find((m) => m.parameterRequest?.qaStatus !== 4) === undefined;
 
-    if (this.assementYear.assessment.assessmentType == 'MAC') {
+    if (this.assessmentYear.assessment.assessmentType == 'MAC') {
       isallPass = true;
     }
 
-    this.assementYear.qaStatus = isallPass ? 4 : 3;
+    this.assessmentYear.qaStatus = isallPass ? 4 : 3;
 
     if (isallPass) {
-      this.assementYear.verificationStatus = 1;
+      this.assessmentYear.verificationStatus = 1;
     }
 
-    const tempassementYear = this.assementYear;
+    const tempassessmentYear = this.assessmentYear;
 
     const assesemt = new Assessment();
-    assesemt.id = tempassementYear.assessment.id;
-    tempassementYear.assessment = assesemt;
+    assesemt.id = tempassessmentYear.assessment.id;
+    tempassessmentYear.assessment = assesemt;
 
     this.proxy
       .updateOneBaseAssessmentYearControllerAssessmentYear(
         this.assesMentYearId,
-        tempassementYear,
+        tempassessmentYear,
       )
       .subscribe(
         (res) => {

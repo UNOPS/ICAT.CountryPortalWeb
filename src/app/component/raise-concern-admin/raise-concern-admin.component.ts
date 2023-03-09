@@ -24,7 +24,7 @@ export class RaiseConcernAdminComponent implements OnInit {
   verificationDetails: VerificationDetail[] | undefined;
 
   @Input()
-  assesmentYear: AssessmentYear;
+  assessmentYear: AssessmentYear;
 
   @Input()
   isNdC: boolean;
@@ -108,16 +108,16 @@ export class RaiseConcernAdminComponent implements OnInit {
     this.rootCausetRequried = false;
     this.correctiveActionRequried = false;
 
-    if (this.assesmentYear && this.assesmentYear !== undefined) {
+    if (this.assessmentYear && this.assessmentYear !== undefined) {
       if (
-        this.assesmentYear.verificationStatus === 1 ||
-        this.assesmentYear.verificationStatus === 2 ||
-        this.assesmentYear.verificationStatus === 3
+        this.assessmentYear.verificationStatus === 1 ||
+        this.assessmentYear.verificationStatus === 2 ||
+        this.assessmentYear.verificationStatus === 3
       ) {
         this.verificationRound = 1;
-      } else if (this.assesmentYear.verificationStatus === 4) {
+      } else if (this.assessmentYear.verificationStatus === 4) {
         this.verificationRound = 2;
-      } else if (this.assesmentYear.verificationStatus === 5)
+      } else if (this.assessmentYear.verificationStatus === 5)
         this.verificationRound = 3;
     }
 
@@ -170,11 +170,11 @@ export class RaiseConcernAdminComponent implements OnInit {
     } else {
       vd.createdOn = moment();
       vd.userVerifier = this.loggedUser.id;
-      vd.assessmentId = this.assesmentYear.assessment.id;
-      const assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assesmentYear.id;
-      vd.assessmentYear = assesmentYear;
-      vd.year = Number(this.assesmentYear.assessmentYear);
+      vd.assessmentId = this.assessmentYear.assessment.id;
+      const assessmentYear = new AssessmentYear();
+      assessmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assessmentYear;
+      vd.year = Number(this.assessmentYear.assessmentYear);
       vd.isBaseline = this.isBaseline;
       vd.isProject = this.isProject;
       vd.isLekage = this.isLekage;
@@ -194,7 +194,7 @@ export class RaiseConcernAdminComponent implements OnInit {
         vd.parameter = param;
       }
 
-      vd.verificationStatus = Number(this.assesmentYear.verificationStatus);
+      vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
     }
 
     vd.rootCause = this.rootCause;

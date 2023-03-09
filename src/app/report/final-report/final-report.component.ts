@@ -5,7 +5,7 @@ import { ExcecutiveSummeryReport } from '../Dto/executiveSummeryReportDto';
 import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import {
-  AssessmentResault,
+  AssessmentResult,
   AssessmentYear,
   AssessmentYearControllerServiceProxy,
   EmissionReductioDraftDataEntity,
@@ -45,7 +45,7 @@ export class FinalReportComponent implements OnInit {
   reportConcatArray: Array<any>;
 
   cliamteActionsBySector: Project[];
-  assessmentList: AssessmentResault[];
+  assessmentList: AssessmentResult[];
   actualValLst: number[] = [];
   unconValLst: number[] = [];
   conValLst: number[] = [];
@@ -57,10 +57,9 @@ export class FinalReportComponent implements OnInit {
   yrList: number[] = [];
   yrListGraph: string[] = [];
   postYrList: number[] = [];
-  postresaultList: number[] = [];
+  postresultList: number[] = [];
   postIdLisst: number[] = [];
-  emissionReduction: EmissionReductioDraftDataEntity =
-    new EmissionReductioDraftDataEntity();
+  emissionReduction: EmissionReductioDraftDataEntity = new EmissionReductioDraftDataEntity();
   unconditionalValue: number;
   conditionalValue: number;
   lineStylesData: any;
@@ -360,7 +359,7 @@ export class FinalReportComponent implements OnInit {
   async sendexecutiveSummeryData() {
     for await (const element of this.executiveSummery) {
       const res = await this.reportProxy
-        .getParameterData(element.assesmentId, element.Year)
+        .getParameterData(element.assessmentId, element.Year)
         .toPromise();
       this.reportParameterValueExcel.push(res);
     }
@@ -375,9 +374,9 @@ export class FinalReportComponent implements OnInit {
       const ActionArea = e.SNDC ? e.SNDC : 'N/A';
       const ClimateAction = e.ClimateAction;
       const Description = `${e.ClimateAction} ${e.Institution} by ${e.ProjectOwner} to ${e.objective}. Action includes ${e.ProjectScope}. The geographical boundary of the project includes ${e.SubnOne}, ${e.SubnTwo}, ${e.SubnThree}. ${e.ProjectStatus} It is expected that the project will ${e.OutCome}. In addition, mitigation action has various sustainable development benefits such as ${e.DirectB} and ${e.IndreactB}`;
-      const TypeOfAssesment =
+      const TypeOfAssessment =
         e.Type == 'MAC' ? 'MAC ' + e.TypeOfMac : 'GHG ' + e.Type;
-      const AssesmentYear = e.Year;
+      const AssessmentYear = e.Year;
       const BaseYear = e.BaseYear;
       const Methodology = e.MethName;
       const GeographicBoundary =
@@ -406,8 +405,8 @@ export class FinalReportComponent implements OnInit {
         ActionArea,
         ClimateAction,
         Description,
-        TypeOfAssesment,
-        AssesmentYear,
+        TypeOfAssessment,
+        AssessmentYear,
         BaseYear,
         Methodology,
         GeographicBoundary,

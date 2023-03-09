@@ -2,10 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import {
-  AssesmentControllerServiceProxy,
-  AssesmentResaultControllerServiceProxy,
+  AssessmentControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
   Assessment,
-  AssessmentResault,
+  AssessmentResult,
   Project,
   ProjectControllerServiceProxy,
   ServiceProxy,
@@ -29,7 +29,7 @@ export class TrackclimateactionsComponent implements OnInit {
   selectedAssessemntYearObject: any;
   assessmentList: Assessment[] = [];
   assessmentList1: Assessment[] = [];
-  assessmentResults: AssessmentResault[] = [];
+  assessmentResults: AssessmentResult[] = [];
   fileName = 'trackClimateActions.xlsx';
   public projectList: number[] = [];
   selectedprojects: number[];
@@ -41,8 +41,8 @@ export class TrackclimateactionsComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private location: Location,
-    private assesmentserviceProxy: AssesmentControllerServiceProxy,
-    private assesmentResaultProxy: AssesmentResaultControllerServiceProxy,
+    private assessmentserviceProxy: AssessmentControllerServiceProxy,
+    private assessmentResultProxy: AssessmentResultControllerServiceProxy,
     private route: ActivatedRoute,
   ) {}
   datarequests: any = ['dd', 'dd', 'dd', 'dd'];
@@ -293,8 +293,7 @@ export class TrackclimateactionsComponent implements OnInit {
                   activeproject1.Sector_affected = 'Transport';
                   activeproject1.Gasses_affected = 'CO2';
                   activeproject1.ndc_ca = project.ndc?.name;
-                  activeproject1.implementing_entity_or_entities =
-                    this.project?.implementingEntity;
+                  activeproject1.implementing_entity_or_entities = this.project?.implementingEntity;
 
                   if (project.assessment[0].assessmentType == 'Ex-ante') {
                     activeproject1.expected = 12;
@@ -409,15 +408,17 @@ export class TrackclimateactionsComponent implements OnInit {
       trackca.sector = this.activeprojects[index].Sector_affected;
       trackca.climateActionName = this.activeprojects[index].Name;
       trackca.description = this.activeprojects[index].Description;
-      trackca.startYearImplementation =
-        this.activeprojects[index].startYear_of_implementation;
+      trackca.startYearImplementation = this.activeprojects[
+        index
+      ].startYear_of_implementation;
       trackca.trackcaStatus = this.activeprojects[index].Status;
       trackca.expected = this.activeprojects[index].expected;
       trackca.gassesAffected = this.activeprojects[index].Gasses_affected;
       trackca.ndcs = this.activeprojects[index].ndc_ca;
       trackca.instrument = this.activeprojects[index].Type_Of_Instrument;
-      trackca.implementingEntities =
-        this.activeprojects[index].implementing_entity_or_entities;
+      trackca.implementingEntities = this.activeprojects[
+        index
+      ].implementing_entity_or_entities;
       trackca.years = this.selectedYear.toString();
       trackca.flag = this.activeprojects[index].flag;
 

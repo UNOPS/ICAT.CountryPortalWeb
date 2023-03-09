@@ -11,7 +11,7 @@ import { QuAlityCheckStatus } from 'app/Model/QuAlityCheckStatus.enum';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
-  AssesmentControllerServiceProxy,
+  AssessmentControllerServiceProxy,
   Parameter,
   ParameterHistoryControllerServiceProxy,
   QualityCheckControllerServiceProxy,
@@ -67,7 +67,7 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
     public dialogService: DialogService,
     private prHistoryProxy: ParameterHistoryControllerServiceProxy,
     private serviceProxy: ServiceProxy,
-    private assesmentProxy: AssesmentControllerServiceProxy,
+    private assessmentProxy: AssessmentControllerServiceProxy,
   ) {}
 
   ngOnInit(): void {
@@ -128,7 +128,7 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
   }
 
   checkApproval() {
-    this.assesmentProxy
+    this.assessmentProxy
       .checkAssessmentReadyForCalculate(
         this.assessmentYear.assessment.id,
         Number(this.assessmentYear.assessmentYear),

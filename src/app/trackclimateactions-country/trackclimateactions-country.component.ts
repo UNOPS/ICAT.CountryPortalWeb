@@ -2,10 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import {
-  AssesmentControllerServiceProxy,
-  AssesmentResaultControllerServiceProxy,
+  AssessmentControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
   Assessment,
-  AssessmentResault,
+  AssessmentResult,
   AssessmentYearControllerServiceProxy,
   ProjectControllerServiceProxy,
   ServiceProxy,
@@ -31,7 +31,7 @@ export class TrackclimateactionsCountryComponent implements OnInit {
   selectedAssessemntYearObject: any;
   assessmentList: Assessment[] = [];
   assessmentList1: Assessment[] = [];
-  assessmentResults: AssessmentResault[] = [];
+  assessmentResults: AssessmentResult[] = [];
   fileName = 'trackClimateActions.xlsx';
   public projectList: number[] = [];
   selectedprojects: number[];
@@ -43,8 +43,8 @@ export class TrackclimateactionsCountryComponent implements OnInit {
     private climateactionserviceproxy: ProjectControllerServiceProxy,
     private messageService: MessageService,
     private router: Router,
-    private assesmentserviceProxy: AssesmentControllerServiceProxy,
-    private assesmentResaultProxy: AssesmentResaultControllerServiceProxy,
+    private assessmentserviceProxy: AssessmentControllerServiceProxy,
+    private assessmentResultProxy: AssessmentResultControllerServiceProxy,
     private trckCAProxy: TrackClimateControllerServiceProxy,
     private assYearProxy: AssessmentYearControllerServiceProxy,
     private route: ActivatedRoute,
@@ -441,15 +441,17 @@ export class TrackclimateactionsCountryComponent implements OnInit {
       trackca.sector = this.activeprojects[index].Sector_affected;
       trackca.climateActionName = this.activeprojects[index].Name;
       trackca.description = this.activeprojects[index].Description;
-      trackca.startYearImplementation =
-        this.activeprojects[index].startYear_of_implementation;
+      trackca.startYearImplementation = this.activeprojects[
+        index
+      ].startYear_of_implementation;
       trackca.trackcaStatus = this.activeprojects[index].Status;
       trackca.expected = this.activeprojects[index].expected;
       trackca.gassesAffected = this.activeprojects[index].Gasses_affected;
       trackca.ndcs = this.activeprojects[index].ndc_ca;
       trackca.instrument = this.activeprojects[index].Type_Of_Instrument;
-      trackca.implementingEntities =
-        this.activeprojects[index].implementing_entity_or_entities;
+      trackca.implementingEntities = this.activeprojects[
+        index
+      ].implementing_entity_or_entities;
       trackca.years = this.selectedYear.toString();
       trackca.flag = this.activeprojects[index].flag;
 

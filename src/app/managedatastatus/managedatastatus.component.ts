@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import {
-  AssesmentControllerServiceProxy,
+  AssessmentControllerServiceProxy,
   AssessmentYearControllerServiceProxy,
   Methodology,
   ParameterRequestControllerServiceProxy,
@@ -40,7 +40,7 @@ export class ManagedatastatusComponent implements OnInit {
 
   constructor(
     private serviceProxy: ServiceProxy,
-    private assesmentProxy: AssesmentControllerServiceProxy,
+    private assessmentProxy: AssessmentControllerServiceProxy,
     private parameterProxy: ParameterRequestControllerServiceProxy,
     private cdr: ChangeDetectorRef,
     private router: Router,
@@ -128,7 +128,7 @@ export class ManagedatastatusComponent implements OnInit {
 
         this.totalRecords = res.meta.totalItems;
         this.datarequests = [];
-        for (const assementYear of res.items) {
+        for (const assessmentYear of res.items) {
           const datarequests1: datarequest = {
             name: '',
             type: '',
@@ -141,18 +141,19 @@ export class ManagedatastatusComponent implements OnInit {
             qaStatus: 0,
           };
 
-          datarequests1.name = assementYear.assesment.project.climateActionName;
-          datarequests1.year = assementYear.assessmentYear
-            ? assementYear.assessmentYear
+          datarequests1.name =
+            assessmentYear.assessment.project.climateActionName;
+          datarequests1.year = assessmentYear.assessmentYear
+            ? assessmentYear.assessmentYear
             : '';
-          datarequests1.type = assementYear.assesment.assessmentType;
-          datarequests1.assenmentYearId = assementYear.id;
-          datarequests1.qaStatus = assementYear.qaStatus;
+          datarequests1.type = assessmentYear.assessment.assessmentType;
+          datarequests1.assenmentYearId = assessmentYear.id;
+          datarequests1.qaStatus = assessmentYear.qaStatus;
 
           this.parameterProxy
             .getDateRequestToManageDataStatus(
-              assementYear.assesment.id,
-              assementYear.assessmentYear,
+              assessmentYear.assessment.id,
+              assessmentYear.assessmentYear,
             )
             .subscribe((res) => {
               datarequests1.totalreqCount = res.length;

@@ -2,9 +2,9 @@ import { HostListener, Component, OnInit, NgModule } from '@angular/core';
 import { LazyLoadEvent, PrimeNGConfig, MessageService } from 'primeng/api';
 import { from, Subscription } from 'rxjs';
 import {
-  AssesmentControllerServiceProxy,
-  AssesmentResaultControllerServiceProxy,
-  AssessmentResault,
+  AssessmentControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
+  AssessmentResult,
   AssessmentYear,
   AssessmentYearControllerServiceProxy,
   EmissionReductioDraftDataEntity,
@@ -74,8 +74,7 @@ export class CASADashboardComponent implements OnInit {
   underConstructionCount = 0;
   operationalProjectsCount = 0;
   projectID = 0;
-  emissionReduction: EmissionReductioDraftDataEntity =
-    new EmissionReductioDraftDataEntity();
+  emissionReduction: EmissionReductioDraftDataEntity = new EmissionReductioDraftDataEntity();
   ndcprojectset = new Map<string, number>();
   horizontalOptions: any;
 
@@ -107,10 +106,10 @@ export class CASADashboardComponent implements OnInit {
   yrList: number[] = [];
   yrListGraph: string[] = [];
   postYrList: number[] = [];
-  postresaultList: number[] = [];
+  postresultList: number[] = [];
   postIdLisst: number[] = [];
   cliamteActionsBySector: Project[];
-  assessmenResulytList: AssessmentResault[];
+  assessmenResulytList: AssessmentResult[];
   actualValLst: number[] = [];
   unconValLst: number[] = [];
   conValLst: number[] = [];
@@ -128,8 +127,8 @@ export class CASADashboardComponent implements OnInit {
     private primengConfig: PrimeNGConfig,
     private emmissionProxy: EmissionReductionDraftdataControllerServiceProxy,
     private serviceproxy: ServiceProxy,
-    private assesmentserviceproxy: AssesmentControllerServiceProxy,
-    private assesmentResultserviceproxy: AssesmentResaultControllerServiceProxy,
+    private assessmentserviceproxy: AssessmentControllerServiceProxy,
+    private assessmentResultserviceproxy: AssessmentResultControllerServiceProxy,
     private climateactionserviceproxy: ProjectControllerServiceProxy,
     private ndcserviceproxy: NdcControllerServiceProxy,
     private asseyearproxy: AssessmentYearControllerServiceProxy,
@@ -370,15 +369,15 @@ export class CASADashboardComponent implements OnInit {
           );
           this.bauValLst.push(bauValue);
 
-          const res = await this.assesmentResultserviceproxy
+          const res = await this.assessmentResultserviceproxy
             .getAssessmentResultforDashboard(this.yrList[x])
             .toPromise();
 
           this.assessmenResulytList = res;
 
-          for (const assementResult of this.assessmenResulytList) {
-            total += assementResult.totalEmission
-              ? Number(assementResult.totalEmission)
+          for (const assessmentResult of this.assessmenResulytList) {
+            total += assessmentResult.totalEmission
+              ? Number(assessmentResult.totalEmission)
               : 0;
           }
 
@@ -677,7 +676,7 @@ export class CASADashboardComponent implements OnInit {
           filterAsses.push('project.id||$eq||' + project.id);
 
           this.serviceproxy
-            .getManyBaseAssesmentControllerAssessment(
+            .getManyBaseAssessmentControllerAssessment(
               undefined,
               undefined,
               filterAsses,
@@ -799,8 +798,8 @@ export class CASADashboardComponent implements OnInit {
 
         for (const ndc of a.items) {
           let totalemissionRduction = 0;
-          for (const assement of ndc.assesment) {
-            for (const assesrslt of assement.assessmentResult) {
+          for (const assessment of ndc.assessment) {
+            for (const assesrslt of assessment.assessmentResult) {
               totalemissionRduction =
                 totalemissionRduction +
                 (assesrslt.totalEmission ? Number(assesrslt.totalEmission) : 0);

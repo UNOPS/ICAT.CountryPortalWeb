@@ -21,7 +21,7 @@ export class RaiseConcernSectionComponent implements OnInit {
   verificationDetails: VerificationDetail[] | undefined;
 
   @Input()
-  assesmentYear: AssessmentYear;
+  assessmentYear: AssessmentYear;
 
   @Input()
   verificationRound: number;

@@ -76,7 +76,7 @@ export class CountryNdcComponent implements OnInit {
   yrList: number[] = [];
   yrListGraph: string[] = [];
   postYrList: number[] = [];
-  postresaultList: number[] = [];
+  postresultList: number[] = [];
   postIdLisst: number[] = [];
 
   unconditionalValue: number;
@@ -85,8 +85,7 @@ export class CountryNdcComponent implements OnInit {
 
   totalRecords: number;
   rows = 10;
-  emissionReduction: EmissionReductioDraftDataEntity =
-    new EmissionReductioDraftDataEntity();
+  emissionReduction: EmissionReductioDraftDataEntity = new EmissionReductioDraftDataEntity();
 
   lineStylesData: any;
   basicOptions: any;

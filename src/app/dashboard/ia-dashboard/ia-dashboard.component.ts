@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import {
-  AssesmentResaultControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
   Assessment,
-  AssessmentResault,
+  AssessmentResult,
   AssessmentYear,
   EmissionReductioDraftDataEntity,
   EmissionReductionDraftdataControllerServiceProxy,
@@ -36,11 +36,10 @@ export class IaDashboardComponent implements OnInit {
   userId: number;
   user: User = new User();
   institution: Institution = new Institution();
-  emissionReduction: EmissionReductioDraftDataEntity =
-    new EmissionReductioDraftDataEntity();
+  emissionReduction: EmissionReductioDraftDataEntity = new EmissionReductioDraftDataEntity();
   parameterList: Parameter[];
   cliamteActionsBySector: Project[];
-  assessmentList: AssessmentResault[];
+  assessmentList: AssessmentResult[];
   climateActionIdList: number[] = [];
   assessmentListBySector: Assessment[] = [];
   finalAssessmentList: Assessment[] = [];
@@ -52,7 +51,7 @@ export class IaDashboardComponent implements OnInit {
   yrList: number[] = [];
   yrListGraph: string[] = [];
   postYrList: number[] = [];
-  postresaultList: number[] = [];
+  postresultList: number[] = [];
   postIdLisst: number[] = [];
   paramaterRequest = 0;
   parameterPending = 0;
@@ -111,7 +110,7 @@ export class IaDashboardComponent implements OnInit {
     private climateactionserviceproxy: ProjectControllerServiceProxy,
     private emmissionProxy: EmissionReductionDraftdataControllerServiceProxy,
     private ndcProxy: NdcControllerServiceProxy,
-    private assesmentResultserviceproxy: AssesmentResaultControllerServiceProxy,
+    private assessmentResultserviceproxy: AssessmentResultControllerServiceProxy,
     private paraProxy: ParameterControllerServiceProxy,
   ) {
     this.basicOptions1 = {
@@ -250,14 +249,14 @@ export class IaDashboardComponent implements OnInit {
                 );
                 this.bauValLst.push(bauValue);
 
-                const res = await this.assesmentResultserviceproxy
+                const res = await this.assessmentResultserviceproxy
                   .getAssessmentResultforDashboard(this.yrList[x])
                   .toPromise();
                 this.assessmentList = res;
 
-                for (const assement of this.assessmentList) {
-                  total += assement.totalEmission
-                    ? Number(assement.totalEmission)
+                for (const assessment of this.assessmentList) {
+                  total += assessment.totalEmission
+                    ? Number(assessment.totalEmission)
                     : 0;
                 }
 
@@ -549,7 +548,7 @@ export class IaDashboardComponent implements OnInit {
             filter1.push('project.id||$eq||' + project.id);
 
             this.serviceProxy
-              .getManyBaseAssesmentControllerAssessment(
+              .getManyBaseAssessmentControllerAssessment(
                 undefined,
                 undefined,
                 filter1,
@@ -573,7 +572,7 @@ export class IaDashboardComponent implements OnInit {
                 if (res.data.length != 0) {
                   for (const dt of res.data) {
                     const filter2: string[] = [];
-                    filter2.push('assement.id||$eq||' + dt.id);
+                    filter2.push('assessment.id||$eq||' + dt.id);
 
                     for (const year of dt.assessmentYear) {
                       if (Number(year.assessmentYear) > Number(maxyear)) {
@@ -594,7 +593,7 @@ export class IaDashboardComponent implements OnInit {
                     activeproject1.targetyear = targetyearrange;
                     activeproject1.archivmentyear = archiveyearrange;
                     this.serviceProxy
-                      .getManyBaseAssesmentResaultControllerAssessmentResault(
+                      .getManyBaseAssessmentResultControllerAssessmentResult(
                         undefined,
                         undefined,
                         filter2,

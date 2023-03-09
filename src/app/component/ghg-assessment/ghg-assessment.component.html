@@ -1,4 +1,4 @@
-<form #fData="ngForm" (ngSubmit)="createAssementCA(fData)">
+<form #fData="ngForm" (ngSubmit)="createAssessmentCA(fData)">
   <div class="p-grid p-fluid col-sm-12">
     <div class="row p-2 mt-4">
       <div class="col-12 col-md-3">
@@ -133,7 +133,7 @@
             [options]="years"
             [disabled]="isDisableforSubmitButton"
             [(ngModel)]="selectYears"
-            (ngModelChange)="onAssesmentYearChange($event)"
+            (ngModelChange)="onAssessmentYearChange($event)"
             [required]="true"
           ></p-multiSelect>
         </div>
@@ -150,20 +150,20 @@
       <div class="col-12 col-md-7" *ngIf="IsProposal">
         <div>
           <p-calendar
-            [(ngModel)]="assesmentYear"
+            [(ngModel)]="assessmentYear"
             name="multiYear"
             #multiYear="ngModel"
             view="year"
             dateFormat="yy"
             [disabled]="isDisableforSubmitButton"
-            (ngModelChange)="onAssesmentYearChange($event)"
+            (ngModelChange)="onAssessmentYearChange($event)"
             [required]="true"
           ></p-calendar>
         </div>
         <p
           class="info-message text-danger"
           *ngIf="
-            !assesmentYear &&
+            !assessmentYear &&
             (fData.submitted || multiYear.touched || multiYear.dirty)
           "
         >
@@ -245,9 +245,9 @@
         <div>
           <p-multiSelect
             appendTo="body"
-            #assementObjective="ngModel"
-            name="assementObjective"
-            [options]="assesmentObjective"
+            #assessmentObjective="ngModel"
+            name="assessmentObjective"
+            [options]="assessmentObjective"
             optionLabel="objective"
             [disabled]="isDisableforSubmitButton"
             [(ngModel)]="selectedObjective"
@@ -386,7 +386,7 @@
             [(ngModel)]="selectedApplicability"
             [disabled]="isDisableforSubmitButton"
             optionLabel="name"
-            (ngModelChange)="onApplicationAssesmentChange($event)"
+            (ngModelChange)="onApplicationAssessmentChange($event)"
             [required]="true"
           ></p-multiSelect>
         </div>

@@ -1,9 +1,9 @@
 <div class="container">
   <h4 class="mt-4">
     {{
-      this.assementYear !== undefined
+      this.assessmentYear !== undefined
         ? 'Verification ' +
-          VerificationStatusEnum[this.assementYear.verificationStatus]
+          VerificationStatusEnum[this.assessmentYear.verificationStatus]
         : 'Verification '
     }}
   </h4>
@@ -18,7 +18,7 @@
               type="text"
               name="ndc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment.project?.climateActionName!"
+              [(ngModel)]="assessmentYear.assessment.project?.climateActionName!"
               class="p-inputtext"
               pInputText
             />
@@ -32,7 +32,7 @@
             pRipple
             type="button"
             icon="pi pi-eye"
-            (click)="detail(assementYear.assessment.project)"
+            (click)="detail(assessmentYear.assessment.project)"
             class="p-button-rounded p-button-text"
           ></button>
         </div>
@@ -41,7 +41,7 @@
 
     <div
       class="row mb-3"
-      *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+      *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
     >
       <div class="col-md-4">
         <div class="col-12">
@@ -52,7 +52,7 @@
               type="text"
               name="ndc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment?.ndc!?.name!"
+              [(ngModel)]="assessmentYear.assessment?.ndc!?.name!"
               class="p-inputtext"
               pInputText
             />
@@ -68,7 +68,7 @@
               type="text"
               name="subNDc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment?.subNdc!?.name!"
+              [(ngModel)]="assessmentYear.assessment?.subNdc!?.name!"
               class="p-inputtext"
               pInputText
             />
@@ -78,7 +78,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
         >
           <button
             type="button"
@@ -94,7 +94,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
         >
           <button
             type="button"
@@ -119,7 +119,7 @@
               type="text"
               name="ndc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment?.assessmentType!"
+              [(ngModel)]="assessmentYear.assessment?.assessmentType!"
               class="p-inputtext"
               pInputText
             />
@@ -130,7 +130,7 @@
 
     <div
       class="row mb-3"
-      *ngIf="assementYear.assessment.assessmentType != 'MAC'"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
     >
       <div class="col-md-5">
         <div class="col-5">
@@ -150,7 +150,7 @@
 
     <div
       class="row mb-3"
-      *ngIf="assementYear.assessment.assessmentType != 'MAC'"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
     >
       <div class="col-md-5">
         <div class="col-5">
@@ -160,7 +160,7 @@
             type="text"
             name="baseasseYear"
             #baseasseYear="ngModel"
-            [(ngModel)]="assementYear.assessment.baseYear!"
+            [(ngModel)]="assessmentYear.assessment.baseYear!"
             class="p-inputtext"
             pInputText
           />
@@ -177,7 +177,7 @@
               type="text"
               name="yaer"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessmentYear"
+              [(ngModel)]="assessmentYear.assessmentYear"
               class="p-inputtext"
               pInputText
             />
@@ -188,7 +188,7 @@
 
     <div
       class="row mb-3"
-      *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+      *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
     >
       <div class="col-md-8">
         <div class="col-12">
@@ -199,7 +199,7 @@
               type="text"
               name="meth"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment.methodology?.displayName!"
+              [(ngModel)]="assessmentYear.assessment.methodology?.displayName!"
               class="p-inputtext"
               pInputText
             />
@@ -209,7 +209,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
         >
           <button
             type="button"
@@ -225,7 +225,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
         >
           <button
             type="button"
@@ -242,7 +242,7 @@
 
     <div
       class="row mb-3"
-      *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+      *ngIf="this.assessmentYear.assessment.assessmentType != 'MAC'"
     >
       <div class="col-md-10">
         <div class="col-12">
@@ -265,8 +265,8 @@
     <div class="row mb-3">
       <app-verify-parameter-section
         header="Baseline Parameter"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.baselineScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.baselineScenario"
         [parameters]="baselineParameters"
         ResultLabel="Baseline emission"
         [ResultValue]="assessmentResult.baselineResult"
@@ -281,8 +281,8 @@
     <div class="row mb-3">
       <app-verify-parameter-section
         header="Project Parameter"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.projectScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.projectScenario"
         [parameters]="projectParameters"
         ResultLabel="Project emission"
         [ResultValue]="assessmentResult.projectResult"
@@ -299,8 +299,8 @@
       <app-verify-parameter-section
         *ngIf="lekageParameters.length > 0"
         header="Leakage Parameter"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.lekageScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.lekageScenario"
         [parameters]="lekageParameters"
         ResultLabel="Leakage emission"
         [ResultValue]="assessmentResult.lekageResult"
@@ -316,7 +316,7 @@
       <app-verify-parameter-section
         *ngIf="projectionParameters.length > 0"
         header="Projection Parameter"
-        [assessmentYear]="assementYear"
+        [assessmentYear]="assessmentYear"
         [scenario]=""
         [parameters]="projectionParameters"
         ResultLabel="Projected Emission Reduction"
@@ -339,7 +339,7 @@
               <textarea
                 name="RelevantindirectSD"
                 placeholder="Please Enter Your Assumption here"
-                [(ngModel)]="this.assementYear.assessmentAssumption!"
+                [(ngModel)]="this.assessmentYear.assessmentAssumption!"
                 [readonly]="true"
                 rows="5"
                 cols="62"
@@ -415,7 +415,7 @@
     <app-raise-concern
       [area]="raiseConcernSection"
       [verificationDetails]="concernVerificationDetails"
-      [assesmentYear]="assementYear"
+      [assessmentYear]="assessmentYear"
       [isNdC]="concernIsNdC"
       [isMethodology]="concernIsMethodology"
     ></app-raise-concern>

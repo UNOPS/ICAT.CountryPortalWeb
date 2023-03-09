@@ -4,11 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   Assessment,
   AssessmentObjective,
-  AssessmentResault,
+  AssessmentResult,
   Ndc,
   Parameter,
   Project,
-  ProjectionResault,
+  ProjectionResult,
   ServiceProxy,
   SubNdc,
 } from 'shared/service-proxies/service-proxies';
@@ -22,10 +22,10 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./mac-result.component.css'],
 })
 export class MacResultComponent implements OnInit {
-  assement: Assessment = new Assessment();
+  assessment: Assessment = new Assessment();
   project: Project = new Project();
   filteredParameters: Parameter[] = [];
-  resultList: AssessmentResault = new AssessmentResault();
+  resultList: AssessmentResult = new AssessmentResult();
   ndc: Ndc = new Ndc();
   subNdc: SubNdc = new SubNdc();
   projectStartDate: string;
@@ -47,13 +47,13 @@ export class MacResultComponent implements OnInit {
   psOtherAnnualCost: number;
   psTotalAnnualCost: number;
 
-  projectEmission: AssessmentResault[];
-  leakageEmission: AssessmentResault[];
+  projectEmission: AssessmentResult[];
+  leakageEmission: AssessmentResult[];
   baseParameter: Parameter[];
   proParameter: Parameter[];
-  lParameter: AssessmentResault[];
-  bresult: AssessmentResault[];
-  projectionData: ProjectionResault[];
+  lParameter: AssessmentResult[];
+  bresult: AssessmentResult[];
+  projectionData: ProjectionResult[];
   assessmentId = 0;
   projctId = 0;
   ndcId = 0;
@@ -103,18 +103,18 @@ export class MacResultComponent implements OnInit {
     });
 
     this.serviceProxy
-      .getOneBaseAssesmentControllerAssessment(
+      .getOneBaseAssessmentControllerAssessment(
         this.assessmentId,
         undefined,
         undefined,
         0,
       )
       .subscribe((res: any) => {
-        this.assement = res;
+        this.assessment = res;
 
-        this.projctId = this.assement.project.id;
+        this.projctId = this.assessment.project.id;
 
-        this.assessmentYear = this.assement.assessmentYear[0]?.assessmentYear;
+        this.assessmentYear = this.assessment.assessmentYear[0]?.assessmentYear;
 
         const objectiveFilter: string[] = [];
 
@@ -228,13 +228,13 @@ export class MacResultComponent implements OnInit {
               });
 
             const resultFilter: string[] = [];
-            resultFilter.push('assement.id||$eq||' + this.assessmentId) &
+            resultFilter.push('assessment.id||$eq||' + this.assessmentId) &
               resultFilter.push(
                 'assessmentYear.assessmentYear||$eq||' + this.assessmentYear,
               );
 
             this.serviceProxy
-              .getManyBaseAssesmentResaultControllerAssessmentResault(
+              .getManyBaseAssessmentResultControllerAssessmentResult(
                 undefined,
                 undefined,
                 resultFilter,
@@ -296,7 +296,7 @@ export class MacResultComponent implements OnInit {
       obj.Entered_Value = x.value;
       obj.Unit = x.uomDataEntry;
       obj.Institution = x?.institution ? x?.institution?.name : 'N/A';
-      obj.Assessment_Type = this.assement.assessmentType;
+      obj.Assessment_Type = this.assessment.assessmentType;
       obj.Baseline_Parameter = x.isBaseline ? 'Yes' : 'No';
       obj.Project_Parameter = x.isProject ? 'Yes' : 'No';
       obj.Assessment_Year = x.assessmentYear;

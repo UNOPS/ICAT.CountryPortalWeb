@@ -18,8 +18,8 @@ import {
   ServiceProxy,
   Parameter as Parameter_Server,
   AssessmentObjective,
-  AssesmentResaultControllerServiceProxy,
-  AssessmentResault,
+  AssessmentResultControllerServiceProxy,
+  AssessmentResult,
   ProjectApprovalStatus,
 } from 'shared/service-proxies/service-proxies';
 import { environment } from 'environments/environment';
@@ -146,7 +146,7 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
     private serviceProxy: ServiceProxy,
     private cdr: ChangeDetectorRef,
     private messageService: MessageService,
-    private assementResultService: AssesmentResaultControllerServiceProxy,
+    private assessmentResultService: AssessmentResultControllerServiceProxy,
     private httpClient: HttpClient,
     private router: Router,
   ) {}
@@ -258,7 +258,7 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
       this.slectedProject.proposeDateofCommence,
     ).format('YYYY-MM-DD');
     this.serviceProxy
-      .getManyBaseAssesmentControllerAssessment(
+      .getManyBaseAssessmentControllerAssessment(
         undefined,
         undefined,
         filter1,
@@ -324,7 +324,7 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
       filter1.push('Assessment.assessmentType||$in||' + this.approachList);
 
     this.serviceProxy
-      .getManyBaseAssesmentControllerAssessment(
+      .getManyBaseAssessmentControllerAssessment(
         undefined,
         undefined,
         filter1,
@@ -402,7 +402,7 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
     }
   }
 
-  createAssementCA(data: NgForm) {
+  createAssessmentCA(data: NgForm) {
     this.macValue = {
       DiscountRate: this.discountrate,
       reduction: this.reduction,
@@ -435,13 +435,13 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
       assessment.project = this.slectedProject;
       assessment.isProposal = this.IsProposal;
 
-      const assesmentYars: AssessmentYear[] = [];
+      const assessmentYars: AssessmentYear[] = [];
       const assessmentObjective: AssessmentObjective[] = [];
       const parameters: Parameter_Server[] = [];
       const ae = new AssessmentYear();
       const ao = new AssessmentObjective();
       ae.assessmentYear = this.asseYear;
-      assesmentYars.push(ae);
+      assessmentYars.push(ae);
       ao.objective = this.objectiveOfAsse;
 
       assessmentObjective.push(ao);
@@ -590,17 +590,17 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
       );
       parameters.push(...psAnnualFuelParams!);
 
-      assessment.assessmentYear = assesmentYars;
+      assessment.assessmentYear = assessmentYars;
       assessment.assessmentObjective = assessmentObjective;
       assessment.parameters = parameters;
 
       this.serviceProxy
-        .createOneBaseAssesmentControllerAssessment(assessment)
+        .createOneBaseAssessmentControllerAssessment(assessment)
         .subscribe((res: any) => {
           this.isDisableSaveButton = true;
 
           this.serviceProxy
-            .getManyBaseAssesmentControllerAssessment(
+            .getManyBaseAssessmentControllerAssessment(
               undefined,
               undefined,
               undefined,
@@ -638,8 +638,7 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
                 .subscribe((res: any) => {
                   this.createdMacAssessmentYear = res.data[0];
 
-                  this.createdMacAssessmentYearId =
-                    this.createdMacAssessmentYear.id;
+                  this.createdMacAssessmentYearId = this.createdMacAssessmentYear.id;
 
                   const macUrl = environment.baseUrlMac;
                   const headers = new HttpHeaders().set('api-key', '1234');
@@ -649,22 +648,21 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
                     .subscribe((res) => {
                       this.result = res;
 
-                      const asrslt = new AssessmentResault();
+                      const asrslt = new AssessmentResult();
                       asrslt.bsTotalAnnualCost = res['baseLineAnnualCost'];
                       asrslt.psTotalAnnualCost = res['projecrAnnualCost'];
                       asrslt.costDifference = res['totalAnnualCost'];
                       asrslt.macResult = res['mac'];
-                      asrslt.assessmentYear.id =
-                        this.createdMacAssessmentYearId;
-                      asrslt.assement.id = this.createdMacAssessmentId;
+                      asrslt.assessmentYear.id = this.createdMacAssessmentYearId;
+                      asrslt.assessment.id = this.createdMacAssessmentId;
 
                       this.serviceProxy
-                        .createOneBaseAssesmentResaultControllerAssessmentResault(
+                        .createOneBaseAssessmentResultControllerAssessmentResult(
                           asrslt,
                         )
                         .subscribe((res: any) => {
                           this.serviceProxy
-                            .getManyBaseAssesmentControllerAssessment(
+                            .getManyBaseAssessmentControllerAssessment(
                               undefined,
                               undefined,
                               undefined,
@@ -721,7 +719,7 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
     isProject: boolean,
     islekage: boolean,
     isProjection: boolean,
-    assesmentYear: string,
+    assessmentYear: string,
   ) {
     const parameters: Parameter_Server[] = [];
 
@@ -729,7 +727,7 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
       name,
       value,
       UOMDataentry,
-      assesmentYear,
+      assessmentYear,
       undefined,
       false,
       isBaseline,
@@ -745,7 +743,7 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
     name: string,
     value: string,
     UOMDataentry: string,
-    assesmentYear: string,
+    assessmentYear: string,
     pp: Parameter_Server | undefined,
     isAlternative: boolean,
     isBaseline: boolean,
@@ -757,7 +755,7 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
     param.name = name;
     param.isAlternative = isAlternative;
     param.uomDataEntry = UOMDataentry;
-    param.assessmentYear = +assesmentYear;
+    param.assessmentYear = +assessmentYear;
     param.isBaseline = isBaseline;
     param.isProject = isProject;
     param.isLekage = islekage;

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
-  AssesmentControllerServiceProxy,
+  AssessmentControllerServiceProxy,
   Assessment,
-  AssessmentResault,
+  AssessmentResult,
   AssessmentYear,
   Ndc,
   Parameter,
   Project,
-  ProjectionResault,
+  ProjectionResult,
   ServiceProxy,
   SubNdc,
 } from 'shared/service-proxies/service-proxies';
@@ -22,7 +22,7 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./result.component.css'],
 })
 export class ResultComponent implements OnInit {
-  assement: Assessment = new Assessment();
+  assessment: Assessment = new Assessment();
   project: Project = new Project();
   baselineEmission: number;
   projectEmission: number;
@@ -37,10 +37,10 @@ export class ResultComponent implements OnInit {
   proParameter: Parameter[] = [];
   projectionParameter: Parameter[] = [];
   leakageParameter: Parameter[] = [];
-  allResualt: AssessmentResault[];
-  lParameter: AssessmentResault[];
-  bresult: AssessmentResault[];
-  projectionData: ProjectionResault[];
+  allResualt: AssessmentResult[];
+  lParameter: AssessmentResult[];
+  bresult: AssessmentResult[];
+  projectionData: ProjectionResult[];
   assessmentId = 0;
   assessmentYr: string;
   projctId = 0;
@@ -62,7 +62,7 @@ export class ResultComponent implements OnInit {
   methodologies: any[] = [];
   constructor(
     private serviceProxy: ServiceProxy,
-    private asseProxi: AssesmentControllerServiceProxy,
+    private asseProxi: AssessmentControllerServiceProxy,
     private route: ActivatedRoute,
   ) {}
 
@@ -73,18 +73,18 @@ export class ResultComponent implements OnInit {
     });
 
     this.serviceProxy
-      .getOneBaseAssesmentControllerAssessment(
+      .getOneBaseAssessmentControllerAssessment(
         this.assessmentId,
         undefined,
         undefined,
         0,
       )
       .subscribe((res: any) => {
-        this.assement = res;
+        this.assessment = res;
 
-        this.projctId = this.assement.project?.id;
+        this.projctId = this.assessment.project?.id;
 
-        if (this.assement.lekageScenario == null) {
+        if (this.assessment.lekageScenario == null) {
           this.isShown = true;
         }
 
@@ -121,7 +121,7 @@ export class ResultComponent implements OnInit {
           assessmentFilterBase.push('assessment.id||$eq||' + this.assessmentId);
         }
 
-        if (this.assement.isProposal) {
+        if (this.assessment.isProposal) {
           this.asseProxi
             .getAssessmentDetails(this.assessmentId, this.assessmentYr)
             .subscribe((res) => {
@@ -138,7 +138,7 @@ export class ResultComponent implements OnInit {
                   if (this.allParameter[a].isProjection == true) {
                     this.projectionParameter.push(this.allParameter[a]);
                   }
-                  if (this.assement.lekageScenario != null) {
+                  if (this.assessment.lekageScenario != null) {
                     this.isShown == true;
                     if (this.allParameter[a].isLekage == true) {
                       this.leakageParameter.push(this.allParameter[a]);
@@ -163,7 +163,7 @@ export class ResultComponent implements OnInit {
                 if (this.allParameter[a].isProjection == true) {
                   this.projectionParameter.push(this.allParameter[a]);
                 }
-                if (this.assement.lekageScenario != null) {
+                if (this.assessment.lekageScenario != null) {
                   this.isShown == true;
                   if (this.allParameter[a].isLekage == true) {
                     this.leakageParameter.push(this.allParameter[a]);
@@ -200,7 +200,7 @@ export class ResultComponent implements OnInit {
 
             if (this.assessmentId != 0) {
               assessmentFilterResualt.push(
-                'assement.id||$eq||' + this.assessmentId,
+                'assessment.id||$eq||' + this.assessmentId,
               ) &
                 assessmentFilterResualt.push(
                   'assessmentYear.id||$eq||' + this.yrId,
@@ -208,7 +208,7 @@ export class ResultComponent implements OnInit {
             }
 
             this.serviceProxy
-              .getManyBaseAssesmentResaultControllerAssessmentResault(
+              .getManyBaseAssessmentResultControllerAssessmentResult(
                 undefined,
                 undefined,
                 assessmentFilterResualt,
@@ -253,27 +253,27 @@ export class ResultComponent implements OnInit {
     const assessmentFilterleakage: string[] = [];
 
     if (this.assessmentId != 0) {
-      assessmentFilterBase.push('assement.id||$eq||' + this.assessmentId) &
+      assessmentFilterBase.push('assessment.id||$eq||' + this.assessmentId) &
         assessmentFilterBase.push('resultType.id||$eq||' + 1);
     }
 
     if (this.assessmentId != 0) {
-      assessmentFilterProject.push('assement.id||$eq||' + this.assessmentId) &
+      assessmentFilterProject.push('assessment.id||$eq||' + this.assessmentId) &
         assessmentFilterProject.push('resultType.id||$eq||' + 2);
     }
 
     if (this.assessmentId != 0) {
-      assessmentFilterleakage.push('assement.id||$eq||' + this.assessmentId) &
+      assessmentFilterleakage.push('assessment.id||$eq||' + this.assessmentId) &
         assessmentFilterleakage.push('resultType.id||$eq||' + 3);
     }
 
     const projectionFilter: string[] = [];
 
     if (this.assessmentId != 0) {
-      projectionFilter.push('assement.id||$eq||' + this.assessmentId);
+      projectionFilter.push('assessment.id||$eq||' + this.assessmentId);
     }
     this.serviceProxy
-      .getManyBaseProjectionResaultControllerProjectionResault(
+      .getManyBaseProjectionResultControllerProjectionResult(
         undefined,
         undefined,
         projectionFilter,
@@ -405,7 +405,7 @@ export class ResultComponent implements OnInit {
       obj.Converted_Value = x.conversionValue;
       obj.Requested_Unit = x.uomDataRequest;
       obj.Institution = x?.institution ? x?.institution?.name : 'N/A';
-      obj.Assessment_Type = this.assement.assessmentType;
+      obj.Assessment_Type = this.assessment.assessmentType;
       obj.Alternative_Parameter = x.isAlternative ? 'Yes' : 'No';
       obj.Baseline_Parameter = x.isBaseline ? 'Yes' : 'No';
       obj.Base_Year = x.baseYear;

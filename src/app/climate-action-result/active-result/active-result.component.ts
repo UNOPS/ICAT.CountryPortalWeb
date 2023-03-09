@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 
 import {
-  AssesmentControllerServiceProxy,
+  AssessmentControllerServiceProxy,
   Assessment,
   ServiceProxy,
 } from 'shared/service-proxies/service-proxies';
@@ -62,7 +62,7 @@ export class ActiveResultComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     private serviceProxy: ServiceProxy,
-    private AssessmentProxy: AssesmentControllerServiceProxy,
+    private AssessmentProxy: AssessmentControllerServiceProxy,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
   ) {}
@@ -96,7 +96,7 @@ export class ActiveResultComponent implements OnInit, AfterViewInit {
     });
 
     this.serviceProxy
-      .getManyBaseAssesmentControllerAssessment(
+      .getManyBaseAssessmentControllerAssessment(
         undefined,
         undefined,
         undefined,

@@ -18,7 +18,7 @@ export class AssignVerifiersComponent implements OnInit {
   VerificationStatusEnum = VerificationStatus;
   verificationStatus: string[] = [];
   assesMentYearId = 0;
-  assementYear: AssessmentYear = new AssessmentYear();
+  assessmentYear: AssessmentYear = new AssessmentYear();
   parameters: any[] = [];
   loading = false;
   confirm1: boolean;
@@ -37,7 +37,7 @@ export class AssignVerifiersComponent implements OnInit {
   };
 
   constructor(
-    private assesmentProxy: AssessmentYearControllerServiceProxy,
+    private assessmentProxy: AssessmentYearControllerServiceProxy,
     private messageService: MessageService,
     private usersControllerServiceProxy: UsersControllerServiceProxy,
   ) {}
@@ -81,7 +81,7 @@ export class AssignVerifiersComponent implements OnInit {
     const filtertext = this.searchBy.text ? this.searchBy.text : '';
 
     setTimeout(() => {
-      this.assesmentProxy
+      this.assessmentProxy
         .getAssessmentForAssignVerifiers(
           pageNumber,
           this.rows,
@@ -125,7 +125,7 @@ export class AssignVerifiersComponent implements OnInit {
     inputParameters.ids = idList;
     inputParameters.userId = this.selectedUser?.id;
     inputParameters.deadline = moment(this.selectedDeadline);
-    this.assesmentProxy.updateAssignVerifiers(inputParameters).subscribe(
+    this.assessmentProxy.updateAssignVerifiers(inputParameters).subscribe(
       (res) => {
         this.messageService.add({
           severity: 'success',

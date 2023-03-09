@@ -67,7 +67,7 @@
         <div class="p-field">
           <label for="projYear">Type</label>
           <p-dropdown
-            name="assesmentType"
+            name="assessmentType"
             [options]="assessmentType"
             [(ngModel)]="searchBy.type"
             #fsector="ngModel"
@@ -158,7 +158,7 @@
               </td>
             </ng-template>
 
-            <td>{{ dataRequestList.deadline | date : 'dd-MM-yyyy ' }}</td>
+            <td>{{ dataRequestList.deadline | date: 'dd-MM-yyyy ' }}</td>
 
             <td>
               {{
@@ -167,7 +167,7 @@
                   : ''
               }}
             </td>
-            <td>{{ dataRequestList.createdOn | date : 'dd-MM-yyyy ' }}</td>
+            <td>{{ dataRequestList.createdOn | date: 'dd-MM-yyyy ' }}</td>
             <td>
               <i
                 class="pi pi-ellipsis-v"

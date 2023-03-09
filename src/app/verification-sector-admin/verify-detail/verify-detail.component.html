@@ -4,9 +4,9 @@
       <div class="col-12">
         <h4 class="mt-4">
           {{
-            this.assementYear !== undefined
+            this.assessmentYear !== undefined
               ? 'Verification ' +
-                VerificationStatusEnum[this.assementYear.verificationStatus]
+                VerificationStatusEnum[this.assessmentYear.verificationStatus]
               : 'Verification '
           }}
         </h4>
@@ -14,7 +14,7 @@
     </div>
     <div
       class="col-md-2 d-flex align-items-center"
-      *ngIf="assementYear?.verificationStatus! > 1"
+      *ngIf="assessmentYear?.verificationStatus! > 1"
     >
       <div class="col-12">
         <button
@@ -41,7 +41,7 @@
               type="text"
               name="ndc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment.project?.climateActionName!"
+              [(ngModel)]="assessmentYear.assessment.project?.climateActionName!"
               class="p-inputtext"
               pInputText
             />
@@ -55,7 +55,7 @@
             pRipple
             type="button"
             icon="pi pi-eye"
-            (click)="detail(assementYear.assessment.project)"
+            (click)="detail(assessmentYear.assessment.project)"
             class="p-button-rounded p-button-text"
           ></button>
         </div>
@@ -64,7 +64,7 @@
 
     <div
       class="row mb-3"
-      *ngIf="assementYear.assessment.assessmentType != 'MAC'"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
     >
       <div class="col-md-4">
         <div class="col-12">
@@ -101,7 +101,7 @@
       </div>
       <div
         class="col-md-2 d-flex align-items-end"
-        *ngIf="assementYear?.verificationStatus! == 3"
+        *ngIf="assessmentYear?.verificationStatus! == 3"
       >
         <div class="col-12">
           <button type="button" pButton pRipple (click)="ndcAction()">
@@ -111,7 +111,7 @@
       </div>
       <div
         class="col-md-2 d-flex align-items-end"
-        *ngIf="assementYear?.verificationStatus! == 3"
+        *ngIf="assessmentYear?.verificationStatus! == 3"
       >
         <div class="col-12">
           <button
@@ -136,7 +136,7 @@
               type="text"
               name="ndc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment.assessmentType"
+              [(ngModel)]="assessmentYear.assessment.assessmentType"
               class="p-inputtext"
               pInputText
             />
@@ -147,7 +147,7 @@
 
     <div
       class="row mb-3"
-      *ngIf="assementYear.assessment.assessmentType != 'MAC'"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
     >
       <div class="col-md-5">
         <div class="col-5">
@@ -167,7 +167,7 @@
 
     <div
       class="row mb-3"
-      *ngIf="assementYear.assessment.assessmentType != 'MAC'"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
     >
       <div class="col-md-5">
         <div class="col-5">
@@ -177,7 +177,7 @@
             type="text"
             name="baseasseYear"
             #baseasseYear="ngModel"
-            [(ngModel)]="assementYear.assessment.baseYear!"
+            [(ngModel)]="assessmentYear.assessment.baseYear!"
             class="p-inputtext"
             pInputText
           />
@@ -194,7 +194,7 @@
             type="text"
             name="asseYear"
             #asseYear="ngModel"
-            [(ngModel)]="assementYear.assessmentYear!"
+            [(ngModel)]="assessmentYear.assessmentYear!"
             class="p-inputtext"
             pInputText
           />
@@ -204,7 +204,7 @@
 
     <div
       class="row mb-3"
-      *ngIf="assementYear.assessment.assessmentType != 'MAC'"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
     >
       <div class="col-md-8">
         <div class="col-12">
@@ -215,7 +215,7 @@
               type="text"
               name="meth"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment.methodology?.displayName!"
+              [(ngModel)]="assessmentYear.assessment.methodology?.displayName!"
               class="p-inputtext"
               pInputText
             />
@@ -224,7 +224,7 @@
       </div>
       <div
         class="col-md-2 d-flex align-items-end"
-        *ngIf="assementYear?.verificationStatus! == 3"
+        *ngIf="assessmentYear?.verificationStatus! == 3"
       >
         <div class="col-12">
           <button
@@ -241,7 +241,7 @@
 
     <div
       class="row mb-3"
-      *ngIf="assementYear.assessment.assessmentType != 'MAC'"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
     >
       <div class="col-md-10">
         <div class="col-12">
@@ -266,8 +266,8 @@
     <div class="row mb-3">
       <app-verify-parameter-section-admin
         header="Baseline Parameters"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.baselineScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.baselineScenario"
         [parameters]="baselineParameters"
         ResultLabel="Baseline emission"
         [ResultValue]="assessmentResult.baselineResult"
@@ -281,8 +281,8 @@
     <div class="row mb-3">
       <app-verify-parameter-section-admin
         header="Project Parameters"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.projectScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.projectScenario"
         [parameters]="projectParameters"
         ResultLabel="Project emission"
         [ResultValue]="assessmentResult.projectResult"
@@ -297,8 +297,8 @@
       <app-verify-parameter-section-admin
         *ngIf="lekageParameters.length > 0"
         header="Leakage Parameters"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.lekageScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.lekageScenario"
         [parameters]="lekageParameters"
         ResultLabel="Leakage emission"
         [ResultValue]="assessmentResult.lekageResult"
@@ -313,7 +313,7 @@
       <app-verify-parameter-section-admin
         *ngIf="projectionParameters.length > 0"
         header="Projection Parameter"
-        [assessmentYear]="assementYear"
+        [assessmentYear]="assessmentYear"
         [scenario]=""
         [parameters]="projectionParameters"
         ResultLabel="Projected Emission Reduction"
@@ -344,7 +344,7 @@
             </div>
           </div>
 
-          <div class="col-2" *ngIf="assementYear?.verificationStatus! == 3">
+          <div class="col-2" *ngIf="assessmentYear?.verificationStatus! == 3">
             <button
               type="button"
               pButton
@@ -370,7 +370,7 @@
           Back
         </button>
         <button
-          *ngIf="assementYear?.verificationStatus! == 1"
+          *ngIf="assessmentYear?.verificationStatus! == 1"
           class="btn btn-primary text-uppercase ml-5"
           type="submit"
           (click)="sendForVerification()"
@@ -387,7 +387,7 @@
     <app-raise-concern-admin
       [area]="raiseConcernSection"
       [verificationDetails]="concernVerificationDetails"
-      [assesmentYear]="assementYear"
+      [assessmentYear]="assessmentYear"
       [isNdC]="concernIsNdC"
       [isMethodology]="concernIsMethodology"
     ></app-raise-concern-admin>

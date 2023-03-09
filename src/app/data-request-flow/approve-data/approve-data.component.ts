@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import {
-  AssesmentControllerServiceProxy,
+  AssessmentControllerServiceProxy,
   AssessmentYear,
   AssessmentYearControllerServiceProxy,
   DataVerifierDto,
@@ -23,9 +23,9 @@ import {
   styleUrls: ['./approve-data.component.css'],
 })
 export class ApproveDataComponent implements OnInit {
-  assesmentYearId = 0;
-  assementYear: any;
-  assementYearDetails: AssessmentYear = new AssessmentYear();
+  assessmentYearId = 0;
+  assessmentYear: any;
+  assessmentYearDetails: AssessmentYear = new AssessmentYear();
   parameters: Parameter[] = [];
   baselineParameters: Parameter[] = [];
   projectParameters: Parameter[] = [];
@@ -66,7 +66,7 @@ export class ApproveDataComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private proxy: ServiceProxy,
-    private assesmentProxy: AssesmentControllerServiceProxy,
+    private assessmentProxy: AssessmentControllerServiceProxy,
     private assessmentYearProxy: AssessmentYearControllerServiceProxy,
     private parameterProxy: ParameterRequestControllerServiceProxy,
     private messageService: MessageService,
@@ -79,12 +79,12 @@ export class ApproveDataComponent implements OnInit {
   ngOnInit(): void {
     this.userName = localStorage.getItem('user_name')!;
     this.route.queryParams.subscribe((params) => {
-      this.assesmentYearId = params['id'];
+      this.assessmentYearId = params['id'];
     });
 
     this.serviceProxy
       .getOneBaseAssessmentYearControllerAssessmentYear(
-        this.assesmentYearId,
+        this.assessmentYearId,
         undefined,
         undefined,
         undefined,
@@ -104,12 +104,12 @@ export class ApproveDataComponent implements OnInit {
       });
 
     this.assessmentYearProxy
-      .getAssessmentByYearId(this.assesmentYearId, this.userName)
+      .getAssessmentByYearId(this.assessmentYearId, this.userName)
       .subscribe((res) => {
         if (res) {
           this.hideAllButtons = res?.qaStatus;
 
-          this.assementYear = res;
+          this.assessmentYear = res;
           this.headerlcimateActionName =
             res.assessment?.Project.climateActionName;
           this.headerAssessmentType = res.assessment?.assessmentType;
@@ -119,7 +119,7 @@ export class ApproveDataComponent implements OnInit {
           this.headerBaseYear = res?.assessment?.baseYear;
         }
 
-        this.getAssesment();
+        this.getAssessment();
         if (this.finalQC?.qaStatus == null) {
           this.checkQC();
         }
@@ -134,45 +134,40 @@ export class ApproveDataComponent implements OnInit {
     });
   }
 
-  getAssesment() {
-    this.assesmentProxy
+  getAssessment() {
+    this.assessmentProxy
       .getAssessmentsForApproveData(
-        this.assementYear.assessment.id,
-        this.assementYear.assessmentYear,
+        this.assessmentYear.assessment.id,
+        this.assessmentYear.assessmentYear,
         this.userName,
       )
       .subscribe((res) => {
-        this.assementYearDetails.assessment = res;
+        this.assessmentYearDetails.assessment = res;
 
-        this.parameters = this.assementYearDetails.assessment?.parameters;
+        this.parameters = this.assessmentYearDetails.assessment?.parameters;
 
-        this.baselineParameters =
-          this.assementYearDetails.assessment?.parameters.filter(
-            (p) => p.isBaseline,
-          );
+        this.baselineParameters = this.assessmentYearDetails.assessment?.parameters.filter(
+          (p) => p.isBaseline,
+        );
 
-        this.projectParameters =
-          this.assementYearDetails.assessment.parameters.filter(
-            (p) => p.isProject,
-          );
-        this.lekageParameters =
-          this.assementYearDetails.assessment.parameters.filter(
-            (p) => p.isLekage,
-          );
-        this.projectionParameters =
-          this.assementYearDetails.assessment.parameters.filter(
-            (p) =>
-              p.isProjection &&
-              p.projectionBaseYear == this.headerAssessmentYear,
-          );
+        this.projectParameters = this.assessmentYearDetails.assessment.parameters.filter(
+          (p) => p.isProject,
+        );
+        this.lekageParameters = this.assessmentYearDetails.assessment.parameters.filter(
+          (p) => p.isLekage,
+        );
+        this.projectionParameters = this.assessmentYearDetails.assessment.parameters.filter(
+          (p) =>
+            p.isProjection && p.projectionBaseYear == this.headerAssessmentYear,
+        );
       });
   }
 
   checkQC() {
-    this.assesmentProxy
+    this.assessmentProxy
       .checkAssessmentReadyForQC(
-        this.assementYear.assessment.id,
-        this.assementYear.assessmentYear,
+        this.assessmentYear.assessment.id,
+        this.assessmentYear.assessmentYear,
       )
       .subscribe((r) => {
         if (r) {
@@ -242,7 +237,7 @@ export class ApproveDataComponent implements OnInit {
             .updateInstitution(updateInstitutionDto)
             .subscribe();
           this.clearParameters();
-          this.getAssesment();
+          this.getAssessment();
         },
         (err) => {
           this.messageService.add({
@@ -260,17 +255,17 @@ export class ApproveDataComponent implements OnInit {
   onClickQC() {
     this.isHideRejectButton = true;
 
-    this.assementYear.qaDeadline = this.selectedQCDeadline;
+    this.assessmentYear.qaDeadline = this.selectedQCDeadline;
 
     this.proxy
       .updateOneBaseAssessmentYearControllerAssessmentYear(
-        this.assementYear.id,
-        this.assementYear,
+        this.assessmentYear.id,
+        this.assessmentYear,
       )
       .subscribe((res) => {});
 
     const inputParameters = new DataVerifierDto();
-    inputParameters.ids = [this.assesmentYearId];
+    inputParameters.ids = [this.assessmentYearId];
     inputParameters.status = 1;
 
     this.buttonLabel = 'Sent';
@@ -344,7 +339,7 @@ export class ApproveDataComponent implements OnInit {
               detail: 'Data is approved successfully',
             });
             this.clearParameters();
-            this.getAssesment();
+            this.getAssessment();
             this.checkQC();
           },
           (err) => {

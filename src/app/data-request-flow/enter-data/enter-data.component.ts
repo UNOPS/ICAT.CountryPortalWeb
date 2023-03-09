@@ -359,11 +359,10 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
             });
             para.parameterId.historicalValues = answer;
 
-            para.parameterId.displayhisValues =
-              para.parameterId.historicalValues.filter(
-                (val: { unit: any }) =>
-                  val.unit === para.parameterId.uomDataRequest,
-              );
+            para.parameterId.displayhisValues = para.parameterId.historicalValues.filter(
+              (val: { unit: any }) =>
+                val.unit === para.parameterId.uomDataRequest,
+            );
             para.parameterId.displayhisValues.sort(
               (a: any, b: any) => b.year - a.year,
             );
@@ -589,7 +588,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
         const id = e.parameterId.id;
         const climateAction =
           e.parameterId.Assessment?.Prject?.climateActionName;
-        const assesmentApproch = e.parameterId.Assessment?.assessmentType;
+        const assessmentApproch = e.parameterId.Assessment?.assessmentType;
         const year = e.parameterId.AssessmentYear;
         const scenario = e.parameterId.isAlternative
           ? 'Alternative'
@@ -610,7 +609,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
         const obj = {
           id,
           climateAction,
-          assesmentApproch,
+          assessmentApproch,
           year,
           scenario,
           parameter,
@@ -627,7 +626,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
         const id = e.parameterId.id;
         const climateAction =
           e.parameterId.Assessment?.Prject?.climateActionName;
-        const assesmentApproch = e.parameterId.Assessment?.assessmentType;
+        const assessmentApproch = e.parameterId.Assessment?.assessmentType;
         const year = e.parameterId.AssessmentYear;
         const scenario = e.parameterId.isAlternative
           ? 'Alternative'
@@ -667,7 +666,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
         const obj = {
           id,
           climateAction,
-          assesmentApproch,
+          assessmentApproch,
           year,
           scenario,
           parameter,

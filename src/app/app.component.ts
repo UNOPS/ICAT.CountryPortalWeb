@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   models = CountryModule;
   userRoles: any[] = [];
   userRole: any = { name: 'Guest', role: '-1' };
-  userActivity: number;
+  userActivity: any;
   countryId: number;
   userInactive: Subject<any> = new Subject();
 
