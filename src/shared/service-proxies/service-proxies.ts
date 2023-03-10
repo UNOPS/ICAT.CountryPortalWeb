@@ -1009,14 +1009,14 @@ export class ServiceProxy {
     }
 
     /**
-     * Retrieve a single ProjectionResault
+     * Retrieve a single ProjectionResult
      * @param fields (optional) Selects resource fields. <a href="https://github.com/nestjsx/crud/wiki/Requests#select" target="_blank">Docs</a>
      * @param join (optional) Adds relational resources. <a href="https://github.com/nestjsx/crud/wiki/Requests#join" target="_blank">Docs</a>
      * @param cache (optional) Reset cache (if was enabled). <a href="https://github.com/nestjsx/crud/wiki/Requests#cache" target="_blank">Docs</a>
      * @return Get one base response
      */
-    getOneBaseProjectionResaultControllerProjectionResault(id: number, fields: string[] | undefined, join: string[] | undefined, cache: number | undefined): Observable<ProjectionResault> {
-        let url_ = this.baseUrl + "/projection-resault/{id}?";
+    getOneBaseProjectionResultControllerProjectionResult(id: number, fields: string[] | undefined, join: string[] | undefined, cache: number | undefined): Observable<ProjectionResult> {
+        let url_ = this.baseUrl + "/projection-result/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1043,20 +1043,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetOneBaseProjectionResaultControllerProjectionResault(response_);
+            return this.processGetOneBaseProjectionResultControllerProjectionResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetOneBaseProjectionResaultControllerProjectionResault(<any>response_);
+                    return this.processGetOneBaseProjectionResultControllerProjectionResult(<any>response_);
                 } catch (e) {
-                    return <Observable<ProjectionResault>><any>_observableThrow(e);
+                    return <Observable<ProjectionResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ProjectionResault>><any>_observableThrow(response_);
+                return <Observable<ProjectionResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetOneBaseProjectionResaultControllerProjectionResault(response: HttpResponseBase): Observable<ProjectionResault> {
+    protected processGetOneBaseProjectionResultControllerProjectionResult(response: HttpResponseBase): Observable<ProjectionResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1067,7 +1067,7 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProjectionResault.fromJS(resultData200);
+            result200 = ProjectionResult.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1079,11 +1079,11 @@ export class ServiceProxy {
     }
 
     /**
-     * Update a single ProjectionResault
+     * Update a single ProjectionResult
      * @return Response
      */
-    updateOneBaseProjectionResaultControllerProjectionResault(id: number, body: ProjectionResault): Observable<ProjectionResault> {
-        let url_ = this.baseUrl + "/projection-resault/{id}";
+    updateOneBaseProjectionResultControllerProjectionResult(id: number, body: ProjectionResult): Observable<ProjectionResult> {
+        let url_ = this.baseUrl + "/projection-result/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1102,20 +1102,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateOneBaseProjectionResaultControllerProjectionResault(response_);
+            return this.processUpdateOneBaseProjectionResultControllerProjectionResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processUpdateOneBaseProjectionResaultControllerProjectionResault(<any>response_);
+                    return this.processUpdateOneBaseProjectionResultControllerProjectionResult(<any>response_);
                 } catch (e) {
-                    return <Observable<ProjectionResault>><any>_observableThrow(e);
+                    return <Observable<ProjectionResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ProjectionResault>><any>_observableThrow(response_);
+                return <Observable<ProjectionResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processUpdateOneBaseProjectionResaultControllerProjectionResault(response: HttpResponseBase): Observable<ProjectionResault> {
+    protected processUpdateOneBaseProjectionResultControllerProjectionResult(response: HttpResponseBase): Observable<ProjectionResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1126,7 +1126,7 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProjectionResault.fromJS(resultData200);
+            result200 = ProjectionResult.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1138,11 +1138,11 @@ export class ServiceProxy {
     }
 
     /**
-     * Replace a single ProjectionResault
+     * Replace a single ProjectionResult
      * @return Response
      */
-    replaceOneBaseProjectionResaultControllerProjectionResault(id: number, body: ProjectionResault): Observable<ProjectionResault> {
-        let url_ = this.baseUrl + "/projection-resault/{id}";
+    replaceOneBaseProjectionResultControllerProjectionResult(id: number, body: ProjectionResult): Observable<ProjectionResult> {
+        let url_ = this.baseUrl + "/projection-result/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1161,20 +1161,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processReplaceOneBaseProjectionResaultControllerProjectionResault(response_);
+            return this.processReplaceOneBaseProjectionResultControllerProjectionResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processReplaceOneBaseProjectionResaultControllerProjectionResault(<any>response_);
+                    return this.processReplaceOneBaseProjectionResultControllerProjectionResult(<any>response_);
                 } catch (e) {
-                    return <Observable<ProjectionResault>><any>_observableThrow(e);
+                    return <Observable<ProjectionResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ProjectionResault>><any>_observableThrow(response_);
+                return <Observable<ProjectionResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processReplaceOneBaseProjectionResaultControllerProjectionResault(response: HttpResponseBase): Observable<ProjectionResault> {
+    protected processReplaceOneBaseProjectionResultControllerProjectionResult(response: HttpResponseBase): Observable<ProjectionResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1185,7 +1185,7 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProjectionResault.fromJS(resultData200);
+            result200 = ProjectionResult.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1197,11 +1197,11 @@ export class ServiceProxy {
     }
 
     /**
-     * Delete a single ProjectionResault
+     * Delete a single ProjectionResult
      * @return Delete one base response
      */
-    deleteOneBaseProjectionResaultControllerProjectionResault(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/projection-resault/{id}";
+    deleteOneBaseProjectionResultControllerProjectionResult(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/projection-result/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1215,11 +1215,11 @@ export class ServiceProxy {
         };
 
         return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeleteOneBaseProjectionResaultControllerProjectionResault(response_);
+            return this.processDeleteOneBaseProjectionResultControllerProjectionResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDeleteOneBaseProjectionResaultControllerProjectionResault(<any>response_);
+                    return this.processDeleteOneBaseProjectionResultControllerProjectionResult(<any>response_);
                 } catch (e) {
                     return <Observable<void>><any>_observableThrow(e);
                 }
@@ -1228,7 +1228,7 @@ export class ServiceProxy {
         }));
     }
 
-    protected processDeleteOneBaseProjectionResaultControllerProjectionResault(response: HttpResponseBase): Observable<void> {
+    protected processDeleteOneBaseProjectionResultControllerProjectionResult(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1248,7 +1248,7 @@ export class ServiceProxy {
     }
 
     /**
-     * Retrieve multiple ProjectionResaults
+     * Retrieve multiple ProjectionResults
      * @param fields (optional) Selects resource fields. <a href="https://github.com/nestjsx/crud/wiki/Requests#select" target="_blank">Docs</a>
      * @param s (optional) Adds search condition. <a href="https://github.com/nestjsx/crud/wiki/Requests#search" target="_blank">Docs</a>
      * @param filter (optional) Adds filter condition. <a href="https://github.com/nestjsx/crud/wiki/Requests#filter" target="_blank">Docs</a>
@@ -1261,8 +1261,8 @@ export class ServiceProxy {
      * @param cache (optional) Reset cache (if was enabled). <a href="https://github.com/nestjsx/crud/wiki/Requests#cache" target="_blank">Docs</a>
      * @return Get many base response
      */
-    getManyBaseProjectionResaultControllerProjectionResault(fields: string[] | undefined, s: string | undefined, filter: string[] | undefined, or: string[] | undefined, sort: string[] | undefined, join: string[] | undefined, limit: number | undefined, offset: number | undefined, page: number | undefined, cache: number | undefined): Observable<GetManyProjectionResaultResponseDto> {
-        let url_ = this.baseUrl + "/projection-resault?";
+    getManyBaseProjectionResultControllerProjectionResult(fields: string[] | undefined, s: string | undefined, filter: string[] | undefined, or: string[] | undefined, sort: string[] | undefined, join: string[] | undefined, limit: number | undefined, offset: number | undefined, page: number | undefined, cache: number | undefined): Observable<GetManyProjectionResultResponseDto> {
+        let url_ = this.baseUrl + "/projection-result?";
         if (fields === null)
             throw new Error("The parameter 'fields' cannot be null.");
         else if (fields !== undefined)
@@ -1314,20 +1314,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetManyBaseProjectionResaultControllerProjectionResault(response_);
+            return this.processGetManyBaseProjectionResultControllerProjectionResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetManyBaseProjectionResaultControllerProjectionResault(<any>response_);
+                    return this.processGetManyBaseProjectionResultControllerProjectionResult(<any>response_);
                 } catch (e) {
-                    return <Observable<GetManyProjectionResaultResponseDto>><any>_observableThrow(e);
+                    return <Observable<GetManyProjectionResultResponseDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<GetManyProjectionResaultResponseDto>><any>_observableThrow(response_);
+                return <Observable<GetManyProjectionResultResponseDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetManyBaseProjectionResaultControllerProjectionResault(response: HttpResponseBase): Observable<GetManyProjectionResaultResponseDto> {
+    protected processGetManyBaseProjectionResultControllerProjectionResult(response: HttpResponseBase): Observable<GetManyProjectionResultResponseDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1338,7 +1338,7 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetManyProjectionResaultResponseDto.fromJS(resultData200);
+            result200 = GetManyProjectionResultResponseDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1350,11 +1350,11 @@ export class ServiceProxy {
     }
 
     /**
-     * Create a single ProjectionResault
+     * Create a single ProjectionResult
      * @return Get create one base response
      */
-    createOneBaseProjectionResaultControllerProjectionResault(body: ProjectionResault): Observable<ProjectionResault> {
-        let url_ = this.baseUrl + "/projection-resault";
+    createOneBaseProjectionResultControllerProjectionResult(body: ProjectionResult): Observable<ProjectionResult> {
+        let url_ = this.baseUrl + "/projection-result";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -1370,20 +1370,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateOneBaseProjectionResaultControllerProjectionResault(response_);
+            return this.processCreateOneBaseProjectionResultControllerProjectionResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateOneBaseProjectionResaultControllerProjectionResault(<any>response_);
+                    return this.processCreateOneBaseProjectionResultControllerProjectionResult(<any>response_);
                 } catch (e) {
-                    return <Observable<ProjectionResault>><any>_observableThrow(e);
+                    return <Observable<ProjectionResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ProjectionResault>><any>_observableThrow(response_);
+                return <Observable<ProjectionResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateOneBaseProjectionResaultControllerProjectionResault(response: HttpResponseBase): Observable<ProjectionResault> {
+    protected processCreateOneBaseProjectionResultControllerProjectionResult(response: HttpResponseBase): Observable<ProjectionResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1394,7 +1394,7 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result201: any = null;
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result201 = ProjectionResault.fromJS(resultData201);
+            result201 = ProjectionResult.fromJS(resultData201);
             return _observableOf(result201);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1406,11 +1406,11 @@ export class ServiceProxy {
     }
 
     /**
-     * Create multiple ProjectionResaults
+     * Create multiple ProjectionResults
      * @return Get create many base response
      */
-    createManyBaseProjectionResaultControllerProjectionResault(body: BulkDto): Observable<ProjectionResault[]> {
-        let url_ = this.baseUrl + "/projection-resault/bulk";
+    createManyBaseProjectionResultControllerProjectionResult(body: BulkDto): Observable<ProjectionResult[]> {
+        let url_ = this.baseUrl + "/projection-result/bulk";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -1426,20 +1426,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateManyBaseProjectionResaultControllerProjectionResault(response_);
+            return this.processCreateManyBaseProjectionResultControllerProjectionResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateManyBaseProjectionResaultControllerProjectionResault(<any>response_);
+                    return this.processCreateManyBaseProjectionResultControllerProjectionResult(<any>response_);
                 } catch (e) {
-                    return <Observable<ProjectionResault[]>><any>_observableThrow(e);
+                    return <Observable<ProjectionResult[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ProjectionResault[]>><any>_observableThrow(response_);
+                return <Observable<ProjectionResult[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateManyBaseProjectionResaultControllerProjectionResault(response: HttpResponseBase): Observable<ProjectionResault[]> {
+    protected processCreateManyBaseProjectionResultControllerProjectionResult(response: HttpResponseBase): Observable<ProjectionResult[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1453,7 +1453,7 @@ export class ServiceProxy {
             if (Array.isArray(resultData201)) {
                 result201 = [] as any;
                 for (let item of resultData201)
-                    result201.push(ProjectionResault.fromJS(item));
+                    result201.push(ProjectionResult.fromJS(item));
             }
             else {
                 result201 = <any>null;
@@ -12987,8 +12987,8 @@ export class ServiceProxy {
     /**
      * Create a single Assessment
      */
-    createOneBaseAssesmentControllerAssessment(body: Assessment): Observable<Assessment> {
-        let url_ = this.baseUrl + "/assesment";
+    createOneBaseAssessmentControllerAssessment(body: Assessment): Observable<Assessment> {
+        let url_ = this.baseUrl + "/assessment";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -13004,11 +13004,11 @@ export class ServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateOneBaseAssesmentControllerAssessment(response_);
+            return this.processCreateOneBaseAssessmentControllerAssessment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateOneBaseAssesmentControllerAssessment(<any>response_);
+                    return this.processCreateOneBaseAssessmentControllerAssessment(<any>response_);
                 } catch (e) {
                     return <Observable<Assessment>><any>_observableThrow(e);
                 }
@@ -13017,7 +13017,7 @@ export class ServiceProxy {
         }));
     }
 
-    protected processCreateOneBaseAssesmentControllerAssessment(response: HttpResponseBase): Observable<Assessment> {
+    protected processCreateOneBaseAssessmentControllerAssessment(response: HttpResponseBase): Observable<Assessment> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -13060,8 +13060,8 @@ export class ServiceProxy {
      * @param cache (optional) Reset cache (if was enabled). <a href="https://github.com/nestjsx/crud/wiki/Requests#cache" target="_blank">Docs</a>
      * @return Get many base response
      */
-    getManyBaseAssesmentControllerAssessment(fields: string[] | undefined, s: string | undefined, filter: string[] | undefined, or: string[] | undefined, sort: string[] | undefined, join: string[] | undefined, limit: number | undefined, offset: number | undefined, page: number | undefined, cache: number | undefined): Observable<GetManyAssessmentResponseDto> {
-        let url_ = this.baseUrl + "/assesment?";
+    getManyBaseAssessmentControllerAssessment(fields: string[] | undefined, s: string | undefined, filter: string[] | undefined, or: string[] | undefined, sort: string[] | undefined, join: string[] | undefined, limit: number | undefined, offset: number | undefined, page: number | undefined, cache: number | undefined): Observable<GetManyAssessmentResponseDto> {
+        let url_ = this.baseUrl + "/assessment?";
         if (fields === null)
             throw new Error("The parameter 'fields' cannot be null.");
         else if (fields !== undefined)
@@ -13113,11 +13113,11 @@ export class ServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetManyBaseAssesmentControllerAssessment(response_);
+            return this.processGetManyBaseAssessmentControllerAssessment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetManyBaseAssesmentControllerAssessment(<any>response_);
+                    return this.processGetManyBaseAssessmentControllerAssessment(<any>response_);
                 } catch (e) {
                     return <Observable<GetManyAssessmentResponseDto>><any>_observableThrow(e);
                 }
@@ -13126,7 +13126,7 @@ export class ServiceProxy {
         }));
     }
 
-    protected processGetManyBaseAssesmentControllerAssessment(response: HttpResponseBase): Observable<GetManyAssessmentResponseDto> {
+    protected processGetManyBaseAssessmentControllerAssessment(response: HttpResponseBase): Observable<GetManyAssessmentResponseDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -13155,8 +13155,8 @@ export class ServiceProxy {
      * @param cache (optional) Reset cache (if was enabled). <a href="https://github.com/nestjsx/crud/wiki/Requests#cache" target="_blank">Docs</a>
      * @return Get one base response
      */
-    getOneBaseAssesmentControllerAssessment(id: number, fields: string[] | undefined, join: string[] | undefined, cache: number | undefined): Observable<Assessment> {
-        let url_ = this.baseUrl + "/assesment/{id}?";
+    getOneBaseAssessmentControllerAssessment(id: number, fields: string[] | undefined, join: string[] | undefined, cache: number | undefined): Observable<Assessment> {
+        let url_ = this.baseUrl + "/assessment/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -13183,11 +13183,11 @@ export class ServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetOneBaseAssesmentControllerAssessment(response_);
+            return this.processGetOneBaseAssessmentControllerAssessment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetOneBaseAssesmentControllerAssessment(<any>response_);
+                    return this.processGetOneBaseAssessmentControllerAssessment(<any>response_);
                 } catch (e) {
                     return <Observable<Assessment>><any>_observableThrow(e);
                 }
@@ -13196,7 +13196,7 @@ export class ServiceProxy {
         }));
     }
 
-    protected processGetOneBaseAssesmentControllerAssessment(response: HttpResponseBase): Observable<Assessment> {
+    protected processGetOneBaseAssessmentControllerAssessment(response: HttpResponseBase): Observable<Assessment> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -13222,8 +13222,8 @@ export class ServiceProxy {
      * Update a single Assessment
      * @return Response
      */
-    updateOneBaseAssesmentControllerAssessment(id: number, body: Assessment): Observable<Assessment> {
-        let url_ = this.baseUrl + "/assesment/{id}";
+    updateOneBaseAssessmentControllerAssessment(id: number, body: Assessment): Observable<Assessment> {
+        let url_ = this.baseUrl + "/assessment/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -13242,11 +13242,11 @@ export class ServiceProxy {
         };
 
         return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateOneBaseAssesmentControllerAssessment(response_);
+            return this.processUpdateOneBaseAssessmentControllerAssessment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processUpdateOneBaseAssesmentControllerAssessment(<any>response_);
+                    return this.processUpdateOneBaseAssessmentControllerAssessment(<any>response_);
                 } catch (e) {
                     return <Observable<Assessment>><any>_observableThrow(e);
                 }
@@ -13255,7 +13255,7 @@ export class ServiceProxy {
         }));
     }
 
-    protected processUpdateOneBaseAssesmentControllerAssessment(response: HttpResponseBase): Observable<Assessment> {
+    protected processUpdateOneBaseAssessmentControllerAssessment(response: HttpResponseBase): Observable<Assessment> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -13281,8 +13281,8 @@ export class ServiceProxy {
      * Replace a single Assessment
      * @return Response
      */
-    replaceOneBaseAssesmentControllerAssessment(id: number, body: Assessment): Observable<Assessment> {
-        let url_ = this.baseUrl + "/assesment/{id}";
+    replaceOneBaseAssessmentControllerAssessment(id: number, body: Assessment): Observable<Assessment> {
+        let url_ = this.baseUrl + "/assessment/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -13301,11 +13301,11 @@ export class ServiceProxy {
         };
 
         return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processReplaceOneBaseAssesmentControllerAssessment(response_);
+            return this.processReplaceOneBaseAssessmentControllerAssessment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processReplaceOneBaseAssesmentControllerAssessment(<any>response_);
+                    return this.processReplaceOneBaseAssessmentControllerAssessment(<any>response_);
                 } catch (e) {
                     return <Observable<Assessment>><any>_observableThrow(e);
                 }
@@ -13314,7 +13314,7 @@ export class ServiceProxy {
         }));
     }
 
-    protected processReplaceOneBaseAssesmentControllerAssessment(response: HttpResponseBase): Observable<Assessment> {
+    protected processReplaceOneBaseAssessmentControllerAssessment(response: HttpResponseBase): Observable<Assessment> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -13340,8 +13340,8 @@ export class ServiceProxy {
      * Delete a single Assessment
      * @return Delete one base response
      */
-    deleteOneBaseAssesmentControllerAssessment(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/assesment/{id}";
+    deleteOneBaseAssessmentControllerAssessment(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/assessment/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -13355,11 +13355,11 @@ export class ServiceProxy {
         };
 
         return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeleteOneBaseAssesmentControllerAssessment(response_);
+            return this.processDeleteOneBaseAssessmentControllerAssessment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDeleteOneBaseAssesmentControllerAssessment(<any>response_);
+                    return this.processDeleteOneBaseAssessmentControllerAssessment(<any>response_);
                 } catch (e) {
                     return <Observable<void>><any>_observableThrow(e);
                 }
@@ -13368,7 +13368,7 @@ export class ServiceProxy {
         }));
     }
 
-    protected processDeleteOneBaseAssesmentControllerAssessment(response: HttpResponseBase): Observable<void> {
+    protected processDeleteOneBaseAssessmentControllerAssessment(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -13391,8 +13391,8 @@ export class ServiceProxy {
      * Create multiple Assessments
      * @return Get create many base response
      */
-    createManyBaseAssesmentControllerAssessment(body: BulkDto): Observable<Assessment[]> {
-        let url_ = this.baseUrl + "/assesment/bulk";
+    createManyBaseAssessmentControllerAssessment(body: BulkDto): Observable<Assessment[]> {
+        let url_ = this.baseUrl + "/assessment/bulk";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -13408,11 +13408,11 @@ export class ServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateManyBaseAssesmentControllerAssessment(response_);
+            return this.processCreateManyBaseAssessmentControllerAssessment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateManyBaseAssesmentControllerAssessment(<any>response_);
+                    return this.processCreateManyBaseAssessmentControllerAssessment(<any>response_);
                 } catch (e) {
                     return <Observable<Assessment[]>><any>_observableThrow(e);
                 }
@@ -13421,7 +13421,7 @@ export class ServiceProxy {
         }));
     }
 
-    protected processCreateManyBaseAssesmentControllerAssessment(response: HttpResponseBase): Observable<Assessment[]> {
+    protected processCreateManyBaseAssessmentControllerAssessment(response: HttpResponseBase): Observable<Assessment[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -13911,10 +13911,10 @@ export class ServiceProxy {
     }
 
     /**
-     * Create a single AssessmentResault
+     * Create a single AssessmentResult
      */
-    createOneBaseAssesmentResaultControllerAssessmentResault(body: AssessmentResault): Observable<AssessmentResault> {
-        let url_ = this.baseUrl + "/assesment-resault";
+    createOneBaseAssessmentResultControllerAssessmentResult(body: AssessmentResult): Observable<AssessmentResult> {
+        let url_ = this.baseUrl + "/assessment-result";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -13930,20 +13930,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateOneBaseAssesmentResaultControllerAssessmentResault(response_);
+            return this.processCreateOneBaseAssessmentResultControllerAssessmentResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateOneBaseAssesmentResaultControllerAssessmentResault(<any>response_);
+                    return this.processCreateOneBaseAssessmentResultControllerAssessmentResult(<any>response_);
                 } catch (e) {
-                    return <Observable<AssessmentResault>><any>_observableThrow(e);
+                    return <Observable<AssessmentResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AssessmentResault>><any>_observableThrow(response_);
+                return <Observable<AssessmentResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateOneBaseAssesmentResaultControllerAssessmentResault(response: HttpResponseBase): Observable<AssessmentResault> {
+    protected processCreateOneBaseAssessmentResultControllerAssessmentResult(response: HttpResponseBase): Observable<AssessmentResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -13954,14 +13954,14 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AssessmentResault.fromJS(resultData200);
+            result200 = AssessmentResult.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status === 201) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result201: any = null;
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result201 = AssessmentResault.fromJS(resultData201);
+            result201 = AssessmentResult.fromJS(resultData201);
             return _observableOf(result201);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -13973,7 +13973,7 @@ export class ServiceProxy {
     }
 
     /**
-     * Retrieve multiple AssessmentResaults
+     * Retrieve multiple AssessmentResults
      * @param fields (optional) Selects resource fields. <a href="https://github.com/nestjsx/crud/wiki/Requests#select" target="_blank">Docs</a>
      * @param s (optional) Adds search condition. <a href="https://github.com/nestjsx/crud/wiki/Requests#search" target="_blank">Docs</a>
      * @param filter (optional) Adds filter condition. <a href="https://github.com/nestjsx/crud/wiki/Requests#filter" target="_blank">Docs</a>
@@ -13986,8 +13986,8 @@ export class ServiceProxy {
      * @param cache (optional) Reset cache (if was enabled). <a href="https://github.com/nestjsx/crud/wiki/Requests#cache" target="_blank">Docs</a>
      * @return Get many base response
      */
-    getManyBaseAssesmentResaultControllerAssessmentResault(fields: string[] | undefined, s: string | undefined, filter: string[] | undefined, or: string[] | undefined, sort: string[] | undefined, join: string[] | undefined, limit: number | undefined, offset: number | undefined, page: number | undefined, cache: number | undefined): Observable<GetManyAssessmentResaultResponseDto> {
-        let url_ = this.baseUrl + "/assesment-resault?";
+    getManyBaseAssessmentResultControllerAssessmentResult(fields: string[] | undefined, s: string | undefined, filter: string[] | undefined, or: string[] | undefined, sort: string[] | undefined, join: string[] | undefined, limit: number | undefined, offset: number | undefined, page: number | undefined, cache: number | undefined): Observable<GetManyAssessmentResultResponseDto> {
+        let url_ = this.baseUrl + "/assessment-result?";
         if (fields === null)
             throw new Error("The parameter 'fields' cannot be null.");
         else if (fields !== undefined)
@@ -14039,20 +14039,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetManyBaseAssesmentResaultControllerAssessmentResault(response_);
+            return this.processGetManyBaseAssessmentResultControllerAssessmentResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetManyBaseAssesmentResaultControllerAssessmentResault(<any>response_);
+                    return this.processGetManyBaseAssessmentResultControllerAssessmentResult(<any>response_);
                 } catch (e) {
-                    return <Observable<GetManyAssessmentResaultResponseDto>><any>_observableThrow(e);
+                    return <Observable<GetManyAssessmentResultResponseDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<GetManyAssessmentResaultResponseDto>><any>_observableThrow(response_);
+                return <Observable<GetManyAssessmentResultResponseDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetManyBaseAssesmentResaultControllerAssessmentResault(response: HttpResponseBase): Observable<GetManyAssessmentResaultResponseDto> {
+    protected processGetManyBaseAssessmentResultControllerAssessmentResult(response: HttpResponseBase): Observable<GetManyAssessmentResultResponseDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -14063,7 +14063,7 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetManyAssessmentResaultResponseDto.fromJS(resultData200);
+            result200 = GetManyAssessmentResultResponseDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -14075,14 +14075,14 @@ export class ServiceProxy {
     }
 
     /**
-     * Retrieve a single AssessmentResault
+     * Retrieve a single AssessmentResult
      * @param fields (optional) Selects resource fields. <a href="https://github.com/nestjsx/crud/wiki/Requests#select" target="_blank">Docs</a>
      * @param join (optional) Adds relational resources. <a href="https://github.com/nestjsx/crud/wiki/Requests#join" target="_blank">Docs</a>
      * @param cache (optional) Reset cache (if was enabled). <a href="https://github.com/nestjsx/crud/wiki/Requests#cache" target="_blank">Docs</a>
      * @return Get one base response
      */
-    getOneBaseAssesmentResaultControllerAssessmentResault(id: number, fields: string[] | undefined, join: string[] | undefined, cache: number | undefined): Observable<AssessmentResault> {
-        let url_ = this.baseUrl + "/assesment-resault/{id}?";
+    getOneBaseAssessmentResultControllerAssessmentResult(id: number, fields: string[] | undefined, join: string[] | undefined, cache: number | undefined): Observable<AssessmentResult> {
+        let url_ = this.baseUrl + "/assessment-result/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -14109,20 +14109,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetOneBaseAssesmentResaultControllerAssessmentResault(response_);
+            return this.processGetOneBaseAssessmentResultControllerAssessmentResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetOneBaseAssesmentResaultControllerAssessmentResault(<any>response_);
+                    return this.processGetOneBaseAssessmentResultControllerAssessmentResult(<any>response_);
                 } catch (e) {
-                    return <Observable<AssessmentResault>><any>_observableThrow(e);
+                    return <Observable<AssessmentResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AssessmentResault>><any>_observableThrow(response_);
+                return <Observable<AssessmentResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetOneBaseAssesmentResaultControllerAssessmentResault(response: HttpResponseBase): Observable<AssessmentResault> {
+    protected processGetOneBaseAssessmentResultControllerAssessmentResult(response: HttpResponseBase): Observable<AssessmentResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -14133,7 +14133,7 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AssessmentResault.fromJS(resultData200);
+            result200 = AssessmentResult.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -14145,11 +14145,11 @@ export class ServiceProxy {
     }
 
     /**
-     * Update a single AssessmentResault
+     * Update a single AssessmentResult
      * @return Response
      */
-    updateOneBaseAssesmentResaultControllerAssessmentResault(id: number, body: AssessmentResault): Observable<AssessmentResault> {
-        let url_ = this.baseUrl + "/assesment-resault/{id}";
+    updateOneBaseAssessmentResultControllerAssessmentResult(id: number, body: AssessmentResult): Observable<AssessmentResult> {
+        let url_ = this.baseUrl + "/assessment-result/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -14168,20 +14168,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateOneBaseAssesmentResaultControllerAssessmentResault(response_);
+            return this.processUpdateOneBaseAssessmentResultControllerAssessmentResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processUpdateOneBaseAssesmentResaultControllerAssessmentResault(<any>response_);
+                    return this.processUpdateOneBaseAssessmentResultControllerAssessmentResult(<any>response_);
                 } catch (e) {
-                    return <Observable<AssessmentResault>><any>_observableThrow(e);
+                    return <Observable<AssessmentResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AssessmentResault>><any>_observableThrow(response_);
+                return <Observable<AssessmentResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processUpdateOneBaseAssesmentResaultControllerAssessmentResault(response: HttpResponseBase): Observable<AssessmentResault> {
+    protected processUpdateOneBaseAssessmentResultControllerAssessmentResult(response: HttpResponseBase): Observable<AssessmentResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -14192,7 +14192,7 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AssessmentResault.fromJS(resultData200);
+            result200 = AssessmentResult.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -14204,11 +14204,11 @@ export class ServiceProxy {
     }
 
     /**
-     * Replace a single AssessmentResault
+     * Replace a single AssessmentResult
      * @return Response
      */
-    replaceOneBaseAssesmentResaultControllerAssessmentResault(id: number, body: AssessmentResault): Observable<AssessmentResault> {
-        let url_ = this.baseUrl + "/assesment-resault/{id}";
+    replaceOneBaseAssessmentResultControllerAssessmentResult(id: number, body: AssessmentResult): Observable<AssessmentResult> {
+        let url_ = this.baseUrl + "/assessment-result/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -14227,20 +14227,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processReplaceOneBaseAssesmentResaultControllerAssessmentResault(response_);
+            return this.processReplaceOneBaseAssessmentResultControllerAssessmentResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processReplaceOneBaseAssesmentResaultControllerAssessmentResault(<any>response_);
+                    return this.processReplaceOneBaseAssessmentResultControllerAssessmentResult(<any>response_);
                 } catch (e) {
-                    return <Observable<AssessmentResault>><any>_observableThrow(e);
+                    return <Observable<AssessmentResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AssessmentResault>><any>_observableThrow(response_);
+                return <Observable<AssessmentResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processReplaceOneBaseAssesmentResaultControllerAssessmentResault(response: HttpResponseBase): Observable<AssessmentResault> {
+    protected processReplaceOneBaseAssessmentResultControllerAssessmentResult(response: HttpResponseBase): Observable<AssessmentResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -14251,7 +14251,7 @@ export class ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AssessmentResault.fromJS(resultData200);
+            result200 = AssessmentResult.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -14263,11 +14263,11 @@ export class ServiceProxy {
     }
 
     /**
-     * Delete a single AssessmentResault
+     * Delete a single AssessmentResult
      * @return Delete one base response
      */
-    deleteOneBaseAssesmentResaultControllerAssessmentResault(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/assesment-resault/{id}";
+    deleteOneBaseAssessmentResultControllerAssessmentResult(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/assessment-result/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -14281,11 +14281,11 @@ export class ServiceProxy {
         };
 
         return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeleteOneBaseAssesmentResaultControllerAssessmentResault(response_);
+            return this.processDeleteOneBaseAssessmentResultControllerAssessmentResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDeleteOneBaseAssesmentResaultControllerAssessmentResault(<any>response_);
+                    return this.processDeleteOneBaseAssessmentResultControllerAssessmentResult(<any>response_);
                 } catch (e) {
                     return <Observable<void>><any>_observableThrow(e);
                 }
@@ -14294,7 +14294,7 @@ export class ServiceProxy {
         }));
     }
 
-    protected processDeleteOneBaseAssesmentResaultControllerAssessmentResault(response: HttpResponseBase): Observable<void> {
+    protected processDeleteOneBaseAssessmentResultControllerAssessmentResult(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -14314,11 +14314,11 @@ export class ServiceProxy {
     }
 
     /**
-     * Create multiple AssessmentResaults
+     * Create multiple AssessmentResults
      * @return Get create many base response
      */
-    createManyBaseAssesmentResaultControllerAssessmentResault(body: BulkDto): Observable<AssessmentResault[]> {
-        let url_ = this.baseUrl + "/assesment-resault/bulk";
+    createManyBaseAssessmentResultControllerAssessmentResult(body: BulkDto): Observable<AssessmentResult[]> {
+        let url_ = this.baseUrl + "/assessment-result/bulk";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -14334,20 +14334,20 @@ export class ServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateManyBaseAssesmentResaultControllerAssessmentResault(response_);
+            return this.processCreateManyBaseAssessmentResultControllerAssessmentResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateManyBaseAssesmentResaultControllerAssessmentResault(<any>response_);
+                    return this.processCreateManyBaseAssessmentResultControllerAssessmentResult(<any>response_);
                 } catch (e) {
-                    return <Observable<AssessmentResault[]>><any>_observableThrow(e);
+                    return <Observable<AssessmentResult[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AssessmentResault[]>><any>_observableThrow(response_);
+                return <Observable<AssessmentResult[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateManyBaseAssesmentResaultControllerAssessmentResault(response: HttpResponseBase): Observable<AssessmentResault[]> {
+    protected processCreateManyBaseAssessmentResultControllerAssessmentResult(response: HttpResponseBase): Observable<AssessmentResult[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -14361,7 +14361,7 @@ export class ServiceProxy {
             if (Array.isArray(resultData201)) {
                 result201 = [] as any;
                 for (let item of resultData201)
-                    result201.push(AssessmentResault.fromJS(item));
+                    result201.push(AssessmentResult.fromJS(item));
             }
             else {
                 result201 = <any>null;
@@ -15831,7 +15831,7 @@ export class MethodologyControllerServiceProxy {
 }
 
 @Injectable()
-export class ProjectionResaultControllerServiceProxy {
+export class ProjectionResultControllerServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -15842,7 +15842,7 @@ export class ProjectionResaultControllerServiceProxy {
     }
 
     updateQCStatus(resultId: number, yearId: number, qcStatus: number, comment: string): Observable<any> {
-        let url_ = this.baseUrl + "/projection-resault/projection-resault/updateQCStatus/{resultId}/{yearId}/{qcStatus}/{comment}?";
+        let url_ = this.baseUrl + "/projection-result/projection-result/updateQCStatus/{resultId}/{yearId}/{qcStatus}/{comment}?";
         if (resultId === undefined || resultId === null)
             throw new Error("The parameter 'resultId' must be defined and cannot be null.");
         else
@@ -15907,7 +15907,7 @@ export class ProjectionResaultControllerServiceProxy {
     }
 
     getProjectionResult(assessmentId: number, projectionYear: number): Observable<any> {
-        let url_ = this.baseUrl + "/projection-resault/projection-resault/GetProjectionResult/{AssessmentId}/{ProjectionYear}?";
+        let url_ = this.baseUrl + "/projection-result/projection-result/GetProjectionResult/{AssessmentId}/{ProjectionYear}?";
         if (assessmentId === undefined || assessmentId === null)
             throw new Error("The parameter 'assessmentId' must be defined and cannot be null.");
         else
@@ -16306,8 +16306,8 @@ export class AssessmentYearControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    getDataForReportNew(projIds: string, assessTypes: string, yearIds: string, macAssesmentType: string): Observable<any> {
-        let url_ = this.baseUrl + "/assessment-year/getDataForReportNew/{projIds}/{assessTypes}/{yearIds}/{macAssesmentType}?";
+    getDataForReportNew(projIds: string, assessTypes: string, yearIds: string, macAssessmentType: string): Observable<any> {
+        let url_ = this.baseUrl + "/assessment-year/getDataForReportNew/{projIds}/{assessTypes}/{yearIds}/{macAssessmentType}?";
         if (projIds === undefined || projIds === null)
             throw new Error("The parameter 'projIds' must be defined and cannot be null.");
         else
@@ -16320,10 +16320,10 @@ export class AssessmentYearControllerServiceProxy {
             throw new Error("The parameter 'yearIds' must be defined and cannot be null.");
         else
             url_ += "yearIds=" + encodeURIComponent("" + yearIds) + "&";
-        if (macAssesmentType === undefined || macAssesmentType === null)
-            throw new Error("The parameter 'macAssesmentType' must be defined and cannot be null.");
+        if (macAssessmentType === undefined || macAssessmentType === null)
+            throw new Error("The parameter 'macAssessmentType' must be defined and cannot be null.");
         else
-            url_ += "MacAssesmentType=" + encodeURIComponent("" + macAssesmentType) + "&";
+            url_ += "MacAssessmentType=" + encodeURIComponent("" + macAssessmentType) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -16371,8 +16371,8 @@ export class AssessmentYearControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    getDataForParameterReportNew(projIds: string, assessTypes: string, yearIds: string, macAssesmentType: string): Observable<any> {
-        let url_ = this.baseUrl + "/assessment-year/getDataForParameterReportNew/{projIds}/{assessTypes}/{yearIds}/{macAssesmentType}?";
+    getDataForParameterReportNew(projIds: string, assessTypes: string, yearIds: string, macAssessmentType: string): Observable<any> {
+        let url_ = this.baseUrl + "/assessment-year/getDataForParameterReportNew/{projIds}/{assessTypes}/{yearIds}/{macAssessmentType}?";
         if (projIds === undefined || projIds === null)
             throw new Error("The parameter 'projIds' must be defined and cannot be null.");
         else
@@ -16385,10 +16385,10 @@ export class AssessmentYearControllerServiceProxy {
             throw new Error("The parameter 'yearIds' must be defined and cannot be null.");
         else
             url_ += "yearIds=" + encodeURIComponent("" + yearIds) + "&";
-        if (macAssesmentType === undefined || macAssesmentType === null)
-            throw new Error("The parameter 'macAssesmentType' must be defined and cannot be null.");
+        if (macAssessmentType === undefined || macAssessmentType === null)
+            throw new Error("The parameter 'macAssessmentType' must be defined and cannot be null.");
         else
-            url_ += "MacAssesmentType=" + encodeURIComponent("" + macAssesmentType) + "&";
+            url_ += "MacAssessmentType=" + encodeURIComponent("" + macAssessmentType) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -16660,16 +16660,16 @@ export class AssessmentYearControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    getVerificationDeatilsByAssessmentIdAndAssessmentYear(assessmentId: number, assementYear: string): Observable<any> {
-        let url_ = this.baseUrl + "/assessment-year/assessmentYears/getVerification/{assessmentId}/{assementYear}?";
+    getVerificationDeatilsByAssessmentIdAndAssessmentYear(assessmentId: number, assessmentYear: string): Observable<any> {
+        let url_ = this.baseUrl + "/assessment-year/assessmentYears/getVerification/{assessmentId}/{assessmentYear}?";
         if (assessmentId === undefined || assessmentId === null)
             throw new Error("The parameter 'assessmentId' must be defined and cannot be null.");
         else
             url_ += "assessmentId=" + encodeURIComponent("" + assessmentId) + "&";
-        if (assementYear === undefined || assementYear === null)
-            throw new Error("The parameter 'assementYear' must be defined and cannot be null.");
+        if (assessmentYear === undefined || assessmentYear === null)
+            throw new Error("The parameter 'assessmentYear' must be defined and cannot be null.");
         else
-            url_ += "assementYear=" + encodeURIComponent("" + assementYear) + "&";
+            url_ += "assessmentYear=" + encodeURIComponent("" + assessmentYear) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -16717,16 +16717,16 @@ export class AssessmentYearControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    getdetailsByAssessmentYearAndProjNameAndAsseType(assessmentType: string, assementYear: string, climateActionName: string): Observable<any> {
-        let url_ = this.baseUrl + "/assessment-year/assessmentYears/getapprovedata/{assessmentType}/{assementYear}/{climateActionName}?";
+    getdetailsByAssessmentYearAndProjNameAndAsseType(assessmentType: string, assessmentYear: string, climateActionName: string): Observable<any> {
+        let url_ = this.baseUrl + "/assessment-year/assessmentYears/getapprovedata/{assessmentType}/{assessmentYear}/{climateActionName}?";
         if (assessmentType === undefined || assessmentType === null)
             throw new Error("The parameter 'assessmentType' must be defined and cannot be null.");
         else
             url_ += "assessmentType=" + encodeURIComponent("" + assessmentType) + "&";
-        if (assementYear === undefined || assementYear === null)
-            throw new Error("The parameter 'assementYear' must be defined and cannot be null.");
+        if (assessmentYear === undefined || assessmentYear === null)
+            throw new Error("The parameter 'assessmentYear' must be defined and cannot be null.");
         else
-            url_ += "assementYear=" + encodeURIComponent("" + assementYear) + "&";
+            url_ += "assessmentYear=" + encodeURIComponent("" + assessmentYear) + "&";
         if (climateActionName === undefined || climateActionName === null)
             throw new Error("The parameter 'climateActionName' must be defined and cannot be null.");
         else
@@ -17775,12 +17775,12 @@ export class VerificationControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    getVerificationDetails(assesmentYearId: number): Observable<VerificationDetail[]> {
-        let url_ = this.baseUrl + "/verification/verification/GetVerificationDetails/{assesmentYearId}?";
-        if (assesmentYearId === undefined || assesmentYearId === null)
-            throw new Error("The parameter 'assesmentYearId' must be defined and cannot be null.");
+    getVerificationDetails(assessmentYearId: number): Observable<VerificationDetail[]> {
+        let url_ = this.baseUrl + "/verification/verification/GetVerificationDetails/{assessmentYearId}?";
+        if (assessmentYearId === undefined || assessmentYearId === null)
+            throw new Error("The parameter 'assessmentYearId' must be defined and cannot be null.");
         else
-            url_ += "assesmentYearId=" + encodeURIComponent("" + assesmentYearId) + "&";
+            url_ += "assessmentYearId=" + encodeURIComponent("" + assessmentYearId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -20817,8 +20817,8 @@ export class InstitutionControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    getInstitutionforAssesment(): Observable<any> {
-        let url_ = this.baseUrl + "/institution/getInstitutionforAssesment";
+    getInstitutionforAssessment(): Observable<any> {
+        let url_ = this.baseUrl + "/institution/getInstitutionforAssessment";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -20830,11 +20830,11 @@ export class InstitutionControllerServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetInstitutionforAssesment(response_);
+            return this.processGetInstitutionforAssessment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetInstitutionforAssesment(<any>response_);
+                    return this.processGetInstitutionforAssessment(<any>response_);
                 } catch (e) {
                     return <Observable<any>><any>_observableThrow(e);
                 }
@@ -20843,7 +20843,7 @@ export class InstitutionControllerServiceProxy {
         }));
     }
 
-    protected processGetInstitutionforAssesment(response: HttpResponseBase): Observable<any> {
+    protected processGetInstitutionforAssessment(response: HttpResponseBase): Observable<any> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -21157,7 +21157,7 @@ export class UserTypeControllerServiceProxy {
 }
 
 @Injectable()
-export class AssesmentControllerServiceProxy {
+export class AssessmentControllerServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -21168,7 +21168,7 @@ export class AssesmentControllerServiceProxy {
     }
 
     getAssmentDetails(page: number, limit: number, filterText: string, assessmentType: string, isProposal: number, projectId: number, ctAction: string): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/assessments/assessmentsinfo/{page}/{limit}/{filterText}/{assessmentType}/{isProposal}/{projectId}/{ctAction}?";
+        let url_ = this.baseUrl + "/assessment/assessments/assessmentsinfo/{page}/{limit}/{filterText}/{assessmentType}/{isProposal}/{projectId}/{ctAction}?";
         if (page === undefined || page === null)
             throw new Error("The parameter 'page' must be defined and cannot be null.");
         else
@@ -21244,16 +21244,16 @@ export class AssesmentControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    getAssment(id: number, assementYear: string): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/assessments/getAssment/{id}/{assementYear}?";
+    getAssment(id: number, assessmentYear: string): Observable<any> {
+        let url_ = this.baseUrl + "/assessment/assessments/getAssment/{id}/{assessmentYear}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
         else
             url_ += "id=" + encodeURIComponent("" + id) + "&";
-        if (assementYear === undefined || assementYear === null)
-            throw new Error("The parameter 'assementYear' must be defined and cannot be null.");
+        if (assessmentYear === undefined || assessmentYear === null)
+            throw new Error("The parameter 'assessmentYear' must be defined and cannot be null.");
         else
-            url_ += "assementYear=" + encodeURIComponent("" + assementYear) + "&";
+            url_ += "assessmentYear=" + encodeURIComponent("" + assessmentYear) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -21301,8 +21301,8 @@ export class AssesmentControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    getassessmentData(page: number, limit: number, assementYear: string[]): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/assessments/getassessmentData/{assementYear}?";
+    getassessmentData(page: number, limit: number, assessmentYear: string[]): Observable<any> {
+        let url_ = this.baseUrl + "/assessment/assessments/getassessmentData/{assessmentYear}?";
         if (page === undefined || page === null)
             throw new Error("The parameter 'page' must be defined and cannot be null.");
         else
@@ -21311,10 +21311,10 @@ export class AssesmentControllerServiceProxy {
             throw new Error("The parameter 'limit' must be defined and cannot be null.");
         else
             url_ += "limit=" + encodeURIComponent("" + limit) + "&";
-        if (assementYear === undefined || assementYear === null)
-            throw new Error("The parameter 'assementYear' must be defined and cannot be null.");
+        if (assessmentYear === undefined || assessmentYear === null)
+            throw new Error("The parameter 'assessmentYear' must be defined and cannot be null.");
         else
-            assementYear && assementYear.forEach(item => { url_ += "assementYear=" + encodeURIComponent("" + item) + "&"; });
+            assessmentYear && assessmentYear.forEach(item => { url_ += "assessmentYear=" + encodeURIComponent("" + item) + "&"; });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -21362,16 +21362,16 @@ export class AssesmentControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    getAssessmentsForApproveData(id: number, assementYear: string, userName: string): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/getAssessmentsForApproveData/{id}/{assementYear}/{userName}?";
+    getAssessmentsForApproveData(id: number, assessmentYear: string, userName: string): Observable<any> {
+        let url_ = this.baseUrl + "/assessment/getAssessmentsForApproveData/{id}/{assessmentYear}/{userName}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
         else
             url_ += "id=" + encodeURIComponent("" + id) + "&";
-        if (assementYear === undefined || assementYear === null)
-            throw new Error("The parameter 'assementYear' must be defined and cannot be null.");
+        if (assessmentYear === undefined || assessmentYear === null)
+            throw new Error("The parameter 'assessmentYear' must be defined and cannot be null.");
         else
-            url_ += "assementYear=" + encodeURIComponent("" + assementYear) + "&";
+            url_ += "assessmentYear=" + encodeURIComponent("" + assessmentYear) + "&";
         if (userName === undefined || userName === null)
             throw new Error("The parameter 'userName' must be defined and cannot be null.");
         else
@@ -21424,7 +21424,7 @@ export class AssesmentControllerServiceProxy {
     }
 
     checkAssessmentReadyForQC(assessmentId: number, assessmentYear: number): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/checkAssessmentReadyForQC/getAssment/{id}?";
+        let url_ = this.baseUrl + "/assessment/checkAssessmentReadyForQC/getAssment/{id}?";
         if (assessmentId === undefined || assessmentId === null)
             throw new Error("The parameter 'assessmentId' must be defined and cannot be null.");
         else
@@ -21481,7 +21481,7 @@ export class AssesmentControllerServiceProxy {
     }
 
     getAssessmentDetails(assessmentId: number, assessmentYear: string): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/assessment/getAssessmentDetails?";
+        let url_ = this.baseUrl + "/assessment/assessment/getAssessmentDetails?";
         if (assessmentId === undefined || assessmentId === null)
             throw new Error("The parameter 'assessmentId' must be defined and cannot be null.");
         else
@@ -21538,7 +21538,7 @@ export class AssesmentControllerServiceProxy {
     }
 
     checkAssessmentReadyForCalculate(assessmentId: number, assessmentYear: number): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/checkAssessmentReadyForCalculate/getAssment/{id}?";
+        let url_ = this.baseUrl + "/assessment/checkAssessmentReadyForCalculate/getAssment/{id}?";
         if (assessmentId === undefined || assessmentId === null)
             throw new Error("The parameter 'assessmentId' must be defined and cannot be null.");
         else
@@ -21595,7 +21595,7 @@ export class AssesmentControllerServiceProxy {
     }
 
     methodologyCount(countryId: number): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/methologyCount?";
+        let url_ = this.baseUrl + "/assessment/methologyCount?";
         if (countryId === undefined || countryId === null)
             throw new Error("The parameter 'countryId' must be defined and cannot be null.");
         else
@@ -21648,7 +21648,7 @@ export class AssesmentControllerServiceProxy {
     }
 
     assessmentForManageDataStatus(page: number, limit: number, filterText: string, projectStatusId: number, projectApprovalStatusId: number, countryId: number, sectorId: number, isProposal: number): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/assessmentForManageDataStatus?";
+        let url_ = this.baseUrl + "/assessment/assessmentForManageDataStatus?";
         if (page === undefined || page === null)
             throw new Error("The parameter 'page' must be defined and cannot be null.");
         else
@@ -21729,7 +21729,7 @@ export class AssesmentControllerServiceProxy {
     }
 
     getAssessmentsByCountryMethodology(methodId: number, countryId: number): Observable<Assessment[]> {
-        let url_ = this.baseUrl + "/assesment/get-assessments-by-country-methodology?";
+        let url_ = this.baseUrl + "/assessment/get-assessments-by-country-methodology?";
         if (methodId === undefined || methodId === null)
             throw new Error("The parameter 'methodId' must be defined and cannot be null.");
         else
@@ -21792,7 +21792,7 @@ export class AssesmentControllerServiceProxy {
     }
 
     assessmentForMAC(projectId: number): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/assessmentForMAC?";
+        let url_ = this.baseUrl + "/assessment/assessmentForMAC?";
         if (projectId === undefined || projectId === null)
             throw new Error("The parameter 'projectId' must be defined and cannot be null.");
         else
@@ -21845,7 +21845,7 @@ export class AssesmentControllerServiceProxy {
     }
 
     getAssessmentsBYProjectId(id: number): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/assessments/byprojectId/{id}?";
+        let url_ = this.baseUrl + "/assessment/assessments/byprojectId/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
         else
@@ -21898,7 +21898,7 @@ export class AssesmentControllerServiceProxy {
     }
 
     getMethodologyNameByAssessmentId(id: number): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/methodologyName/byassessmntId/{id}?";
+        let url_ = this.baseUrl + "/assessment/methodologyName/byassessmntId/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
         else
@@ -21951,7 +21951,7 @@ export class AssesmentControllerServiceProxy {
     }
 
     testTransaction(): Observable<any> {
-        let url_ = this.baseUrl + "/assesment/testTransaction";
+        let url_ = this.baseUrl + "/assessment/testTransaction";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -22082,7 +22082,7 @@ export class LearningMaterialControllerServiceProxy {
 }
 
 @Injectable()
-export class AssesmentResaultControllerServiceProxy {
+export class AssessmentResultControllerServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -22095,8 +22095,8 @@ export class AssesmentResaultControllerServiceProxy {
     /**
      * @param api_key (optional) A Custom Header
      */
-    getAssesmentResult(assessmentId: number, assessmentYearId: number, calculate: boolean, api_key: string | undefined): Observable<any> {
-        let url_ = this.baseUrl + "/assesment-resault/assesment-resault/GetAssesmentResult/{AssessmentId}/{AssessmentYearId}/{calculate}?";
+    getAssessmentResult(assessmentId: number, assessmentYearId: number, calculate: boolean, api_key: string | undefined): Observable<any> {
+        let url_ = this.baseUrl + "/assessment-result/assessment-result/GetAssessmentResult/{AssessmentId}/{AssessmentYearId}/{calculate}?";
         if (assessmentId === undefined || assessmentId === null)
             throw new Error("The parameter 'assessmentId' must be defined and cannot be null.");
         else
@@ -22121,11 +22121,11 @@ export class AssesmentResaultControllerServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAssesmentResult(response_);
+            return this.processGetAssessmentResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetAssesmentResult(<any>response_);
+                    return this.processGetAssessmentResult(<any>response_);
                 } catch (e) {
                     return <Observable<any>><any>_observableThrow(e);
                 }
@@ -22134,7 +22134,7 @@ export class AssesmentResaultControllerServiceProxy {
         }));
     }
 
-    protected processGetAssesmentResult(response: HttpResponseBase): Observable<any> {
+    protected processGetAssessmentResult(response: HttpResponseBase): Observable<any> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -22157,8 +22157,8 @@ export class AssesmentResaultControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    getAllAssesmentResult(page: number, limit: number, assessmentYearId: number): Observable<any> {
-        let url_ = this.baseUrl + "/assesment-resault/assesment-resault/GetAllAssesmentResult/{AssessmentYearId}?";
+    getAllAssessmentResult(page: number, limit: number, assessmentYearId: number): Observable<any> {
+        let url_ = this.baseUrl + "/assessment-result/assessment-result/GetAllAssessmentResult/{AssessmentYearId}?";
         if (page === undefined || page === null)
             throw new Error("The parameter 'page' must be defined and cannot be null.");
         else
@@ -22182,11 +22182,11 @@ export class AssesmentResaultControllerServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAllAssesmentResult(response_);
+            return this.processGetAllAssessmentResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetAllAssesmentResult(<any>response_);
+                    return this.processGetAllAssessmentResult(<any>response_);
                 } catch (e) {
                     return <Observable<any>><any>_observableThrow(e);
                 }
@@ -22195,7 +22195,7 @@ export class AssesmentResaultControllerServiceProxy {
         }));
     }
 
-    protected processGetAllAssesmentResult(response: HttpResponseBase): Observable<any> {
+    protected processGetAllAssessmentResult(response: HttpResponseBase): Observable<any> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -22218,8 +22218,8 @@ export class AssesmentResaultControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    updateQCStatusAssesmentResult(resultId: number, yearId: number, qcStatus: number, assessmentResultType: number, comment: string): Observable<AssessmentResault> {
-        let url_ = this.baseUrl + "/assesment-resault/assesment-resault/updateQCStatusAssesmentResult/{resultId}/{yearId}/{qcStatus}/{assessmentResultType}/{comment}?";
+    updateQCStatusAssessmentResult(resultId: number, yearId: number, qcStatus: number, assessmentResultType: number, comment: string): Observable<AssessmentResult> {
+        let url_ = this.baseUrl + "/assessment-result/assessment-result/updateQCStatusAssessmentResult/{resultId}/{yearId}/{qcStatus}/{assessmentResultType}/{comment}?";
         if (resultId === undefined || resultId === null)
             throw new Error("The parameter 'resultId' must be defined and cannot be null.");
         else
@@ -22251,20 +22251,20 @@ export class AssesmentResaultControllerServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateQCStatusAssesmentResult(response_);
+            return this.processUpdateQCStatusAssessmentResult(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processUpdateQCStatusAssesmentResult(<any>response_);
+                    return this.processUpdateQCStatusAssessmentResult(<any>response_);
                 } catch (e) {
-                    return <Observable<AssessmentResault>><any>_observableThrow(e);
+                    return <Observable<AssessmentResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AssessmentResault>><any>_observableThrow(response_);
+                return <Observable<AssessmentResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processUpdateQCStatusAssesmentResult(response: HttpResponseBase): Observable<AssessmentResault> {
+    protected processUpdateQCStatusAssessmentResult(response: HttpResponseBase): Observable<AssessmentResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -22275,7 +22275,7 @@ export class AssesmentResaultControllerServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result201: any = null;
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result201 = AssessmentResault.fromJS(resultData201);
+            result201 = AssessmentResult.fromJS(resultData201);
             return _observableOf(result201);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -22287,7 +22287,7 @@ export class AssesmentResaultControllerServiceProxy {
     }
 
     updateQcStatusForMac(yearId: number, qcStatus: number): Observable<number> {
-        let url_ = this.baseUrl + "/assesment-resault/macassesment-resault/qcupdate/{yearId}/{qcStatus}?";
+        let url_ = this.baseUrl + "/assessment-result/macassessment-result/qcupdate/{yearId}/{qcStatus}?";
         if (yearId === undefined || yearId === null)
             throw new Error("The parameter 'yearId' must be defined and cannot be null.");
         else
@@ -22344,7 +22344,7 @@ export class AssesmentResaultControllerServiceProxy {
     }
 
     checkAllQCApprovmentAssessmentResult(assersltId: number): Observable<boolean> {
-        let url_ = this.baseUrl + "/assesment-resault/checkAllQCApprovmentAssessmentResult?";
+        let url_ = this.baseUrl + "/assessment-result/checkAllQCApprovmentAssessmentResult?";
         if (assersltId === undefined || assersltId === null)
             throw new Error("The parameter 'assersltId' must be defined and cannot be null.");
         else
@@ -22397,7 +22397,7 @@ export class AssesmentResaultControllerServiceProxy {
     }
 
     updateVRStatusForMac(yearId: number, vRStatus: number): Observable<number> {
-        let url_ = this.baseUrl + "/assesment-resault/macassesment-resault/verificationupdate/{yearId}/{VRStatus}?";
+        let url_ = this.baseUrl + "/assessment-result/macassessment-result/verificationupdate/{yearId}/{VRStatus}?";
         if (yearId === undefined || yearId === null)
             throw new Error("The parameter 'yearId' must be defined and cannot be null.");
         else
@@ -22454,7 +22454,7 @@ export class AssesmentResaultControllerServiceProxy {
     }
 
     getAssessmentResultBYAssessmentId(id: number): Observable<any> {
-        let url_ = this.baseUrl + "/assesment-resault/trackpage/assessmentsResults/byAssessmentId/{id}?";
+        let url_ = this.baseUrl + "/assessment-result/trackpage/assessmentsResults/byAssessmentId/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
         else
@@ -22507,7 +22507,7 @@ export class AssesmentResaultControllerServiceProxy {
     }
 
     getAssessmentResultforDashboard(assesYear: number): Observable<any> {
-        let url_ = this.baseUrl + "/assesment-resault/dashboaremission?";
+        let url_ = this.baseUrl + "/assessment-result/dashboaremission?";
         if (assesYear === undefined || assesYear === null)
             throw new Error("The parameter 'assesYear' must be defined and cannot be null.");
         else
@@ -22571,12 +22571,12 @@ export class ParameterControllerServiceProxy {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    parameterByAssesment(assesmentId: number): Observable<any> {
-        let url_ = this.baseUrl + "/parameter/parameter/parameterByAssesment/{assesmentId}?";
-        if (assesmentId === undefined || assesmentId === null)
-            throw new Error("The parameter 'assesmentId' must be defined and cannot be null.");
+    parameterByAssessment(assessmentId: number): Observable<any> {
+        let url_ = this.baseUrl + "/parameter/parameter/parameterByAssessment/{assessmentId}?";
+        if (assessmentId === undefined || assessmentId === null)
+            throw new Error("The parameter 'assessmentId' must be defined and cannot be null.");
         else
-            url_ += "assesmentId=" + encodeURIComponent("" + assesmentId) + "&";
+            url_ += "assessmentId=" + encodeURIComponent("" + assessmentId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -22588,11 +22588,11 @@ export class ParameterControllerServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processParameterByAssesment(response_);
+            return this.processParameterByAssessment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processParameterByAssesment(<any>response_);
+                    return this.processParameterByAssessment(<any>response_);
                 } catch (e) {
                     return <Observable<any>><any>_observableThrow(e);
                 }
@@ -22601,7 +22601,7 @@ export class ParameterControllerServiceProxy {
         }));
     }
 
-    protected processParameterByAssesment(response: HttpResponseBase): Observable<any> {
+    protected processParameterByAssessment(response: HttpResponseBase): Observable<any> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -24088,16 +24088,16 @@ export class QualityCheckControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    updateQCStatus(paramId: number, assesmentYearId: number, qaStatusId: number, comment: string, userQc: string): Observable<any> {
-        let url_ = this.baseUrl + "/quality-check/quality-check/UpdateQCStatus/{paramId}/{assesmentYearId}/{qaStatusId}/{comment}/{userQc}?";
+    updateQCStatus(paramId: number, assessmentYearId: number, qaStatusId: number, comment: string, userQc: string): Observable<any> {
+        let url_ = this.baseUrl + "/quality-check/quality-check/UpdateQCStatus/{paramId}/{assessmentYearId}/{qaStatusId}/{comment}/{userQc}?";
         if (paramId === undefined || paramId === null)
             throw new Error("The parameter 'paramId' must be defined and cannot be null.");
         else
             url_ += "paramId=" + encodeURIComponent("" + paramId) + "&";
-        if (assesmentYearId === undefined || assesmentYearId === null)
-            throw new Error("The parameter 'assesmentYearId' must be defined and cannot be null.");
+        if (assessmentYearId === undefined || assessmentYearId === null)
+            throw new Error("The parameter 'assessmentYearId' must be defined and cannot be null.");
         else
-            url_ += "assesmentYearId=" + encodeURIComponent("" + assesmentYearId) + "&";
+            url_ += "assessmentYearId=" + encodeURIComponent("" + assessmentYearId) + "&";
         if (qaStatusId === undefined || qaStatusId === null)
             throw new Error("The parameter 'qaStatusId' must be defined and cannot be null.");
         else
@@ -27648,14 +27648,14 @@ export interface IAssessmentYear {
     verificationDetail: VerificationDetail[];
 }
 
-export class GetManyAssessmentResaultResponseDto implements IGetManyAssessmentResaultResponseDto {
-    data: AssessmentResault[];
+export class GetManyAssessmentResultResponseDto implements IGetManyAssessmentResultResponseDto {
+    data: AssessmentResult[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 
-    constructor(data?: IGetManyAssessmentResaultResponseDto) {
+    constructor(data?: IGetManyAssessmentResultResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -27672,7 +27672,7 @@ export class GetManyAssessmentResaultResponseDto implements IGetManyAssessmentRe
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data.push(AssessmentResault.fromJS(item));
+                    this.data.push(AssessmentResult.fromJS(item));
             }
             this.count = _data["count"];
             this.total = _data["total"];
@@ -27681,9 +27681,9 @@ export class GetManyAssessmentResaultResponseDto implements IGetManyAssessmentRe
         }
     }
 
-    static fromJS(data: any): GetManyAssessmentResaultResponseDto {
+    static fromJS(data: any): GetManyAssessmentResultResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetManyAssessmentResaultResponseDto();
+        let result = new GetManyAssessmentResultResponseDto();
         result.init(data);
         return result;
     }
@@ -27702,30 +27702,30 @@ export class GetManyAssessmentResaultResponseDto implements IGetManyAssessmentRe
         return data;
     }
 
-    clone(): GetManyAssessmentResaultResponseDto {
+    clone(): GetManyAssessmentResultResponseDto {
         const json = this.toJSON();
-        let result = new GetManyAssessmentResaultResponseDto();
+        let result = new GetManyAssessmentResultResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetManyAssessmentResaultResponseDto {
-    data: AssessmentResault[];
+export interface IGetManyAssessmentResultResponseDto {
+    data: AssessmentResult[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 }
 
-export class GetManyProjectionResaultResponseDto implements IGetManyProjectionResaultResponseDto {
-    data: ProjectionResault[];
+export class GetManyProjectionResultResponseDto implements IGetManyProjectionResultResponseDto {
+    data: ProjectionResult[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 
-    constructor(data?: IGetManyProjectionResaultResponseDto) {
+    constructor(data?: IGetManyProjectionResultResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -27742,7 +27742,7 @@ export class GetManyProjectionResaultResponseDto implements IGetManyProjectionRe
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data.push(ProjectionResault.fromJS(item));
+                    this.data.push(ProjectionResult.fromJS(item));
             }
             this.count = _data["count"];
             this.total = _data["total"];
@@ -27751,9 +27751,9 @@ export class GetManyProjectionResaultResponseDto implements IGetManyProjectionRe
         }
     }
 
-    static fromJS(data: any): GetManyProjectionResaultResponseDto {
+    static fromJS(data: any): GetManyProjectionResultResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetManyProjectionResaultResponseDto();
+        let result = new GetManyProjectionResultResponseDto();
         result.init(data);
         return result;
     }
@@ -27772,23 +27772,23 @@ export class GetManyProjectionResaultResponseDto implements IGetManyProjectionRe
         return data;
     }
 
-    clone(): GetManyProjectionResaultResponseDto {
+    clone(): GetManyProjectionResultResponseDto {
         const json = this.toJSON();
-        let result = new GetManyProjectionResaultResponseDto();
+        let result = new GetManyProjectionResultResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetManyProjectionResaultResponseDto {
-    data: ProjectionResault[];
+export interface IGetManyProjectionResultResponseDto {
+    data: ProjectionResult[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 }
 
-export class ProjectionResault implements IProjectionResault {
+export class ProjectionResult implements IProjectionResult {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
@@ -27804,13 +27804,13 @@ export class ProjectionResault implements IProjectionResault {
     leakageResultUnit: string;
     emissionReduction: number;
     emissionReductionUnit: string;
-    assementResult: AssessmentResault;
-    qcStatus: ProjectionResaultQcStatus;
+    assessmentResult: AssessmentResult;
+    qcStatus: ProjectionResultQcStatus;
     qcComment: string;
     projectionResualt: number;
-    assement: Assessment;
+    assessment: Assessment;
 
-    constructor(data?: IProjectionResault) {
+    constructor(data?: IProjectionResult) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -27818,8 +27818,8 @@ export class ProjectionResault implements IProjectionResault {
             }
         }
         if (!data) {
-            this.assementResult = new AssessmentResault();
-            this.assement = new Assessment();
+            this.assessmentResult = new AssessmentResult();
+            this.assessment = new Assessment();
         }
     }
 
@@ -27840,17 +27840,17 @@ export class ProjectionResault implements IProjectionResault {
             this.leakageResultUnit = _data["leakageResultUnit"];
             this.emissionReduction = _data["emissionReduction"];
             this.emissionReductionUnit = _data["emissionReductionUnit"];
-            this.assementResult = _data["assementResult"] ? AssessmentResault.fromJS(_data["assementResult"]) : new AssessmentResault();
+            this.assessmentResult = _data["assessmentResult"] ? AssessmentResult.fromJS(_data["assessmentResult"]) : new AssessmentResult();
             this.qcStatus = _data["qcStatus"];
             this.qcComment = _data["qcComment"];
             this.projectionResualt = _data["projectionResualt"];
-            this.assement = _data["assement"] ? Assessment.fromJS(_data["assement"]) : new Assessment();
+            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : new Assessment();
         }
     }
 
-    static fromJS(data: any): ProjectionResault {
+    static fromJS(data: any): ProjectionResult {
         data = typeof data === 'object' ? data : {};
-        let result = new ProjectionResault();
+        let result = new ProjectionResult();
         result.init(data);
         return result;
     }
@@ -27872,23 +27872,23 @@ export class ProjectionResault implements IProjectionResault {
         data["leakageResultUnit"] = this.leakageResultUnit;
         data["emissionReduction"] = this.emissionReduction;
         data["emissionReductionUnit"] = this.emissionReductionUnit;
-        data["assementResult"] = this.assementResult ? this.assementResult.toJSON() : <any>undefined;
+        data["assessmentResult"] = this.assessmentResult ? this.assessmentResult.toJSON() : <any>undefined;
         data["qcStatus"] = this.qcStatus;
         data["qcComment"] = this.qcComment;
         data["projectionResualt"] = this.projectionResualt;
-        data["assement"] = this.assement ? this.assement.toJSON() : <any>undefined;
+        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
         return data;
     }
 
-    clone(): ProjectionResault {
+    clone(): ProjectionResult {
         const json = this.toJSON();
-        let result = new ProjectionResault();
+        let result = new ProjectionResult();
         result.init(json);
         return result;
     }
 }
 
-export interface IProjectionResault {
+export interface IProjectionResult {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
@@ -27904,14 +27904,14 @@ export interface IProjectionResault {
     leakageResultUnit: string;
     emissionReduction: number;
     emissionReductionUnit: string;
-    assementResult: AssessmentResault;
-    qcStatus: ProjectionResaultQcStatus;
+    assessmentResult: AssessmentResult;
+    qcStatus: ProjectionResultQcStatus;
     qcComment: string;
     projectionResualt: number;
-    assement: Assessment;
+    assessment: Assessment;
 }
 
-export class AssessmentResault implements IAssessmentResault {
+export class AssessmentResult implements IAssessmentResult {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
@@ -27931,19 +27931,19 @@ export class AssessmentResault implements IAssessmentResault {
     costDifference: number;
     macResult: number;
     qcComment: string;
-    qcStatusBaselineResult: AssessmentResaultQcStatusBaselineResult;
-    qcStatuProjectResult: AssessmentResaultQcStatuProjectResult;
-    qcStatusLekageResult: AssessmentResaultQcStatusLekageResult;
-    qcStatusTotalEmission: AssessmentResaultQcStatusTotalEmission;
-    qcStatusmacResult: AssessmentResaultQcStatusmacResult;
-    qcStatuscostDifference: AssessmentResaultQcStatuscostDifference;
-    qcStatuspsTotalAnnualCost: AssessmentResaultQcStatuspsTotalAnnualCost;
-    qcStatusbsTotalAnnualCost: AssessmentResaultQcStatusbsTotalAnnualCost;
+    qcStatusBaselineResult: AssessmentResultQcStatusBaselineResult;
+    qcStatuProjectResult: AssessmentResultQcStatuProjectResult;
+    qcStatusLekageResult: AssessmentResultQcStatusLekageResult;
+    qcStatusTotalEmission: AssessmentResultQcStatusTotalEmission;
+    qcStatusmacResult: AssessmentResultQcStatusmacResult;
+    qcStatuscostDifference: AssessmentResultQcStatuscostDifference;
+    qcStatuspsTotalAnnualCost: AssessmentResultQcStatuspsTotalAnnualCost;
+    qcStatusbsTotalAnnualCost: AssessmentResultQcStatusbsTotalAnnualCost;
     assessmentYear: AssessmentYear;
-    assement: Assessment;
-    projectionResult: ProjectionResault[];
+    assessment: Assessment;
+    projectionResult: ProjectionResult[];
 
-    constructor(data?: IAssessmentResault) {
+    constructor(data?: IAssessmentResult) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -27952,7 +27952,7 @@ export class AssessmentResault implements IAssessmentResault {
         }
         if (!data) {
             this.assessmentYear = new AssessmentYear();
-            this.assement = new Assessment();
+            this.assessment = new Assessment();
             this.projectionResult = [];
         }
     }
@@ -27987,18 +27987,18 @@ export class AssessmentResault implements IAssessmentResault {
             this.qcStatuspsTotalAnnualCost = _data["qcStatuspsTotalAnnualCost"];
             this.qcStatusbsTotalAnnualCost = _data["qcStatusbsTotalAnnualCost"];
             this.assessmentYear = _data["assessmentYear"] ? AssessmentYear.fromJS(_data["assessmentYear"]) : new AssessmentYear();
-            this.assement = _data["assement"] ? Assessment.fromJS(_data["assement"]) : new Assessment();
+            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : new Assessment();
             if (Array.isArray(_data["projectionResult"])) {
                 this.projectionResult = [] as any;
                 for (let item of _data["projectionResult"])
-                    this.projectionResult.push(ProjectionResault.fromJS(item));
+                    this.projectionResult.push(ProjectionResult.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): AssessmentResault {
+    static fromJS(data: any): AssessmentResult {
         data = typeof data === 'object' ? data : {};
-        let result = new AssessmentResault();
+        let result = new AssessmentResult();
         result.init(data);
         return result;
     }
@@ -28033,7 +28033,7 @@ export class AssessmentResault implements IAssessmentResault {
         data["qcStatuspsTotalAnnualCost"] = this.qcStatuspsTotalAnnualCost;
         data["qcStatusbsTotalAnnualCost"] = this.qcStatusbsTotalAnnualCost;
         data["assessmentYear"] = this.assessmentYear ? this.assessmentYear.toJSON() : <any>undefined;
-        data["assement"] = this.assement ? this.assement.toJSON() : <any>undefined;
+        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
         if (Array.isArray(this.projectionResult)) {
             data["projectionResult"] = [];
             for (let item of this.projectionResult)
@@ -28042,15 +28042,15 @@ export class AssessmentResault implements IAssessmentResault {
         return data;
     }
 
-    clone(): AssessmentResault {
+    clone(): AssessmentResult {
         const json = this.toJSON();
-        let result = new AssessmentResault();
+        let result = new AssessmentResult();
         result.init(json);
         return result;
     }
 }
 
-export interface IAssessmentResault {
+export interface IAssessmentResult {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
@@ -28070,17 +28070,17 @@ export interface IAssessmentResault {
     costDifference: number;
     macResult: number;
     qcComment: string;
-    qcStatusBaselineResult: AssessmentResaultQcStatusBaselineResult;
-    qcStatuProjectResult: AssessmentResaultQcStatuProjectResult;
-    qcStatusLekageResult: AssessmentResaultQcStatusLekageResult;
-    qcStatusTotalEmission: AssessmentResaultQcStatusTotalEmission;
-    qcStatusmacResult: AssessmentResaultQcStatusmacResult;
-    qcStatuscostDifference: AssessmentResaultQcStatuscostDifference;
-    qcStatuspsTotalAnnualCost: AssessmentResaultQcStatuspsTotalAnnualCost;
-    qcStatusbsTotalAnnualCost: AssessmentResaultQcStatusbsTotalAnnualCost;
+    qcStatusBaselineResult: AssessmentResultQcStatusBaselineResult;
+    qcStatuProjectResult: AssessmentResultQcStatuProjectResult;
+    qcStatusLekageResult: AssessmentResultQcStatusLekageResult;
+    qcStatusTotalEmission: AssessmentResultQcStatusTotalEmission;
+    qcStatusmacResult: AssessmentResultQcStatusmacResult;
+    qcStatuscostDifference: AssessmentResultQcStatuscostDifference;
+    qcStatuspsTotalAnnualCost: AssessmentResultQcStatuspsTotalAnnualCost;
+    qcStatusbsTotalAnnualCost: AssessmentResultQcStatusbsTotalAnnualCost;
     assessmentYear: AssessmentYear;
-    assement: Assessment;
-    projectionResult: ProjectionResault[];
+    assessment: Assessment;
+    projectionResult: ProjectionResult[];
 }
 
 export class GetManyMitigationActionTypeResponseDto implements IGetManyMitigationActionTypeResponseDto {
@@ -28595,7 +28595,7 @@ export class Assessment implements IAssessment {
     project: Project;
     assessmentObjective: AssessmentObjective[];
     assessmentYear: AssessmentYear[];
-    assessmentResult: AssessmentResault[];
+    assessmentResult: AssessmentResult[];
     mitigationActionType: MitigationActionType;
     ndc: Ndc;
     subNdc: SubNdc;
@@ -28603,7 +28603,7 @@ export class Assessment implements IAssessment {
     projectionYear: ProjectionYear[];
     applicability: ApplicabilityEntity[];
     reportAssessment: ReportAssessment[];
-    projectionResult: ProjectionResault[];
+    projectionResult: ProjectionResult[];
 
     constructor(data?: IAssessment) {
         if (data) {
@@ -28672,7 +28672,7 @@ export class Assessment implements IAssessment {
             if (Array.isArray(_data["assessmentResult"])) {
                 this.assessmentResult = [] as any;
                 for (let item of _data["assessmentResult"])
-                    this.assessmentResult.push(AssessmentResault.fromJS(item));
+                    this.assessmentResult.push(AssessmentResult.fromJS(item));
             }
             this.mitigationActionType = _data["mitigationActionType"] ? MitigationActionType.fromJS(_data["mitigationActionType"]) : new MitigationActionType();
             this.ndc = _data["ndc"] ? Ndc.fromJS(_data["ndc"]) : new Ndc();
@@ -28700,7 +28700,7 @@ export class Assessment implements IAssessment {
             if (Array.isArray(_data["projectionResult"])) {
                 this.projectionResult = [] as any;
                 for (let item of _data["projectionResult"])
-                    this.projectionResult.push(ProjectionResault.fromJS(item));
+                    this.projectionResult.push(ProjectionResult.fromJS(item));
             }
         }
     }
@@ -28827,7 +28827,7 @@ export interface IAssessment {
     project: Project;
     assessmentObjective: AssessmentObjective[];
     assessmentYear: AssessmentYear[];
-    assessmentResult: AssessmentResault[];
+    assessmentResult: AssessmentResult[];
     mitigationActionType: MitigationActionType;
     ndc: Ndc;
     subNdc: SubNdc;
@@ -28835,7 +28835,7 @@ export interface IAssessment {
     projectionYear: ProjectionYear[];
     applicability: ApplicabilityEntity[];
     reportAssessment: ReportAssessment[];
-    projectionResult: ProjectionResault[];
+    projectionResult: ProjectionResult[];
 }
 
 export class SubNdc implements ISubNdc {
@@ -31775,7 +31775,7 @@ export class ReportPdfInsert implements IReportPdfInsert {
     years: string;
     reportName: string;
     countryId: number;
-    assesmentType: string;
+    assessmentType: string;
     generateReportName: string;
 
     constructor(data?: IReportPdfInsert) {
@@ -31795,7 +31795,7 @@ export class ReportPdfInsert implements IReportPdfInsert {
             this.years = _data["years"];
             this.reportName = _data["reportName"];
             this.countryId = _data["countryId"];
-            this.assesmentType = _data["assesmentType"];
+            this.assessmentType = _data["assessmentType"];
             this.generateReportName = _data["generateReportName"];
         }
     }
@@ -31815,7 +31815,7 @@ export class ReportPdfInsert implements IReportPdfInsert {
         data["years"] = this.years;
         data["reportName"] = this.reportName;
         data["countryId"] = this.countryId;
-        data["assesmentType"] = this.assesmentType;
+        data["assessmentType"] = this.assessmentType;
         data["generateReportName"] = this.generateReportName;
         return data;
     }
@@ -31835,7 +31835,7 @@ export interface IReportPdfInsert {
     years: string;
     reportName: string;
     countryId: number;
-    assesmentType: string;
+    assessmentType: string;
     generateReportName: string;
 }
 
@@ -32872,63 +32872,63 @@ export enum AssessmentYearVerificationStatus {
     Pass = <any>"Pass",
 }
 
-export enum ProjectionResaultQcStatus {
+export enum ProjectionResultQcStatus {
     Pending = <any>"Pending",
     InProgress = <any>"InProgress",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
 }
 
-export enum AssessmentResaultQcStatusBaselineResult {
+export enum AssessmentResultQcStatusBaselineResult {
     Pending = <any>"Pending",
     InProgress = <any>"InProgress",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
 }
 
-export enum AssessmentResaultQcStatuProjectResult {
+export enum AssessmentResultQcStatuProjectResult {
     Pending = <any>"Pending",
     InProgress = <any>"InProgress",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
 }
 
-export enum AssessmentResaultQcStatusLekageResult {
+export enum AssessmentResultQcStatusLekageResult {
     Pending = <any>"Pending",
     InProgress = <any>"InProgress",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
 }
 
-export enum AssessmentResaultQcStatusTotalEmission {
+export enum AssessmentResultQcStatusTotalEmission {
     Pending = <any>"Pending",
     InProgress = <any>"InProgress",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
 }
 
-export enum AssessmentResaultQcStatusmacResult {
+export enum AssessmentResultQcStatusmacResult {
     Pending = <any>"Pending",
     InProgress = <any>"InProgress",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
 }
 
-export enum AssessmentResaultQcStatuscostDifference {
+export enum AssessmentResultQcStatuscostDifference {
     Pending = <any>"Pending",
     InProgress = <any>"InProgress",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
 }
 
-export enum AssessmentResaultQcStatuspsTotalAnnualCost {
+export enum AssessmentResultQcStatuspsTotalAnnualCost {
     Pending = <any>"Pending",
     InProgress = <any>"InProgress",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
 }
 
-export enum AssessmentResaultQcStatusbsTotalAnnualCost {
+export enum AssessmentResultQcStatusbsTotalAnnualCost {
     Pending = <any>"Pending",
     InProgress = <any>"InProgress",
     Fail = <any>"Fail",

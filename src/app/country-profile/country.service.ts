@@ -8,7 +8,7 @@ import { Country } from './country';
   providedIn: 'root',
 })
 export class CountryService {
-  private baseURL = environment.baseUrlCountryWeb + '/country-profile';
+  private baseURL = environment.baseUrlAPI + '/country-profile';
 
   constructor(private httpClient: HttpClient) {}
 
