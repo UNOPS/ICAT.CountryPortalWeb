@@ -14,7 +14,6 @@ export const environment = {
     'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/parameter/upload',
   baseUrlAPIDocReportChartDownloadAPI:
     'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/report/chartDataImage',
-  baseUrlPMU: 'https://icat-pmuportalweb-qa-2sshj5de3a-ey.a.run.app',
   baseUrlCountryWeb:
     'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/',
   apiKey1: '1234',

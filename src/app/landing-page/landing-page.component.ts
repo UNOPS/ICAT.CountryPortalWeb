@@ -218,8 +218,4 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
     window.location.hash = '';
     window.location.hash = section;
   }
-
-  toPMU() {
-    window.location.href = environment.baseUrlPMU;
-  }
 }

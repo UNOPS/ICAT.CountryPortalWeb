@@ -12,7 +12,6 @@ export const environment = {
   baseUrlExcelUpload: 'http://localhost:8080' + '/parameter/upload',
   baseUrlAPIDocReportChartDownloadAPI:
     'http://localhost:8080' + '/report/chartDataImage',
-  baseUrlPMU: 'https://icat-pmuportalweb-qa-2sshj5de3a-ey.a.run.app',
   baseUrlCountryWeb:
     'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/',
   apiKey1: '1234',
