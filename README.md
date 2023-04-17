@@ -13,7 +13,7 @@ Built using [Node.js 16](https://nodejs.org/dist/latest-v16.x/docs/api/) and [An
 
 2. Download or clone this repository.
 
-3. Edit the environment variables in the files `environment.prod.ts` and `environment.ts` at `src/environments` folder. See below more details about the environment variables needed.
+3. Edit the environment variables in the files `environment.prod.ts` and `environment.ts` in `src/environments` folder. See below for more details about the environmental variables needed.
 
 4. In the terminal, go to this repository's main folder.
 
@@ -29,7 +29,7 @@ $ npm install --force
 $ ng build
 ```
 
-7. Run the app in a dev server. The application will be acessible at `http://localhost:4200/`
+7. Run the app in a dev server. The application will be accessible at `http://localhost:4200/`
 
 ```bash
 $ ng serve
@@ -51,17 +51,17 @@ $ ng serve
 
 4. Download or clone this repository.
 
-3. Edit the environment variables in the files `environment.prod.ts` and `environment.ts` at `src/environments` folder
+5. Edit the environment variables in the files `environment.prod.ts` and `environment.ts` in `src/environments` folder. See below for more details about the environmental variables needed.
 
-5. In the terminal, go to this repository's main folder.
+6. In the terminal, go to this repository's main folder.
 
-6. Build your container in the Artifacts Register using the provided `Dockerfile`. Usually, the container path is composed of `location/project/repository_created/image_name`
+7. Build your container in the Artifacts Register using the provided `Dockerfile`. Usually, the container path is composed of `location/project/repository_created/image_name`
 
 ```bash
 $ gcloud builds submit --tag [CONTAINER PATH]
 ```
 
-7. Go to [Cloud Run](https://console.cloud.google.com/run) and create a New Service:
+8. Go to [Cloud Run](https://console.cloud.google.com/run) and create a New Service:
    * Choose the option `Deploy one revision from an existing container image` and select the container image updated in Step 6
    * Add a service name
    * Select the application region
@@ -73,7 +73,7 @@ $ gcloud builds submit --tag [CONTAINER PATH]
 
 
 ## Environment Variables
-The environment variables should be declared in the files `environment.prod.ts` and `environment.ts` at `src/environments` folder as follow:
+The environment variables should be declared in the files `environment.prod.ts` and `environment.ts` in `src/environments` folder as follow:
 
 | Variable name                          | Description                                                        |
 | -------------------------------------- | ------------------------------------------------------------------ |
@@ -102,7 +102,7 @@ Some default users are provided for the application test. The `Admin` user can c
 
 
 ## Dependencies
-This application depends of CountryPortalService and CalculationEngine APIs.
+This application depends on CountryPortalService and CalculationEngine APIs.
 
 The complete dependency diagram of TraCAD Country and PMU applications:
 
