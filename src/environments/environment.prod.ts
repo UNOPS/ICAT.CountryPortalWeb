@@ -1,20 +1,21 @@
 export const environment = {
   production: true,
-  baseUrlAPI: process.env.NG_APP_COUNTRY_SERVICE_URL,
+  baseUrlAPI: 'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app',
   baseUrlAPIDocdownloadAPI:
-    process.env.NG_APP_COUNTRY_SERVICE_URL + '/document/downloadDocument',
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/document/downloadDocument',
   baseUrlAPIDocUploadAPI:
-    process.env.NG_APP_COUNTRY_SERVICE_URL + '/document/upload2',
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/document/upload2',
   baseUrlAPIDocUploadAnonymousAPI:
-    process.env.NG_APP_COUNTRY_SERVICE_URL + '/document/uploadFileAnonymous',
-  baseUrlJsonFile: process.env.NG_APP_CAL_ENGINE_URL + '/filename',
-  baseUrlMac: process.env.NG_APP_CAL_ENGINE_URL + '/mac',
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/document/uploadFileAnonymous',
+  baseUrlJsonFile:
+    'https://icat-calculationengine-qa-2sshj5de3a-ey.a.run.app/filename',
+  baseUrlMac: 'https://icat-calculationengine-qa-2sshj5de3a-ey.a.run.app/mac',
   baseUrlExcelUpload:
-    process.env.NG_APP_COUNTRY_SERVICE_URL + '/parameter/upload',
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/parameter/upload',
   baseUrlAPIDocReportChartDownloadAPI:
-    process.env.NG_APP_COUNTRY_SERVICE_URL + '/report/chartDataImage',
-  baseUrlPMU: process.env.NG_APP_PMU_BASE_URL,
-  baseUrlCountryWeb: process.env.NG_APP_COUNTRY_WEB_URL,
-  apiKey1: process.env.NG_APP_API_KEY_1,
-  apiKey2: process.env.NG_APP_API_KEY_2,
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/report/chartDataImage',
+  baseUrlCountryWeb:
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/',
+  apiKey1: '1234',
+  apiKey2: '56789',
 };

@@ -24,7 +24,6 @@
     "@angular/router": "~13.0.0",
     "@nebular/eva-icons": "9.0.0",
     "@nebular/theme": "^9.0.0",
-    "@ngx-env/builder": "^2.2.0",
     "@popperjs/core": "^2.11.2",
     "axios-token-interceptor": "^0.2.0",
     "bootstrap": "^5.1.3",
