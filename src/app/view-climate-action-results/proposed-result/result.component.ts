@@ -37,7 +37,7 @@ export class ResultComponent implements OnInit {
   proParameter: Parameter[] = [];
   projectionParameter: Parameter[] = [];
   leakageParameter: Parameter[] = [];
-  allResualt: AssessmentResult[];
+  allResult: AssessmentResult[];
   lParameter: AssessmentResult[];
   bresult: AssessmentResult[];
   projectionData: ProjectionResult[];
@@ -196,13 +196,13 @@ export class ResultComponent implements OnInit {
 
             this.yrId = this.assessmentYr2[0]?.id;
 
-            const assessmentFilterResualt: string[] = [];
+            const assessmentFilterResult: string[] = [];
 
             if (this.assessmentId != 0) {
-              assessmentFilterResualt.push(
+              assessmentFilterResult.push(
                 'assessment.id||$eq||' + this.assessmentId,
               ) &
-                assessmentFilterResualt.push(
+                assessmentFilterResult.push(
                   'assessmentYear.id||$eq||' + this.yrId,
                 );
             }
@@ -211,7 +211,7 @@ export class ResultComponent implements OnInit {
               .getManyBaseAssessmentResultControllerAssessmentResult(
                 undefined,
                 undefined,
-                assessmentFilterResualt,
+                assessmentFilterResult,
                 undefined,
                 undefined,
                 undefined,
@@ -221,12 +221,12 @@ export class ResultComponent implements OnInit {
                 0,
               )
               .subscribe((res) => {
-                this.allResualt = res.data;
+                this.allResult = res.data;
 
-                this.baselineEmission = this.allResualt[0]?.baselineResult;
-                this.projectEmission = this.allResualt[0]?.projectResult;
-                this.leakageEmission = this.allResualt[0]?.lekageResult;
-                this.totalEmission = this.allResualt[0]?.totalEmission;
+                this.baselineEmission = this.allResult[0]?.baselineResult;
+                this.projectEmission = this.allResult[0]?.projectResult;
+                this.leakageEmission = this.allResult[0]?.lekageResult;
+                this.totalEmission = this.allResult[0]?.totalEmission;
               });
           });
 
@@ -290,7 +290,7 @@ export class ResultComponent implements OnInit {
 
         let value = 0;
         for (let i = 0; i < this.projectionData.length; i++) {
-          value = this.projectionData[i].projectionResualt;
+          value = this.projectionData[i].projectionResult;
           this.projectionList.push(value);
         }
 
