@@ -110,6 +110,16 @@ The complete dependency diagram of TraCAD Country and PMU applications:
   <img src="https://lucid.app/publicSegments/view/9a6fb822-be5a-47d7-ad67-0434a4025234/image.png" width="800" alt="TraCAD Diagram" /></a>
 </p>
 
+## Standalone TraCAD Country App Installation
+
+Suggested simplified installation of the standalone TraCAD Country Application:
+
+<p align="left">
+  <img src="https://lucid.app/publicSegments/view/173624cf-952e-40dd-bd8a-ab031a40a1b8/image.png" width="800" alt="TraCAD Simplified Diagram" /></a>
+</p>
+
+> This version doesn’t include the PMU TraCAD application and the CountryScheduler application responsible for the data synchronization between Country and PMU applications.
+
 ## License
 
 TraCAD - CountryPortalService is [Affero GPL licensed](https://www.gnu.org/licenses/agpl-3.0.en.html).
