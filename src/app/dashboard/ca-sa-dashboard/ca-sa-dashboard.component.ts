@@ -281,19 +281,7 @@ let s=new String("23")
         this.macGrapsForPosts[index] = [element[0],'data:image/jpg;base64,'+element[1]]
       });
 
-    //   this.asseyearproxy.getAssessmentYearsForCountryAndSectorAdmins(1,10000,0,1)
-    // .subscribe(req=>{
-    //  this.macGrapsForAntes=req;
-    //   console.log("asseyear",req)
-    //   this.macGrapsForAntes.forEach((element, index) => {
-    //     this.macGrapsForAntes[index] = [element[0],'data:image/jpg;base64,'+element[1]]
-    //   });
-
-    // });
-
-    });
-    
-    this.asseyearproxy.getAssessmentYearsForCountryAndSectorAdmins(0,0,0,1)
+      this.asseyearproxy.getAssessmentYearsForCountryAndSectorAdmins(1,10000,0,1)
     .subscribe(req=>{
      this.macGrapsForAntes=req;
       console.log("asseyear",req)
@@ -302,6 +290,18 @@ let s=new String("23")
       });
 
     });
+
+    });
+    
+    // this.asseyearproxy.getAssessmentYearsForCountryAndSectorAdmins(0,0,0,1)
+    // .subscribe(req=>{
+    //  this.macGrapsForAntes=req;
+    //   console.log("asseyear",req)
+    //   this.macGrapsForAntes.forEach((element, index) => {
+    //     this.macGrapsForAntes[index] = [element[0],'data:image/jpg;base64,'+element[1]]
+    //   });
+
+    // });
     
     this.primengConfig.ripple = true;
     const token = localStorage.getItem('access_token')!;
