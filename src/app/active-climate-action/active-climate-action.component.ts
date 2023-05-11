@@ -149,7 +149,7 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
   isMac(ast:any): boolean {
     if(ast){
 
-      let x = ast.find((o: any)=>o.assessmentType == 'MAC');
+      let x = ast.find((o: any)=>o.assessmentType == 'MAC'&&o.isProposal==0);
       return x;
     }
     
@@ -163,7 +163,7 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
 
     if(ast){
 
-      let x = ast.find((o: any)=>o.assessmentType == 'Ex-ante' || o.assessmentType == 'Ex-post' ); 
+      let x = ast.find((o: any)=>(o.assessmentType == 'Ex-ante' || o.assessmentType == 'Ex-post')&& o.isProposal==0 ); 
       return x;
     }
 
