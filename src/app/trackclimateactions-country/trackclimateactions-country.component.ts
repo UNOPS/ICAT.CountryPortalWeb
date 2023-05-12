@@ -413,7 +413,7 @@ back()
 
 
           activeproject1.Name = project.climateActionName;
-          activeproject1.Description = project.description;
+          activeproject1.Description = this.generateTrackCADescription(project)
           activeproject1.Objectives = project.objective;
           activeproject1.Type_Of_Instrument = "";
           activeproject1.Status = project.projectStatus?.name;
@@ -626,8 +626,36 @@ back()
         
     
   }
+
+
+  generateTrackCADescription(project: Project){
+    let outcome = 'Outcomes of the Specific Climate Action: ' + this.checkData(project.outcome) + 
+        ', Current Progress of the Specific Climate Action: ' + this.checkData(project.currentProgress) +
+        ', Adaptation Benefits: ' + this.checkData(project.adaptationBenefits) + 
+        ', Relevant Direct SD Benefits: ' + this.checkData(project.directSDBenefit) +
+        ', Relevant Indirect SD Benefits: ' + this.checkData(project.indirectSDBenefit)
+
+    let financial = 'Financing Scheme: ' + this.checkData(project.financingScheme) +
+        ', Donors: ' + this.checkData(project.donors) +
+        ', Investors: ' + this.checkData(project.investors) + 
+        ', Funding Organization/s: ' + this.checkData(project.fundingOrganization) + 
+        ', Initial Investment (Million $): ' + this.checkData(project.initialInvestment) + 
+        ', Annual Funding (Million $): ' + this.checkData(project.annualFunding) + 
+        ', Annual Revenue (Million $): ' + this.checkData(project.annualRevenue) + 
+        ', Annual Expenditure (Million $): ' + this.checkData(project.expectedRecurrentExpenditure) 
+      
+    return 'Outcomes/Benefits/Progress: <br>' + outcome + '<br>' + 'Financial Background: <br>' + financial
+  }
  
+  checkData(data: any){
+    if (data === null){
+      return 'Data not available'
+    } else {
+      return data
+    }
+  }
 }
+
 
 
 export interface excelTrackCas
