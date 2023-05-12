@@ -298,60 +298,63 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
       if (para.parameterId?.code) parameterCodes.push(para.parameterId.code)
     });
 
-    let filter = ['methodologyCode||$in||' + [...new Set(methodologyCodes)],
-    'code||$in||' + [...new Set(parameterCodes)]]
-
-    this.serviceProxy
-      .getManyBaseParameterControllerParameter(
-        undefined,
-        undefined,
-        filter,
-        undefined,
-        undefined,
-        undefined,
-        1000,
-        0,
-        0,
-        0
-      ).subscribe(res => {
-        if (res.data.length > 0) {
-          this.parameterList = this.parameterList.map((para: any) =>{
-            let parameters = res.data.filter((p:any) => (p.code == para.parameterId.code) && p.value )
-            if(para.parameterId.vehical) parameters = this.filterParameters(parameters, 'vehical', para.parameterId.vehical)
-            if(para.parameterId.fuelType) parameters = this.filterParameters(parameters, 'fuelType', para.parameterId.fuelType)
-            if(para.parameterId.powerPlant) parameters = this.filterParameters(parameters, 'powerPlant', para.parameterId.powerPlant)
-            if(para.parameterId.route) parameters = this.filterParameters(parameters, 'route', para.parameterId.route)
-            if(para.parameterId.feedstock) parameters = this.filterParameters(parameters, 'feedstock', para.parameterId.feedstock)
-            if(para.parameterId.soil) parameters = this.filterParameters(parameters, 'soil', para.parameterId.soil)
-            if(para.parameterId.stratum) parameters = this.filterParameters(parameters, 'stratum', para.parameterId.stratum)
-            if(para.parameterId.residue) parameters = this.filterParameters(parameters, 'residue', para.parameterId.residue)
-            if(para.parameterId.landClearance) parameters = this.filterParameters(parameters, 'landClearance', para.parameterId.landClearance)
-            if(para.parameterId.methodologyCode) parameters = this.filterParameters(parameters, 'methodologyCode', para.parameterId.methodologyCode)
-            para.parameterId.historicalValues = parameters.map((p: any) => {
-              
-              return {
-                label: p.assessmentYear + ' - ' + p.value + ' ' + p.uomDataEntry,
-                value: p.value,
-                unit: p.uomDataEntry,
-                year: p.assessmentYear
-              }
+    if ([...new Set(methodologyCodes)].length > 0 && [...new Set(parameterCodes)].length > 0){
+      let filter = ['methodologyCode||$in||' + [...new Set(methodologyCodes)],
+      'code||$in||' + [...new Set(parameterCodes)]]
+  
+      this.serviceProxy
+        .getManyBaseParameterControllerParameter(
+          undefined,
+          undefined,
+          filter,
+          undefined,
+          undefined,
+          undefined,
+          1000,
+          0,
+          0,
+          0
+        ).subscribe(res => {
+          if (res.data.length > 0) {
+            this.parameterList = this.parameterList.map((para: any) =>{
+              let parameters = res.data.filter((p:any) => (p.code == para.parameterId.code) && p.value )
+              if(para.parameterId.vehical) parameters = this.filterParameters(parameters, 'vehical', para.parameterId.vehical)
+              if(para.parameterId.fuelType) parameters = this.filterParameters(parameters, 'fuelType', para.parameterId.fuelType)
+              if(para.parameterId.powerPlant) parameters = this.filterParameters(parameters, 'powerPlant', para.parameterId.powerPlant)
+              if(para.parameterId.route) parameters = this.filterParameters(parameters, 'route', para.parameterId.route)
+              if(para.parameterId.feedstock) parameters = this.filterParameters(parameters, 'feedstock', para.parameterId.feedstock)
+              if(para.parameterId.soil) parameters = this.filterParameters(parameters, 'soil', para.parameterId.soil)
+              if(para.parameterId.stratum) parameters = this.filterParameters(parameters, 'stratum', para.parameterId.stratum)
+              if(para.parameterId.residue) parameters = this.filterParameters(parameters, 'residue', para.parameterId.residue)
+              if(para.parameterId.landClearance) parameters = this.filterParameters(parameters, 'landClearance', para.parameterId.landClearance)
+              if(para.parameterId.methodologyCode) parameters = this.filterParameters(parameters, 'methodologyCode', para.parameterId.methodologyCode)
+              para.parameterId.historicalValues = parameters.map((p: any) => {
+                
+                return {
+                  label: p.assessmentYear + ' - ' + p.value + ' ' + p.uomDataEntry,
+                  value: p.value,
+                  unit: p.uomDataEntry,
+                  year: p.assessmentYear
+                }
+              })
+              let answer: any[] = [];
+              para.parameterId.historicalValues.forEach((x: any) => {
+                if (!answer.some(y => JSON.stringify(y) === JSON.stringify(x))) {
+                  answer.push(x)
+                }
+              })
+              para.parameterId.historicalValues = answer
+  
+  
+              para.parameterId.displayhisValues = para.parameterId.historicalValues.filter((val: { unit: any; }) => val.unit === para.parameterId.uomDataRequest)
+              para.parameterId.displayhisValues.sort((a: any,b: any) => b.year - a.year);
+              return para
             })
-            let answer: any[] = [];
-            para.parameterId.historicalValues.forEach((x: any) => {
-              if (!answer.some(y => JSON.stringify(y) === JSON.stringify(x))) {
-                answer.push(x)
-              }
-            })
-            para.parameterId.historicalValues = answer
+            console.log(this.parameterList)
+          }
+        })
+    } 
 
-
-            para.parameterId.displayhisValues = para.parameterId.historicalValues.filter((val: { unit: any; }) => val.unit === para.parameterId.uomDataRequest)
-            para.parameterId.displayhisValues.sort((a: any,b: any) => b.year - a.year);
-            return para
-          })
-          console.log(this.parameterList)
-        }
-      })
       // return [];
   }
 
@@ -439,8 +442,9 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
     for (let index = 0; index < this.selectedParameters.length; index++) {
       let element = this.selectedParameters[index];
       if (
-        element.parameterId?.value != null &&
-        element.parameterId?.uomDataEntry != null
+        (element.parameterId?.value != null &&
+        element.parameterId?.uomDataEntry != null) ||
+        ((this.selectedValue !== undefined && this.selectedValue !== null) && this.selectedUnit.ur_fromUnit !== '')
       ) {
         idList.push(element.id);
         console.log('element Pushed', element);
