@@ -120,17 +120,20 @@ export class EditCountryComponent implements OnInit {
   //END
 
   saveCountry(country: Country){
-
+    console.log("this.countryId",this.countryId);
     this.serviceProxy
     .updateOneBaseCountryControllerCountry(this.countryId, country)
     .subscribe((res) => {
       this.country = res;
       // this.confirm = true;
       this.messageService.add({severity:'success', summary:'Saved', detail:'Country profile successfully updated'});
-
+      // this.back();
+    },err=>{
+      
+      this.messageService.add({severity:'error', summary:'Error', detail:'Error in updating.'});
     })
-    console.log("aceepted");
-    this.back();
+    // console.log("aceepted");
+   
     // if(this.confirm==true){
     //   this.route.navigate(['/view-country'])
     // }

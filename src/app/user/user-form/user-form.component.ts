@@ -399,8 +399,8 @@ export class UserFormComponent implements OnInit {
 
   onDeleteClick() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the user?',
-      header: 'Delete Confirmation',
+      message: `Are you sure you want to ${this.user.status?'activate':'deactivate'} the user?`,
+      header: `${this.user.status?'Activate':'Deactivate'} Confirmation`,
       acceptIcon: 'icon-not-visible',
       rejectIcon: 'icon-not-visible',
       accept: () => {
@@ -412,8 +412,11 @@ export class UserFormComponent implements OnInit {
   }
 
   deleteUser() {
+    // console.log("asdsd")
+
+    this.user.status=this.user.status?0:-10;
     this.serviceProxy
-      .deleteOneBaseUsersControllerUser(this.user.id)
+      .updateOneBaseUsersControllerUser(this.user.id,this.user)
       .subscribe((res) => {
         //this.DisplayAlert('Deleted successfully.', AlertType.Message);
         // this.confirmationService.confirm({
@@ -432,9 +435,17 @@ export class UserFormComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Delete Confirmation',
+          detail: `${this.user.status?'deactivate':'activate'} Confirmation`,
           closable: true,
         });
+      },err=>{
+               // });
+               this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: `${this.user.status?'deactivate':'activate'} fail`,
+                closable: true,
+              });
       });
   }
   
