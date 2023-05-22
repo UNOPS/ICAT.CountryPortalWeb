@@ -6080,6 +6080,64 @@ export class ServiceProxy {
     }
 
     /**
+     * Update a single Country
+     */
+    updateOneBaseCountryControllerCountry(id: number, body: Country): Observable<Country> {
+        let url_ = this.baseUrl + "/country/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateOneBaseCountryControllerCountry(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateOneBaseCountryControllerCountry(<any>response_);
+                } catch (e) {
+                    return <Observable<Country>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Country>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateOneBaseCountryControllerCountry(response: HttpResponseBase): Observable<Country> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Country.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    /**
      * Retrieve a single Country
      * @param fields (optional) Selects resource fields. <a href="https://github.com/nestjsx/crud/wiki/Requests#select" target="_blank">Docs</a>
      * @param join (optional) Adds relational resources. <a href="https://github.com/nestjsx/crud/wiki/Requests#join" target="_blank">Docs</a>
@@ -6128,65 +6186,6 @@ export class ServiceProxy {
     }
 
     protected processGetOneBaseCountryControllerCountry(response: HttpResponseBase): Observable<Country> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Country.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(<any>null);
-    }
-
-    /**
-     * Update a single Country
-     * @return Response
-     */
-    updateOneBaseCountryControllerCountry(id: number, body: Country): Observable<Country> {
-        let url_ = this.baseUrl + "/country/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateOneBaseCountryControllerCountry(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdateOneBaseCountryControllerCountry(<any>response_);
-                } catch (e) {
-                    return <Observable<Country>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<Country>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processUpdateOneBaseCountryControllerCountry(response: HttpResponseBase): Observable<Country> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -32889,6 +32888,7 @@ export enum ParameterRequestDataRequestStatus {
     QAFail = <any>"QAFail",
     Verifier_Data_Request = <any>"Verifier_Data_Request",
     Minus1 = <any>"-1",
+    Minus8 = <any>"-8",
 }
 
 export enum ParameterRequestQaStatus {

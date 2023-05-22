@@ -1634,7 +1634,7 @@ configEmissionTargetGraph=()=>{
               let ndcNames:string[]=[]
               let ndcReduction:number[]=[]
               let xaxis:number[]=[];
-            // console.log('getNdcForDashboard',a);
+            console.log('getNdcForDashboard',a);
             // console.log('ndc for aggretion actions',a)
             for(let ndc of a.items){
               // console.log('totalRduction123ass2',ndc.assesment)
@@ -1646,7 +1646,7 @@ configEmissionTargetGraph=()=>{
              
                 totalemissionRduction = totalemissionRduction + (assesrslt.totalEmission?Number(assesrslt.totalEmission):0);
                   // console.log('totalRduction123asstot1',Number(assesrslt.totalEmission))
-                  console.log('totalRduction123asstot2',totalemissionRduction)
+                  // console.log('totalRduction123asstot2',totalemissionRduction)
                   // console.log('totalRduction123',assement.isProposal,totalRduction)
                }
 
