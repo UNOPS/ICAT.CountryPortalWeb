@@ -374,7 +374,7 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
       let ca: climateAction = {
         Climate_Action_Name: '',
         Country: '',
-        Current_tatus_of_the_Climate_Action: '',
+        Current_status_of_the_Climate_Action: '',
         Sector: '',
         Aggregated_Actions: '',
         Action_Areas: '',
@@ -433,7 +433,7 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
 
       ca.Climate_Action_Name = x.climateActionName;
       ca.Country = x.country?.name;
-      ca.Current_tatus_of_the_Climate_Action = x.projectStatus?.name;
+      ca.Current_status_of_the_Climate_Action = x.projectStatus?.name;
       ca.Sector = x.sector?.name;
       ca.Aggregated_Actions = x.NDC?.name;
       ca.Action_Areas = x.subNDC?.name;
@@ -552,7 +552,7 @@ export class ProposeProjectListComponent implements OnInit, AfterViewInit {
 export interface climateAction {
   Climate_Action_Name: string;
   Country: string;
-  Current_tatus_of_the_Climate_Action: any;
+  Current_status_of_the_Climate_Action: any;
   Sector: any;
   Aggregated_Actions: any;
   Action_Areas: any;
