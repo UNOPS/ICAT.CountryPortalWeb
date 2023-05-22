@@ -369,7 +369,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
       console.log("no verification detail")
     }
 
-    let data:any = {}
+    let data:any = {type: 'parameter'}
 
     data['parameter'] = parameter
     if (vd){

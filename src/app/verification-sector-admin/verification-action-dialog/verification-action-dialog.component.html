@@ -1,4 +1,4 @@
-<div class="p-grid p-fluid card" >
+<div class="p-grid p-fluid card" *ngIf="type === 'parameter'">
     <div class="row">
         <div class="col-6">
             <div class="row">
@@ -25,31 +25,43 @@
 </div>
 <div class="p-grid p-fluid card">
     <div>
-        <div class="row" *ngIf="isEnterData">
+        <div class="row" *ngIf="isEnterData && type === 'parameter'">
             <label for="value">Correct value</label>
             <p-inputNumber type="number" name="value" [(ngModel)]="correctValue" placeholder="Enter value"
                 mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"></p-inputNumber>
         </div>
-        <div class="row" *ngIf="!isEnterData">
+        <div class="row" *ngIf="!isEnterData && type === 'parameter'">
             <label for="">Institution</label>
             <p-dropdown name="unitType" [options]="instiTutionList" [(ngModel)]="selectedInstitution" [showClear]="true"
                 [filter]="true" placeholder="Select .." optionLabel="name" appendTo="body">
             </p-dropdown>
         </div>
+        <div class="row" *ngIf="type === 'ndc'">
+            <label for="">Aggregated Action</label>
+            <p-dropdown name="ndc" [options]="ndcList" [(ngModel)]="selectedNdc" [showClear]="true"
+                [filter]="true" placeholder="Select .." optionLabel="name" appendTo="body">
+            </p-dropdown>
+        </div>
         <br>
-        <div class="row">
+        <div class="row" *ngIf="type === 'parameter'">
             <label>Unit</label>
             <p-dropdown name="unitType" [options]="unitList" [(ngModel)]="correctUnit" [showClear]="true"
                 [filter]="true" placeholder="Select .." optionLabel="ur_fromUnit" appendTo="body">
+            </p-dropdown>
+        </div>
+        <div class="row" *ngIf="type === 'ndc'">
+            <label>Action Area</label>
+            <p-dropdown name="subNdc" [options]="selectedNdc === undefined ? [] : selectedNdc.subNdc" [(ngModel)]="selectedSubNdc" [showClear]="true"
+                [filter]="true" placeholder="Select .." optionLabel="name" appendTo="body">
             </p-dropdown>
         </div>
         <br>
         <div class="row">
             <div class="col-7"></div>
             <div class="col-5">
-                <button [disabled]="!correctValue && !correctUnit" class="btn btn-primary text-uppercase" type="submit"
+                <button [disabled]="checkEnable()" class="btn btn-primary text-uppercase" type="submit"
                     (click)="sendValueForVerification(isEnterData)">
-                    {{isEnterData ? 'Send for verification' : 'Send to DC team'}}
+                    {{type === 'ndc' ? 'Send for verification' : (isEnterData ? 'Send for verification' : 'Send to DC team')}}
                 </button>
             </div>
         </div>
