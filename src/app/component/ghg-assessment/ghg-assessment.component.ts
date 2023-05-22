@@ -3591,15 +3591,21 @@ else{
   ) {
 
     if (this.IsProposal){
-      if (!p.isAlternativeParameter){
-        if (!p.value && !p.institution){
-          if((!p.defaultValue && p.isDefaultValue)){
-            this.requiredParas = false
-          }else if (!p.isDefaultValue && (!p.institution)){
-            this.requiredParas = false
-          } 
+      if (p.alternativeParameters.length==0){
+        if (!p.isAlternativeParameter){
+          if (!p.value && !p.institution){
+            if((!p.defaultValue && p.isDefaultValue)){
+              this.requiredParas = false
+            }else if (!p.isDefaultValue && (!p.institution)){
+              this.requiredParas = false
+            } 
+          }
         }
       }
+      else{
+        this.requiredParas = true
+      }
+      
     } else {
       if (!p.value && !p.institution){
         if((!p.defaultValue && p.isDefaultValue)){
