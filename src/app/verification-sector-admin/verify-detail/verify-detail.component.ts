@@ -606,7 +606,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
   async ndcAction() {
     let action = `Ndc changed  Original Value : ${this.assementYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n
-      Sub Ndc changed  Original Value : ${this.assementYear.assessment.project.subNdc.name} New Value : ${this.selectedSubNdc.name} \n`;
+      Sub Ndc changed  Original Value : ${this.assementYear.assessment.project.subNdc?.name} New Value : ${this.selectedSubNdc?.name} \n`;
 
     this.assementYear.assessment.project.ndc = this.selectedNdc;
     this.assementYear.assessment.project.subNdc = this.selectedSubNdc;
@@ -624,7 +624,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       project.ndc = ndc;
 
       let subNdc = new SubNdc();
-      subNdc.id = this.selectedSubNdc.id;
+      subNdc.id = this.selectedSubNdc?.id;
       project.subNdc = subNdc;
 
     this.serviceProxy

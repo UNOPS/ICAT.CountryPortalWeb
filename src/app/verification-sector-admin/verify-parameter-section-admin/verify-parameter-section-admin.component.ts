@@ -16,6 +16,7 @@ import {
   VerificationDetail,
   VerificationDetailVerificationStatus,
 } from 'shared/service-proxies/service-proxies';
+import { VerificationActionDialogComponent } from '../verification-action-dialog/verification-action-dialog.component';
 
 @Component({
   selector: 'app-verify-parameter-section-admin',
@@ -351,64 +352,105 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   }
 
   parameterAction(event: any, parameter: Parameter) {
-    let verificationDetails: VerificationDetail[] = [];
+    console.log(parameter)
+    let vd = undefined
+    console.log("getverificationStage--------", this.getverificationStage())
+    console.log(this.verificationDetails)
+    if (this.verificationDetails){
+      vd = this.verificationDetails.find(
+        (d) => 
+        d.parameter &&
+        d.parameter.id === parameter.id &&
+        d.verificationStage === this.getverificationStage()
+      )
 
-    let verificationDetail = undefined;
-
-    if (this.verificationDetails) {
-      verificationDetail = this.verificationDetails.find(
-        (a) =>
-          a.parameter &&
-          a.parameter.id == parameter.id &&
-          a.verificationStage == this.getverificationStage()
-      );
-    }
-    let vd = new VerificationDetail();
-    console.log(verificationDetail);
-    if (verificationDetail) {
-      vd = verificationDetail;
+      console.log(vd)
     } else {
-      vd.assessmentId = this.assessmentYear.assessment.id;
-      let assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assessmentYear.id;
-      vd.assessmentYear = assesmentYear;
-      vd.year = Number(this.assessmentYear.assessmentYear);
-      vd.createdOn = moment();
-      vd.isAccepted = false;
-      let param = new Parameter();
-      param.id = parameter.id;
-      vd.parameter = param;
-
-      if (this.header == 'Baseline Parameter') {
-        vd.isBaseline = true;
-      }
-      if (this.header == 'Project Parameter') {
-        vd.isProject = true;
-      }
-      if (this.header == 'Leakage Parameter') {
-        vd.isLekage = true;
-      }
-      if (this.header == 'Projection Parameter') {
-        vd.isProjection = true;
-      }
+      console.log("no verification detail")
     }
 
-    vd.editedOn = moment();
-    vd.updatedDate = moment();
-    vd.verificationStage = this.getverificationStage();
-    vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
-    vd.isDataRequested = true;
-    verificationDetails.push(vd);
+    let data:any = {}
 
-    this.verificationProxy
-      .saveVerificationDetails(verificationDetails)
-      .subscribe((a) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'successfully Save.',
-          closable: true,
-        });
-      });
+    data['parameter'] = parameter
+    if (vd){
+      data['verificationDetail'] = vd
+    } else {
+      data['verificationDetail'] = null
+    }
+    
+
+    this.ref = this.dialogService.open(VerificationActionDialogComponent, {
+      header: parameter ? ('Enter value for ' + parameter.name.toLowerCase()):"Enter Aggregated Action",
+      width: '40%',
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
+      baseZIndex: 10000,
+      data: data,
+    });
+
+    this.ref.onClose.subscribe(() => {
+      window.location.reload()
+    })
+
+    // let verificationDetails: VerificationDetail[] = [];
+
+    // let verificationDetail = undefined;
+
+    // if (this.verificationDetails) {
+    //   verificationDetail = this.verificationDetails.find(
+    //     (a) =>
+    //       a.parameter &&
+    //       a.parameter.id == parameter.id &&
+    //       a.verificationStage == this.getverificationStage()
+    //   );
+    // }
+    // let vd = new VerificationDetail();
+    // console.log(verificationDetail);
+    // if (verificationDetail) {
+    //   vd = verificationDetail;
+    // } else {
+    //   vd.assessmentId = this.assessmentYear.assessment.id;
+    //   let assesmentYear = new AssessmentYear();
+    //   assesmentYear.id = this.assessmentYear.id;
+    //   vd.assessmentYear = assesmentYear;
+    //   vd.year = Number(this.assessmentYear.assessmentYear);
+    //   vd.createdOn = moment();
+    //   vd.isAccepted = false;
+    //   let param = new Parameter();
+    //   param.id = parameter.id;
+    //   vd.parameter = param;
+
+    //   if (this.header == 'Baseline Parameter') {
+    //     vd.isBaseline = true;
+    //   }
+    //   if (this.header == 'Project Parameter') {
+    //     vd.isProject = true;
+    //   }
+    //   if (this.header == 'Leakage Parameter') {
+    //     vd.isLekage = true;
+    //   }
+    //   if (this.header == 'Projection Parameter') {
+    //     vd.isProjection = true;
+    //   }
+    // }
+
+    // vd.editedOn = moment();
+    // vd.updatedDate = moment();
+    // vd.verificationStage = this.getverificationStage();
+    // vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
+    // vd.isDataRequested = true;
+    // verificationDetails.push(vd);
+
+    // this.verificationProxy
+    //   .saveVerificationDetails(verificationDetails)
+    //   .subscribe((a) => {
+    //     this.messageService.add({
+    //       severity: 'success',
+    //       summary: 'Success',
+    //       detail: 'successfully Save.',
+    //       closable: true,
+    //     });
+    //   });
   }
+
+ 
 }

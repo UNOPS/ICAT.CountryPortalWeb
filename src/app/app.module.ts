@@ -185,6 +185,7 @@ import { SoilParameterComponent } from './component/soil-parameter/soil-paramete
 import { StratumParameterComponent } from './component/stratum-parameter/stratum-parameter.component';
 import { ResidueParameterComponent } from './component/residue-parameter/residue-parameter.component';
 import {PasswordModule} from 'primeng/password';
+import { VerificationActionDialogComponent } from './verification-sector-admin/verification-action-dialog/verification-action-dialog.component';
 
 export function getRemoteServiceBaseUrl(): string {
   return environment.baseUrlAPI;
@@ -278,6 +279,7 @@ export function getRemoteServiceBaseUrl(): string {
     SoilParameterComponent,
     StratumParameterComponent,
     ResidueParameterComponent,
+    VerificationActionDialogComponent,
     
   ],
   imports: [

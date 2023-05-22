@@ -1,0 +1,59 @@
+<div class="p-grid p-fluid card" >
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-2">
+                    <p-radioButton  name="groupname" [value]="true"
+                        [(ngModel)]="isEnterData"></p-radioButton>
+                </div>
+                <div class="col-10">
+                    <label style="padding-top: 8px">Enter correct data</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-1">
+                    <p-radioButton name="groupname" [value]="false" [(ngModel)]="isEnterData"></p-radioButton>
+                </div>
+                <div class="col-11">
+                    <label style="padding-top: 8px">Assign data provider</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="p-grid p-fluid card">
+    <div>
+        <div class="row" *ngIf="isEnterData">
+            <label for="value">Correct value</label>
+            <p-inputNumber type="number" name="value" [(ngModel)]="correctValue" placeholder="Enter value"
+                mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"></p-inputNumber>
+        </div>
+        <div class="row" *ngIf="!isEnterData">
+            <label for="">Institution</label>
+            <p-dropdown name="unitType" [options]="instiTutionList" [(ngModel)]="selectedInstitution" [showClear]="true"
+                [filter]="true" placeholder="Select .." optionLabel="name" appendTo="body">
+            </p-dropdown>
+        </div>
+        <br>
+        <div class="row">
+            <label>Unit</label>
+            <p-dropdown name="unitType" [options]="unitList" [(ngModel)]="correctUnit" [showClear]="true"
+                [filter]="true" placeholder="Select .." optionLabel="ur_fromUnit" appendTo="body">
+            </p-dropdown>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-7"></div>
+            <div class="col-5">
+                <button [disabled]="!correctValue && !correctUnit" class="btn btn-primary text-uppercase" type="submit"
+                    (click)="sendValueForVerification(isEnterData)">
+                    {{isEnterData ? 'Send for verification' : 'Send to DC team'}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
