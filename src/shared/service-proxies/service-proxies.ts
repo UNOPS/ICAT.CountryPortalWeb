@@ -24781,14 +24781,176 @@ export interface IDefaultValue {
     name: string;
 }
 
-export class GetManySectorResponseDto implements IGetManySectorResponseDto {
-    data: Sector[];
+export class Country implements ICountry {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    code: string;
+    code_extended: string;
+    name: string;
+    description: string;
+    sortOrder: number;
+    submissions: string;
+    emissionSummary: string;
+    ndcDocuments: string;
+    isSystemUse: boolean;
+    flagPath: string;
+    registeredDate: moment.Moment;
+    isMember: boolean;
+    countryStatus: CountryStatus;
+    region: string;
+    climateActionModule: boolean;
+    ghgModule: boolean;
+    macModule: boolean;
+    dataCollectionModule: boolean;
+    dataCollectionGhgModule: boolean;
+    hasExelTem: boolean;
+    uniqueIdentification: string;
+    defaultValue: DefaultValue[];
+
+    constructor(data?: ICountry) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.defaultValue = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.code_extended = _data["code_extended"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+            this.submissions = _data["submissions"];
+            this.emissionSummary = _data["emissionSummary"];
+            this.ndcDocuments = _data["ndcDocuments"];
+            this.isSystemUse = _data["isSystemUse"];
+            this.flagPath = _data["flagPath"];
+            this.registeredDate = _data["registeredDate"] ? moment(_data["registeredDate"].toString()) : <any>undefined;
+            this.isMember = _data["isMember"];
+            this.countryStatus = _data["countryStatus"];
+            this.region = _data["region"];
+            this.climateActionModule = _data["climateActionModule"];
+            this.ghgModule = _data["ghgModule"];
+            this.macModule = _data["macModule"];
+            this.dataCollectionModule = _data["dataCollectionModule"];
+            this.dataCollectionGhgModule = _data["dataCollectionGhgModule"];
+            this.hasExelTem = _data["hasExelTem"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
+            if (Array.isArray(_data["defaultValue"])) {
+                this.defaultValue = [] as any;
+                for (let item of _data["defaultValue"])
+                    this.defaultValue.push(DefaultValue.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Country {
+        data = typeof data === 'object' ? data : {};
+        let result = new Country();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["code_extended"] = this.code_extended;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        data["submissions"] = this.submissions;
+        data["emissionSummary"] = this.emissionSummary;
+        data["ndcDocuments"] = this.ndcDocuments;
+        data["isSystemUse"] = this.isSystemUse;
+        data["flagPath"] = this.flagPath;
+        data["registeredDate"] = this.registeredDate ? this.registeredDate.toISOString() : <any>undefined;
+        data["isMember"] = this.isMember;
+        data["countryStatus"] = this.countryStatus;
+        data["region"] = this.region;
+        data["climateActionModule"] = this.climateActionModule;
+        data["ghgModule"] = this.ghgModule;
+        data["macModule"] = this.macModule;
+        data["dataCollectionModule"] = this.dataCollectionModule;
+        data["dataCollectionGhgModule"] = this.dataCollectionGhgModule;
+        data["hasExelTem"] = this.hasExelTem;
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        if (Array.isArray(this.defaultValue)) {
+            data["defaultValue"] = [];
+            for (let item of this.defaultValue)
+                data["defaultValue"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): Country {
+        const json = this.toJSON();
+        let result = new Country();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICountry {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    code: string;
+    code_extended: string;
+    name: string;
+    description: string;
+    sortOrder: number;
+    submissions: string;
+    emissionSummary: string;
+    ndcDocuments: string;
+    isSystemUse: boolean;
+    flagPath: string;
+    registeredDate: moment.Moment;
+    isMember: boolean;
+    countryStatus: CountryStatus;
+    region: string;
+    climateActionModule: boolean;
+    ghgModule: boolean;
+    macModule: boolean;
+    dataCollectionModule: boolean;
+    dataCollectionGhgModule: boolean;
+    hasExelTem: boolean;
+    uniqueIdentification: string;
+    defaultValue: DefaultValue[];
+}
+
+export class GetManyAssessmentResponseDto implements IGetManyAssessmentResponseDto {
+    data: Assessment[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 
-    constructor(data?: IGetManySectorResponseDto) {
+    constructor(data?: IGetManyAssessmentResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -24805,7 +24967,7 @@ export class GetManySectorResponseDto implements IGetManySectorResponseDto {
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data.push(Sector.fromJS(item));
+                    this.data.push(Assessment.fromJS(item));
             }
             this.count = _data["count"];
             this.total = _data["total"];
@@ -24814,9 +24976,9 @@ export class GetManySectorResponseDto implements IGetManySectorResponseDto {
         }
     }
 
-    static fromJS(data: any): GetManySectorResponseDto {
+    static fromJS(data: any): GetManyAssessmentResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetManySectorResponseDto();
+        let result = new GetManyAssessmentResponseDto();
         result.init(data);
         return result;
     }
@@ -24835,30 +24997,30 @@ export class GetManySectorResponseDto implements IGetManySectorResponseDto {
         return data;
     }
 
-    clone(): GetManySectorResponseDto {
+    clone(): GetManyAssessmentResponseDto {
         const json = this.toJSON();
-        let result = new GetManySectorResponseDto();
+        let result = new GetManyAssessmentResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetManySectorResponseDto {
-    data: Sector[];
+export interface IGetManyAssessmentResponseDto {
+    data: Assessment[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 }
 
-export class GetManyLearningMaterialResponseDto implements IGetManyLearningMaterialResponseDto {
-    data: LearningMaterial[];
+export class GetManyUserResponseDto implements IGetManyUserResponseDto {
+    data: User[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 
-    constructor(data?: IGetManyLearningMaterialResponseDto) {
+    constructor(data?: IGetManyUserResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -24875,7 +25037,7 @@ export class GetManyLearningMaterialResponseDto implements IGetManyLearningMater
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data.push(LearningMaterial.fromJS(item));
+                    this.data.push(User.fromJS(item));
             }
             this.count = _data["count"];
             this.total = _data["total"];
@@ -24884,9 +25046,9 @@ export class GetManyLearningMaterialResponseDto implements IGetManyLearningMater
         }
     }
 
-    static fromJS(data: any): GetManyLearningMaterialResponseDto {
+    static fromJS(data: any): GetManyUserResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetManyLearningMaterialResponseDto();
+        let result = new GetManyUserResponseDto();
         result.init(data);
         return result;
     }
@@ -24905,16 +25067,16 @@ export class GetManyLearningMaterialResponseDto implements IGetManyLearningMater
         return data;
     }
 
-    clone(): GetManyLearningMaterialResponseDto {
+    clone(): GetManyUserResponseDto {
         const json = this.toJSON();
-        let result = new GetManyLearningMaterialResponseDto();
+        let result = new GetManyUserResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetManyLearningMaterialResponseDto {
-    data: LearningMaterial[];
+export interface IGetManyUserResponseDto {
+    data: User[];
     count: number;
     total: number;
     page: number;
@@ -24991,14 +25153,14 @@ export interface IGetManyUserTypeResponseDto {
     pageCount: number;
 }
 
-export class GetManyInstitutionTypeResponseDto implements IGetManyInstitutionTypeResponseDto {
-    data: InstitutionType[];
+export class GetManyLearningMaterialResponseDto implements IGetManyLearningMaterialResponseDto {
+    data: LearningMaterial[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 
-    constructor(data?: IGetManyInstitutionTypeResponseDto) {
+    constructor(data?: IGetManyLearningMaterialResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -25015,7 +25177,7 @@ export class GetManyInstitutionTypeResponseDto implements IGetManyInstitutionTyp
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data.push(InstitutionType.fromJS(item));
+                    this.data.push(LearningMaterial.fromJS(item));
             }
             this.count = _data["count"];
             this.total = _data["total"];
@@ -25024,9 +25186,9 @@ export class GetManyInstitutionTypeResponseDto implements IGetManyInstitutionTyp
         }
     }
 
-    static fromJS(data: any): GetManyInstitutionTypeResponseDto {
+    static fromJS(data: any): GetManyLearningMaterialResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetManyInstitutionTypeResponseDto();
+        let result = new GetManyLearningMaterialResponseDto();
         result.init(data);
         return result;
     }
@@ -25045,35 +25207,30 @@ export class GetManyInstitutionTypeResponseDto implements IGetManyInstitutionTyp
         return data;
     }
 
-    clone(): GetManyInstitutionTypeResponseDto {
+    clone(): GetManyLearningMaterialResponseDto {
         const json = this.toJSON();
-        let result = new GetManyInstitutionTypeResponseDto();
+        let result = new GetManyLearningMaterialResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetManyInstitutionTypeResponseDto {
-    data: InstitutionType[];
+export interface IGetManyLearningMaterialResponseDto {
+    data: LearningMaterial[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 }
 
-export class InstitutionType implements IInstitutionType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    userType: UserType[];
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
+export class GetManySectorResponseDto implements IGetManySectorResponseDto {
+    data: Sector[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
 
-    constructor(data?: IInstitutionType) {
+    constructor(data?: IGetManySectorResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -25081,381 +25238,74 @@ export class InstitutionType implements IInstitutionType {
             }
         }
         if (!data) {
-            this.userType = [];
+            this.data = [];
         }
     }
 
     init(_data?: any) {
         if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            if (Array.isArray(_data["userType"])) {
-                this.userType = [] as any;
-                for (let item of _data["userType"])
-                    this.userType.push(UserType.fromJS(item));
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(Sector.fromJS(item));
             }
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
         }
     }
 
-    static fromJS(data: any): InstitutionType {
+    static fromJS(data: any): GetManySectorResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new InstitutionType();
+        let result = new GetManySectorResponseDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        if (Array.isArray(this.userType)) {
-            data["userType"] = [];
-            for (let item of this.userType)
-                data["userType"].push(item.toJSON());
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
         }
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
         return data;
     }
 
-    clone(): InstitutionType {
+    clone(): GetManySectorResponseDto {
         const json = this.toJSON();
-        let result = new InstitutionType();
+        let result = new GetManySectorResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IInstitutionType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    userType: UserType[];
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
+export interface IGetManySectorResponseDto {
+    data: Sector[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
 }
 
-export class UserType implements IUserType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    learningMaterialusertype: LearningMaterialUserType[];
-    institutionType: InstitutionType;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-
-    constructor(data?: IUserType) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.learningMaterialusertype = [];
-            this.institutionType = new InstitutionType();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            if (Array.isArray(_data["learningMaterialusertype"])) {
-                this.learningMaterialusertype = [] as any;
-                for (let item of _data["learningMaterialusertype"])
-                    this.learningMaterialusertype.push(LearningMaterialUserType.fromJS(item));
-            }
-            this.institutionType = _data["institutionType"] ? InstitutionType.fromJS(_data["institutionType"]) : new InstitutionType();
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-        }
-    }
-
-    static fromJS(data: any): UserType {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserType();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        if (Array.isArray(this.learningMaterialusertype)) {
-            data["learningMaterialusertype"] = [];
-            for (let item of this.learningMaterialusertype)
-                data["learningMaterialusertype"].push(item.toJSON());
-        }
-        data["institutionType"] = this.institutionType ? this.institutionType.toJSON() : <any>undefined;
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        return data;
-    }
-
-    clone(): UserType {
-        const json = this.toJSON();
-        let result = new UserType();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUserType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    learningMaterialusertype: LearningMaterialUserType[];
-    institutionType: InstitutionType;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-}
-
-export class LearningMaterialUserType implements ILearningMaterialUserType {
+export class CountrySector implements ICountrySector {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
     editedOn: moment.Moment;
     status: number;
     id: number;
-    uniqueIdentification: string;
-    learningMaterial: LearningMaterial;
-    userType: UserType;
-
-    constructor(data?: ILearningMaterialUserType) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.learningMaterial = new LearningMaterial();
-            this.userType = new UserType();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.uniqueIdentification = _data["uniqueIdentification"];
-            this.learningMaterial = _data["learningMaterial"] ? LearningMaterial.fromJS(_data["learningMaterial"]) : new LearningMaterial();
-            this.userType = _data["userType"] ? UserType.fromJS(_data["userType"]) : new UserType();
-        }
-    }
-
-    static fromJS(data: any): LearningMaterialUserType {
-        data = typeof data === 'object' ? data : {};
-        let result = new LearningMaterialUserType();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        data["learningMaterial"] = this.learningMaterial ? this.learningMaterial.toJSON() : <any>undefined;
-        data["userType"] = this.userType ? this.userType.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): LearningMaterialUserType {
-        const json = this.toJSON();
-        let result = new LearningMaterialUserType();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ILearningMaterialUserType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    uniqueIdentification: string;
-    learningMaterial: LearningMaterial;
-    userType: UserType;
-}
-
-export class LearningMaterial implements ILearningMaterial {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    documentType: string;
-    documentName: string;
-    document: string;
-    thumbnail: string;
-    isPublish: number;
-    deletedAt: moment.Moment;
-    uniqueIdentification: string;
-    learningMaterialusertype: LearningMaterialUserType[];
-    learningMaterialsector: LearningMaterialSector[];
-
-    constructor(data?: ILearningMaterial) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.learningMaterialusertype = [];
-            this.learningMaterialsector = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.documentType = _data["documentType"];
-            this.documentName = _data["documentName"];
-            this.document = _data["document"];
-            this.thumbnail = _data["thumbnail"];
-            this.isPublish = _data["isPublish"];
-            this.deletedAt = _data["deletedAt"] ? moment(_data["deletedAt"].toString()) : <any>undefined;
-            this.uniqueIdentification = _data["uniqueIdentification"];
-            if (Array.isArray(_data["learningMaterialusertype"])) {
-                this.learningMaterialusertype = [] as any;
-                for (let item of _data["learningMaterialusertype"])
-                    this.learningMaterialusertype.push(LearningMaterialUserType.fromJS(item));
-            }
-            if (Array.isArray(_data["learningMaterialsector"])) {
-                this.learningMaterialsector = [] as any;
-                for (let item of _data["learningMaterialsector"])
-                    this.learningMaterialsector.push(LearningMaterialSector.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): LearningMaterial {
-        data = typeof data === 'object' ? data : {};
-        let result = new LearningMaterial();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["documentType"] = this.documentType;
-        data["documentName"] = this.documentName;
-        data["document"] = this.document;
-        data["thumbnail"] = this.thumbnail;
-        data["isPublish"] = this.isPublish;
-        data["deletedAt"] = this.deletedAt ? this.deletedAt.toISOString() : <any>undefined;
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        if (Array.isArray(this.learningMaterialusertype)) {
-            data["learningMaterialusertype"] = [];
-            for (let item of this.learningMaterialusertype)
-                data["learningMaterialusertype"].push(item.toJSON());
-        }
-        if (Array.isArray(this.learningMaterialsector)) {
-            data["learningMaterialsector"] = [];
-            for (let item of this.learningMaterialsector)
-                data["learningMaterialsector"].push(item.toJSON());
-        }
-        return data;
-    }
-
-    clone(): LearningMaterial {
-        const json = this.toJSON();
-        let result = new LearningMaterial();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ILearningMaterial {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    documentType: string;
-    documentName: string;
-    document: string;
-    thumbnail: string;
-    isPublish: number;
-    deletedAt: moment.Moment;
-    uniqueIdentification: string;
-    learningMaterialusertype: LearningMaterialUserType[];
-    learningMaterialsector: LearningMaterialSector[];
-}
-
-export class LearningMaterialSector implements ILearningMaterialSector {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    uniqueIdentification: string;
-    learningMaterial2: LearningMaterial;
+    country: Country;
     sector: Sector;
+    sectorId: number;
+    uniqueIdentification: string;
 
-    constructor(data?: ILearningMaterialSector) {
+    constructor(data?: ICountrySector) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -25463,7 +25313,7 @@ export class LearningMaterialSector implements ILearningMaterialSector {
             }
         }
         if (!data) {
-            this.learningMaterial2 = new LearningMaterial();
+            this.country = new Country();
             this.sector = new Sector();
         }
     }
@@ -25476,15 +25326,16 @@ export class LearningMaterialSector implements ILearningMaterialSector {
             this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
             this.status = _data["status"];
             this.id = _data["id"];
-            this.uniqueIdentification = _data["uniqueIdentification"];
-            this.learningMaterial2 = _data["learningMaterial2"] ? LearningMaterial.fromJS(_data["learningMaterial2"]) : new LearningMaterial();
+            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
             this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
+            this.sectorId = _data["sectorId"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
         }
     }
 
-    static fromJS(data: any): LearningMaterialSector {
+    static fromJS(data: any): CountrySector {
         data = typeof data === 'object' ? data : {};
-        let result = new LearningMaterialSector();
+        let result = new CountrySector();
         result.init(data);
         return result;
     }
@@ -25497,30 +25348,32 @@ export class LearningMaterialSector implements ILearningMaterialSector {
         data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["id"] = this.id;
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        data["learningMaterial2"] = this.learningMaterial2 ? this.learningMaterial2.toJSON() : <any>undefined;
+        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
         data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
+        data["sectorId"] = this.sectorId;
+        data["uniqueIdentification"] = this.uniqueIdentification;
         return data;
     }
 
-    clone(): LearningMaterialSector {
+    clone(): CountrySector {
         const json = this.toJSON();
-        let result = new LearningMaterialSector();
+        let result = new CountrySector();
         result.init(json);
         return result;
     }
 }
 
-export interface ILearningMaterialSector {
+export interface ICountrySector {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
     editedOn: moment.Moment;
     status: number;
     id: number;
-    uniqueIdentification: string;
-    learningMaterial2: LearningMaterial;
+    country: Country;
     sector: Sector;
+    sectorId: number;
+    uniqueIdentification: string;
 }
 
 export class GetManyReportResponseDto implements IGetManyReportResponseDto {
@@ -25872,6 +25725,166 @@ export interface IInstitutionCategory {
     editedBy: string;
     editedOn: moment.Moment;
     status: number;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+}
+
+export class GetManyInstitutionTypeResponseDto implements IGetManyInstitutionTypeResponseDto {
+    data: InstitutionType[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyInstitutionTypeResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(InstitutionType.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyInstitutionTypeResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyInstitutionTypeResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyInstitutionTypeResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyInstitutionTypeResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyInstitutionTypeResponseDto {
+    data: InstitutionType[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class InstitutionType implements IInstitutionType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    userType: UserType[];
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+
+    constructor(data?: IInstitutionType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.userType = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            if (Array.isArray(_data["userType"])) {
+                this.userType = [] as any;
+                for (let item of _data["userType"])
+                    this.userType.push(UserType.fromJS(item));
+            }
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): InstitutionType {
+        data = typeof data === 'object' ? data : {};
+        let result = new InstitutionType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        if (Array.isArray(this.userType)) {
+            data["userType"] = [];
+            for (let item of this.userType)
+                data["userType"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): InstitutionType {
+        const json = this.toJSON();
+        let result = new InstitutionType();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IInstitutionType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    userType: UserType[];
     id: number;
     name: string;
     description: string;
@@ -26295,14 +26308,114 @@ export interface IGetManySubNdcResponseDto {
     pageCount: number;
 }
 
-export class GetManyAssessmentResponseDto implements IGetManyAssessmentResponseDto {
-    data: Assessment[];
+export class SubNdc implements ISubNdc {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    ndc: Ndc;
+    methodology: Methodology;
+    assessments: Assessment[];
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+
+    constructor(data?: ISubNdc) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.ndc = new Ndc();
+            this.methodology = new Methodology();
+            this.assessments = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.ndc = _data["ndc"] ? Ndc.fromJS(_data["ndc"]) : new Ndc();
+            this.methodology = _data["methodology"] ? Methodology.fromJS(_data["methodology"]) : new Methodology();
+            if (Array.isArray(_data["assessments"])) {
+                this.assessments = [] as any;
+                for (let item of _data["assessments"])
+                    this.assessments.push(Assessment.fromJS(item));
+            }
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): SubNdc {
+        data = typeof data === 'object' ? data : {};
+        let result = new SubNdc();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["ndc"] = this.ndc ? this.ndc.toJSON() : <any>undefined;
+        data["methodology"] = this.methodology ? this.methodology.toJSON() : <any>undefined;
+        if (Array.isArray(this.assessments)) {
+            data["assessments"] = [];
+            for (let item of this.assessments)
+                data["assessments"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): SubNdc {
+        const json = this.toJSON();
+        let result = new SubNdc();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISubNdc {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    ndc: Ndc;
+    methodology: Methodology;
+    assessments: Assessment[];
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+}
+
+export class GetManyNdcSetResponseDto implements IGetManyNdcSetResponseDto {
+    data: NdcSet[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 
-    constructor(data?: IGetManyAssessmentResponseDto) {
+    constructor(data?: IGetManyNdcSetResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -26319,7 +26432,7 @@ export class GetManyAssessmentResponseDto implements IGetManyAssessmentResponseD
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data.push(Assessment.fromJS(item));
+                    this.data.push(NdcSet.fromJS(item));
             }
             this.count = _data["count"];
             this.total = _data["total"];
@@ -26328,9 +26441,9 @@ export class GetManyAssessmentResponseDto implements IGetManyAssessmentResponseD
         }
     }
 
-    static fromJS(data: any): GetManyAssessmentResponseDto {
+    static fromJS(data: any): GetManyNdcSetResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetManyAssessmentResponseDto();
+        let result = new GetManyNdcSetResponseDto();
         result.init(data);
         return result;
     }
@@ -26349,30 +26462,331 @@ export class GetManyAssessmentResponseDto implements IGetManyAssessmentResponseD
         return data;
     }
 
-    clone(): GetManyAssessmentResponseDto {
+    clone(): GetManyNdcSetResponseDto {
         const json = this.toJSON();
-        let result = new GetManyAssessmentResponseDto();
+        let result = new GetManyNdcSetResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetManyAssessmentResponseDto {
-    data: Assessment[];
+export interface IGetManyNdcSetResponseDto {
+    data: NdcSet[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 }
 
-export class GetManyUserResponseDto implements IGetManyUserResponseDto {
-    data: User[];
+export class NdcSet implements INdcSet {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    country: Country;
+    submissionDate: moment.Moment;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+
+    constructor(data?: INdcSet) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.country = new Country();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
+            this.submissionDate = _data["submissionDate"] ? moment(_data["submissionDate"].toString()) : <any>undefined;
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): NdcSet {
+        data = typeof data === 'object' ? data : {};
+        let result = new NdcSet();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        data["submissionDate"] = this.submissionDate ? this.submissionDate.toISOString() : <any>undefined;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): NdcSet {
+        const json = this.toJSON();
+        let result = new NdcSet();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface INdcSet {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    country: Country;
+    submissionDate: moment.Moment;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+}
+
+export class ReportNdc implements IReportNdc {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    report: Report;
+    ndc: Ndc;
+
+    constructor(data?: IReportNdc) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.report = new Report();
+            this.ndc = new Ndc();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.report = _data["report"] ? Report.fromJS(_data["report"]) : new Report();
+            this.ndc = _data["ndc"] ? Ndc.fromJS(_data["ndc"]) : new Ndc();
+        }
+    }
+
+    static fromJS(data: any): ReportNdc {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportNdc();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["report"] = this.report ? this.report.toJSON() : <any>undefined;
+        data["ndc"] = this.ndc ? this.ndc.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): ReportNdc {
+        const json = this.toJSON();
+        let result = new ReportNdc();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IReportNdc {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    report: Report;
+    ndc: Ndc;
+}
+
+export class Ndc implements INdc {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    subNdc: SubNdc[];
+    set: NdcSet;
+    country: Country;
+    sector: Sector;
+    assessments: Assessment[];
+    isSelected: boolean;
+    methodology: Methodology;
+    reportNdc: ReportNdc[];
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+
+    constructor(data?: INdc) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.subNdc = [];
+            this.set = new NdcSet();
+            this.country = new Country();
+            this.sector = new Sector();
+            this.assessments = [];
+            this.methodology = new Methodology();
+            this.reportNdc = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            if (Array.isArray(_data["subNdc"])) {
+                this.subNdc = [] as any;
+                for (let item of _data["subNdc"])
+                    this.subNdc.push(SubNdc.fromJS(item));
+            }
+            this.set = _data["set"] ? NdcSet.fromJS(_data["set"]) : new NdcSet();
+            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
+            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
+            if (Array.isArray(_data["assessments"])) {
+                this.assessments = [] as any;
+                for (let item of _data["assessments"])
+                    this.assessments.push(Assessment.fromJS(item));
+            }
+            this.isSelected = _data["isSelected"];
+            this.methodology = _data["methodology"] ? Methodology.fromJS(_data["methodology"]) : new Methodology();
+            if (Array.isArray(_data["reportNdc"])) {
+                this.reportNdc = [] as any;
+                for (let item of _data["reportNdc"])
+                    this.reportNdc.push(ReportNdc.fromJS(item));
+            }
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): Ndc {
+        data = typeof data === 'object' ? data : {};
+        let result = new Ndc();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        if (Array.isArray(this.subNdc)) {
+            data["subNdc"] = [];
+            for (let item of this.subNdc)
+                data["subNdc"].push(item.toJSON());
+        }
+        data["set"] = this.set ? this.set.toJSON() : <any>undefined;
+        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
+        if (Array.isArray(this.assessments)) {
+            data["assessments"] = [];
+            for (let item of this.assessments)
+                data["assessments"].push(item.toJSON());
+        }
+        data["isSelected"] = this.isSelected;
+        data["methodology"] = this.methodology ? this.methodology.toJSON() : <any>undefined;
+        if (Array.isArray(this.reportNdc)) {
+            data["reportNdc"] = [];
+            for (let item of this.reportNdc)
+                data["reportNdc"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): Ndc {
+        const json = this.toJSON();
+        let result = new Ndc();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface INdc {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    subNdc: SubNdc[];
+    set: NdcSet;
+    country: Country;
+    sector: Sector;
+    assessments: Assessment[];
+    isSelected: boolean;
+    methodology: Methodology;
+    reportNdc: ReportNdc[];
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+}
+
+export class GetManyProjectOwnerResponseDto implements IGetManyProjectOwnerResponseDto {
+    data: ProjectOwner[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 
-    constructor(data?: IGetManyUserResponseDto) {
+    constructor(data?: IGetManyProjectOwnerResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -26389,7 +26803,7 @@ export class GetManyUserResponseDto implements IGetManyUserResponseDto {
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data.push(User.fromJS(item));
+                    this.data.push(ProjectOwner.fromJS(item));
             }
             this.count = _data["count"];
             this.total = _data["total"];
@@ -26398,9 +26812,9 @@ export class GetManyUserResponseDto implements IGetManyUserResponseDto {
         }
     }
 
-    static fromJS(data: any): GetManyUserResponseDto {
+    static fromJS(data: any): GetManyProjectOwnerResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetManyUserResponseDto();
+        let result = new GetManyProjectOwnerResponseDto();
         result.init(data);
         return result;
     }
@@ -26419,20 +26833,1901 @@ export class GetManyUserResponseDto implements IGetManyUserResponseDto {
         return data;
     }
 
-    clone(): GetManyUserResponseDto {
+    clone(): GetManyProjectOwnerResponseDto {
         const json = this.toJSON();
-        let result = new GetManyUserResponseDto();
+        let result = new GetManyProjectOwnerResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetManyUserResponseDto {
-    data: User[];
+export interface IGetManyProjectOwnerResponseDto {
+    data: ProjectOwner[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
+}
+
+export class ProjectOwner implements IProjectOwner {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+
+    constructor(data?: IProjectOwner) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): ProjectOwner {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProjectOwner();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): ProjectOwner {
+        const json = this.toJSON();
+        let result = new ProjectOwner();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IProjectOwner {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+}
+
+export class GetManyCaActionHistoryResponseDto implements IGetManyCaActionHistoryResponseDto {
+    data: CaActionHistory[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyCaActionHistoryResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(CaActionHistory.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyCaActionHistoryResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyCaActionHistoryResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyCaActionHistoryResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyCaActionHistoryResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyCaActionHistoryResponseDto {
+    data: CaActionHistory[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class CaActionHistory implements ICaActionHistory {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    isNdcAndSubNdc: number;
+    isApprovalAction: number;
+    previousNdcs: string;
+    currentNdcs: string;
+    previousSubNdcs: string;
+    currentSubNdcs: string;
+    previousAction: string;
+    currentAction: string;
+    actionUser: string;
+    project: Project;
+
+    constructor(data?: ICaActionHistory) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.project = new Project();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.isNdcAndSubNdc = _data["isNdcAndSubNdc"];
+            this.isApprovalAction = _data["isApprovalAction"];
+            this.previousNdcs = _data["previousNdcs"];
+            this.currentNdcs = _data["currentNdcs"];
+            this.previousSubNdcs = _data["previousSubNdcs"];
+            this.currentSubNdcs = _data["currentSubNdcs"];
+            this.previousAction = _data["previousAction"];
+            this.currentAction = _data["currentAction"];
+            this.actionUser = _data["actionUser"];
+            this.project = _data["project"] ? Project.fromJS(_data["project"]) : new Project();
+        }
+    }
+
+    static fromJS(data: any): CaActionHistory {
+        data = typeof data === 'object' ? data : {};
+        let result = new CaActionHistory();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["isNdcAndSubNdc"] = this.isNdcAndSubNdc;
+        data["isApprovalAction"] = this.isApprovalAction;
+        data["previousNdcs"] = this.previousNdcs;
+        data["currentNdcs"] = this.currentNdcs;
+        data["previousSubNdcs"] = this.previousSubNdcs;
+        data["currentSubNdcs"] = this.currentSubNdcs;
+        data["previousAction"] = this.previousAction;
+        data["currentAction"] = this.currentAction;
+        data["actionUser"] = this.actionUser;
+        data["project"] = this.project ? this.project.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): CaActionHistory {
+        const json = this.toJSON();
+        let result = new CaActionHistory();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICaActionHistory {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    isNdcAndSubNdc: number;
+    isApprovalAction: number;
+    previousNdcs: string;
+    currentNdcs: string;
+    previousSubNdcs: string;
+    currentSubNdcs: string;
+    previousAction: string;
+    currentAction: string;
+    actionUser: string;
+    project: Project;
+}
+
+export class GetManyMitigationActionTypeResponseDto implements IGetManyMitigationActionTypeResponseDto {
+    data: MitigationActionType[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyMitigationActionTypeResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(MitigationActionType.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyMitigationActionTypeResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyMitigationActionTypeResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyMitigationActionTypeResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyMitigationActionTypeResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyMitigationActionTypeResponseDto {
+    data: MitigationActionType[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class MitigationActionType implements IMitigationActionType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    methodology: Methodology[];
+    uniqueIdentification: string;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+
+    constructor(data?: IMitigationActionType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.methodology = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            if (Array.isArray(_data["methodology"])) {
+                this.methodology = [] as any;
+                for (let item of _data["methodology"])
+                    this.methodology.push(Methodology.fromJS(item));
+            }
+            this.uniqueIdentification = _data["uniqueIdentification"];
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): MitigationActionType {
+        data = typeof data === 'object' ? data : {};
+        let result = new MitigationActionType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        if (Array.isArray(this.methodology)) {
+            data["methodology"] = [];
+            for (let item of this.methodology)
+                data["methodology"].push(item.toJSON());
+        }
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): MitigationActionType {
+        const json = this.toJSON();
+        let result = new MitigationActionType();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IMitigationActionType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    methodology: Methodology[];
+    uniqueIdentification: string;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+}
+
+export class GetManyProjectApprovalStatusResponseDto implements IGetManyProjectApprovalStatusResponseDto {
+    data: ProjectApprovalStatus[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyProjectApprovalStatusResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(ProjectApprovalStatus.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyProjectApprovalStatusResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyProjectApprovalStatusResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyProjectApprovalStatusResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyProjectApprovalStatusResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyProjectApprovalStatusResponseDto {
+    data: ProjectApprovalStatus[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class ProjectApprovalStatus implements IProjectApprovalStatus {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+
+    constructor(data?: IProjectApprovalStatus) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): ProjectApprovalStatus {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProjectApprovalStatus();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): ProjectApprovalStatus {
+        const json = this.toJSON();
+        let result = new ProjectApprovalStatus();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IProjectApprovalStatus {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+}
+
+export class Project implements IProject {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    climateActionName: string;
+    description: string;
+    contactPersoFullName: string;
+    email: string;
+    contactPersonDesignation: string;
+    telephoneNumber: string;
+    mobileNumber: string;
+    institution: string;
+    mappedInstitution: Institution;
+    country: Country;
+    projectStatus: ProjectStatus;
+    sector: Sector;
+    ndc: Ndc;
+    subNdc: SubNdc;
+    projectScope: string;
+    projectOwner: ProjectOwner;
+    assessments: Assessment[];
+    caActionHistories: CaActionHistory[];
+    acceptedDate: moment.Moment;
+    proposeDateofCommence: moment.Moment;
+    duration: number;
+    baseScenarioProjectLife: number;
+    projectScenarioTotalInvestment: number;
+    baseScenarioTotalInvestment: number;
+    objective: string;
+    subNationalLevl1: string;
+    subNationalLevl2: string;
+    subNationalLevl3: string;
+    longitude: number;
+    latitude: number;
+    outcome: string;
+    currentProgress: string;
+    chgEmissions: string;
+    adaptationBenefits: string;
+    directSDBenefit: string;
+    indirectSDBenefit: string;
+    implementingEntity: string;
+    executingEntity: string;
+    partiesInvolved: string;
+    beneficiaries: string;
+    isMappedCorrectly: number;
+    financingScheme: FinancingScheme;
+    donors: string;
+    investors: string;
+    fundingOrganization: string;
+    initialInvestment: number;
+    annualFunding: number;
+    annualRevenue: number;
+    expectedRecurrentExpenditure: any;
+    mitigationActionType: MitigationActionType;
+    projectApprovalStatus: ProjectApprovalStatus;
+    projectRejectComment: string;
+    projectDataRequsetComment: string;
+    endDateofCommence: moment.Moment;
+    methodology: string;
+    gdp: string;
+    assumption: string;
+    reportProject: ReportProject[];
+    currentNdc: string;
+    previousNdc: string;
+    currentSubNdc: string;
+    previousSubNdc: string;
+    likelyhood: number;
+    politicalPreference: number;
+    financialFecialbility: number;
+    availabilityOfTechnology: number;
+    actionJustification: string;
+
+    constructor(data?: IProject) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.assessments = [];
+            this.reportProject = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.climateActionName = _data["climateActionName"];
+            this.description = _data["description"];
+            this.contactPersoFullName = _data["contactPersoFullName"];
+            this.email = _data["email"];
+            this.contactPersonDesignation = _data["contactPersonDesignation"];
+            this.telephoneNumber = _data["telephoneNumber"];
+            this.mobileNumber = _data["mobileNumber"];
+            this.institution = _data["institution"];
+            this.mappedInstitution = _data["mappedInstitution"] ? Institution.fromJS(_data["mappedInstitution"]) : <any>undefined;
+            this.country = _data["country"] ? Country.fromJS(_data["country"]) : <any>undefined;
+            this.projectStatus = _data["projectStatus"] ? ProjectStatus.fromJS(_data["projectStatus"]) : <any>undefined;
+            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : <any>undefined;
+            this.ndc = _data["ndc"] ? Ndc.fromJS(_data["ndc"]) : <any>undefined;
+            this.subNdc = _data["subNdc"] ? SubNdc.fromJS(_data["subNdc"]) : <any>undefined;
+            this.projectScope = _data["projectScope"];
+            this.projectOwner = _data["projectOwner"] ? ProjectOwner.fromJS(_data["projectOwner"]) : <any>undefined;
+            if (Array.isArray(_data["assessments"])) {
+                this.assessments = [] as any;
+                for (let item of _data["assessments"])
+                    this.assessments.push(Assessment.fromJS(item));
+            }
+            if (Array.isArray(_data["caActionHistories"])) {
+                this.caActionHistories = [] as any;
+                for (let item of _data["caActionHistories"])
+                    this.caActionHistories.push(CaActionHistory.fromJS(item));
+            }
+            this.acceptedDate = _data["acceptedDate"] ? moment(_data["acceptedDate"].toString()) : <any>undefined;
+            this.proposeDateofCommence = _data["proposeDateofCommence"] ? moment(_data["proposeDateofCommence"].toString()) : <any>undefined;
+            this.duration = _data["duration"];
+            this.baseScenarioProjectLife = _data["baseScenarioProjectLife"];
+            this.projectScenarioTotalInvestment = _data["projectScenarioTotalInvestment"];
+            this.baseScenarioTotalInvestment = _data["baseScenarioTotalInvestment"];
+            this.objective = _data["objective"];
+            this.subNationalLevl1 = _data["subNationalLevl1"];
+            this.subNationalLevl2 = _data["subNationalLevl2"];
+            this.subNationalLevl3 = _data["subNationalLevl3"];
+            this.longitude = _data["longitude"];
+            this.latitude = _data["latitude"];
+            this.outcome = _data["outcome"];
+            this.currentProgress = _data["currentProgress"];
+            this.chgEmissions = _data["chgEmissions"];
+            this.adaptationBenefits = _data["adaptationBenefits"];
+            this.directSDBenefit = _data["directSDBenefit"];
+            this.indirectSDBenefit = _data["indirectSDBenefit"];
+            this.implementingEntity = _data["implementingEntity"];
+            this.executingEntity = _data["executingEntity"];
+            this.partiesInvolved = _data["partiesInvolved"];
+            this.beneficiaries = _data["beneficiaries"];
+            this.isMappedCorrectly = _data["isMappedCorrectly"];
+            this.financingScheme = _data["financingScheme"] ? FinancingScheme.fromJS(_data["financingScheme"]) : <any>undefined;
+            this.donors = _data["donors"];
+            this.investors = _data["investors"];
+            this.fundingOrganization = _data["fundingOrganization"];
+            this.initialInvestment = _data["initialInvestment"];
+            this.annualFunding = _data["annualFunding"];
+            this.annualRevenue = _data["annualRevenue"];
+            this.expectedRecurrentExpenditure = _data["expectedRecurrentExpenditure"];
+            this.mitigationActionType = _data["mitigationActionType"] ? MitigationActionType.fromJS(_data["mitigationActionType"]) : <any>undefined;
+            this.projectApprovalStatus = _data["projectApprovalStatus"] ? ProjectApprovalStatus.fromJS(_data["projectApprovalStatus"]) : <any>undefined;
+            this.projectRejectComment = _data["projectRejectComment"];
+            this.projectDataRequsetComment = _data["projectDataRequsetComment"];
+            this.endDateofCommence = _data["endDateofCommence"] ? moment(_data["endDateofCommence"].toString()) : <any>undefined;
+            this.methodology = _data["methodology"];
+            this.gdp = _data["gdp"];
+            this.assumption = _data["assumption"];
+            if (Array.isArray(_data["reportProject"])) {
+                this.reportProject = [] as any;
+                for (let item of _data["reportProject"])
+                    this.reportProject.push(ReportProject.fromJS(item));
+            }
+            this.currentNdc = _data["currentNdc"];
+            this.previousNdc = _data["previousNdc"];
+            this.currentSubNdc = _data["currentSubNdc"];
+            this.previousSubNdc = _data["previousSubNdc"];
+            this.likelyhood = _data["likelyhood"];
+            this.politicalPreference = _data["politicalPreference"];
+            this.financialFecialbility = _data["financialFecialbility"];
+            this.availabilityOfTechnology = _data["availabilityOfTechnology"];
+            this.actionJustification = _data["actionJustification"];
+        }
+    }
+
+    static fromJS(data: any): Project {
+        data = typeof data === 'object' ? data : {};
+        let result = new Project();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["climateActionName"] = this.climateActionName;
+        data["description"] = this.description;
+        data["contactPersoFullName"] = this.contactPersoFullName;
+        data["email"] = this.email;
+        data["contactPersonDesignation"] = this.contactPersonDesignation;
+        data["telephoneNumber"] = this.telephoneNumber;
+        data["mobileNumber"] = this.mobileNumber;
+        data["institution"] = this.institution;
+        data["mappedInstitution"] = this.mappedInstitution ? this.mappedInstitution.toJSON() : <any>undefined;
+        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        data["projectStatus"] = this.projectStatus ? this.projectStatus.toJSON() : <any>undefined;
+        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
+        data["ndc"] = this.ndc ? this.ndc.toJSON() : <any>undefined;
+        data["subNdc"] = this.subNdc ? this.subNdc.toJSON() : <any>undefined;
+        data["projectScope"] = this.projectScope;
+        data["projectOwner"] = this.projectOwner ? this.projectOwner.toJSON() : <any>undefined;
+        if (Array.isArray(this.assessments)) {
+            data["assessments"] = [];
+            for (let item of this.assessments)
+                data["assessments"].push(item.toJSON());
+        }
+        if (Array.isArray(this.caActionHistories)) {
+            data["caActionHistories"] = [];
+            for (let item of this.caActionHistories)
+                data["caActionHistories"].push(item.toJSON());
+        }
+        data["acceptedDate"] = this.acceptedDate ? this.acceptedDate.toISOString() : <any>undefined;
+        data["proposeDateofCommence"] = this.proposeDateofCommence ? this.proposeDateofCommence.toISOString() : <any>undefined;
+        data["duration"] = this.duration;
+        data["baseScenarioProjectLife"] = this.baseScenarioProjectLife;
+        data["projectScenarioTotalInvestment"] = this.projectScenarioTotalInvestment;
+        data["baseScenarioTotalInvestment"] = this.baseScenarioTotalInvestment;
+        data["objective"] = this.objective;
+        data["subNationalLevl1"] = this.subNationalLevl1;
+        data["subNationalLevl2"] = this.subNationalLevl2;
+        data["subNationalLevl3"] = this.subNationalLevl3;
+        data["longitude"] = this.longitude;
+        data["latitude"] = this.latitude;
+        data["outcome"] = this.outcome;
+        data["currentProgress"] = this.currentProgress;
+        data["chgEmissions"] = this.chgEmissions;
+        data["adaptationBenefits"] = this.adaptationBenefits;
+        data["directSDBenefit"] = this.directSDBenefit;
+        data["indirectSDBenefit"] = this.indirectSDBenefit;
+        data["implementingEntity"] = this.implementingEntity;
+        data["executingEntity"] = this.executingEntity;
+        data["partiesInvolved"] = this.partiesInvolved;
+        data["beneficiaries"] = this.beneficiaries;
+        data["isMappedCorrectly"] = this.isMappedCorrectly;
+        data["financingScheme"] = this.financingScheme ? this.financingScheme.toJSON() : <any>undefined;
+        data["donors"] = this.donors;
+        data["investors"] = this.investors;
+        data["fundingOrganization"] = this.fundingOrganization;
+        data["initialInvestment"] = this.initialInvestment;
+        data["annualFunding"] = this.annualFunding;
+        data["annualRevenue"] = this.annualRevenue;
+        data["expectedRecurrentExpenditure"] = this.expectedRecurrentExpenditure;
+        data["mitigationActionType"] = this.mitigationActionType ? this.mitigationActionType.toJSON() : <any>undefined;
+        data["projectApprovalStatus"] = this.projectApprovalStatus ? this.projectApprovalStatus.toJSON() : <any>undefined;
+        data["projectRejectComment"] = this.projectRejectComment;
+        data["projectDataRequsetComment"] = this.projectDataRequsetComment;
+        data["endDateofCommence"] = this.endDateofCommence ? this.endDateofCommence.toISOString() : <any>undefined;
+        data["methodology"] = this.methodology;
+        data["gdp"] = this.gdp;
+        data["assumption"] = this.assumption;
+        if (Array.isArray(this.reportProject)) {
+            data["reportProject"] = [];
+            for (let item of this.reportProject)
+                data["reportProject"].push(item.toJSON());
+        }
+        data["currentNdc"] = this.currentNdc;
+        data["previousNdc"] = this.previousNdc;
+        data["currentSubNdc"] = this.currentSubNdc;
+        data["previousSubNdc"] = this.previousSubNdc;
+        data["likelyhood"] = this.likelyhood;
+        data["politicalPreference"] = this.politicalPreference;
+        data["financialFecialbility"] = this.financialFecialbility;
+        data["availabilityOfTechnology"] = this.availabilityOfTechnology;
+        data["actionJustification"] = this.actionJustification;
+        return data;
+    }
+
+    clone(): Project {
+        const json = this.toJSON();
+        let result = new Project();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IProject {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    climateActionName: string;
+    description: string;
+    contactPersoFullName: string;
+    email: string;
+    contactPersonDesignation: string;
+    telephoneNumber: string;
+    mobileNumber: string;
+    institution: string;
+    mappedInstitution: Institution;
+    country: Country;
+    projectStatus: ProjectStatus;
+    sector: Sector;
+    ndc: Ndc;
+    subNdc: SubNdc;
+    projectScope: string;
+    projectOwner: ProjectOwner;
+    assessments: Assessment[];
+    caActionHistories: CaActionHistory[];
+    acceptedDate: moment.Moment;
+    proposeDateofCommence: moment.Moment;
+    duration: number;
+    baseScenarioProjectLife: number;
+    projectScenarioTotalInvestment: number;
+    baseScenarioTotalInvestment: number;
+    objective: string;
+    subNationalLevl1: string;
+    subNationalLevl2: string;
+    subNationalLevl3: string;
+    longitude: number;
+    latitude: number;
+    outcome: string;
+    currentProgress: string;
+    chgEmissions: string;
+    adaptationBenefits: string;
+    directSDBenefit: string;
+    indirectSDBenefit: string;
+    implementingEntity: string;
+    executingEntity: string;
+    partiesInvolved: string;
+    beneficiaries: string;
+    isMappedCorrectly: number;
+    financingScheme: FinancingScheme;
+    donors: string;
+    investors: string;
+    fundingOrganization: string;
+    initialInvestment: number;
+    annualFunding: number;
+    annualRevenue: number;
+    expectedRecurrentExpenditure: any;
+    mitigationActionType: MitigationActionType;
+    projectApprovalStatus: ProjectApprovalStatus;
+    projectRejectComment: string;
+    projectDataRequsetComment: string;
+    endDateofCommence: moment.Moment;
+    methodology: string;
+    gdp: string;
+    assumption: string;
+    reportProject: ReportProject[];
+    currentNdc: string;
+    previousNdc: string;
+    currentSubNdc: string;
+    previousSubNdc: string;
+    likelyhood: number;
+    politicalPreference: number;
+    financialFecialbility: number;
+    availabilityOfTechnology: number;
+    actionJustification: string;
+}
+
+export class ReportProject implements IReportProject {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    report: Report;
+    project: Project;
+
+    constructor(data?: IReportProject) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.report = new Report();
+            this.project = new Project();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.report = _data["report"] ? Report.fromJS(_data["report"]) : new Report();
+            this.project = _data["project"] ? Project.fromJS(_data["project"]) : new Project();
+        }
+    }
+
+    static fromJS(data: any): ReportProject {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportProject();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["report"] = this.report ? this.report.toJSON() : <any>undefined;
+        data["project"] = this.project ? this.project.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): ReportProject {
+        const json = this.toJSON();
+        let result = new ReportProject();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IReportProject {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    report: Report;
+    project: Project;
+}
+
+export class ReportAssessment implements IReportAssessment {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    report: Report;
+    assessment: Assessment;
+
+    constructor(data?: IReportAssessment) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.report = new Report();
+            this.assessment = new Assessment();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.report = _data["report"] ? Report.fromJS(_data["report"]) : new Report();
+            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : new Assessment();
+        }
+    }
+
+    static fromJS(data: any): ReportAssessment {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportAssessment();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["report"] = this.report ? this.report.toJSON() : <any>undefined;
+        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): ReportAssessment {
+        const json = this.toJSON();
+        let result = new ReportAssessment();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IReportAssessment {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    report: Report;
+    assessment: Assessment;
+}
+
+export class Report implements IReport {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    reportName: string;
+    savedLocation: string;
+    country: Country;
+    reportSector: ReportSector[];
+    reportProject: ReportProject[];
+    reportAssessment: ReportAssessment[];
+    reportNdc: ReportNdc[];
+    description: string;
+    isPublish: number;
+    thumbnail: string;
+
+    constructor(data?: IReport) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.country = new Country();
+            this.reportSector = [];
+            this.reportProject = [];
+            this.reportAssessment = [];
+            this.reportNdc = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.reportName = _data["reportName"];
+            this.savedLocation = _data["savedLocation"];
+            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
+            if (Array.isArray(_data["reportSector"])) {
+                this.reportSector = [] as any;
+                for (let item of _data["reportSector"])
+                    this.reportSector.push(ReportSector.fromJS(item));
+            }
+            if (Array.isArray(_data["reportProject"])) {
+                this.reportProject = [] as any;
+                for (let item of _data["reportProject"])
+                    this.reportProject.push(ReportProject.fromJS(item));
+            }
+            if (Array.isArray(_data["reportAssessment"])) {
+                this.reportAssessment = [] as any;
+                for (let item of _data["reportAssessment"])
+                    this.reportAssessment.push(ReportAssessment.fromJS(item));
+            }
+            if (Array.isArray(_data["reportNdc"])) {
+                this.reportNdc = [] as any;
+                for (let item of _data["reportNdc"])
+                    this.reportNdc.push(ReportNdc.fromJS(item));
+            }
+            this.description = _data["description"];
+            this.isPublish = _data["isPublish"];
+            this.thumbnail = _data["thumbnail"];
+        }
+    }
+
+    static fromJS(data: any): Report {
+        data = typeof data === 'object' ? data : {};
+        let result = new Report();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["reportName"] = this.reportName;
+        data["savedLocation"] = this.savedLocation;
+        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        if (Array.isArray(this.reportSector)) {
+            data["reportSector"] = [];
+            for (let item of this.reportSector)
+                data["reportSector"].push(item.toJSON());
+        }
+        if (Array.isArray(this.reportProject)) {
+            data["reportProject"] = [];
+            for (let item of this.reportProject)
+                data["reportProject"].push(item.toJSON());
+        }
+        if (Array.isArray(this.reportAssessment)) {
+            data["reportAssessment"] = [];
+            for (let item of this.reportAssessment)
+                data["reportAssessment"].push(item.toJSON());
+        }
+        if (Array.isArray(this.reportNdc)) {
+            data["reportNdc"] = [];
+            for (let item of this.reportNdc)
+                data["reportNdc"].push(item.toJSON());
+        }
+        data["description"] = this.description;
+        data["isPublish"] = this.isPublish;
+        data["thumbnail"] = this.thumbnail;
+        return data;
+    }
+
+    clone(): Report {
+        const json = this.toJSON();
+        let result = new Report();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IReport {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    reportName: string;
+    savedLocation: string;
+    country: Country;
+    reportSector: ReportSector[];
+    reportProject: ReportProject[];
+    reportAssessment: ReportAssessment[];
+    reportNdc: ReportNdc[];
+    description: string;
+    isPublish: number;
+    thumbnail: string;
+}
+
+export class ReportSector implements IReportSector {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    report: Report;
+    sector: Sector;
+
+    constructor(data?: IReportSector) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.report = new Report();
+            this.sector = new Sector();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.report = _data["report"] ? Report.fromJS(_data["report"]) : new Report();
+            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
+        }
+    }
+
+    static fromJS(data: any): ReportSector {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportSector();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["report"] = this.report ? this.report.toJSON() : <any>undefined;
+        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): ReportSector {
+        const json = this.toJSON();
+        let result = new ReportSector();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IReportSector {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    report: Report;
+    sector: Sector;
+}
+
+export class SubSector implements ISubSector {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+    sector: Sector;
+
+    constructor(data?: ISubSector) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.sector = new Sector();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
+        }
+    }
+
+    static fromJS(data: any): SubSector {
+        data = typeof data === 'object' ? data : {};
+        let result = new SubSector();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): SubSector {
+        const json = this.toJSON();
+        let result = new SubSector();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISubSector {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+    sector: Sector;
+}
+
+export class Sector implements ISector {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+    countrysector: CountrySector[];
+    learningMaterialsector: LearningMaterialSector[];
+    reportSector: ReportSector[];
+    subSector: SubSector[];
+    emissionSummary: string;
+    ndcDocuments: string;
+    uniqueIdentification: string;
+
+    constructor(data?: ISector) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.countrysector = [];
+            this.learningMaterialsector = [];
+            this.reportSector = [];
+            this.subSector = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+            if (Array.isArray(_data["countrysector"])) {
+                this.countrysector = [] as any;
+                for (let item of _data["countrysector"])
+                    this.countrysector.push(CountrySector.fromJS(item));
+            }
+            if (Array.isArray(_data["learningMaterialsector"])) {
+                this.learningMaterialsector = [] as any;
+                for (let item of _data["learningMaterialsector"])
+                    this.learningMaterialsector.push(LearningMaterialSector.fromJS(item));
+            }
+            if (Array.isArray(_data["reportSector"])) {
+                this.reportSector = [] as any;
+                for (let item of _data["reportSector"])
+                    this.reportSector.push(ReportSector.fromJS(item));
+            }
+            if (Array.isArray(_data["subSector"])) {
+                this.subSector = [] as any;
+                for (let item of _data["subSector"])
+                    this.subSector.push(SubSector.fromJS(item));
+            }
+            this.emissionSummary = _data["emissionSummary"];
+            this.ndcDocuments = _data["ndcDocuments"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
+        }
+    }
+
+    static fromJS(data: any): Sector {
+        data = typeof data === 'object' ? data : {};
+        let result = new Sector();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        if (Array.isArray(this.countrysector)) {
+            data["countrysector"] = [];
+            for (let item of this.countrysector)
+                data["countrysector"].push(item.toJSON());
+        }
+        if (Array.isArray(this.learningMaterialsector)) {
+            data["learningMaterialsector"] = [];
+            for (let item of this.learningMaterialsector)
+                data["learningMaterialsector"].push(item.toJSON());
+        }
+        if (Array.isArray(this.reportSector)) {
+            data["reportSector"] = [];
+            for (let item of this.reportSector)
+                data["reportSector"].push(item.toJSON());
+        }
+        if (Array.isArray(this.subSector)) {
+            data["subSector"] = [];
+            for (let item of this.subSector)
+                data["subSector"].push(item.toJSON());
+        }
+        data["emissionSummary"] = this.emissionSummary;
+        data["ndcDocuments"] = this.ndcDocuments;
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        return data;
+    }
+
+    clone(): Sector {
+        const json = this.toJSON();
+        let result = new Sector();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISector {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+    countrysector: CountrySector[];
+    learningMaterialsector: LearningMaterialSector[];
+    reportSector: ReportSector[];
+    subSector: SubSector[];
+    emissionSummary: string;
+    ndcDocuments: string;
+    uniqueIdentification: string;
+}
+
+export class LearningMaterialSector implements ILearningMaterialSector {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    uniqueIdentification: string;
+    learningMaterial2: LearningMaterial;
+    sector: Sector;
+
+    constructor(data?: ILearningMaterialSector) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.learningMaterial2 = new LearningMaterial();
+            this.sector = new Sector();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
+            this.learningMaterial2 = _data["learningMaterial2"] ? LearningMaterial.fromJS(_data["learningMaterial2"]) : new LearningMaterial();
+            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
+        }
+    }
+
+    static fromJS(data: any): LearningMaterialSector {
+        data = typeof data === 'object' ? data : {};
+        let result = new LearningMaterialSector();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        data["learningMaterial2"] = this.learningMaterial2 ? this.learningMaterial2.toJSON() : <any>undefined;
+        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): LearningMaterialSector {
+        const json = this.toJSON();
+        let result = new LearningMaterialSector();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILearningMaterialSector {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    uniqueIdentification: string;
+    learningMaterial2: LearningMaterial;
+    sector: Sector;
+}
+
+export class LearningMaterial implements ILearningMaterial {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    documentType: string;
+    documentName: string;
+    document: string;
+    thumbnail: string;
+    isPublish: number;
+    deletedAt: moment.Moment;
+    uniqueIdentification: string;
+    learningMaterialusertype: LearningMaterialUserType[];
+    learningMaterialsector: LearningMaterialSector[];
+
+    constructor(data?: ILearningMaterial) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.learningMaterialusertype = [];
+            this.learningMaterialsector = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.documentType = _data["documentType"];
+            this.documentName = _data["documentName"];
+            this.document = _data["document"];
+            this.thumbnail = _data["thumbnail"];
+            this.isPublish = _data["isPublish"];
+            this.deletedAt = _data["deletedAt"] ? moment(_data["deletedAt"].toString()) : <any>undefined;
+            this.uniqueIdentification = _data["uniqueIdentification"];
+            if (Array.isArray(_data["learningMaterialusertype"])) {
+                this.learningMaterialusertype = [] as any;
+                for (let item of _data["learningMaterialusertype"])
+                    this.learningMaterialusertype.push(LearningMaterialUserType.fromJS(item));
+            }
+            if (Array.isArray(_data["learningMaterialsector"])) {
+                this.learningMaterialsector = [] as any;
+                for (let item of _data["learningMaterialsector"])
+                    this.learningMaterialsector.push(LearningMaterialSector.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): LearningMaterial {
+        data = typeof data === 'object' ? data : {};
+        let result = new LearningMaterial();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["documentType"] = this.documentType;
+        data["documentName"] = this.documentName;
+        data["document"] = this.document;
+        data["thumbnail"] = this.thumbnail;
+        data["isPublish"] = this.isPublish;
+        data["deletedAt"] = this.deletedAt ? this.deletedAt.toISOString() : <any>undefined;
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        if (Array.isArray(this.learningMaterialusertype)) {
+            data["learningMaterialusertype"] = [];
+            for (let item of this.learningMaterialusertype)
+                data["learningMaterialusertype"].push(item.toJSON());
+        }
+        if (Array.isArray(this.learningMaterialsector)) {
+            data["learningMaterialsector"] = [];
+            for (let item of this.learningMaterialsector)
+                data["learningMaterialsector"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): LearningMaterial {
+        const json = this.toJSON();
+        let result = new LearningMaterial();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILearningMaterial {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    documentType: string;
+    documentName: string;
+    document: string;
+    thumbnail: string;
+    isPublish: number;
+    deletedAt: moment.Moment;
+    uniqueIdentification: string;
+    learningMaterialusertype: LearningMaterialUserType[];
+    learningMaterialsector: LearningMaterialSector[];
+}
+
+export class LearningMaterialUserType implements ILearningMaterialUserType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    uniqueIdentification: string;
+    learningMaterial: LearningMaterial;
+    userType: UserType;
+
+    constructor(data?: ILearningMaterialUserType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.learningMaterial = new LearningMaterial();
+            this.userType = new UserType();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
+            this.learningMaterial = _data["learningMaterial"] ? LearningMaterial.fromJS(_data["learningMaterial"]) : new LearningMaterial();
+            this.userType = _data["userType"] ? UserType.fromJS(_data["userType"]) : new UserType();
+        }
+    }
+
+    static fromJS(data: any): LearningMaterialUserType {
+        data = typeof data === 'object' ? data : {};
+        let result = new LearningMaterialUserType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        data["learningMaterial"] = this.learningMaterial ? this.learningMaterial.toJSON() : <any>undefined;
+        data["userType"] = this.userType ? this.userType.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): LearningMaterialUserType {
+        const json = this.toJSON();
+        let result = new LearningMaterialUserType();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILearningMaterialUserType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    uniqueIdentification: string;
+    learningMaterial: LearningMaterial;
+    userType: UserType;
+}
+
+export class UserType implements IUserType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    learningMaterialusertype: LearningMaterialUserType[];
+    institutionType: InstitutionType;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+
+    constructor(data?: IUserType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.learningMaterialusertype = [];
+            this.institutionType = new InstitutionType();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            if (Array.isArray(_data["learningMaterialusertype"])) {
+                this.learningMaterialusertype = [] as any;
+                for (let item of _data["learningMaterialusertype"])
+                    this.learningMaterialusertype.push(LearningMaterialUserType.fromJS(item));
+            }
+            this.institutionType = _data["institutionType"] ? InstitutionType.fromJS(_data["institutionType"]) : new InstitutionType();
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): UserType {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        if (Array.isArray(this.learningMaterialusertype)) {
+            data["learningMaterialusertype"] = [];
+            for (let item of this.learningMaterialusertype)
+                data["learningMaterialusertype"].push(item.toJSON());
+        }
+        data["institutionType"] = this.institutionType ? this.institutionType.toJSON() : <any>undefined;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): UserType {
+        const json = this.toJSON();
+        let result = new UserType();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    learningMaterialusertype: LearningMaterialUserType[];
+    institutionType: InstitutionType;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
 }
 
 export class User implements IUser {
@@ -28135,170 +30430,6 @@ export interface IAssessmentResault {
     projectionResult: ProjectionResault[];
 }
 
-export class GetManyMitigationActionTypeResponseDto implements IGetManyMitigationActionTypeResponseDto {
-    data: MitigationActionType[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyMitigationActionTypeResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(MitigationActionType.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyMitigationActionTypeResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyMitigationActionTypeResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyMitigationActionTypeResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyMitigationActionTypeResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyMitigationActionTypeResponseDto {
-    data: MitigationActionType[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class MitigationActionType implements IMitigationActionType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    methodology: Methodology[];
-    uniqueIdentification: string;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-
-    constructor(data?: IMitigationActionType) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.methodology = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            if (Array.isArray(_data["methodology"])) {
-                this.methodology = [] as any;
-                for (let item of _data["methodology"])
-                    this.methodology.push(Methodology.fromJS(item));
-            }
-            this.uniqueIdentification = _data["uniqueIdentification"];
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-        }
-    }
-
-    static fromJS(data: any): MitigationActionType {
-        data = typeof data === 'object' ? data : {};
-        let result = new MitigationActionType();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        if (Array.isArray(this.methodology)) {
-            data["methodology"] = [];
-            for (let item of this.methodology)
-                data["methodology"].push(item.toJSON());
-        }
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        return data;
-    }
-
-    clone(): MitigationActionType {
-        const json = this.toJSON();
-        let result = new MitigationActionType();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IMitigationActionType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    methodology: Methodology[];
-    uniqueIdentification: string;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-}
-
 export class ProjectionYear implements IProjectionYear {
     createdBy: string;
     createdOn: moment.Moment;
@@ -28539,81 +30670,6 @@ export interface IApplicabilityEntity {
     name: string;
     description: string;
     sortOrder: number;
-}
-
-export class ReportAssessment implements IReportAssessment {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    report: Report;
-    assessment: Assessment;
-
-    constructor(data?: IReportAssessment) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.report = new Report();
-            this.assessment = new Assessment();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.report = _data["report"] ? Report.fromJS(_data["report"]) : new Report();
-            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : new Assessment();
-        }
-    }
-
-    static fromJS(data: any): ReportAssessment {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReportAssessment();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["report"] = this.report ? this.report.toJSON() : <any>undefined;
-        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): ReportAssessment {
-        const json = this.toJSON();
-        let result = new ReportAssessment();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IReportAssessment {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    report: Report;
-    assessment: Assessment;
 }
 
 export class Assessment implements IAssessment {
@@ -28888,2079 +30944,6 @@ export interface IAssessment {
     applicability: ApplicabilityEntity[];
     reportAssessment: ReportAssessment[];
     projectionResult: ProjectionResault[];
-}
-
-export class SubNdc implements ISubNdc {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    ndc: Ndc;
-    methodology: Methodology;
-    assessments: Assessment[];
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-
-    constructor(data?: ISubNdc) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.ndc = new Ndc();
-            this.methodology = new Methodology();
-            this.assessments = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.ndc = _data["ndc"] ? Ndc.fromJS(_data["ndc"]) : new Ndc();
-            this.methodology = _data["methodology"] ? Methodology.fromJS(_data["methodology"]) : new Methodology();
-            if (Array.isArray(_data["assessments"])) {
-                this.assessments = [] as any;
-                for (let item of _data["assessments"])
-                    this.assessments.push(Assessment.fromJS(item));
-            }
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-        }
-    }
-
-    static fromJS(data: any): SubNdc {
-        data = typeof data === 'object' ? data : {};
-        let result = new SubNdc();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["ndc"] = this.ndc ? this.ndc.toJSON() : <any>undefined;
-        data["methodology"] = this.methodology ? this.methodology.toJSON() : <any>undefined;
-        if (Array.isArray(this.assessments)) {
-            data["assessments"] = [];
-            for (let item of this.assessments)
-                data["assessments"].push(item.toJSON());
-        }
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        return data;
-    }
-
-    clone(): SubNdc {
-        const json = this.toJSON();
-        let result = new SubNdc();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ISubNdc {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    ndc: Ndc;
-    methodology: Methodology;
-    assessments: Assessment[];
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-}
-
-export class GetManyNdcSetResponseDto implements IGetManyNdcSetResponseDto {
-    data: NdcSet[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyNdcSetResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(NdcSet.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyNdcSetResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyNdcSetResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyNdcSetResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyNdcSetResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyNdcSetResponseDto {
-    data: NdcSet[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class NdcSet implements INdcSet {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    country: Country;
-    submissionDate: moment.Moment;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-
-    constructor(data?: INdcSet) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.country = new Country();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
-            this.submissionDate = _data["submissionDate"] ? moment(_data["submissionDate"].toString()) : <any>undefined;
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-        }
-    }
-
-    static fromJS(data: any): NdcSet {
-        data = typeof data === 'object' ? data : {};
-        let result = new NdcSet();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
-        data["submissionDate"] = this.submissionDate ? this.submissionDate.toISOString() : <any>undefined;
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        return data;
-    }
-
-    clone(): NdcSet {
-        const json = this.toJSON();
-        let result = new NdcSet();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface INdcSet {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    country: Country;
-    submissionDate: moment.Moment;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-}
-
-export class ReportNdc implements IReportNdc {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    report: Report;
-    ndc: Ndc;
-
-    constructor(data?: IReportNdc) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.report = new Report();
-            this.ndc = new Ndc();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.report = _data["report"] ? Report.fromJS(_data["report"]) : new Report();
-            this.ndc = _data["ndc"] ? Ndc.fromJS(_data["ndc"]) : new Ndc();
-        }
-    }
-
-    static fromJS(data: any): ReportNdc {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReportNdc();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["report"] = this.report ? this.report.toJSON() : <any>undefined;
-        data["ndc"] = this.ndc ? this.ndc.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): ReportNdc {
-        const json = this.toJSON();
-        let result = new ReportNdc();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IReportNdc {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    report: Report;
-    ndc: Ndc;
-}
-
-export class Ndc implements INdc {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    subNdc: SubNdc[];
-    set: NdcSet;
-    country: Country;
-    sector: Sector;
-    assessments: Assessment[];
-    isSelected: boolean;
-    methodology: Methodology;
-    reportNdc: ReportNdc[];
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-
-    constructor(data?: INdc) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.subNdc = [];
-            this.set = new NdcSet();
-            this.country = new Country();
-            this.sector = new Sector();
-            this.assessments = [];
-            this.methodology = new Methodology();
-            this.reportNdc = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            if (Array.isArray(_data["subNdc"])) {
-                this.subNdc = [] as any;
-                for (let item of _data["subNdc"])
-                    this.subNdc.push(SubNdc.fromJS(item));
-            }
-            this.set = _data["set"] ? NdcSet.fromJS(_data["set"]) : new NdcSet();
-            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
-            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
-            if (Array.isArray(_data["assessments"])) {
-                this.assessments = [] as any;
-                for (let item of _data["assessments"])
-                    this.assessments.push(Assessment.fromJS(item));
-            }
-            this.isSelected = _data["isSelected"];
-            this.methodology = _data["methodology"] ? Methodology.fromJS(_data["methodology"]) : new Methodology();
-            if (Array.isArray(_data["reportNdc"])) {
-                this.reportNdc = [] as any;
-                for (let item of _data["reportNdc"])
-                    this.reportNdc.push(ReportNdc.fromJS(item));
-            }
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-        }
-    }
-
-    static fromJS(data: any): Ndc {
-        data = typeof data === 'object' ? data : {};
-        let result = new Ndc();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        if (Array.isArray(this.subNdc)) {
-            data["subNdc"] = [];
-            for (let item of this.subNdc)
-                data["subNdc"].push(item.toJSON());
-        }
-        data["set"] = this.set ? this.set.toJSON() : <any>undefined;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
-        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
-        if (Array.isArray(this.assessments)) {
-            data["assessments"] = [];
-            for (let item of this.assessments)
-                data["assessments"].push(item.toJSON());
-        }
-        data["isSelected"] = this.isSelected;
-        data["methodology"] = this.methodology ? this.methodology.toJSON() : <any>undefined;
-        if (Array.isArray(this.reportNdc)) {
-            data["reportNdc"] = [];
-            for (let item of this.reportNdc)
-                data["reportNdc"].push(item.toJSON());
-        }
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        return data;
-    }
-
-    clone(): Ndc {
-        const json = this.toJSON();
-        let result = new Ndc();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface INdc {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    subNdc: SubNdc[];
-    set: NdcSet;
-    country: Country;
-    sector: Sector;
-    assessments: Assessment[];
-    isSelected: boolean;
-    methodology: Methodology;
-    reportNdc: ReportNdc[];
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-}
-
-export class GetManyProjectOwnerResponseDto implements IGetManyProjectOwnerResponseDto {
-    data: ProjectOwner[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyProjectOwnerResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(ProjectOwner.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyProjectOwnerResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyProjectOwnerResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyProjectOwnerResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyProjectOwnerResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyProjectOwnerResponseDto {
-    data: ProjectOwner[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class ProjectOwner implements IProjectOwner {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-
-    constructor(data?: IProjectOwner) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-        }
-    }
-
-    static fromJS(data: any): ProjectOwner {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProjectOwner();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        return data;
-    }
-
-    clone(): ProjectOwner {
-        const json = this.toJSON();
-        let result = new ProjectOwner();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IProjectOwner {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-}
-
-export class GetManyCaActionHistoryResponseDto implements IGetManyCaActionHistoryResponseDto {
-    data: CaActionHistory[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyCaActionHistoryResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(CaActionHistory.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyCaActionHistoryResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyCaActionHistoryResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyCaActionHistoryResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyCaActionHistoryResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyCaActionHistoryResponseDto {
-    data: CaActionHistory[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class CaActionHistory implements ICaActionHistory {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    isNdcAndSubNdc: number;
-    isApprovalAction: number;
-    previousNdcs: string;
-    currentNdcs: string;
-    previousSubNdcs: string;
-    currentSubNdcs: string;
-    previousAction: string;
-    currentAction: string;
-    actionUser: string;
-    project: Project;
-
-    constructor(data?: ICaActionHistory) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.project = new Project();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.isNdcAndSubNdc = _data["isNdcAndSubNdc"];
-            this.isApprovalAction = _data["isApprovalAction"];
-            this.previousNdcs = _data["previousNdcs"];
-            this.currentNdcs = _data["currentNdcs"];
-            this.previousSubNdcs = _data["previousSubNdcs"];
-            this.currentSubNdcs = _data["currentSubNdcs"];
-            this.previousAction = _data["previousAction"];
-            this.currentAction = _data["currentAction"];
-            this.actionUser = _data["actionUser"];
-            this.project = _data["project"] ? Project.fromJS(_data["project"]) : new Project();
-        }
-    }
-
-    static fromJS(data: any): CaActionHistory {
-        data = typeof data === 'object' ? data : {};
-        let result = new CaActionHistory();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["isNdcAndSubNdc"] = this.isNdcAndSubNdc;
-        data["isApprovalAction"] = this.isApprovalAction;
-        data["previousNdcs"] = this.previousNdcs;
-        data["currentNdcs"] = this.currentNdcs;
-        data["previousSubNdcs"] = this.previousSubNdcs;
-        data["currentSubNdcs"] = this.currentSubNdcs;
-        data["previousAction"] = this.previousAction;
-        data["currentAction"] = this.currentAction;
-        data["actionUser"] = this.actionUser;
-        data["project"] = this.project ? this.project.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): CaActionHistory {
-        const json = this.toJSON();
-        let result = new CaActionHistory();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICaActionHistory {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    isNdcAndSubNdc: number;
-    isApprovalAction: number;
-    previousNdcs: string;
-    currentNdcs: string;
-    previousSubNdcs: string;
-    currentSubNdcs: string;
-    previousAction: string;
-    currentAction: string;
-    actionUser: string;
-    project: Project;
-}
-
-export class GetManyProjectApprovalStatusResponseDto implements IGetManyProjectApprovalStatusResponseDto {
-    data: ProjectApprovalStatus[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyProjectApprovalStatusResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(ProjectApprovalStatus.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyProjectApprovalStatusResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyProjectApprovalStatusResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyProjectApprovalStatusResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyProjectApprovalStatusResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyProjectApprovalStatusResponseDto {
-    data: ProjectApprovalStatus[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class ProjectApprovalStatus implements IProjectApprovalStatus {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-
-    constructor(data?: IProjectApprovalStatus) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-        }
-    }
-
-    static fromJS(data: any): ProjectApprovalStatus {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProjectApprovalStatus();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        return data;
-    }
-
-    clone(): ProjectApprovalStatus {
-        const json = this.toJSON();
-        let result = new ProjectApprovalStatus();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IProjectApprovalStatus {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-}
-
-export class Project implements IProject {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    climateActionName: string;
-    description: string;
-    contactPersoFullName: string;
-    email: string;
-    contactPersonDesignation: string;
-    telephoneNumber: string;
-    mobileNumber: string;
-    institution: string;
-    mappedInstitution: Institution;
-    country: Country;
-    projectStatus: ProjectStatus;
-    sector: Sector;
-    ndc: Ndc;
-    subNdc: SubNdc;
-    projectScope: string;
-    projectOwner: ProjectOwner;
-    assessments: Assessment[];
-    caActionHistories: CaActionHistory[];
-    acceptedDate: moment.Moment;
-    proposeDateofCommence: moment.Moment;
-    duration: number;
-    baseScenarioProjectLife: number;
-    projectScenarioTotalInvestment: number;
-    baseScenarioTotalInvestment: number;
-    objective: string;
-    subNationalLevl1: string;
-    subNationalLevl2: string;
-    subNationalLevl3: string;
-    longitude: number;
-    latitude: number;
-    outcome: string;
-    currentProgress: string;
-    chgEmissions: string;
-    adaptationBenefits: string;
-    directSDBenefit: string;
-    indirectSDBenefit: string;
-    implementingEntity: string;
-    executingEntity: string;
-    partiesInvolved: string;
-    beneficiaries: string;
-    isMappedCorrectly: number;
-    financingScheme: FinancingScheme;
-    donors: string;
-    investors: string;
-    fundingOrganization: string;
-    initialInvestment: number;
-    annualFunding: number;
-    annualRevenue: number;
-    expectedRecurrentExpenditure: any;
-    mitigationActionType: MitigationActionType;
-    projectApprovalStatus: ProjectApprovalStatus;
-    projectRejectComment: string;
-    projectDataRequsetComment: string;
-    endDateofCommence: moment.Moment;
-    methodology: string;
-    gdp: string;
-    assumption: string;
-    reportProject: ReportProject[];
-    currentNdc: string;
-    previousNdc: string;
-    currentSubNdc: string;
-    previousSubNdc: string;
-    likelyhood: number;
-    politicalPreference: number;
-    financialFecialbility: number;
-    availabilityOfTechnology: number;
-    actionJustification: string;
-
-    constructor(data?: IProject) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.assessments = [];
-            this.reportProject = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.climateActionName = _data["climateActionName"];
-            this.description = _data["description"];
-            this.contactPersoFullName = _data["contactPersoFullName"];
-            this.email = _data["email"];
-            this.contactPersonDesignation = _data["contactPersonDesignation"];
-            this.telephoneNumber = _data["telephoneNumber"];
-            this.mobileNumber = _data["mobileNumber"];
-            this.institution = _data["institution"];
-            this.mappedInstitution = _data["mappedInstitution"] ? Institution.fromJS(_data["mappedInstitution"]) : <any>undefined;
-            this.country = _data["country"] ? Country.fromJS(_data["country"]) : <any>undefined;
-            this.projectStatus = _data["projectStatus"] ? ProjectStatus.fromJS(_data["projectStatus"]) : <any>undefined;
-            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : <any>undefined;
-            this.ndc = _data["ndc"] ? Ndc.fromJS(_data["ndc"]) : <any>undefined;
-            this.subNdc = _data["subNdc"] ? SubNdc.fromJS(_data["subNdc"]) : <any>undefined;
-            this.projectScope = _data["projectScope"];
-            this.projectOwner = _data["projectOwner"] ? ProjectOwner.fromJS(_data["projectOwner"]) : <any>undefined;
-            if (Array.isArray(_data["assessments"])) {
-                this.assessments = [] as any;
-                for (let item of _data["assessments"])
-                    this.assessments.push(Assessment.fromJS(item));
-            }
-            if (Array.isArray(_data["caActionHistories"])) {
-                this.caActionHistories = [] as any;
-                for (let item of _data["caActionHistories"])
-                    this.caActionHistories.push(CaActionHistory.fromJS(item));
-            }
-            this.acceptedDate = _data["acceptedDate"] ? moment(_data["acceptedDate"].toString()) : <any>undefined;
-            this.proposeDateofCommence = _data["proposeDateofCommence"] ? moment(_data["proposeDateofCommence"].toString()) : <any>undefined;
-            this.duration = _data["duration"];
-            this.baseScenarioProjectLife = _data["baseScenarioProjectLife"];
-            this.projectScenarioTotalInvestment = _data["projectScenarioTotalInvestment"];
-            this.baseScenarioTotalInvestment = _data["baseScenarioTotalInvestment"];
-            this.objective = _data["objective"];
-            this.subNationalLevl1 = _data["subNationalLevl1"];
-            this.subNationalLevl2 = _data["subNationalLevl2"];
-            this.subNationalLevl3 = _data["subNationalLevl3"];
-            this.longitude = _data["longitude"];
-            this.latitude = _data["latitude"];
-            this.outcome = _data["outcome"];
-            this.currentProgress = _data["currentProgress"];
-            this.chgEmissions = _data["chgEmissions"];
-            this.adaptationBenefits = _data["adaptationBenefits"];
-            this.directSDBenefit = _data["directSDBenefit"];
-            this.indirectSDBenefit = _data["indirectSDBenefit"];
-            this.implementingEntity = _data["implementingEntity"];
-            this.executingEntity = _data["executingEntity"];
-            this.partiesInvolved = _data["partiesInvolved"];
-            this.beneficiaries = _data["beneficiaries"];
-            this.isMappedCorrectly = _data["isMappedCorrectly"];
-            this.financingScheme = _data["financingScheme"] ? FinancingScheme.fromJS(_data["financingScheme"]) : <any>undefined;
-            this.donors = _data["donors"];
-            this.investors = _data["investors"];
-            this.fundingOrganization = _data["fundingOrganization"];
-            this.initialInvestment = _data["initialInvestment"];
-            this.annualFunding = _data["annualFunding"];
-            this.annualRevenue = _data["annualRevenue"];
-            this.expectedRecurrentExpenditure = _data["expectedRecurrentExpenditure"];
-            this.mitigationActionType = _data["mitigationActionType"] ? MitigationActionType.fromJS(_data["mitigationActionType"]) : <any>undefined;
-            this.projectApprovalStatus = _data["projectApprovalStatus"] ? ProjectApprovalStatus.fromJS(_data["projectApprovalStatus"]) : <any>undefined;
-            this.projectRejectComment = _data["projectRejectComment"];
-            this.projectDataRequsetComment = _data["projectDataRequsetComment"];
-            this.endDateofCommence = _data["endDateofCommence"] ? moment(_data["endDateofCommence"].toString()) : <any>undefined;
-            this.methodology = _data["methodology"];
-            this.gdp = _data["gdp"];
-            this.assumption = _data["assumption"];
-            if (Array.isArray(_data["reportProject"])) {
-                this.reportProject = [] as any;
-                for (let item of _data["reportProject"])
-                    this.reportProject.push(ReportProject.fromJS(item));
-            }
-            this.currentNdc = _data["currentNdc"];
-            this.previousNdc = _data["previousNdc"];
-            this.currentSubNdc = _data["currentSubNdc"];
-            this.previousSubNdc = _data["previousSubNdc"];
-            this.likelyhood = _data["likelyhood"];
-            this.politicalPreference = _data["politicalPreference"];
-            this.financialFecialbility = _data["financialFecialbility"];
-            this.availabilityOfTechnology = _data["availabilityOfTechnology"];
-            this.actionJustification = _data["actionJustification"];
-        }
-    }
-
-    static fromJS(data: any): Project {
-        data = typeof data === 'object' ? data : {};
-        let result = new Project();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["climateActionName"] = this.climateActionName;
-        data["description"] = this.description;
-        data["contactPersoFullName"] = this.contactPersoFullName;
-        data["email"] = this.email;
-        data["contactPersonDesignation"] = this.contactPersonDesignation;
-        data["telephoneNumber"] = this.telephoneNumber;
-        data["mobileNumber"] = this.mobileNumber;
-        data["institution"] = this.institution;
-        data["mappedInstitution"] = this.mappedInstitution ? this.mappedInstitution.toJSON() : <any>undefined;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
-        data["projectStatus"] = this.projectStatus ? this.projectStatus.toJSON() : <any>undefined;
-        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
-        data["ndc"] = this.ndc ? this.ndc.toJSON() : <any>undefined;
-        data["subNdc"] = this.subNdc ? this.subNdc.toJSON() : <any>undefined;
-        data["projectScope"] = this.projectScope;
-        data["projectOwner"] = this.projectOwner ? this.projectOwner.toJSON() : <any>undefined;
-        if (Array.isArray(this.assessments)) {
-            data["assessments"] = [];
-            for (let item of this.assessments)
-                data["assessments"].push(item.toJSON());
-        }
-        if (Array.isArray(this.caActionHistories)) {
-            data["caActionHistories"] = [];
-            for (let item of this.caActionHistories)
-                data["caActionHistories"].push(item.toJSON());
-        }
-        data["acceptedDate"] = this.acceptedDate ? this.acceptedDate.toISOString() : <any>undefined;
-        data["proposeDateofCommence"] = this.proposeDateofCommence ? this.proposeDateofCommence.toISOString() : <any>undefined;
-        data["duration"] = this.duration;
-        data["baseScenarioProjectLife"] = this.baseScenarioProjectLife;
-        data["projectScenarioTotalInvestment"] = this.projectScenarioTotalInvestment;
-        data["baseScenarioTotalInvestment"] = this.baseScenarioTotalInvestment;
-        data["objective"] = this.objective;
-        data["subNationalLevl1"] = this.subNationalLevl1;
-        data["subNationalLevl2"] = this.subNationalLevl2;
-        data["subNationalLevl3"] = this.subNationalLevl3;
-        data["longitude"] = this.longitude;
-        data["latitude"] = this.latitude;
-        data["outcome"] = this.outcome;
-        data["currentProgress"] = this.currentProgress;
-        data["chgEmissions"] = this.chgEmissions;
-        data["adaptationBenefits"] = this.adaptationBenefits;
-        data["directSDBenefit"] = this.directSDBenefit;
-        data["indirectSDBenefit"] = this.indirectSDBenefit;
-        data["implementingEntity"] = this.implementingEntity;
-        data["executingEntity"] = this.executingEntity;
-        data["partiesInvolved"] = this.partiesInvolved;
-        data["beneficiaries"] = this.beneficiaries;
-        data["isMappedCorrectly"] = this.isMappedCorrectly;
-        data["financingScheme"] = this.financingScheme ? this.financingScheme.toJSON() : <any>undefined;
-        data["donors"] = this.donors;
-        data["investors"] = this.investors;
-        data["fundingOrganization"] = this.fundingOrganization;
-        data["initialInvestment"] = this.initialInvestment;
-        data["annualFunding"] = this.annualFunding;
-        data["annualRevenue"] = this.annualRevenue;
-        data["expectedRecurrentExpenditure"] = this.expectedRecurrentExpenditure;
-        data["mitigationActionType"] = this.mitigationActionType ? this.mitigationActionType.toJSON() : <any>undefined;
-        data["projectApprovalStatus"] = this.projectApprovalStatus ? this.projectApprovalStatus.toJSON() : <any>undefined;
-        data["projectRejectComment"] = this.projectRejectComment;
-        data["projectDataRequsetComment"] = this.projectDataRequsetComment;
-        data["endDateofCommence"] = this.endDateofCommence ? this.endDateofCommence.toISOString() : <any>undefined;
-        data["methodology"] = this.methodology;
-        data["gdp"] = this.gdp;
-        data["assumption"] = this.assumption;
-        if (Array.isArray(this.reportProject)) {
-            data["reportProject"] = [];
-            for (let item of this.reportProject)
-                data["reportProject"].push(item.toJSON());
-        }
-        data["currentNdc"] = this.currentNdc;
-        data["previousNdc"] = this.previousNdc;
-        data["currentSubNdc"] = this.currentSubNdc;
-        data["previousSubNdc"] = this.previousSubNdc;
-        data["likelyhood"] = this.likelyhood;
-        data["politicalPreference"] = this.politicalPreference;
-        data["financialFecialbility"] = this.financialFecialbility;
-        data["availabilityOfTechnology"] = this.availabilityOfTechnology;
-        data["actionJustification"] = this.actionJustification;
-        return data;
-    }
-
-    clone(): Project {
-        const json = this.toJSON();
-        let result = new Project();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IProject {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    climateActionName: string;
-    description: string;
-    contactPersoFullName: string;
-    email: string;
-    contactPersonDesignation: string;
-    telephoneNumber: string;
-    mobileNumber: string;
-    institution: string;
-    mappedInstitution: Institution;
-    country: Country;
-    projectStatus: ProjectStatus;
-    sector: Sector;
-    ndc: Ndc;
-    subNdc: SubNdc;
-    projectScope: string;
-    projectOwner: ProjectOwner;
-    assessments: Assessment[];
-    caActionHistories: CaActionHistory[];
-    acceptedDate: moment.Moment;
-    proposeDateofCommence: moment.Moment;
-    duration: number;
-    baseScenarioProjectLife: number;
-    projectScenarioTotalInvestment: number;
-    baseScenarioTotalInvestment: number;
-    objective: string;
-    subNationalLevl1: string;
-    subNationalLevl2: string;
-    subNationalLevl3: string;
-    longitude: number;
-    latitude: number;
-    outcome: string;
-    currentProgress: string;
-    chgEmissions: string;
-    adaptationBenefits: string;
-    directSDBenefit: string;
-    indirectSDBenefit: string;
-    implementingEntity: string;
-    executingEntity: string;
-    partiesInvolved: string;
-    beneficiaries: string;
-    isMappedCorrectly: number;
-    financingScheme: FinancingScheme;
-    donors: string;
-    investors: string;
-    fundingOrganization: string;
-    initialInvestment: number;
-    annualFunding: number;
-    annualRevenue: number;
-    expectedRecurrentExpenditure: any;
-    mitigationActionType: MitigationActionType;
-    projectApprovalStatus: ProjectApprovalStatus;
-    projectRejectComment: string;
-    projectDataRequsetComment: string;
-    endDateofCommence: moment.Moment;
-    methodology: string;
-    gdp: string;
-    assumption: string;
-    reportProject: ReportProject[];
-    currentNdc: string;
-    previousNdc: string;
-    currentSubNdc: string;
-    previousSubNdc: string;
-    likelyhood: number;
-    politicalPreference: number;
-    financialFecialbility: number;
-    availabilityOfTechnology: number;
-    actionJustification: string;
-}
-
-export class ReportProject implements IReportProject {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    report: Report;
-    project: Project;
-
-    constructor(data?: IReportProject) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.report = new Report();
-            this.project = new Project();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.report = _data["report"] ? Report.fromJS(_data["report"]) : new Report();
-            this.project = _data["project"] ? Project.fromJS(_data["project"]) : new Project();
-        }
-    }
-
-    static fromJS(data: any): ReportProject {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReportProject();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["report"] = this.report ? this.report.toJSON() : <any>undefined;
-        data["project"] = this.project ? this.project.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): ReportProject {
-        const json = this.toJSON();
-        let result = new ReportProject();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IReportProject {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    report: Report;
-    project: Project;
-}
-
-export class Report implements IReport {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    reportName: string;
-    savedLocation: string;
-    country: Country;
-    reportSector: ReportSector[];
-    reportProject: ReportProject[];
-    reportAssessment: ReportAssessment[];
-    reportNdc: ReportNdc[];
-    description: string;
-    isPublish: number;
-    thumbnail: string;
-
-    constructor(data?: IReport) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.country = new Country();
-            this.reportSector = [];
-            this.reportProject = [];
-            this.reportAssessment = [];
-            this.reportNdc = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.reportName = _data["reportName"];
-            this.savedLocation = _data["savedLocation"];
-            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
-            if (Array.isArray(_data["reportSector"])) {
-                this.reportSector = [] as any;
-                for (let item of _data["reportSector"])
-                    this.reportSector.push(ReportSector.fromJS(item));
-            }
-            if (Array.isArray(_data["reportProject"])) {
-                this.reportProject = [] as any;
-                for (let item of _data["reportProject"])
-                    this.reportProject.push(ReportProject.fromJS(item));
-            }
-            if (Array.isArray(_data["reportAssessment"])) {
-                this.reportAssessment = [] as any;
-                for (let item of _data["reportAssessment"])
-                    this.reportAssessment.push(ReportAssessment.fromJS(item));
-            }
-            if (Array.isArray(_data["reportNdc"])) {
-                this.reportNdc = [] as any;
-                for (let item of _data["reportNdc"])
-                    this.reportNdc.push(ReportNdc.fromJS(item));
-            }
-            this.description = _data["description"];
-            this.isPublish = _data["isPublish"];
-            this.thumbnail = _data["thumbnail"];
-        }
-    }
-
-    static fromJS(data: any): Report {
-        data = typeof data === 'object' ? data : {};
-        let result = new Report();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["reportName"] = this.reportName;
-        data["savedLocation"] = this.savedLocation;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
-        if (Array.isArray(this.reportSector)) {
-            data["reportSector"] = [];
-            for (let item of this.reportSector)
-                data["reportSector"].push(item.toJSON());
-        }
-        if (Array.isArray(this.reportProject)) {
-            data["reportProject"] = [];
-            for (let item of this.reportProject)
-                data["reportProject"].push(item.toJSON());
-        }
-        if (Array.isArray(this.reportAssessment)) {
-            data["reportAssessment"] = [];
-            for (let item of this.reportAssessment)
-                data["reportAssessment"].push(item.toJSON());
-        }
-        if (Array.isArray(this.reportNdc)) {
-            data["reportNdc"] = [];
-            for (let item of this.reportNdc)
-                data["reportNdc"].push(item.toJSON());
-        }
-        data["description"] = this.description;
-        data["isPublish"] = this.isPublish;
-        data["thumbnail"] = this.thumbnail;
-        return data;
-    }
-
-    clone(): Report {
-        const json = this.toJSON();
-        let result = new Report();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IReport {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    reportName: string;
-    savedLocation: string;
-    country: Country;
-    reportSector: ReportSector[];
-    reportProject: ReportProject[];
-    reportAssessment: ReportAssessment[];
-    reportNdc: ReportNdc[];
-    description: string;
-    isPublish: number;
-    thumbnail: string;
-}
-
-export class ReportSector implements IReportSector {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    report: Report;
-    sector: Sector;
-
-    constructor(data?: IReportSector) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.report = new Report();
-            this.sector = new Sector();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.report = _data["report"] ? Report.fromJS(_data["report"]) : new Report();
-            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
-        }
-    }
-
-    static fromJS(data: any): ReportSector {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReportSector();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["report"] = this.report ? this.report.toJSON() : <any>undefined;
-        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): ReportSector {
-        const json = this.toJSON();
-        let result = new ReportSector();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IReportSector {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    report: Report;
-    sector: Sector;
-}
-
-export class SubSector implements ISubSector {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-    sector: Sector;
-
-    constructor(data?: ISubSector) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.sector = new Sector();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
-        }
-    }
-
-    static fromJS(data: any): SubSector {
-        data = typeof data === 'object' ? data : {};
-        let result = new SubSector();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): SubSector {
-        const json = this.toJSON();
-        let result = new SubSector();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ISubSector {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-    sector: Sector;
-}
-
-export class Sector implements ISector {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-    countrysector: CountrySector[];
-    learningMaterialsector: LearningMaterialSector[];
-    reportSector: ReportSector[];
-    subSector: SubSector[];
-    emissionSummary: string;
-    ndcDocuments: string;
-    uniqueIdentification: string;
-
-    constructor(data?: ISector) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.countrysector = [];
-            this.learningMaterialsector = [];
-            this.reportSector = [];
-            this.subSector = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-            if (Array.isArray(_data["countrysector"])) {
-                this.countrysector = [] as any;
-                for (let item of _data["countrysector"])
-                    this.countrysector.push(CountrySector.fromJS(item));
-            }
-            if (Array.isArray(_data["learningMaterialsector"])) {
-                this.learningMaterialsector = [] as any;
-                for (let item of _data["learningMaterialsector"])
-                    this.learningMaterialsector.push(LearningMaterialSector.fromJS(item));
-            }
-            if (Array.isArray(_data["reportSector"])) {
-                this.reportSector = [] as any;
-                for (let item of _data["reportSector"])
-                    this.reportSector.push(ReportSector.fromJS(item));
-            }
-            if (Array.isArray(_data["subSector"])) {
-                this.subSector = [] as any;
-                for (let item of _data["subSector"])
-                    this.subSector.push(SubSector.fromJS(item));
-            }
-            this.emissionSummary = _data["emissionSummary"];
-            this.ndcDocuments = _data["ndcDocuments"];
-            this.uniqueIdentification = _data["uniqueIdentification"];
-        }
-    }
-
-    static fromJS(data: any): Sector {
-        data = typeof data === 'object' ? data : {};
-        let result = new Sector();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        if (Array.isArray(this.countrysector)) {
-            data["countrysector"] = [];
-            for (let item of this.countrysector)
-                data["countrysector"].push(item.toJSON());
-        }
-        if (Array.isArray(this.learningMaterialsector)) {
-            data["learningMaterialsector"] = [];
-            for (let item of this.learningMaterialsector)
-                data["learningMaterialsector"].push(item.toJSON());
-        }
-        if (Array.isArray(this.reportSector)) {
-            data["reportSector"] = [];
-            for (let item of this.reportSector)
-                data["reportSector"].push(item.toJSON());
-        }
-        if (Array.isArray(this.subSector)) {
-            data["subSector"] = [];
-            for (let item of this.subSector)
-                data["subSector"].push(item.toJSON());
-        }
-        data["emissionSummary"] = this.emissionSummary;
-        data["ndcDocuments"] = this.ndcDocuments;
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        return data;
-    }
-
-    clone(): Sector {
-        const json = this.toJSON();
-        let result = new Sector();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ISector {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-    countrysector: CountrySector[];
-    learningMaterialsector: LearningMaterialSector[];
-    reportSector: ReportSector[];
-    subSector: SubSector[];
-    emissionSummary: string;
-    ndcDocuments: string;
-    uniqueIdentification: string;
-}
-
-export class CountrySector implements ICountrySector {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    country: Country;
-    sector: Sector;
-    countryId: number;
-    sectorId: number;
-    uniqueIdentification: string;
-
-    constructor(data?: ICountrySector) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.country = new Country();
-            this.sector = new Sector();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
-            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
-            this.countryId = _data["countryId"];
-            this.sectorId = _data["sectorId"];
-            this.uniqueIdentification = _data["uniqueIdentification"];
-        }
-    }
-
-    static fromJS(data: any): CountrySector {
-        data = typeof data === 'object' ? data : {};
-        let result = new CountrySector();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
-        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
-        data["countryId"] = this.countryId;
-        data["sectorId"] = this.sectorId;
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        return data;
-    }
-
-    clone(): CountrySector {
-        const json = this.toJSON();
-        let result = new CountrySector();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICountrySector {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    country: Country;
-    sector: Sector;
-    countryId: number;
-    sectorId: number;
-    uniqueIdentification: string;
-}
-
-export class Country implements ICountry {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    code: string;
-    code_extended: string;
-    name: string;
-    description: string;
-    sortOrder: number;
-    submissions: string;
-    emissionSummary: string;
-    ndcDocuments: string;
-    isSystemUse: boolean;
-    flagPath: string;
-    registeredDate: moment.Moment;
-    isMember: boolean;
-    countryStatus: CountryStatus;
-    region: string;
-    climateActionModule: boolean;
-    ghgModule: boolean;
-    macModule: boolean;
-    dataCollectionModule: boolean;
-    dataCollectionGhgModule: boolean;
-    hasExelTem: boolean;
-    uniqueIdentification: string;
-    defaultValue: DefaultValue[];
-    countrysector: CountrySector[];
-
-    constructor(data?: ICountry) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.defaultValue = [];
-            this.countrysector = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.code = _data["code"];
-            this.code_extended = _data["code_extended"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-            this.submissions = _data["submissions"];
-            this.emissionSummary = _data["emissionSummary"];
-            this.ndcDocuments = _data["ndcDocuments"];
-            this.isSystemUse = _data["isSystemUse"];
-            this.flagPath = _data["flagPath"];
-            this.registeredDate = _data["registeredDate"] ? moment(_data["registeredDate"].toString()) : <any>undefined;
-            this.isMember = _data["isMember"];
-            this.countryStatus = _data["countryStatus"];
-            this.region = _data["region"];
-            this.climateActionModule = _data["climateActionModule"];
-            this.ghgModule = _data["ghgModule"];
-            this.macModule = _data["macModule"];
-            this.dataCollectionModule = _data["dataCollectionModule"];
-            this.dataCollectionGhgModule = _data["dataCollectionGhgModule"];
-            this.hasExelTem = _data["hasExelTem"];
-            this.uniqueIdentification = _data["uniqueIdentification"];
-            if (Array.isArray(_data["defaultValue"])) {
-                this.defaultValue = [] as any;
-                for (let item of _data["defaultValue"])
-                    this.defaultValue.push(DefaultValue.fromJS(item));
-            }
-            if (Array.isArray(_data["countrysector"])) {
-                this.countrysector = [] as any;
-                for (let item of _data["countrysector"])
-                    this.countrysector.push(CountrySector.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): Country {
-        data = typeof data === 'object' ? data : {};
-        let result = new Country();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["code"] = this.code;
-        data["code_extended"] = this.code_extended;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        data["submissions"] = this.submissions;
-        data["emissionSummary"] = this.emissionSummary;
-        data["ndcDocuments"] = this.ndcDocuments;
-        data["isSystemUse"] = this.isSystemUse;
-        data["flagPath"] = this.flagPath;
-        data["registeredDate"] = this.registeredDate ? this.registeredDate.toISOString() : <any>undefined;
-        data["isMember"] = this.isMember;
-        data["countryStatus"] = this.countryStatus;
-        data["region"] = this.region;
-        data["climateActionModule"] = this.climateActionModule;
-        data["ghgModule"] = this.ghgModule;
-        data["macModule"] = this.macModule;
-        data["dataCollectionModule"] = this.dataCollectionModule;
-        data["dataCollectionGhgModule"] = this.dataCollectionGhgModule;
-        data["hasExelTem"] = this.hasExelTem;
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        if (Array.isArray(this.defaultValue)) {
-            data["defaultValue"] = [];
-            for (let item of this.defaultValue)
-                data["defaultValue"].push(item.toJSON());
-        }
-        if (Array.isArray(this.countrysector)) {
-            data["countrysector"] = [];
-            for (let item of this.countrysector)
-                data["countrysector"].push(item.toJSON());
-        }
-        return data;
-    }
-
-    clone(): Country {
-        const json = this.toJSON();
-        let result = new Country();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICountry {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    code: string;
-    code_extended: string;
-    name: string;
-    description: string;
-    sortOrder: number;
-    submissions: string;
-    emissionSummary: string;
-    ndcDocuments: string;
-    isSystemUse: boolean;
-    flagPath: string;
-    registeredDate: moment.Moment;
-    isMember: boolean;
-    countryStatus: CountryStatus;
-    region: string;
-    climateActionModule: boolean;
-    ghgModule: boolean;
-    macModule: boolean;
-    dataCollectionModule: boolean;
-    dataCollectionGhgModule: boolean;
-    hasExelTem: boolean;
-    uniqueIdentification: string;
-    defaultValue: DefaultValue[];
-    countrysector: CountrySector[];
 }
 
 export class SubsectionEntity implements ISubsectionEntity {
@@ -32875,6 +32858,11 @@ export interface IDefaultValueDtos {
     country: Country;
 }
 
+export enum CountryStatus {
+    Active = <any>"Active",
+    Deactivated = <any>"Deactivated",
+}
+
 export enum ParameterRequestDataRequestStatus {
     Request = <any>"Request",
     Data_Request_Saved = <any>"Data_Request_Saved",
@@ -32995,11 +32983,6 @@ export enum AssessmentStatus {
     Data_Collection = <any>"Data_Collection",
     QA = <any>"QA",
     QD = <any>"QD",
-}
-
-export enum CountryStatus {
-    Active = <any>"Active",
-    Deactivated = <any>"Deactivated",
 }
 
 export enum DocumentsDocumentOwner {
