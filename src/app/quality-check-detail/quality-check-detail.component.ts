@@ -18,6 +18,7 @@ import {
   ProjectionResaultControllerServiceProxy,
   AssessmentYearControllerServiceProxy,
   ServiceProxy,
+  ParameterVerifierAcceptance,
 } from 'shared/service-proxies/service-proxies';
 
 @Component({
@@ -462,19 +463,25 @@ export class QualityCheckDetailComponent implements OnInit {
         console.log("para....w",this.parameters)
 
         this.baselineParameters =
-          this.assementYear.assessment.parameters.filter((p) => p.isBaseline);
+          this.assementYear.assessment.parameters.filter(
+            (p) => p.isBaseline
+            && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
+          );
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isProject
+          && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
         );
         this.lekageParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isLekage
+          && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
         );
         this.projectionParameters =
           this.assementYear.assessment.parameters.filter(
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == Number(this.assementYear.assessmentYear)
+              && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
           );
       });
   }

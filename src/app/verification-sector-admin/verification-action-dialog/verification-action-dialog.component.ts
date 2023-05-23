@@ -128,6 +128,27 @@ export class VerificationActionDialogComponent implements OnInit {
 
       } else {
         // data collection path
+        let body = new ChangeParameterValue()
+        let para = new Parameter()
+        para.id = this.parameter.id
+        body.parameter = para
+        body.isDataEntered = _isEnterData
+        body.concern = this.verificationDetail?.explanation
+        body.correctData = {
+          institution: this.selectedInstitution,
+          unit: this.correctUnit.ur_fromUnit
+        }
+        let res = await this.verificationControllerServiceProxy.changeParameterValue(body).toPromise()
+        if (res.status === 'saved') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Value changed successfully',
+            closable: true,
+          });
+          this.dialogRef.close()
+        }
+        console.log(res)
       }
     } else {
       this.dialogRef.close({result: {ndc: this.selectedNdc, subNdc: this.selectedSubNdc}})

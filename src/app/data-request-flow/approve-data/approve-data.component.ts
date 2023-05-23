@@ -12,6 +12,7 @@ import {
   ParameterControllerServiceProxy,
   ParameterHistoryControllerServiceProxy,
   ParameterRequestControllerServiceProxy,
+  ParameterVerifierAcceptance,
   ServiceProxy,
   UpdateDeadlineDto,
   UpdateValueEnterData,
@@ -217,22 +218,23 @@ export class ApproveDataComponent implements OnInit {
 
         this.baselineParameters =
           this.assementYearDetails.assessment?.parameters.filter(
-            (p) => p.isBaseline
+            (p) => p.isBaseline  && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
           );
 
         this.projectParameters =
           this.assementYearDetails.assessment.parameters.filter(
-            (p) => p.isProject
+            (p) => p.isProject  && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
           );
         this.lekageParameters =
           this.assementYearDetails.assessment.parameters.filter(
-            (p) => p.isLekage
+            (p) => p.isLekage  && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
           );
         this.projectionParameters =
           this.assementYearDetails.assessment.parameters.filter(
             (p) =>
               p.isProjection &&
-              p.projectionBaseYear == this.headerAssessmentYear
+              p.projectionBaseYear == this.headerAssessmentYear &&
+              ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
           );
         console.log('projectionParameters', this.projectionParameters);
       });
