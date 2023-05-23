@@ -260,7 +260,7 @@
 
         <button *ngIf="!isNewUser" [disabled]="user.canNotDelete == true"
           class="btn btn-primary btn-block text-uppercase m-1" type="button" (click)="onDeleteClick()">
-          Deactivate
+          {{user.status?'Activate':'Deactivate'}}
         </button>
         <button class="btn btn-primary btn-block text-uppercase m-1" (click)="onBackClick()">
           Back
