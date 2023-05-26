@@ -13,6 +13,7 @@ import {
   AssessmentYear,
   AssessmentYearVerificationStatus,
   Parameter,
+  ParameterVerifierAcceptance,
   ProjectionResault,
   ProjectionResaultControllerServiceProxy,
   ServiceProxy,
@@ -292,7 +293,10 @@ export class VerifyDetailComponent implements OnInit {
         this.parameters = this.assementYear.assessment.parameters;
 
         this.baselineParameters =
-          this.assementYear.assessment.parameters.filter((p) => p.isBaseline);
+          this.assementYear.assessment.parameters.filter(
+            (p) => p.isBaseline
+            && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
+          );
         
         for (let base of this.baselineParameters){
           if(base.isAcceptedByVerifier !=1){
@@ -302,6 +306,7 @@ export class VerifyDetailComponent implements OnInit {
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isProject
+          && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
         );
 
         for (let base of this.projectParameters){
@@ -311,6 +316,7 @@ export class VerifyDetailComponent implements OnInit {
         }
         this.lekageParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isLekage
+          && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
         );
 
         for (let base of this.lekageParameters){
@@ -325,6 +331,7 @@ export class VerifyDetailComponent implements OnInit {
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == Number(this.assementYear.assessmentYear)
+              && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
           );
 
           for (let base of this.projectionParameters){

@@ -225,6 +225,13 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
        this.displayHistory = true;
   }
 
+
+  onComplete(e: any){
+    if (e){
+      this.displayConcern = false
+    }
+  }
+
   parameterAccept() {
     this.confirmationService.confirm({
       message: 'Are sure you want to accept the parameter(s) ?',

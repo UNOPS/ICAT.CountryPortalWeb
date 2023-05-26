@@ -216,25 +216,27 @@ export class ApproveDataComponent implements OnInit {
 
         this.parameters = this.assementYearDetails.assessment?.parameters;
 
+        let statusToRemove = [ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED]
+
         this.baselineParameters =
           this.assementYearDetails.assessment?.parameters.filter(
-            (p) => p.isBaseline  && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
+            (p) => p.isBaseline  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
 
         this.projectParameters =
           this.assementYearDetails.assessment.parameters.filter(
-            (p) => p.isProject  && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
+            (p) => p.isProject  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
         this.lekageParameters =
           this.assementYearDetails.assessment.parameters.filter(
-            (p) => p.isLekage  && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
+            (p) => p.isLekage  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
         this.projectionParameters =
           this.assementYearDetails.assessment.parameters.filter(
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == this.headerAssessmentYear &&
-              ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
+              !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
         console.log('projectionParameters', this.projectionParameters);
       });

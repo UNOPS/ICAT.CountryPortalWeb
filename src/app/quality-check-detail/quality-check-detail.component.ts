@@ -19,6 +19,7 @@ import {
   AssessmentYearControllerServiceProxy,
   ServiceProxy,
   ParameterVerifierAcceptance,
+  AssessmentYearVerificationStatus,
 } from 'shared/service-proxies/service-proxies';
 
 @Component({
@@ -180,7 +181,7 @@ export class QualityCheckDetailComponent implements OnInit {
             this.asseResult = res.data;
            console.log('this.asseResult...', this.asseResult);
 
-           if(this.asseResult.length > 0)
+           if(this.asseResult.length > 0 && this.assementYear.verificationStatus !== 8)
            {
              this.isReadyToCAl = false;
              console.log("this.isReadyToCAl..",this.isReadyToCAl)
@@ -462,26 +463,29 @@ export class QualityCheckDetailComponent implements OnInit {
         this.parameters = this.assementYear.assessment.parameters;
         console.log("para....w",this.parameters)
 
+        let statusToRemove = [ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED]
+
         this.baselineParameters =
           this.assementYear.assessment.parameters.filter(
             (p) => p.isBaseline
-            && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
+            && !statusToRemove.includes(p.verifierAcceptance)
           );
+
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isProject
-          && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
+          && !statusToRemove.includes(p.verifierAcceptance)
         );
         this.lekageParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isLekage
-          && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
+          && !statusToRemove.includes(p.verifierAcceptance)
         );
         this.projectionParameters =
           this.assementYear.assessment.parameters.filter(
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == Number(this.assementYear.assessmentYear)
-              && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED].includes(p.verifierAcceptance)
+              && !statusToRemove.includes(p.verifierAcceptance)
           );
       });
   }
@@ -492,15 +496,30 @@ export class QualityCheckDetailComponent implements OnInit {
     });
   }
 
-  submit() {
-    if (this.assementYear.assessment.assessmentType != 'MAC') {
-      this.getAssesmentResult(true);
-    } else {
-      this.toCalMacResult();
+  async submit() {
+    let notReceived = 0
+    let status = [ ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.PENDING]
+    for await (let para of this.assementYear.assessment.parameters){
+      if (!status.includes(para.verifierAcceptance) ){
+        notReceived += 1
+      }
     }
-    this.isReadyToCAl = false;
-    this.isDisable = true;
-    window.location.reload()
+    if (notReceived > 0){
+      this.messageService.add({
+        severity: 'warn',
+        summary: "Warning",
+        detail: "There are parameters in data collection path"
+      })
+    } else {
+      if (this.assementYear.assessment.assessmentType != 'MAC') {
+        this.getAssesmentResult(true);
+      } else {
+        this.toCalMacResult();
+      }
+      this.isReadyToCAl = false;
+      this.isDisable = true;
+      window.location.reload()
+    }
   }
 
   toCalMacResult() {

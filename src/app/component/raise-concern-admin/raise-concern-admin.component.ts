@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
@@ -52,6 +52,9 @@ export class RaiseConcernAdminComponent implements OnInit {
 
   @Input()
   parameter: Parameter;
+
+  @Output()
+  onCompleteConcern = new EventEmitter<boolean>();
 
   lastConcernDate: Date = new Date();
 
@@ -216,6 +219,7 @@ export class RaiseConcernAdminComponent implements OnInit {
           detail: 'successfully Save.',
           closable: true,
         });
+        this.onCompleteConcern.emit(true)
       });
 
     // this.router.navigate(['/non-conformance'], {

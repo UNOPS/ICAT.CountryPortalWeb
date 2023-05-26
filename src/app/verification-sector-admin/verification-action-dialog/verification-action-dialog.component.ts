@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AssessmentYear, ChangeParameterValue, Institution, InstitutionControllerServiceProxy, Ndc, Parameter, Project, ServiceProxy, SubNdc, UnitConversionControllerServiceProxy, VerificationControllerServiceProxy, VerificationDetail } from 'shared/service-proxies/service-proxies';
+import { AssessmentYear, ChangeParameterValue, Institution, InstitutionControllerServiceProxy, Ndc, Parameter, Project, ServiceProxy, SubNdc, UnitConversionControllerServiceProxy, User, VerificationControllerServiceProxy, VerificationDetail } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
+import { AppService } from 'shared/AppService';
 
 @Component({
   selector: 'app-verification-action-dialog',
@@ -32,6 +33,8 @@ export class VerificationActionDialogComponent implements OnInit {
   selectedSubNdc: SubNdc
   assessmentYear: AssessmentYear
 
+  loggedUser: User
+
   constructor(
     public config: DynamicDialogConfig,
     private unitConversionControllerServiceProxy: UnitConversionControllerServiceProxy,
@@ -39,7 +42,8 @@ export class VerificationActionDialogComponent implements OnInit {
     private verificationControllerServiceProxy: VerificationControllerServiceProxy,
     private messageService: MessageService,
     private dialogRef: DynamicDialogRef,
-    private serviceProxy: ServiceProxy
+    private serviceProxy: ServiceProxy,
+    private appService: AppService
   ) { 
     console.log("config data--------", config.data)
     this.parameter = this.config.data['parameter'];
@@ -49,6 +53,8 @@ export class VerificationActionDialogComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+
+    this.loggedUser = await this.appService.getLoggedUser()
 
     if (this.type === 'ndc') {
       const token = localStorage.getItem('access_token')!;
@@ -104,6 +110,7 @@ export class VerificationActionDialogComponent implements OnInit {
       if (_isEnterData) {
         // enter direct value
         console.log("enter direct value", this.correctValue, this.correctUnit)
+        console.log("selected parameter", this.parameter)
         let body = new ChangeParameterValue()
         let para = new Parameter()
         para.id = this.parameter.id
@@ -114,6 +121,10 @@ export class VerificationActionDialogComponent implements OnInit {
           value: this.correctValue,
           unit: this.correctUnit.ur_fromUnit
         }
+        let user = new User()
+        user.id = this.loggedUser.id
+        body.user = user
+        console.log(body)
         let res = await this.verificationControllerServiceProxy.changeParameterValue(body).toPromise()
         if (res.status === 'saved') {
           this.messageService.add({
@@ -122,7 +133,7 @@ export class VerificationActionDialogComponent implements OnInit {
             detail: 'Value changed successfully',
             closable: true,
           });
-          this.dialogRef.close()
+          this.dialogRef.close({isEnterData: _isEnterData, value: this.correctValue + this.correctUnit.ur_fromUnit})
         }
         console.log(res)
 
@@ -146,7 +157,7 @@ export class VerificationActionDialogComponent implements OnInit {
             detail: 'Value changed successfully',
             closable: true,
           });
-          this.dialogRef.close()
+          this.dialogRef.close({isEnterData: _isEnterData, value: this.selectedInstitution.name})
         }
         console.log(res)
       }
