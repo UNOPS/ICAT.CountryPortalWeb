@@ -95,26 +95,24 @@ export class VerifyDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe(async (params) => {
       this.assesMentYearId = params['id'];
       this.verificationStatus = params['verificationStatus'];
       console.log("verificationStatus",this.verificationStatus)
       this.flag = params['flag'];
 
-      this.proxy
-        .getOneBaseAssessmentYearControllerAssessmentYear(
-          this.assesMentYearId,
-          undefined,
-          undefined,
-          undefined
-        )
-        .subscribe((res) => {
-          this.assementYear = res;
-          this.getAssesment();
-          this.getAssesmentResult(false);
-          this.getVerificationDetail();
-          this.getProjectionReuslt();
-        });
+      this.assementYear = await this.proxy
+      .getOneBaseAssessmentYearControllerAssessmentYear(
+        this.assesMentYearId,
+        undefined,
+        undefined,
+        undefined
+      ).toPromise()
+      this.getAssesment();
+      this.getAssesmentResult(false);
+      await this.getVerificationDetail();
+      this.getProjectionReuslt();
+      console.log(this.verificationDetails)
     });
 
     this.loadUser();
@@ -190,11 +188,13 @@ export class VerifyDetailComponent implements OnInit {
   }
 
   async getVerificationDetail() {
-    await this.verificationProxy
-      .getVerificationDetails(this.assesMentYearId)
-      .subscribe((a) => {
-        this.verificationDetails = a;
-      });
+    // await this.verificationProxy
+    //   .getVerificationDetails(this.assesMentYearId)
+    //   .subscribe((a) => {
+    //     console.log(a)
+    //     this.verificationDetails = a;
+    //   });
+    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assesMentYearId).toPromise()
   }
 
   getAssesmentResult(isCalculate: boolean) {
