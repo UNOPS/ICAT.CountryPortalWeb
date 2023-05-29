@@ -56,14 +56,14 @@
               <tr>
                 <td *ngIf="
                     assessmentYear !== undefined &&
-                    assessmentYear?.verificationStatus! === 3
+                    (assessmentYear?.verificationStatus! === 3 || assessmentYear?.verificationStatus! === 8)
                   ">
                   <button pButton pRipple type="button" label="Action" (click)="parameterAction($event, param)"
                     class="p-button-info"></button>
                 </td>
                 <td *ngIf="
                     assessmentYear !== undefined &&
-                    assessmentYear?.verificationStatus! == 3
+                    (assessmentYear?.verificationStatus! === 3 || assessmentYear?.verificationStatus! === 8)
                   ">
                   <button pButton pRipple type="button" label="View Concern" (click)="raiseConcern($event, param)"
                     class="p-button-info"></button>
@@ -226,7 +226,7 @@
   <div class="container" style="width: 600px; height: 500px">
     <app-raise-concern-admin [area]="raiseConcernSection" [verificationDetails]="concernVerificationDetails"
       [assesmentYear]="assessmentYear" [isParameter]="isParameter" [isResult]="isValue" [parameter]="concernParam!"
-      [isBaseline]="isBaseline" [isLekage]="isLekage" [isProject]="isProject" [isProjection]="isProjection">
+      [isBaseline]="isBaseline" [isLekage]="isLekage" [isProject]="isProject" [isProjection]="isProjection" (onCompleteConcern)="onComplete($event)">
     </app-raise-concern-admin>
   </div>
   <!-- <ng-template pTemplate="footer">

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { UsersControllerServiceProxy } from './service-proxies/service-proxies';
+import { ServiceProxy, UsersControllerServiceProxy } from './service-proxies/service-proxies';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,8 @@ export class AppService {
   public isDataupdated = new BehaviorSubject<boolean>(true);
 
   constructor(
-    private usersControllerServiceProxy: UsersControllerServiceProxy
+    private usersControllerServiceProxy: UsersControllerServiceProxy,
+    private serviceProxy: ServiceProxy
   ) {
     //this.update();
 
@@ -29,5 +30,25 @@ export class AppService {
 
   getToken(): string {
     return this.jwt;
+  }
+
+  async getLoggedUser(){
+    let userName = localStorage.getItem('user_name')!;
+    let filter1: string[] = [];
+    filter1.push('username||$eq||' + userName);
+
+    return (await this.serviceProxy
+      .getManyBaseUsersControllerUser(
+        undefined,
+        undefined,
+        filter1,
+        undefined,
+        undefined,
+        undefined,
+        1000,
+        0,
+        0,
+        0
+      ).toPromise()).data[0]
   }
 }

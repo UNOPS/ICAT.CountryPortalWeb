@@ -5,6 +5,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
   AssessmentYear,
+  AssessmentYearControllerServiceProxy,
   AssessmentYearVerificationStatus,
   Parameter,
   ParameterHistoryControllerServiceProxy,
@@ -16,6 +17,7 @@ import {
   VerificationDetail,
   VerificationDetailVerificationStatus,
 } from 'shared/service-proxies/service-proxies';
+import { VerificationActionDialogComponent } from '../verification-action-dialog/verification-action-dialog.component';
 
 @Component({
   selector: 'app-verify-parameter-section-admin',
@@ -86,6 +88,9 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   paraId:number;
   requestHistoryList: any[] = [];
   displayHistory:boolean = false;
+  roundOneHeadTable: any;
+  roundTwoHeadTable: any;
+  roundThreeHeadTable: any;
 
   constructor(
     private qaServiceProxy: QualityCheckControllerServiceProxy,
@@ -95,6 +100,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     private verificationProxy: VerificationControllerServiceProxy,
     private serviceProxy: ServiceProxy,
     private prHistoryProxy : ParameterHistoryControllerServiceProxy,
+    private assessmentYearControllerServiceProxy: AssessmentYearControllerServiceProxy
   ) {}
 
   ngOnInit(): void {
@@ -188,7 +194,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   acceptParametrs() {
     let verificationDetails: VerificationDetail[] = [];
 
-    this.selectedParameter.map((v) => {
+    this.selectedParameter.map(async (v) => {
       let verificationDetail = undefined;
 
       if (this.verificationDetails) {
@@ -230,7 +236,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
       vd.editedOn = moment();
       vd.updatedDate = moment();
       vd.isAccepted = true;
-      vd.verificationStage = this.getverificationStage();
+      vd.verificationStage = await this.getverificationStage();
       vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
 
       verificationDetails.push(vd);
@@ -248,18 +254,29 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
       });
   }
 
-  getverificationStage() {
+  async getverificationStage() {
     let stage = 0;
-    if (
-      this.assessmentYear.verificationStatus === 1 ||
-      this.assessmentYear.verificationStatus === 2 ||
-      this.assessmentYear.verificationStatus === 3
-    ) {
-      stage = 1;
-    } else if (this.assessmentYear.verificationStatus === 4) {
-      stage = 2;
-    } else if (this.assessmentYear.verificationStatus === 5) {
-      stage = 3;
+    await this.checkVerificationStage()
+    if (this.assessmentYear.verificationStatus === 8){
+      if (this.roundOneHeadTable !== undefined){
+        stage = 1
+      } else if (this.roundTwoHeadTable !== undefined){
+        stage = 2
+      } else {
+        stage = 3
+      }
+    } else {
+      if (
+        this.assessmentYear.verificationStatus === 1 ||
+        this.assessmentYear.verificationStatus === 2 ||
+        this.assessmentYear.verificationStatus === 3
+      ) {
+        stage = 1;
+      } else if (this.assessmentYear.verificationStatus === 4) {
+        stage = 2;
+      } else if (this.assessmentYear.verificationStatus === 5) {
+        stage = 3;
+      }
     }
 
     return stage;
@@ -276,12 +293,14 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
       );
     }
 
+    console.log("verificationDetails---", this.verificationDetails)
+
     this.concernParam = parameter;
 
     this.displayConcern = true;
   }
 
-  raiseConcernResult(event: any) {
+  raiseConcernResult(event: any) { //currently not using
     this.raiseConcernSection = this.ResultLabel;
     this.isParameter = false;
     this.isValue = true;
@@ -308,6 +327,12 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     }
 
     this.displayConcern = true;
+  }
+
+  onComplete(e: any){
+    if (e){
+      this.displayConcern = false
+    }
   }
 
   getInfo(obj: any)
@@ -351,54 +376,111 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   }
 
   parameterAction(event: any, parameter: Parameter) {
+    console.log(parameter)
+    let action = "Previouse value: " + parameter.value + parameter.uomDataEntry
+    let vd = undefined
+    console.log("getverificationStage--------", this.getverificationStage())
+    console.log(this.verificationDetails)
+    if (this.verificationDetails){
+      vd = this.verificationDetails.find(
+        async (d) => 
+        d.parameter &&
+        d.parameter.id === parameter.id &&
+        d.verificationStage === await this.getverificationStage()
+      )
+
+      console.log(vd)
+    } else {
+      console.log("no verification detail")
+    }
+
+    let data:any = {type: 'parameter'}
+
+    data['parameter'] = parameter
+    if (vd){
+      data['verificationDetail'] = vd
+    } else {
+      data['verificationDetail'] = null
+    }
+    
+
+    this.ref = this.dialogService.open(VerificationActionDialogComponent, {
+      header: parameter ? ('Enter value for ' + parameter.name.toLowerCase()):"Enter Aggregated Action",
+      width: '40%',
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
+      baseZIndex: 10000,
+      data: data,
+    });
+
+    this.ref.onClose.subscribe((res) => {
+      if (res?.isEnterData){
+        action = action + ", New value: " + res.value
+      } else {
+        action = action + ", Requested data from " + res.value
+      }
+      this.saveVerificationDetails(parameter, action)
+    })
+
+    
+  }
+
+  async saveVerificationDetails(parameter: Parameter, action: string){
     let verificationDetails: VerificationDetail[] = [];
 
     let verificationDetail = undefined;
+    console.log("parameter id", parameter.id)
+
+    let verificationStage = await this.getverificationStage()
+    console.log(verificationStage)
 
     if (this.verificationDetails) {
+      console.log(this.verificationDetails)
       verificationDetail = this.verificationDetails.find(
         (a) =>
           a.parameter &&
           a.parameter.id == parameter.id &&
-          a.verificationStage == this.getverificationStage()
+          a.verificationStage == verificationStage
       );
     }
-    let vd = new VerificationDetail();
+    let _vd = new VerificationDetail();
     console.log(verificationDetail);
     if (verificationDetail) {
-      vd = verificationDetail;
+      _vd = verificationDetail;
     } else {
-      vd.assessmentId = this.assessmentYear.assessment.id;
+      _vd.assessmentId = this.assessmentYear.assessment.id;
       let assesmentYear = new AssessmentYear();
       assesmentYear.id = this.assessmentYear.id;
-      vd.assessmentYear = assesmentYear;
-      vd.year = Number(this.assessmentYear.assessmentYear);
-      vd.createdOn = moment();
-      vd.isAccepted = false;
+      _vd.assessmentYear = assesmentYear;
+      _vd.year = Number(this.assessmentYear.assessmentYear);
+      _vd.createdOn = moment();
+      _vd.isAccepted = false;
       let param = new Parameter();
       param.id = parameter.id;
-      vd.parameter = param;
+      _vd.parameter = param;
 
       if (this.header == 'Baseline Parameter') {
-        vd.isBaseline = true;
+        _vd.isBaseline = true;
       }
       if (this.header == 'Project Parameter') {
-        vd.isProject = true;
+        _vd.isProject = true;
       }
       if (this.header == 'Leakage Parameter') {
-        vd.isLekage = true;
+        _vd.isLekage = true;
       }
       if (this.header == 'Projection Parameter') {
-        vd.isProjection = true;
+        _vd.isProjection = true;
       }
     }
 
-    vd.editedOn = moment();
-    vd.updatedDate = moment();
-    vd.verificationStage = this.getverificationStage();
-    vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
-    vd.isDataRequested = true;
-    verificationDetails.push(vd);
+    _vd.editedOn = moment();
+    _vd.updatedDate = moment();
+    _vd.verificationStage = await this.getverificationStage();
+    _vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
+    _vd.isDataRequested = true;
+    _vd.action = action
+    verificationDetails.push(_vd);
+
+    console.log(verificationDetails)
 
     this.verificationProxy
       .saveVerificationDetails(verificationDetails)
@@ -409,6 +491,20 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
           detail: 'successfully Save.',
           closable: true,
         });
+        window.location.reload()
       });
   }
+
+  async checkVerificationStage() {
+    if (this.assessmentYear.assessment.id){
+      console.log(this.assessmentYear.assessment)
+      let verificationList = (await this.assessmentYearControllerServiceProxy
+        .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentYear.assessment.id, this.assessmentYear.assessmentYear)
+        .toPromise())[0]?.verificationDetail;
+      this.roundOneHeadTable = verificationList?.find((o: any) => o.verificationStage == 1);
+      this.roundTwoHeadTable = verificationList?.find((o: any) => o.verificationStage == 2);
+      this.roundThreeHeadTable = verificationList?.find((o: any) => o.verificationStage == 3);
+    }
+  }
+ 
 }

@@ -6,5 +6,6 @@ export enum VerificationStatus {
     "Final Assessment" = 5,
     "Fail" = 6,
     "Pass" = 7,
+    "Assessment Returned" = 8
     
   }

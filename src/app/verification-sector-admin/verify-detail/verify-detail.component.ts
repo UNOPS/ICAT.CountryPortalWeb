@@ -4,7 +4,7 @@ import { QuAlityCheckStatus } from 'app/Model/QuAlityCheckStatus.enum';
 import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
 import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
   AssesmentControllerServiceProxy,
   AssesmentResaultControllerServiceProxy,
@@ -14,6 +14,7 @@ import {
   AssessmentYearVerificationStatus,
   Ndc,
   Parameter,
+  ParameterVerifierAcceptance,
   Project,
   ProjectionResault,
   ProjectionResaultControllerServiceProxy,
@@ -23,6 +24,7 @@ import {
   VerificationControllerServiceProxy,
   VerificationDetail,
 } from 'shared/service-proxies/service-proxies';
+import { VerificationActionDialogComponent } from '../verification-action-dialog/verification-action-dialog.component';
 
 @Component({
   selector: 'app-verify-detail-sectorAdmin',
@@ -72,6 +74,8 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   assumption:string = '';
   
 
+  ref: DynamicDialogRef;
+
   @ViewChild('opDRPro') overlayDRPro: any;
   @ViewChild('opDRAss') overlayDRAssemnet: any;
 
@@ -84,7 +88,8 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     private messageService: MessageService,
     private verificationProxy: VerificationControllerServiceProxy,
     private confirmationService: ConfirmationService,
-    private serviceProxy: ServiceProxy
+    private serviceProxy: ServiceProxy,
+    public dialogService: DialogService,
   ) {}
 
   ngOnInit(): void {
@@ -239,6 +244,11 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   }
 
   getAssesment() {
+    let statusToRemove = [
+      ParameterVerifierAcceptance.REJECTED, 
+      ParameterVerifierAcceptance.RETURNED,
+      ParameterVerifierAcceptance.DATA_ENTERED
+    ]
     this.assesmentProxy
       .getAssment(
         this.assementYear.assessment.id,
@@ -250,13 +260,15 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         this.parameters = this.assementYear.assessment.parameters;
 
         this.baselineParameters =
-          this.assementYear.assessment.parameters.filter((p) => p.isBaseline);
+          this.assementYear.assessment.parameters.filter(
+            (p) => p.isBaseline && !statusToRemove.includes(p.verifierAcceptance)
+          );
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
-          (p) => p.isProject
+          (p) => p.isProject && !statusToRemove.includes(p.verifierAcceptance)
         );
         this.lekageParameters = this.assementYear.assessment.parameters.filter(
-          (p) => p.isLekage
+          (p) => p.isLekage && !statusToRemove.includes(p.verifierAcceptance)
         );
 
         this.projectionParameters =
@@ -264,6 +276,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == Number(this.assementYear.assessmentYear)
+              && !statusToRemove.includes(p.verifierAcceptance)
           );
         let p = this.assementYear.assessment.parameters.filter(
           (p) => p.isProjection
@@ -605,42 +618,77 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   }
 
   async ndcAction() {
-    let action = `Ndc changed  Original Value : ${this.assementYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n
-      Sub Ndc changed  Original Value : ${this.assementYear.assessment.project.subNdc.name} New Value : ${this.selectedSubNdc.name} \n`;
 
-    this.assementYear.assessment.project.ndc = this.selectedNdc;
-    this.assementYear.assessment.project.subNdc = this.selectedSubNdc;
+    let data = {
+      type: 'ndc',
+      assessmentYear: this.assementYear
+    }
 
-    console.log("ndcAction", this.assementYear.assessment)
+    this.ref = this.dialogService.open(VerificationActionDialogComponent, {
+      header: "Enter Aggregated Action",
+      width: '40%',
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
+      baseZIndex: 10000,
+      data: data,
+    });
 
-    let project: Project  = await this.serviceProxy.getOneBaseProjectControllerProject(
-      this.assementYear.assessment.project.id,
-      undefined,
-      undefined,
-      undefined).toPromise()
-     
+    this.ref.onClose.subscribe(async (res) => {
+      console.log(res)
+      this.selectedNdc = res.result.ndc
+      this.selectedSubNdc = res.result.subNdc
+      let action = `Ndc changed  Original Value : ${this.assementYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n
+        Sub Ndc changed  Original Value : ${this.assementYear.assessment.project.subNdc?.name} New Value : ${this.selectedSubNdc?.name} \n`;
+
+      this.assementYear.assessment.project.ndc = this.selectedNdc;
+      this.assementYear.assessment.project.subNdc = this.selectedSubNdc;
+
+      console.log("ndcAction", this.assementYear.assessment)
+      let assessment = await this.serviceProxy.getOneBaseAssesmentControllerAssessment(
+        this.assementYear.assessment.id,
+        undefined,
+        undefined,
+        0
+      ).toPromise()
+
+      let project: Project = await this.serviceProxy.getOneBaseProjectControllerProject(
+        this.assementYear.assessment.project.id,
+        undefined,
+        undefined,
+        undefined).toPromise()
+
       let ndc = new Ndc();
       ndc.id = this.selectedNdc.id;
       project.ndc = ndc;
 
       let subNdc = new SubNdc();
-      subNdc.id = this.selectedSubNdc.id;
+      subNdc.id = this.selectedSubNdc?.id;
       project.subNdc = subNdc;
 
-    this.serviceProxy
-      .updateOneBaseProjectControllerProject(
-        project.id,
-        project
-      )
-      .subscribe(
-        (res) => {
-          console.log(res)
-          this.saveVerificationDetails(true, false, action);
-        },
-        (error) => {
-          console.log('Error', error);
-        }
-      );
+      assessment.ndc = ndc
+      assessment.subNdc = subNdc
+
+      await this.serviceProxy.updateOneBaseAssesmentControllerAssessment(
+        assessment.id,
+        assessment
+      ).toPromise()
+
+      this.serviceProxy
+        .updateOneBaseProjectControllerProject(
+          project.id,
+          project
+        )
+        .subscribe(
+          (res) => {
+            console.log(res)
+            this.saveVerificationDetails(true, false, action);
+          },
+          (error) => {
+            console.log('Error', error);
+          }
+        );
+
+    })
+
   }
 
   toNonConformance() {

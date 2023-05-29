@@ -321,90 +321,83 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
     //  });
   }
 
-  toChangeStatus()
-  {
+  toChangeStatus() {
+    if (this.assementYear.verificationStatus === 8) { //assessment returned
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warning',
+        detail: 'Cannot submit. Values are not recieved for some parameters.'
+      });
+    } else {
+      if (this.flag == 'sec-admin') {
+        this.assementYear.verificationStatus = 2;
+        this.assementYear.editedOn = moment();
 
-    if(this.flag == 'sec-admin')
-    {
-      this.assementYear.verificationStatus = 2; 
-      this.assementYear.editedOn = moment();
+        if (this.roundOneHeadTable != undefined) {
+          this.assementYear.verificationStatus = 4;
+        }
 
-      if(this.roundOneHeadTable != undefined)
-      {
-        this.assementYear.verificationStatus = 4;
+        if (this.roundTwoHeadTable != undefined) {
+          this.assementYear.verificationStatus = 5;
+        }
+
+        this.serviceProxy
+          .updateOneBaseAssessmentYearControllerAssessmentYear(this.assementYear.id, this.assementYear)
+          .subscribe(
+            (res) => {
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'successfully updated !!' });
+
+            },
+          );
+
       }
+      else {
+        // need to get relevent assse year row
+        this.assementYear.verificationStatus = 1; //Nc REcieved
+        this.assementYear.editedOn = moment();
 
-      if(this.roundTwoHeadTable != undefined)
-      {
-        this.assementYear.verificationStatus = 5;
+        // then update the object
+        // then need to send the updte crud
+        if (this.roundOneHeadTable != undefined) {
+          if (this.roundOneList.length != 0) {
+            this.assementYear.verificationStatus = 3; //Nc REcieved
+          }
+          else {
+            this.assementYear.verificationStatus = 7;
+          }
+        }
+
+
+
+        if (this.roundTwoHeadTable != undefined) {
+          if (this.roundTwoList.length != 0) {
+            this.assementYear.verificationStatus = 3; //Nc REcieved
+          }
+          else {
+            this.assementYear.verificationStatus = 7;
+          }
+        }
+
+
+        if (this.roundThreeHeadTable != undefined) {
+          if (this.roundThreeList.length != 0) {
+            this.assementYear.verificationStatus = 6; //Nc REcieved
+          }
+          else {
+            this.assementYear.verificationStatus = 7;
+          }
+        }
+
+        this.serviceProxy
+          .updateOneBaseAssessmentYearControllerAssessmentYear(this.assementYear.id, this.assementYear)
+          .subscribe(
+            (res) => {
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'successfully updated!' });
+              console.log("++++++++++++++++++++++", this.assementYear)
+            },
+          );
+
       }
-
-      this.serviceProxy
-    .updateOneBaseAssessmentYearControllerAssessmentYear(this.assementYear.id, this.assementYear)
-    .subscribe(
-      (res) => {
-        this.messageService.add({severity:'success', summary: 'Success', detail:'successfully updated !!'});
-
-      },
-    );
-
-    }
-    else
-    {
-    // need to get relevent assse year row
-   this.assementYear.verificationStatus = 1; //Nc REcieved
-   this.assementYear.editedOn = moment();
-
-    // then update the object
-    // then need to send the updte crud
-   if(this.roundOneHeadTable != undefined)
-   {
-    if(this.roundOneList.length !=0)
-    {
-      this.assementYear.verificationStatus = 3; //Nc REcieved
-    }
-    else
-    {
-      this.assementYear.verificationStatus = 7;
-    }
-   }
-
-
-
-   if(this.roundTwoHeadTable != undefined)
-   {
-    if(this.roundTwoList.length !=0)
-    {
-      this.assementYear.verificationStatus = 3; //Nc REcieved
-    }
-    else
-    {
-      this.assementYear.verificationStatus = 7;
-    }
-   }
-
-
-   if(this.roundThreeHeadTable != undefined)
-   {
-    if(this.roundThreeList.length !=0)
-    {
-      this.assementYear.verificationStatus = 6; //Nc REcieved
-    }
-    else
-    {
-      this.assementYear.verificationStatus = 7;
-    }
-   }
-  
-    this.serviceProxy
-    .updateOneBaseAssessmentYearControllerAssessmentYear(this.assementYear.id, this.assementYear)
-    .subscribe(
-      (res) => {
-        this.messageService.add({severity:'success', summary: 'Success', detail:'successfully updated!'});
-        console.log("++++++++++++++++++++++",this.assementYear)
-      },
-    );
-
     }
 
   }

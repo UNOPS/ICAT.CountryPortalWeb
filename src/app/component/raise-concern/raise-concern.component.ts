@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import {
   AssessmentYear,
+  AssessmentYearVerificationStatus,
   Parameter,
   ServiceProxy,
   User,
@@ -52,6 +53,9 @@ export class RaiseConcernComponent implements OnInit {
 
   @Input()
   parameter: Parameter;
+
+  @Output()
+  onCompleteConcern = new EventEmitter<boolean>();
 
   lastConcernDate: Date = new Date();
 
@@ -128,7 +132,7 @@ export class RaiseConcernComponent implements OnInit {
     }
   }
 
-  onComplete() {
+  async onComplete() {
     if (!this.comment || this.comment == '') {
       this.commentRequried = true;
       return;
@@ -162,6 +166,21 @@ export class RaiseConcernComponent implements OnInit {
       }
       if (this.isMethodology) {
         vd.isMethodology = true;
+        let asssessmentYear = await this.serviceProxy.getOneBaseAssessmentYearControllerAssessmentYear(
+          assesmentYear.id, undefined, undefined, 0
+        ).toPromise()
+        asssessmentYear.verificationStatus = 6
+        this.serviceProxy.updateOneBaseAssessmentYearControllerAssessmentYear(
+          asssessmentYear.id, asssessmentYear
+        ).subscribe(res => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'The assessment is failed',
+            closable: true,
+          });
+        })
+
       }
 
       if (this.isParameter) {
@@ -190,6 +209,7 @@ export class RaiseConcernComponent implements OnInit {
           detail: 'successfully Save.',
           closable: true,
         });
+        this.onCompleteConcern.emit(true)
       });
 
     // this.router.navigate(['/non-conformance'], {
