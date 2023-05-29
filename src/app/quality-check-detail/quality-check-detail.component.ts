@@ -184,7 +184,7 @@ export class QualityCheckDetailComponent implements OnInit {
             this.asseResult = res.data;
            console.log('this.asseResult...', this.asseResult);
 
-           if(this.asseResult.length > 0 && this.asseResult[0].isResultupdated)
+           if(this.asseResult.length > 0 && this.asseResult[0]?.isResultupdated)
            {
              this.isReadyToCAl = false;
              console.log("this.isReadyToCAl..",this.isReadyToCAl)
