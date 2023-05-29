@@ -98,8 +98,9 @@ export class ApproveDataComponent implements OnInit {
         undefined,
         undefined
       )
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
         this.finalQC = res;
+        this.assementYear = res
         if (this.finalQC != null) {
           // if (this.finalQC.qaStatus != null) {
           //   console.log('Asseyear...', this.finalQC.qaStatus);
@@ -110,7 +111,18 @@ export class ApproveDataComponent implements OnInit {
             console.log('Asseyear...', this.finalQC.qaStatus);
             this.isRejectButtonDisable = false;
             if(this.finalQC.qaStatus==1){
-              this.isHideRejectButton = true;
+              console.log("qa status")
+              await this.checkQC()
+              if (this.finalQC.verificationStatus === 8){
+                console.log(this.enableQCButton)
+                if (this.enableQCButton){
+                  this.isHideRejectButton = true;
+                } else {
+                  this.isHideRejectButton = false
+                }
+              } else {
+                this.isHideRejectButton = true;
+              }
             }
             else {this.isHideRejectButton = false;}
           }
@@ -121,7 +133,7 @@ export class ApproveDataComponent implements OnInit {
 
     this.assessmentYearProxy
       .getAssessmentByYearId(this.assesmentYearId, this.userName)
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         if (res) {
           this.hideAllButtons = res?.qaStatus;
           console.log('qc staysu..', this.hideAllButtons);
@@ -137,7 +149,7 @@ export class ApproveDataComponent implements OnInit {
         console.log('res', res);
         this.getAssesment();
         if (this.finalQC?.qaStatus == null) {
-          this.checkQC();
+          await this.checkQC();
         }
       });
 
@@ -242,20 +254,30 @@ export class ApproveDataComponent implements OnInit {
       });
   }
 
-  checkQC() {
-    this.assesmentProxy
-      .checkAssessmentReadyForQC(
-        this.assementYear.assessment.id,
-        this.assementYear.assessmentYear
-      )
-      .subscribe((r) => {
-        console.log('checkAssessmentReadyForQC', r);
-        if (r) {
-          console.log('check res...', r);
-          this.enableQCButton = r;
-          this.isRejectButtonDisable = !r;
-        }
-      });
+  async checkQC() {
+    // this.assesmentProxy
+    //   .checkAssessmentReadyForQC(
+    //     this.assementYear.assessment.id,
+    //     this.assementYear.assessmentYear
+    //   )
+    //   .subscribe((r) => {
+    //     console.log('checkAssessmentReadyForQC', r);
+    //     if (r) {
+    //       console.log('check res...', r);
+    //       this.enableQCButton = r;
+    //       this.isRejectButtonDisable = !r;
+    //     }
+    //   });
+    console.log(this.assementYear)
+    let r = await this.assesmentProxy.checkAssessmentReadyForQC(
+      this.assementYear.assessment.id, this.assementYear.assessmentYear
+    ).toPromise()
+    console.log('checkAssessmentReadyForQC', r);
+    if (r) {
+      console.log('check res...', r);
+      this.enableQCButton = r;
+      this.isRejectButtonDisable = !r;
+    }
   }
   onRejectClick() {
     this.selectedParameters.push(...this.selectedBaselineParameters, ...this.selectedProjectParameters,
@@ -434,7 +456,7 @@ export class ApproveDataComponent implements OnInit {
         inputParameters.status = 11;
         console.log('inputParameters', inputParameters);
         this.parameterProxy.acceptReviewData(inputParameters).subscribe(
-          (res) => {
+          async (res) => {
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
@@ -442,7 +464,7 @@ export class ApproveDataComponent implements OnInit {
             });
             this.clearParameters();
             this.getAssesment();
-            this.checkQC();
+            await this.checkQC();
           },
           (err) => {
             this.messageService.add({

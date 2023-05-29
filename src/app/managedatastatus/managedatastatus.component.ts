@@ -1,9 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { reduce } from 'rxjs/operators';
-import { AssesmentControllerServiceProxy, AssessmentYearControllerServiceProxy, Methodology, MethodologyControllerServiceProxy, ParameterRequestControllerServiceProxy, Project, ProjectControllerServiceProxy, ServiceProxy } from 'shared/service-proxies/service-proxies';
+import { AssesmentControllerServiceProxy, AssessmentYearControllerServiceProxy, Methodology, MethodologyControllerServiceProxy, ParameterRequest, ParameterRequestControllerServiceProxy, Project, ProjectControllerServiceProxy, ServiceProxy } from 'shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-managedatastatus',
@@ -202,7 +203,8 @@ export class ManagedatastatusComponent implements OnInit {
           pendingreqCount: 0,
           pendingdataentries: 0,
           recieved: 0,
-          qaStatus:0
+          qaStatus:0,
+          verificationStatus: 0
         };
 
 
@@ -212,6 +214,7 @@ export class ManagedatastatusComponent implements OnInit {
         datarequests1.type = assementYear.assesment.assessmentType;
         datarequests1.assenmentYearId = assementYear.id;
         datarequests1.qaStatus = assementYear.qaStatus;
+        datarequests1.verificationStatus = assementYear.verificationStatus
 
         // console.log("assesIs",assesment.id)
         this.parameterProxy
@@ -622,6 +625,35 @@ console.log("+++++++++++++", this.datarequests)
 
   status() { }
 
+  getApproveDataLabel(request: datarequest){
+    // datarequests.qaStatus ==4 || datarequests.qaStatus ==1 ? "Approved Data" : "Approve Data"
+    if(request.qaStatus === 4){
+      return "Approved Data"
+    } else if (request.qaStatus === 1){
+      if (request.verificationStatus === 8){
+        return "Approve Data"
+      } else {
+        return "Approved Data"
+      }
+    } else {
+      return "Approve Data"
+    }
+  }
+
+  enableApproveData(request: datarequest){
+    if(request.qaStatus === 4){
+      return true
+    } else if (request.qaStatus === 1){
+      if (request.verificationStatus === 8){
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return false
+    }
+  }
+
 }
 
 export interface activeproject {
@@ -643,4 +675,5 @@ export interface datarequest {
   pendingdataentries: number,
   recieved: number,
   qaStatus:number
+  verificationStatus: number
 };

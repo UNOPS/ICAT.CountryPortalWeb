@@ -124,7 +124,7 @@
                   
                             </td>
                            </ng-container>
-                           <ng-container *ngIf="c?.verificationStatus == 6 || c?.verificationStatus == 3">
+                           <ng-container *ngIf="c?.verificationStatus == 6 || c?.verificationStatus == 3 || c?.verificationStatus === 8">
                             <td>
                               
                               <button pButton pRipple type="button" label="View" (click)="statusClick($event, c)" class="p-button-info"></button>

@@ -115,6 +115,9 @@ export class QualityCheckDetailComponent implements OnInit {
   verificationStatusIsNull:boolean=false;
   @ViewChild('opDRPro') overlayDRPro: any;
   @ViewChild('opDRAss') overlayDRAssemnet: any;
+  roundOneHeadTable: any;
+  roundTwoHeadTable: any;
+  roundThreeHeadTable: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -180,6 +183,7 @@ export class QualityCheckDetailComponent implements OnInit {
           .subscribe(async (res: any) => {
             this.asseResult = res.data;
            console.log('this.asseResult...', this.asseResult);
+           console.log(this.asseResult.length > 0 , this.assementYear.verificationStatus , AssessmentYearVerificationStatus.AssessmentReturned)
 
            if(this.asseResult.length > 0 && this.assementYear.verificationStatus !== 8)
            {
@@ -444,6 +448,7 @@ export class QualityCheckDetailComponent implements OnInit {
       )
       .subscribe((res) => {
         this.assementYear.assessment = res;
+        console.log(this.assementYear.assessment)
 
         this.baseImage = this.assementYear.assessment?.methodology?.baselineImage;
         this.projectImage = this.assementYear.assessment?.methodology?.projectImage;
@@ -471,6 +476,7 @@ export class QualityCheckDetailComponent implements OnInit {
             && !statusToRemove.includes(p.verifierAcceptance)
           );
 
+          console.log(this.baselineParameters)
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isProject
@@ -987,7 +993,7 @@ export class QualityCheckDetailComponent implements OnInit {
 
   
 
-  submitStatus() {
+  async submitStatus() {
     let para = this.parameters;
     para = para.filter((o)=>o.parameterRequest != null);
     let isallPass =
@@ -1004,7 +1010,20 @@ export class QualityCheckDetailComponent implements OnInit {
     this.assementYear.qaStatus = isallPass ? 4 : 3;
 
     if (isallPass) {
-      this.assementYear.verificationStatus = 1;
+      if (this.assementYear.verificationStatus === 8) {
+        await this.checkVerificationStage()
+        if (this.roundOneHeadTable != undefined) {
+          this.assementYear.verificationStatus = 4;
+        }
+
+        if (this.roundTwoHeadTable != undefined) {
+          this.assementYear.verificationStatus = 5;
+        }
+
+      } else {
+        this.assementYear.verificationStatus = 1;
+      }
+
     }
 
     let tempassementYear = this.assementYear;
@@ -1039,5 +1058,14 @@ export class QualityCheckDetailComponent implements OnInit {
         }
       );
       this.isSubmitButtondisable = true;
+  }
+
+  async checkVerificationStage() {
+    let verificationList = (await this.assessmentYearControllerServiceProxy
+      .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assementYear.assessment.id, this.assementYear.assessmentYear)
+      .toPromise())[0]?.verificationDetail;
+    this.roundOneHeadTable = verificationList?.find((o: any) => o.verificationStage == 1);
+    this.roundTwoHeadTable = verificationList?.find((o: any) => o.verificationStage == 2);
+    this.roundThreeHeadTable = verificationList?.find((o: any) => o.verificationStage == 3);
   }
 }
