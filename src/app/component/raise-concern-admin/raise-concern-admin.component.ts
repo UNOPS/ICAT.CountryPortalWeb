@@ -224,6 +224,7 @@ export class RaiseConcernAdminComponent implements OnInit {
 
     verificationDetails.push(vd);
 
+
     this.verificationProxy
       .saveVerificationDetails(verificationDetails)
       .subscribe((a) => {
@@ -245,7 +246,6 @@ export class RaiseConcernAdminComponent implements OnInit {
 
   async checkVerificationStage() {
     if (this.assesmentYear.assessment.id){
-      console.log(this.assesmentYear.assessment)
       let verificationList = (await this.assessmentYearControllerServiceProxy
         .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assesmentYear.assessment.id, this.assesmentYear.assessmentYear)
         .toPromise())[0]?.verificationDetail;

@@ -154,7 +154,7 @@ export class QualityCheckDetailComponent implements OnInit {
           this.asseId = this.assementYear.assessment.id;
          
           
-            if(this.assementYear.verificationStatus==undefined || this.assementYear.verificationStatus == null ){
+            if(this.assementYear.verificationStatus==undefined || this.assementYear.verificationStatus == null || this.assementYear.verificationStatus === 8 ){
               this.verificationStatusIsNull=true;
              
             }
@@ -183,9 +183,8 @@ export class QualityCheckDetailComponent implements OnInit {
           .subscribe(async (res: any) => {
             this.asseResult = res.data;
            console.log('this.asseResult...', this.asseResult);
-           console.log(this.asseResult.length > 0 , this.assementYear.verificationStatus , AssessmentYearVerificationStatus.AssessmentReturned)
 
-           if(this.asseResult.length > 0 && this.assementYear.verificationStatus !== 8)
+           if(this.asseResult.length > 0 && this.asseResult[0].isResultupdated)
            {
              this.isReadyToCAl = false;
              console.log("this.isReadyToCAl..",this.isReadyToCAl)
@@ -448,7 +447,6 @@ export class QualityCheckDetailComponent implements OnInit {
       )
       .subscribe((res) => {
         this.assementYear.assessment = res;
-        console.log(this.assementYear.assessment)
 
         this.baseImage = this.assementYear.assessment?.methodology?.baselineImage;
         this.projectImage = this.assementYear.assessment?.methodology?.projectImage;
@@ -476,8 +474,6 @@ export class QualityCheckDetailComponent implements OnInit {
             && !statusToRemove.includes(p.verifierAcceptance)
           );
 
-          console.log(this.baselineParameters)
-
         this.projectParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isProject
           && !statusToRemove.includes(p.verifierAcceptance)
@@ -504,9 +500,9 @@ export class QualityCheckDetailComponent implements OnInit {
 
   async submit() {
     let notReceived = 0
-    let status = [ ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.PENDING]
+    let status = [ ParameterVerifierAcceptance.RETURNED]
     for await (let para of this.assementYear.assessment.parameters){
-      if (!status.includes(para.verifierAcceptance) ){
+      if (status.includes(para.verifierAcceptance) ){
         notReceived += 1
       }
     }
