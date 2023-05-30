@@ -10,6 +10,7 @@ import {
   Parameter,
   ParameterHistoryControllerServiceProxy,
   ParameterRequestQaStatus,
+  ParameterVerifierAcceptance,
   QualityCheckControllerServiceProxy,
   ServiceProxy,
   User,
@@ -289,11 +290,10 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
 
     if (this.verificationDetails) {
       this.concernVerificationDetails = this.verificationDetails.filter(
-        (a) => !a.isResult && a.parameter && a.parameter.id == parameter.id
+        (a) => !a.isResult && a.parameter && (a.parameter.id == parameter.id || a.parameter.id === parameter.previouseParameterId)
       );
     }
 
-    console.log("verificationDetails---", this.verificationDetails)
 
     this.concernParam = parameter;
 
@@ -471,6 +471,12 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
         _vd.isProjection = true;
       }
     }
+
+    let filter = ['verifierAcceptance||$ne||' + ParameterVerifierAcceptance.REJECTED, 'previouseParameterId||$eq||' + parameter.id]
+    let para = (await this.serviceProxy.getManyBaseParameterControllerParameter(
+      undefined, undefined, filter, undefined, undefined, undefined, 100, 0, 1, 0
+    ).toPromise()).data[0]
+    _vd.parameter = para
 
     _vd.editedOn = moment();
     _vd.updatedDate = moment();

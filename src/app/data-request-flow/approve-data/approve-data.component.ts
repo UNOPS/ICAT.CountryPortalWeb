@@ -454,6 +454,7 @@ export class ApproveDataComponent implements OnInit {
         let inputParameters = new UpdateDeadlineDto();
         inputParameters.ids = idList;
         inputParameters.status = 11;
+        inputParameters.verificationStatus = this.assementYear.verificationStatus
         console.log('inputParameters', inputParameters);
         this.parameterProxy.acceptReviewData(inputParameters).subscribe(
           async (res) => {
