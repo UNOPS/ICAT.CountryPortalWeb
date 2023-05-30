@@ -132,7 +132,11 @@ export class AppComponent implements OnInit {
           this.showTopMenu = false;
           return;
         }
-
+        if (event.url == '/reset-password') {
+          this.showLeftMenu = false;
+          this.showTopMenu = false;
+          return;
+        }
       
     }
     });

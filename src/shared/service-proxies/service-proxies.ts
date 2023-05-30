@@ -6080,6 +6080,64 @@ export class ServiceProxy {
     }
 
     /**
+     * Update a single Country
+     */
+    updateOneBaseCountryControllerCountry(id: number, body: Country): Observable<Country> {
+        let url_ = this.baseUrl + "/country/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateOneBaseCountryControllerCountry(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateOneBaseCountryControllerCountry(<any>response_);
+                } catch (e) {
+                    return <Observable<Country>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Country>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateOneBaseCountryControllerCountry(response: HttpResponseBase): Observable<Country> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Country.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    /**
      * Retrieve a single Country
      * @param fields (optional) Selects resource fields. <a href="https://github.com/nestjsx/crud/wiki/Requests#select" target="_blank">Docs</a>
      * @param join (optional) Adds relational resources. <a href="https://github.com/nestjsx/crud/wiki/Requests#join" target="_blank">Docs</a>
@@ -6128,65 +6186,6 @@ export class ServiceProxy {
     }
 
     protected processGetOneBaseCountryControllerCountry(response: HttpResponseBase): Observable<Country> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Country.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(<any>null);
-    }
-
-    /**
-     * Update a single Country
-     * @return Response
-     */
-    updateOneBaseCountryControllerCountry(id: number, body: Country): Observable<Country> {
-        let url_ = this.baseUrl + "/country/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateOneBaseCountryControllerCountry(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdateOneBaseCountryControllerCountry(<any>response_);
-                } catch (e) {
-                    return <Observable<Country>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<Country>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processUpdateOneBaseCountryControllerCountry(response: HttpResponseBase): Observable<Country> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -17939,6 +17938,59 @@ export class VerificationControllerServiceProxy {
         }
         return _observableOf(<any>null);
     }
+
+    changeParameterValue(body: ChangeParameterValue): Observable<any> {
+        let url_ = this.baseUrl + "/verification/change-parameter-value";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangeParameterValue(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangeParameterValue(<any>response_);
+                } catch (e) {
+                    return <Observable<any>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<any>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processChangeParameterValue(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result201 = resultData201 !== undefined ? resultData201 : <any>null;
+    
+            return _observableOf(result201);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
 }
 
 @Injectable()
@@ -24782,14 +24834,176 @@ export interface IDefaultValue {
     name: string;
 }
 
-export class GetManySectorResponseDto implements IGetManySectorResponseDto {
-    data: Sector[];
+export class Country implements ICountry {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    code: string;
+    code_extended: string;
+    name: string;
+    description: string;
+    sortOrder: number;
+    submissions: string;
+    emissionSummary: string;
+    ndcDocuments: string;
+    isSystemUse: boolean;
+    flagPath: string;
+    registeredDate: moment.Moment;
+    isMember: boolean;
+    countryStatus: CountryStatus;
+    region: string;
+    climateActionModule: boolean;
+    ghgModule: boolean;
+    macModule: boolean;
+    dataCollectionModule: boolean;
+    dataCollectionGhgModule: boolean;
+    hasExelTem: boolean;
+    uniqueIdentification: string;
+    defaultValue: DefaultValue[];
+
+    constructor(data?: ICountry) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.defaultValue = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.code_extended = _data["code_extended"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+            this.submissions = _data["submissions"];
+            this.emissionSummary = _data["emissionSummary"];
+            this.ndcDocuments = _data["ndcDocuments"];
+            this.isSystemUse = _data["isSystemUse"];
+            this.flagPath = _data["flagPath"];
+            this.registeredDate = _data["registeredDate"] ? moment(_data["registeredDate"].toString()) : <any>undefined;
+            this.isMember = _data["isMember"];
+            this.countryStatus = _data["countryStatus"];
+            this.region = _data["region"];
+            this.climateActionModule = _data["climateActionModule"];
+            this.ghgModule = _data["ghgModule"];
+            this.macModule = _data["macModule"];
+            this.dataCollectionModule = _data["dataCollectionModule"];
+            this.dataCollectionGhgModule = _data["dataCollectionGhgModule"];
+            this.hasExelTem = _data["hasExelTem"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
+            if (Array.isArray(_data["defaultValue"])) {
+                this.defaultValue = [] as any;
+                for (let item of _data["defaultValue"])
+                    this.defaultValue.push(DefaultValue.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Country {
+        data = typeof data === 'object' ? data : {};
+        let result = new Country();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["code_extended"] = this.code_extended;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        data["submissions"] = this.submissions;
+        data["emissionSummary"] = this.emissionSummary;
+        data["ndcDocuments"] = this.ndcDocuments;
+        data["isSystemUse"] = this.isSystemUse;
+        data["flagPath"] = this.flagPath;
+        data["registeredDate"] = this.registeredDate ? this.registeredDate.toISOString() : <any>undefined;
+        data["isMember"] = this.isMember;
+        data["countryStatus"] = this.countryStatus;
+        data["region"] = this.region;
+        data["climateActionModule"] = this.climateActionModule;
+        data["ghgModule"] = this.ghgModule;
+        data["macModule"] = this.macModule;
+        data["dataCollectionModule"] = this.dataCollectionModule;
+        data["dataCollectionGhgModule"] = this.dataCollectionGhgModule;
+        data["hasExelTem"] = this.hasExelTem;
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        if (Array.isArray(this.defaultValue)) {
+            data["defaultValue"] = [];
+            for (let item of this.defaultValue)
+                data["defaultValue"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): Country {
+        const json = this.toJSON();
+        let result = new Country();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICountry {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    code: string;
+    code_extended: string;
+    name: string;
+    description: string;
+    sortOrder: number;
+    submissions: string;
+    emissionSummary: string;
+    ndcDocuments: string;
+    isSystemUse: boolean;
+    flagPath: string;
+    registeredDate: moment.Moment;
+    isMember: boolean;
+    countryStatus: CountryStatus;
+    region: string;
+    climateActionModule: boolean;
+    ghgModule: boolean;
+    macModule: boolean;
+    dataCollectionModule: boolean;
+    dataCollectionGhgModule: boolean;
+    hasExelTem: boolean;
+    uniqueIdentification: string;
+    defaultValue: DefaultValue[];
+}
+
+export class GetManyAssessmentResponseDto implements IGetManyAssessmentResponseDto {
+    data: Assessment[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 
-    constructor(data?: IGetManySectorResponseDto) {
+    constructor(data?: IGetManyAssessmentResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -24806,7 +25020,7 @@ export class GetManySectorResponseDto implements IGetManySectorResponseDto {
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data.push(Sector.fromJS(item));
+                    this.data.push(Assessment.fromJS(item));
             }
             this.count = _data["count"];
             this.total = _data["total"];
@@ -24815,9 +25029,9 @@ export class GetManySectorResponseDto implements IGetManySectorResponseDto {
         }
     }
 
-    static fromJS(data: any): GetManySectorResponseDto {
+    static fromJS(data: any): GetManyAssessmentResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetManySectorResponseDto();
+        let result = new GetManyAssessmentResponseDto();
         result.init(data);
         return result;
     }
@@ -24836,30 +25050,30 @@ export class GetManySectorResponseDto implements IGetManySectorResponseDto {
         return data;
     }
 
-    clone(): GetManySectorResponseDto {
+    clone(): GetManyAssessmentResponseDto {
         const json = this.toJSON();
-        let result = new GetManySectorResponseDto();
+        let result = new GetManyAssessmentResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetManySectorResponseDto {
-    data: Sector[];
+export interface IGetManyAssessmentResponseDto {
+    data: Assessment[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 }
 
-export class GetManyLearningMaterialResponseDto implements IGetManyLearningMaterialResponseDto {
-    data: LearningMaterial[];
+export class GetManyUserResponseDto implements IGetManyUserResponseDto {
+    data: User[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 
-    constructor(data?: IGetManyLearningMaterialResponseDto) {
+    constructor(data?: IGetManyUserResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -24876,7 +25090,7 @@ export class GetManyLearningMaterialResponseDto implements IGetManyLearningMater
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data.push(LearningMaterial.fromJS(item));
+                    this.data.push(User.fromJS(item));
             }
             this.count = _data["count"];
             this.total = _data["total"];
@@ -24885,9 +25099,9 @@ export class GetManyLearningMaterialResponseDto implements IGetManyLearningMater
         }
     }
 
-    static fromJS(data: any): GetManyLearningMaterialResponseDto {
+    static fromJS(data: any): GetManyUserResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetManyLearningMaterialResponseDto();
+        let result = new GetManyUserResponseDto();
         result.init(data);
         return result;
     }
@@ -24906,16 +25120,16 @@ export class GetManyLearningMaterialResponseDto implements IGetManyLearningMater
         return data;
     }
 
-    clone(): GetManyLearningMaterialResponseDto {
+    clone(): GetManyUserResponseDto {
         const json = this.toJSON();
-        let result = new GetManyLearningMaterialResponseDto();
+        let result = new GetManyUserResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetManyLearningMaterialResponseDto {
-    data: LearningMaterial[];
+export interface IGetManyUserResponseDto {
+    data: User[];
     count: number;
     total: number;
     page: number;
@@ -24992,14 +25206,14 @@ export interface IGetManyUserTypeResponseDto {
     pageCount: number;
 }
 
-export class GetManyInstitutionTypeResponseDto implements IGetManyInstitutionTypeResponseDto {
-    data: InstitutionType[];
+export class GetManyLearningMaterialResponseDto implements IGetManyLearningMaterialResponseDto {
+    data: LearningMaterial[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 
-    constructor(data?: IGetManyInstitutionTypeResponseDto) {
+    constructor(data?: IGetManyLearningMaterialResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -25016,7 +25230,7 @@ export class GetManyInstitutionTypeResponseDto implements IGetManyInstitutionTyp
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data.push(InstitutionType.fromJS(item));
+                    this.data.push(LearningMaterial.fromJS(item));
             }
             this.count = _data["count"];
             this.total = _data["total"];
@@ -25025,9 +25239,9 @@ export class GetManyInstitutionTypeResponseDto implements IGetManyInstitutionTyp
         }
     }
 
-    static fromJS(data: any): GetManyInstitutionTypeResponseDto {
+    static fromJS(data: any): GetManyLearningMaterialResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetManyInstitutionTypeResponseDto();
+        let result = new GetManyLearningMaterialResponseDto();
         result.init(data);
         return result;
     }
@@ -25046,35 +25260,30 @@ export class GetManyInstitutionTypeResponseDto implements IGetManyInstitutionTyp
         return data;
     }
 
-    clone(): GetManyInstitutionTypeResponseDto {
+    clone(): GetManyLearningMaterialResponseDto {
         const json = this.toJSON();
-        let result = new GetManyInstitutionTypeResponseDto();
+        let result = new GetManyLearningMaterialResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetManyInstitutionTypeResponseDto {
-    data: InstitutionType[];
+export interface IGetManyLearningMaterialResponseDto {
+    data: LearningMaterial[];
     count: number;
     total: number;
     page: number;
     pageCount: number;
 }
 
-export class InstitutionType implements IInstitutionType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    userType: UserType[];
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
+export class GetManySectorResponseDto implements IGetManySectorResponseDto {
+    data: Sector[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
 
-    constructor(data?: IInstitutionType) {
+    constructor(data?: IGetManySectorResponseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -25082,381 +25291,74 @@ export class InstitutionType implements IInstitutionType {
             }
         }
         if (!data) {
-            this.userType = [];
+            this.data = [];
         }
     }
 
     init(_data?: any) {
         if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            if (Array.isArray(_data["userType"])) {
-                this.userType = [] as any;
-                for (let item of _data["userType"])
-                    this.userType.push(UserType.fromJS(item));
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(Sector.fromJS(item));
             }
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
         }
     }
 
-    static fromJS(data: any): InstitutionType {
+    static fromJS(data: any): GetManySectorResponseDto {
         data = typeof data === 'object' ? data : {};
-        let result = new InstitutionType();
+        let result = new GetManySectorResponseDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        if (Array.isArray(this.userType)) {
-            data["userType"] = [];
-            for (let item of this.userType)
-                data["userType"].push(item.toJSON());
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
         }
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
         return data;
     }
 
-    clone(): InstitutionType {
+    clone(): GetManySectorResponseDto {
         const json = this.toJSON();
-        let result = new InstitutionType();
+        let result = new GetManySectorResponseDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IInstitutionType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    userType: UserType[];
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
+export interface IGetManySectorResponseDto {
+    data: Sector[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
 }
 
-export class UserType implements IUserType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    learningMaterialusertype: LearningMaterialUserType[];
-    institutionType: InstitutionType;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-
-    constructor(data?: IUserType) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.learningMaterialusertype = [];
-            this.institutionType = new InstitutionType();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            if (Array.isArray(_data["learningMaterialusertype"])) {
-                this.learningMaterialusertype = [] as any;
-                for (let item of _data["learningMaterialusertype"])
-                    this.learningMaterialusertype.push(LearningMaterialUserType.fromJS(item));
-            }
-            this.institutionType = _data["institutionType"] ? InstitutionType.fromJS(_data["institutionType"]) : new InstitutionType();
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-        }
-    }
-
-    static fromJS(data: any): UserType {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserType();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        if (Array.isArray(this.learningMaterialusertype)) {
-            data["learningMaterialusertype"] = [];
-            for (let item of this.learningMaterialusertype)
-                data["learningMaterialusertype"].push(item.toJSON());
-        }
-        data["institutionType"] = this.institutionType ? this.institutionType.toJSON() : <any>undefined;
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        return data;
-    }
-
-    clone(): UserType {
-        const json = this.toJSON();
-        let result = new UserType();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUserType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    learningMaterialusertype: LearningMaterialUserType[];
-    institutionType: InstitutionType;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-}
-
-export class LearningMaterialUserType implements ILearningMaterialUserType {
+export class CountrySector implements ICountrySector {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
     editedOn: moment.Moment;
     status: number;
     id: number;
-    uniqueIdentification: string;
-    learningMaterial: LearningMaterial;
-    userType: UserType;
-
-    constructor(data?: ILearningMaterialUserType) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.learningMaterial = new LearningMaterial();
-            this.userType = new UserType();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.uniqueIdentification = _data["uniqueIdentification"];
-            this.learningMaterial = _data["learningMaterial"] ? LearningMaterial.fromJS(_data["learningMaterial"]) : new LearningMaterial();
-            this.userType = _data["userType"] ? UserType.fromJS(_data["userType"]) : new UserType();
-        }
-    }
-
-    static fromJS(data: any): LearningMaterialUserType {
-        data = typeof data === 'object' ? data : {};
-        let result = new LearningMaterialUserType();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        data["learningMaterial"] = this.learningMaterial ? this.learningMaterial.toJSON() : <any>undefined;
-        data["userType"] = this.userType ? this.userType.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): LearningMaterialUserType {
-        const json = this.toJSON();
-        let result = new LearningMaterialUserType();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ILearningMaterialUserType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    uniqueIdentification: string;
-    learningMaterial: LearningMaterial;
-    userType: UserType;
-}
-
-export class LearningMaterial implements ILearningMaterial {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    documentType: string;
-    documentName: string;
-    document: string;
-    thumbnail: string;
-    isPublish: number;
-    deletedAt: moment.Moment;
-    uniqueIdentification: string;
-    learningMaterialusertype: LearningMaterialUserType[];
-    learningMaterialsector: LearningMaterialSector[];
-
-    constructor(data?: ILearningMaterial) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.learningMaterialusertype = [];
-            this.learningMaterialsector = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.documentType = _data["documentType"];
-            this.documentName = _data["documentName"];
-            this.document = _data["document"];
-            this.thumbnail = _data["thumbnail"];
-            this.isPublish = _data["isPublish"];
-            this.deletedAt = _data["deletedAt"] ? moment(_data["deletedAt"].toString()) : <any>undefined;
-            this.uniqueIdentification = _data["uniqueIdentification"];
-            if (Array.isArray(_data["learningMaterialusertype"])) {
-                this.learningMaterialusertype = [] as any;
-                for (let item of _data["learningMaterialusertype"])
-                    this.learningMaterialusertype.push(LearningMaterialUserType.fromJS(item));
-            }
-            if (Array.isArray(_data["learningMaterialsector"])) {
-                this.learningMaterialsector = [] as any;
-                for (let item of _data["learningMaterialsector"])
-                    this.learningMaterialsector.push(LearningMaterialSector.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): LearningMaterial {
-        data = typeof data === 'object' ? data : {};
-        let result = new LearningMaterial();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["documentType"] = this.documentType;
-        data["documentName"] = this.documentName;
-        data["document"] = this.document;
-        data["thumbnail"] = this.thumbnail;
-        data["isPublish"] = this.isPublish;
-        data["deletedAt"] = this.deletedAt ? this.deletedAt.toISOString() : <any>undefined;
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        if (Array.isArray(this.learningMaterialusertype)) {
-            data["learningMaterialusertype"] = [];
-            for (let item of this.learningMaterialusertype)
-                data["learningMaterialusertype"].push(item.toJSON());
-        }
-        if (Array.isArray(this.learningMaterialsector)) {
-            data["learningMaterialsector"] = [];
-            for (let item of this.learningMaterialsector)
-                data["learningMaterialsector"].push(item.toJSON());
-        }
-        return data;
-    }
-
-    clone(): LearningMaterial {
-        const json = this.toJSON();
-        let result = new LearningMaterial();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ILearningMaterial {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    documentType: string;
-    documentName: string;
-    document: string;
-    thumbnail: string;
-    isPublish: number;
-    deletedAt: moment.Moment;
-    uniqueIdentification: string;
-    learningMaterialusertype: LearningMaterialUserType[];
-    learningMaterialsector: LearningMaterialSector[];
-}
-
-export class LearningMaterialSector implements ILearningMaterialSector {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    uniqueIdentification: string;
-    learningMaterial2: LearningMaterial;
+    country: Country;
     sector: Sector;
+    sectorId: number;
+    uniqueIdentification: string;
 
-    constructor(data?: ILearningMaterialSector) {
+    constructor(data?: ICountrySector) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -25464,7 +25366,7 @@ export class LearningMaterialSector implements ILearningMaterialSector {
             }
         }
         if (!data) {
-            this.learningMaterial2 = new LearningMaterial();
+            this.country = new Country();
             this.sector = new Sector();
         }
     }
@@ -25477,15 +25379,16 @@ export class LearningMaterialSector implements ILearningMaterialSector {
             this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
             this.status = _data["status"];
             this.id = _data["id"];
-            this.uniqueIdentification = _data["uniqueIdentification"];
-            this.learningMaterial2 = _data["learningMaterial2"] ? LearningMaterial.fromJS(_data["learningMaterial2"]) : new LearningMaterial();
+            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
             this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
+            this.sectorId = _data["sectorId"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
         }
     }
 
-    static fromJS(data: any): LearningMaterialSector {
+    static fromJS(data: any): CountrySector {
         data = typeof data === 'object' ? data : {};
-        let result = new LearningMaterialSector();
+        let result = new CountrySector();
         result.init(data);
         return result;
     }
@@ -25498,30 +25401,32 @@ export class LearningMaterialSector implements ILearningMaterialSector {
         data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["id"] = this.id;
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        data["learningMaterial2"] = this.learningMaterial2 ? this.learningMaterial2.toJSON() : <any>undefined;
+        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
         data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
+        data["sectorId"] = this.sectorId;
+        data["uniqueIdentification"] = this.uniqueIdentification;
         return data;
     }
 
-    clone(): LearningMaterialSector {
+    clone(): CountrySector {
         const json = this.toJSON();
-        let result = new LearningMaterialSector();
+        let result = new CountrySector();
         result.init(json);
         return result;
     }
 }
 
-export interface ILearningMaterialSector {
+export interface ICountrySector {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
     editedOn: moment.Moment;
     status: number;
     id: number;
-    uniqueIdentification: string;
-    learningMaterial2: LearningMaterial;
+    country: Country;
     sector: Sector;
+    sectorId: number;
+    uniqueIdentification: string;
 }
 
 export class GetManyReportResponseDto implements IGetManyReportResponseDto {
@@ -25873,6 +25778,166 @@ export interface IInstitutionCategory {
     editedBy: string;
     editedOn: moment.Moment;
     status: number;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+}
+
+export class GetManyInstitutionTypeResponseDto implements IGetManyInstitutionTypeResponseDto {
+    data: InstitutionType[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyInstitutionTypeResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(InstitutionType.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyInstitutionTypeResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyInstitutionTypeResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyInstitutionTypeResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyInstitutionTypeResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyInstitutionTypeResponseDto {
+    data: InstitutionType[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class InstitutionType implements IInstitutionType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    userType: UserType[];
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+
+    constructor(data?: IInstitutionType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.userType = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            if (Array.isArray(_data["userType"])) {
+                this.userType = [] as any;
+                for (let item of _data["userType"])
+                    this.userType.push(UserType.fromJS(item));
+            }
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): InstitutionType {
+        data = typeof data === 'object' ? data : {};
+        let result = new InstitutionType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        if (Array.isArray(this.userType)) {
+            data["userType"] = [];
+            for (let item of this.userType)
+                data["userType"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): InstitutionType {
+        const json = this.toJSON();
+        let result = new InstitutionType();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IInstitutionType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    userType: UserType[];
     id: number;
     name: string;
     description: string;
@@ -26294,2601 +26359,6 @@ export interface IGetManySubNdcResponseDto {
     total: number;
     page: number;
     pageCount: number;
-}
-
-export class GetManyAssessmentResponseDto implements IGetManyAssessmentResponseDto {
-    data: Assessment[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyAssessmentResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(Assessment.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyAssessmentResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyAssessmentResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyAssessmentResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyAssessmentResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyAssessmentResponseDto {
-    data: Assessment[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class GetManyUserResponseDto implements IGetManyUserResponseDto {
-    data: User[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyUserResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(User.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyUserResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyUserResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyUserResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyUserResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyUserResponseDto {
-    data: User[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class User implements IUser {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    userTypeId: number;
-    userType: UserType;
-    firstName: string;
-    lastName: string;
-    username: string;
-    email: string;
-    institution: Institution;
-    assessments: Assessment[];
-    telephone: string;
-    mobile: string;
-    designation: string;
-    country: Country;
-    salt: string;
-    password: string;
-    resetToken: string;
-    deletedAt: moment.Moment;
-    canNotDelete: boolean;
-    uniqueIdentification: string;
-    fullName: string;
-    _fullname: string;
-
-    constructor(data?: IUser) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.userType = new UserType();
-            this.institution = new Institution();
-            this.assessments = [];
-            this.country = new Country();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.userTypeId = _data["userTypeId"];
-            this.userType = _data["userType"] ? UserType.fromJS(_data["userType"]) : new UserType();
-            this.firstName = _data["firstName"];
-            this.lastName = _data["lastName"];
-            this.username = _data["username"];
-            this.email = _data["email"];
-            this.institution = _data["institution"] ? Institution.fromJS(_data["institution"]) : new Institution();
-            if (Array.isArray(_data["assessments"])) {
-                this.assessments = [] as any;
-                for (let item of _data["assessments"])
-                    this.assessments.push(Assessment.fromJS(item));
-            }
-            this.telephone = _data["telephone"];
-            this.mobile = _data["mobile"];
-            this.designation = _data["designation"];
-            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
-            this.salt = _data["salt"];
-            this.password = _data["password"];
-            this.resetToken = _data["resetToken"];
-            this.deletedAt = _data["deletedAt"] ? moment(_data["deletedAt"].toString()) : <any>undefined;
-            this.canNotDelete = _data["canNotDelete"];
-            this.uniqueIdentification = _data["uniqueIdentification"];
-            this.fullName = _data["fullName"];
-            this._fullname = _data["_fullname"];
-        }
-    }
-
-    static fromJS(data: any): User {
-        data = typeof data === 'object' ? data : {};
-        let result = new User();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["userTypeId"] = this.userTypeId;
-        data["userType"] = this.userType ? this.userType.toJSON() : <any>undefined;
-        data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
-        data["username"] = this.username;
-        data["email"] = this.email;
-        data["institution"] = this.institution ? this.institution.toJSON() : <any>undefined;
-        if (Array.isArray(this.assessments)) {
-            data["assessments"] = [];
-            for (let item of this.assessments)
-                data["assessments"].push(item.toJSON());
-        }
-        data["telephone"] = this.telephone;
-        data["mobile"] = this.mobile;
-        data["designation"] = this.designation;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
-        data["salt"] = this.salt;
-        data["password"] = this.password;
-        data["resetToken"] = this.resetToken;
-        data["deletedAt"] = this.deletedAt ? this.deletedAt.toISOString() : <any>undefined;
-        data["canNotDelete"] = this.canNotDelete;
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        data["fullName"] = this.fullName;
-        data["_fullname"] = this._fullname;
-        return data;
-    }
-
-    clone(): User {
-        const json = this.toJSON();
-        let result = new User();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUser {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    userTypeId: number;
-    userType: UserType;
-    firstName: string;
-    lastName: string;
-    username: string;
-    email: string;
-    institution: Institution;
-    assessments: Assessment[];
-    telephone: string;
-    mobile: string;
-    designation: string;
-    country: Country;
-    salt: string;
-    password: string;
-    resetToken: string;
-    deletedAt: moment.Moment;
-    canNotDelete: boolean;
-    uniqueIdentification: string;
-    fullName: string;
-    _fullname: string;
-}
-
-export class GetManyAssessmentObjectiveResponseDto implements IGetManyAssessmentObjectiveResponseDto {
-    data: AssessmentObjective[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyAssessmentObjectiveResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(AssessmentObjective.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyAssessmentObjectiveResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyAssessmentObjectiveResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyAssessmentObjectiveResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyAssessmentObjectiveResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyAssessmentObjectiveResponseDto {
-    data: AssessmentObjective[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class AssessmentObjective implements IAssessmentObjective {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    objective: string;
-    assessmentId: number;
-
-    constructor(data?: IAssessmentObjective) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.objective = _data["objective"];
-            this.assessmentId = _data["assessmentId"];
-        }
-    }
-
-    static fromJS(data: any): AssessmentObjective {
-        data = typeof data === 'object' ? data : {};
-        let result = new AssessmentObjective();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["objective"] = this.objective;
-        data["assessmentId"] = this.assessmentId;
-        return data;
-    }
-
-    clone(): AssessmentObjective {
-        const json = this.toJSON();
-        let result = new AssessmentObjective();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAssessmentObjective {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    objective: string;
-    assessmentId: number;
-}
-
-export class GetManyAssessmentYearResponseDto implements IGetManyAssessmentYearResponseDto {
-    data: AssessmentYear[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyAssessmentYearResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(AssessmentYear.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyAssessmentYearResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyAssessmentYearResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyAssessmentYearResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyAssessmentYearResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyAssessmentYearResponseDto {
-    data: AssessmentYear[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class GetManyVerificationDetailResponseDto implements IGetManyVerificationDetailResponseDto {
-    data: VerificationDetail[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyVerificationDetailResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(VerificationDetail.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyVerificationDetailResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyVerificationDetailResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyVerificationDetailResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyVerificationDetailResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyVerificationDetailResponseDto {
-    data: VerificationDetail[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class GetManyParameterResponseDto implements IGetManyParameterResponseDto {
-    data: Parameter[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyParameterResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(Parameter.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyParameterResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyParameterResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyParameterResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyParameterResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyParameterResponseDto {
-    data: Parameter[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class GetManyParameterRequestResponseDto implements IGetManyParameterRequestResponseDto {
-    data: ParameterRequest[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyParameterRequestResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(ParameterRequest.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyParameterRequestResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyParameterRequestResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyParameterRequestResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyParameterRequestResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyParameterRequestResponseDto {
-    data: ParameterRequest[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class ParameterRequest implements IParameterRequest {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    parameter: Parameter;
-    deadline: moment.Moment;
-    deadlineDataEntry: moment.Moment;
-    reasonForExceedRange: string;
-    requestedDate: moment.Moment;
-    value: string;
-    valueInParameterStandard: string;
-    noteDataRequest: string;
-    noteDataEntry: string;
-    noteDataApprover: string;
-    noteCase1: string;
-    noteCase2: string;
-    noteCase3: string;
-    userDataEntry: number;
-    userIdFerfyie: number;
-    userQA: number;
-    dataRequestStatus: ParameterRequestDataRequestStatus;
-    qaStatus: ParameterRequestQaStatus;
-    qaStatusUpdatedDate: moment.Moment;
-    qaDeadline: moment.Moment;
-    qaAssighnDate: moment.Moment;
-    qaComment: string;
-    qcUserName: string;
-
-    constructor(data?: IParameterRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.parameter = _data["parameter"] ? Parameter.fromJS(_data["parameter"]) : <any>undefined;
-            this.deadline = _data["deadline"] ? moment(_data["deadline"].toString()) : <any>undefined;
-            this.deadlineDataEntry = _data["deadlineDataEntry"] ? moment(_data["deadlineDataEntry"].toString()) : <any>undefined;
-            this.reasonForExceedRange = _data["reasonForExceedRange"];
-            this.requestedDate = _data["requestedDate"] ? moment(_data["requestedDate"].toString()) : <any>undefined;
-            this.value = _data["value"];
-            this.valueInParameterStandard = _data["valueInParameterStandard"];
-            this.noteDataRequest = _data["noteDataRequest"];
-            this.noteDataEntry = _data["noteDataEntry"];
-            this.noteDataApprover = _data["noteDataApprover"];
-            this.noteCase1 = _data["noteCase1"];
-            this.noteCase2 = _data["noteCase2"];
-            this.noteCase3 = _data["noteCase3"];
-            this.userDataEntry = _data["UserDataEntry"];
-            this.userIdFerfyie = _data["UserIdFerfyie"];
-            this.userQA = _data["UserQA"];
-            this.dataRequestStatus = _data["dataRequestStatus"];
-            this.qaStatus = _data["qaStatus"];
-            this.qaStatusUpdatedDate = _data["qaStatusUpdatedDate"] ? moment(_data["qaStatusUpdatedDate"].toString()) : <any>undefined;
-            this.qaDeadline = _data["qaDeadline"] ? moment(_data["qaDeadline"].toString()) : <any>undefined;
-            this.qaAssighnDate = _data["qaAssighnDate"] ? moment(_data["qaAssighnDate"].toString()) : <any>undefined;
-            this.qaComment = _data["qaComment"];
-            this.qcUserName = _data["qcUserName"];
-        }
-    }
-
-    static fromJS(data: any): ParameterRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new ParameterRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["parameter"] = this.parameter ? this.parameter.toJSON() : <any>undefined;
-        data["deadline"] = this.deadline ? this.deadline.toISOString() : <any>undefined;
-        data["deadlineDataEntry"] = this.deadlineDataEntry ? this.deadlineDataEntry.toISOString() : <any>undefined;
-        data["reasonForExceedRange"] = this.reasonForExceedRange;
-        data["requestedDate"] = this.requestedDate ? this.requestedDate.toISOString() : <any>undefined;
-        data["value"] = this.value;
-        data["valueInParameterStandard"] = this.valueInParameterStandard;
-        data["noteDataRequest"] = this.noteDataRequest;
-        data["noteDataEntry"] = this.noteDataEntry;
-        data["noteDataApprover"] = this.noteDataApprover;
-        data["noteCase1"] = this.noteCase1;
-        data["noteCase2"] = this.noteCase2;
-        data["noteCase3"] = this.noteCase3;
-        data["UserDataEntry"] = this.userDataEntry;
-        data["UserIdFerfyie"] = this.userIdFerfyie;
-        data["UserQA"] = this.userQA;
-        data["dataRequestStatus"] = this.dataRequestStatus;
-        data["qaStatus"] = this.qaStatus;
-        data["qaStatusUpdatedDate"] = this.qaStatusUpdatedDate ? this.qaStatusUpdatedDate.toISOString() : <any>undefined;
-        data["qaDeadline"] = this.qaDeadline ? this.qaDeadline.toISOString() : <any>undefined;
-        data["qaAssighnDate"] = this.qaAssighnDate ? this.qaAssighnDate.toISOString() : <any>undefined;
-        data["qaComment"] = this.qaComment;
-        data["qcUserName"] = this.qcUserName;
-        return data;
-    }
-
-    clone(): ParameterRequest {
-        const json = this.toJSON();
-        let result = new ParameterRequest();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IParameterRequest {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    parameter: Parameter;
-    deadline: moment.Moment;
-    deadlineDataEntry: moment.Moment;
-    reasonForExceedRange: string;
-    requestedDate: moment.Moment;
-    value: string;
-    valueInParameterStandard: string;
-    noteDataRequest: string;
-    noteDataEntry: string;
-    noteDataApprover: string;
-    noteCase1: string;
-    noteCase2: string;
-    noteCase3: string;
-    userDataEntry: number;
-    userIdFerfyie: number;
-    userQA: number;
-    dataRequestStatus: ParameterRequestDataRequestStatus;
-    qaStatus: ParameterRequestQaStatus;
-    qaStatusUpdatedDate: moment.Moment;
-    qaDeadline: moment.Moment;
-    qaAssighnDate: moment.Moment;
-    qaComment: string;
-    qcUserName: string;
-}
-
-export class Parameter implements IParameter {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    name: string;
-    originalName: string;
-    isAlternative: boolean;
-    isEnabledAlternative: boolean;
-    parentParameter: Parameter;
-    parentParameterId: number;
-    isBaseline: boolean;
-    isProject: boolean;
-    isLekage: boolean;
-    isProjection: boolean;
-    isDefault: boolean;
-    isHistorical: boolean;
-    vehical: string;
-    fuelType: string;
-    route: string;
-    powerPlant: string;
-    feedstock: string;
-    soil: string;
-    stratum: string;
-    residue: string;
-    landClearance: string;
-    uomDataRequest: string;
-    uomDataEntry: string;
-    value: string;
-    conversionValue: string;
-    baseYear: number;
-    projectionBaseYear: number;
-    useDefaultValue: boolean;
-    assessmentYear: number;
-    projectionYear: number;
-    code: string;
-    enterDataAssumption: string;
-    methodologyCode: string;
-    methodologyVersion: string;
-    countryCodeExtended: string;
-    isAcceptedByVerifier: number;
-    defaultValueId: number;
-    institution: Institution;
-    assessment: Assessment;
-    defaultValue: DefaultValue;
-    parameterRequest: ParameterRequest;
-    verificationDetail: VerificationDetail[];
-    hasChild: boolean;
-
-    constructor(data?: IParameter) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.verificationDetail = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.originalName = _data["originalName"];
-            this.isAlternative = _data["isAlternative"];
-            this.isEnabledAlternative = _data["isEnabledAlternative"];
-            this.parentParameter = _data["ParentParameter"] ? Parameter.fromJS(_data["ParentParameter"]) : <any>undefined;
-            this.parentParameterId = _data["ParentParameterId"];
-            this.isBaseline = _data["isBaseline"];
-            this.isProject = _data["isProject"];
-            this.isLekage = _data["isLekage"];
-            this.isProjection = _data["isProjection"];
-            this.isDefault = _data["isDefault"];
-            this.isHistorical = _data["isHistorical"];
-            this.vehical = _data["vehical"];
-            this.fuelType = _data["fuelType"];
-            this.route = _data["route"];
-            this.powerPlant = _data["powerPlant"];
-            this.feedstock = _data["feedstock"];
-            this.soil = _data["soil"];
-            this.stratum = _data["stratum"];
-            this.residue = _data["residue"];
-            this.landClearance = _data["landClearance"];
-            this.uomDataRequest = _data["uomDataRequest"];
-            this.uomDataEntry = _data["uomDataEntry"];
-            this.value = _data["value"];
-            this.conversionValue = _data["conversionValue"];
-            this.baseYear = _data["baseYear"];
-            this.projectionBaseYear = _data["projectionBaseYear"];
-            this.useDefaultValue = _data["useDefaultValue"];
-            this.assessmentYear = _data["AssessmentYear"];
-            this.projectionYear = _data["projectionYear"];
-            this.code = _data["code"];
-            this.enterDataAssumption = _data["enterDataAssumption"];
-            this.methodologyCode = _data["methodologyCode"];
-            this.methodologyVersion = _data["methodologyVersion"];
-            this.countryCodeExtended = _data["countryCodeExtended"];
-            this.isAcceptedByVerifier = _data["isAcceptedByVerifier"];
-            this.defaultValueId = _data["defaultValueId"];
-            this.institution = _data["institution"] ? Institution.fromJS(_data["institution"]) : <any>undefined;
-            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : <any>undefined;
-            this.defaultValue = _data["defaultValue"] ? DefaultValue.fromJS(_data["defaultValue"]) : <any>undefined;
-            this.parameterRequest = _data["parameterRequest"] ? ParameterRequest.fromJS(_data["parameterRequest"]) : <any>undefined;
-            if (Array.isArray(_data["verificationDetail"])) {
-                this.verificationDetail = [] as any;
-                for (let item of _data["verificationDetail"])
-                    this.verificationDetail.push(VerificationDetail.fromJS(item));
-            }
-            this.hasChild = _data["hasChild"];
-        }
-    }
-
-    static fromJS(data: any): Parameter {
-        data = typeof data === 'object' ? data : {};
-        let result = new Parameter();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["originalName"] = this.originalName;
-        data["isAlternative"] = this.isAlternative;
-        data["isEnabledAlternative"] = this.isEnabledAlternative;
-        data["ParentParameter"] = this.parentParameter ? this.parentParameter.toJSON() : <any>undefined;
-        data["ParentParameterId"] = this.parentParameterId;
-        data["isBaseline"] = this.isBaseline;
-        data["isProject"] = this.isProject;
-        data["isLekage"] = this.isLekage;
-        data["isProjection"] = this.isProjection;
-        data["isDefault"] = this.isDefault;
-        data["isHistorical"] = this.isHistorical;
-        data["vehical"] = this.vehical;
-        data["fuelType"] = this.fuelType;
-        data["route"] = this.route;
-        data["powerPlant"] = this.powerPlant;
-        data["feedstock"] = this.feedstock;
-        data["soil"] = this.soil;
-        data["stratum"] = this.stratum;
-        data["residue"] = this.residue;
-        data["landClearance"] = this.landClearance;
-        data["uomDataRequest"] = this.uomDataRequest;
-        data["uomDataEntry"] = this.uomDataEntry;
-        data["value"] = this.value;
-        data["conversionValue"] = this.conversionValue;
-        data["baseYear"] = this.baseYear;
-        data["projectionBaseYear"] = this.projectionBaseYear;
-        data["useDefaultValue"] = this.useDefaultValue;
-        data["AssessmentYear"] = this.assessmentYear;
-        data["projectionYear"] = this.projectionYear;
-        data["code"] = this.code;
-        data["enterDataAssumption"] = this.enterDataAssumption;
-        data["methodologyCode"] = this.methodologyCode;
-        data["methodologyVersion"] = this.methodologyVersion;
-        data["countryCodeExtended"] = this.countryCodeExtended;
-        data["isAcceptedByVerifier"] = this.isAcceptedByVerifier;
-        data["defaultValueId"] = this.defaultValueId;
-        data["institution"] = this.institution ? this.institution.toJSON() : <any>undefined;
-        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
-        data["defaultValue"] = this.defaultValue ? this.defaultValue.toJSON() : <any>undefined;
-        data["parameterRequest"] = this.parameterRequest ? this.parameterRequest.toJSON() : <any>undefined;
-        if (Array.isArray(this.verificationDetail)) {
-            data["verificationDetail"] = [];
-            for (let item of this.verificationDetail)
-                data["verificationDetail"].push(item.toJSON());
-        }
-        data["hasChild"] = this.hasChild;
-        return data;
-    }
-
-    clone(): Parameter {
-        const json = this.toJSON();
-        let result = new Parameter();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IParameter {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    name: string;
-    originalName: string;
-    isAlternative: boolean;
-    isEnabledAlternative: boolean;
-    parentParameter: Parameter;
-    parentParameterId: number;
-    isBaseline: boolean;
-    isProject: boolean;
-    isLekage: boolean;
-    isProjection: boolean;
-    isDefault: boolean;
-    isHistorical: boolean;
-    vehical: string;
-    fuelType: string;
-    route: string;
-    powerPlant: string;
-    feedstock: string;
-    soil: string;
-    stratum: string;
-    residue: string;
-    landClearance: string;
-    uomDataRequest: string;
-    uomDataEntry: string;
-    value: string;
-    conversionValue: string;
-    baseYear: number;
-    projectionBaseYear: number;
-    useDefaultValue: boolean;
-    assessmentYear: number;
-    projectionYear: number;
-    code: string;
-    enterDataAssumption: string;
-    methodologyCode: string;
-    methodologyVersion: string;
-    countryCodeExtended: string;
-    isAcceptedByVerifier: number;
-    defaultValueId: number;
-    institution: Institution;
-    assessment: Assessment;
-    defaultValue: DefaultValue;
-    parameterRequest: ParameterRequest;
-    verificationDetail: VerificationDetail[];
-    hasChild: boolean;
-}
-
-export class VerificationDetail implements IVerificationDetail {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    year: number;
-    assessmentId: number;
-    updatedDate: moment.Moment;
-    rootCause: string;
-    explanation: string;
-    correctiveAction: string;
-    action: string;
-    isAccepted: boolean;
-    isNDC: boolean;
-    isMethodology: boolean;
-    isBaseline: boolean;
-    isProject: boolean;
-    isLekage: boolean;
-    isProjection: boolean;
-    isResult: boolean;
-    isDataRequested: boolean;
-    verificationStatus: VerificationDetailVerificationStatus;
-    verificationStage: number;
-    userVerifier: number;
-    isAssumption: boolean;
-    assumption: string;
-    assessmentYear: AssessmentYear;
-    parameter: Parameter;
-
-    constructor(data?: IVerificationDetail) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.assessmentYear = new AssessmentYear();
-            this.parameter = new Parameter();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.year = _data["year"];
-            this.assessmentId = _data["assessmentId"];
-            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
-            this.rootCause = _data["rootCause"];
-            this.explanation = _data["explanation"];
-            this.correctiveAction = _data["correctiveAction"];
-            this.action = _data["action"];
-            this.isAccepted = _data["isAccepted"];
-            this.isNDC = _data["isNDC"];
-            this.isMethodology = _data["isMethodology"];
-            this.isBaseline = _data["isBaseline"];
-            this.isProject = _data["isProject"];
-            this.isLekage = _data["isLekage"];
-            this.isProjection = _data["isProjection"];
-            this.isResult = _data["isResult"];
-            this.isDataRequested = _data["isDataRequested"];
-            this.verificationStatus = _data["verificationStatus"];
-            this.verificationStage = _data["verificationStage"];
-            this.userVerifier = _data["userVerifier"];
-            this.isAssumption = _data["isAssumption"];
-            this.assumption = _data["assumption"];
-            this.assessmentYear = _data["assessmentYear"] ? AssessmentYear.fromJS(_data["assessmentYear"]) : new AssessmentYear();
-            this.parameter = _data["parameter"] ? Parameter.fromJS(_data["parameter"]) : new Parameter();
-        }
-    }
-
-    static fromJS(data: any): VerificationDetail {
-        data = typeof data === 'object' ? data : {};
-        let result = new VerificationDetail();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["year"] = this.year;
-        data["assessmentId"] = this.assessmentId;
-        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
-        data["rootCause"] = this.rootCause;
-        data["explanation"] = this.explanation;
-        data["correctiveAction"] = this.correctiveAction;
-        data["action"] = this.action;
-        data["isAccepted"] = this.isAccepted;
-        data["isNDC"] = this.isNDC;
-        data["isMethodology"] = this.isMethodology;
-        data["isBaseline"] = this.isBaseline;
-        data["isProject"] = this.isProject;
-        data["isLekage"] = this.isLekage;
-        data["isProjection"] = this.isProjection;
-        data["isResult"] = this.isResult;
-        data["isDataRequested"] = this.isDataRequested;
-        data["verificationStatus"] = this.verificationStatus;
-        data["verificationStage"] = this.verificationStage;
-        data["userVerifier"] = this.userVerifier;
-        data["isAssumption"] = this.isAssumption;
-        data["assumption"] = this.assumption;
-        data["assessmentYear"] = this.assessmentYear ? this.assessmentYear.toJSON() : <any>undefined;
-        data["parameter"] = this.parameter ? this.parameter.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): VerificationDetail {
-        const json = this.toJSON();
-        let result = new VerificationDetail();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IVerificationDetail {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    year: number;
-    assessmentId: number;
-    updatedDate: moment.Moment;
-    rootCause: string;
-    explanation: string;
-    correctiveAction: string;
-    action: string;
-    isAccepted: boolean;
-    isNDC: boolean;
-    isMethodology: boolean;
-    isBaseline: boolean;
-    isProject: boolean;
-    isLekage: boolean;
-    isProjection: boolean;
-    isResult: boolean;
-    isDataRequested: boolean;
-    verificationStatus: VerificationDetailVerificationStatus;
-    verificationStage: number;
-    userVerifier: number;
-    isAssumption: boolean;
-    assumption: string;
-    assessmentYear: AssessmentYear;
-    parameter: Parameter;
-}
-
-export class AssessmentYear implements IAssessmentYear {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    assessmentYear: string;
-    qaStatus: AssessmentYearQaStatus;
-    qaDeadline: moment.Moment;
-    qaAssighnDate: moment.Moment;
-    verificationUser: number;
-    verificationStatus: AssessmentYearVerificationStatus;
-    verificationAssighnDate: moment.Moment;
-    verificationDeadline: moment.Moment;
-    verifierComment: string;
-    isVerificationSuccess: boolean;
-    assessmentAssumption: string;
-    assessment: Assessment;
-    verificationDetail: VerificationDetail[];
-
-    constructor(data?: IAssessmentYear) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.assessment = new Assessment();
-            this.verificationDetail = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.assessmentYear = _data["assessmentYear"];
-            this.qaStatus = _data["qaStatus"];
-            this.qaDeadline = _data["qaDeadline"] ? moment(_data["qaDeadline"].toString()) : <any>undefined;
-            this.qaAssighnDate = _data["qaAssighnDate"] ? moment(_data["qaAssighnDate"].toString()) : <any>undefined;
-            this.verificationUser = _data["verificationUser"];
-            this.verificationStatus = _data["verificationStatus"];
-            this.verificationAssighnDate = _data["verificationAssighnDate"] ? moment(_data["verificationAssighnDate"].toString()) : <any>undefined;
-            this.verificationDeadline = _data["verificationDeadline"] ? moment(_data["verificationDeadline"].toString()) : <any>undefined;
-            this.verifierComment = _data["verifierComment"];
-            this.isVerificationSuccess = _data["isVerificationSuccess"];
-            this.assessmentAssumption = _data["assessmentAssumption"];
-            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : new Assessment();
-            if (Array.isArray(_data["verificationDetail"])) {
-                this.verificationDetail = [] as any;
-                for (let item of _data["verificationDetail"])
-                    this.verificationDetail.push(VerificationDetail.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): AssessmentYear {
-        data = typeof data === 'object' ? data : {};
-        let result = new AssessmentYear();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["assessmentYear"] = this.assessmentYear;
-        data["qaStatus"] = this.qaStatus;
-        data["qaDeadline"] = this.qaDeadline ? this.qaDeadline.toISOString() : <any>undefined;
-        data["qaAssighnDate"] = this.qaAssighnDate ? this.qaAssighnDate.toISOString() : <any>undefined;
-        data["verificationUser"] = this.verificationUser;
-        data["verificationStatus"] = this.verificationStatus;
-        data["verificationAssighnDate"] = this.verificationAssighnDate ? this.verificationAssighnDate.toISOString() : <any>undefined;
-        data["verificationDeadline"] = this.verificationDeadline ? this.verificationDeadline.toISOString() : <any>undefined;
-        data["verifierComment"] = this.verifierComment;
-        data["isVerificationSuccess"] = this.isVerificationSuccess;
-        data["assessmentAssumption"] = this.assessmentAssumption;
-        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
-        if (Array.isArray(this.verificationDetail)) {
-            data["verificationDetail"] = [];
-            for (let item of this.verificationDetail)
-                data["verificationDetail"].push(item.toJSON());
-        }
-        return data;
-    }
-
-    clone(): AssessmentYear {
-        const json = this.toJSON();
-        let result = new AssessmentYear();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAssessmentYear {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    assessmentYear: string;
-    qaStatus: AssessmentYearQaStatus;
-    qaDeadline: moment.Moment;
-    qaAssighnDate: moment.Moment;
-    verificationUser: number;
-    verificationStatus: AssessmentYearVerificationStatus;
-    verificationAssighnDate: moment.Moment;
-    verificationDeadline: moment.Moment;
-    verifierComment: string;
-    isVerificationSuccess: boolean;
-    assessmentAssumption: string;
-    assessment: Assessment;
-    verificationDetail: VerificationDetail[];
-}
-
-export class GetManyAssessmentResaultResponseDto implements IGetManyAssessmentResaultResponseDto {
-    data: AssessmentResault[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyAssessmentResaultResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(AssessmentResault.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyAssessmentResaultResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyAssessmentResaultResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyAssessmentResaultResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyAssessmentResaultResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyAssessmentResaultResponseDto {
-    data: AssessmentResault[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class GetManyProjectionResaultResponseDto implements IGetManyProjectionResaultResponseDto {
-    data: ProjectionResault[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyProjectionResaultResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(ProjectionResault.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyProjectionResaultResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyProjectionResaultResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyProjectionResaultResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyProjectionResaultResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyProjectionResaultResponseDto {
-    data: ProjectionResault[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class ProjectionResault implements IProjectionResault {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    projectionYear: number;
-    baselineResult: number;
-    baselineResultUnit: string;
-    projectResult: number;
-    projectResultUnit: string;
-    leakageResult: number;
-    leakageResultUnit: string;
-    emissionReduction: number;
-    emissionReductionUnit: string;
-    assementResult: AssessmentResault;
-    qcStatus: ProjectionResaultQcStatus;
-    qcComment: string;
-    projectionResualt: number;
-    assement: Assessment;
-
-    constructor(data?: IProjectionResault) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.assementResult = new AssessmentResault();
-            this.assement = new Assessment();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.projectionYear = _data["projectionYear"];
-            this.baselineResult = _data["baselineResult"];
-            this.baselineResultUnit = _data["baselineResultUnit"];
-            this.projectResult = _data["projectResult"];
-            this.projectResultUnit = _data["projectResultUnit"];
-            this.leakageResult = _data["leakageResult"];
-            this.leakageResultUnit = _data["leakageResultUnit"];
-            this.emissionReduction = _data["emissionReduction"];
-            this.emissionReductionUnit = _data["emissionReductionUnit"];
-            this.assementResult = _data["assementResult"] ? AssessmentResault.fromJS(_data["assementResult"]) : new AssessmentResault();
-            this.qcStatus = _data["qcStatus"];
-            this.qcComment = _data["qcComment"];
-            this.projectionResualt = _data["projectionResualt"];
-            this.assement = _data["assement"] ? Assessment.fromJS(_data["assement"]) : new Assessment();
-        }
-    }
-
-    static fromJS(data: any): ProjectionResault {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProjectionResault();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["projectionYear"] = this.projectionYear;
-        data["baselineResult"] = this.baselineResult;
-        data["baselineResultUnit"] = this.baselineResultUnit;
-        data["projectResult"] = this.projectResult;
-        data["projectResultUnit"] = this.projectResultUnit;
-        data["leakageResult"] = this.leakageResult;
-        data["leakageResultUnit"] = this.leakageResultUnit;
-        data["emissionReduction"] = this.emissionReduction;
-        data["emissionReductionUnit"] = this.emissionReductionUnit;
-        data["assementResult"] = this.assementResult ? this.assementResult.toJSON() : <any>undefined;
-        data["qcStatus"] = this.qcStatus;
-        data["qcComment"] = this.qcComment;
-        data["projectionResualt"] = this.projectionResualt;
-        data["assement"] = this.assement ? this.assement.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): ProjectionResault {
-        const json = this.toJSON();
-        let result = new ProjectionResault();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IProjectionResault {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    projectionYear: number;
-    baselineResult: number;
-    baselineResultUnit: string;
-    projectResult: number;
-    projectResultUnit: string;
-    leakageResult: number;
-    leakageResultUnit: string;
-    emissionReduction: number;
-    emissionReductionUnit: string;
-    assementResult: AssessmentResault;
-    qcStatus: ProjectionResaultQcStatus;
-    qcComment: string;
-    projectionResualt: number;
-    assement: Assessment;
-}
-
-export class AssessmentResault implements IAssessmentResault {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    baselineResult: number;
-    baselineResultUnit: string;
-    projectResult: number;
-    projectResultUnit: string;
-    lekageResult: number;
-    lekageResultUnit: string;
-    totalEmission: number;
-    totalEmissionUnit: string;
-    bsTotalAnnualCost: number;
-    psTotalAnnualCost: number;
-    costDifference: number;
-    macResult: number;
-    qcComment: string;
-    qcStatusBaselineResult: AssessmentResaultQcStatusBaselineResult;
-    qcStatuProjectResult: AssessmentResaultQcStatuProjectResult;
-    qcStatusLekageResult: AssessmentResaultQcStatusLekageResult;
-    qcStatusTotalEmission: AssessmentResaultQcStatusTotalEmission;
-    qcStatusmacResult: AssessmentResaultQcStatusmacResult;
-    qcStatuscostDifference: AssessmentResaultQcStatuscostDifference;
-    qcStatuspsTotalAnnualCost: AssessmentResaultQcStatuspsTotalAnnualCost;
-    qcStatusbsTotalAnnualCost: AssessmentResaultQcStatusbsTotalAnnualCost;
-    assessmentYear: AssessmentYear;
-    assement: Assessment;
-    projectionResult: ProjectionResault[];
-
-    constructor(data?: IAssessmentResault) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.assessmentYear = new AssessmentYear();
-            this.assement = new Assessment();
-            this.projectionResult = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.baselineResult = _data["baselineResult"];
-            this.baselineResultUnit = _data["baselineResultUnit"];
-            this.projectResult = _data["projectResult"];
-            this.projectResultUnit = _data["projectResultUnit"];
-            this.lekageResult = _data["lekageResult"];
-            this.lekageResultUnit = _data["lekageResultUnit"];
-            this.totalEmission = _data["totalEmission"];
-            this.totalEmissionUnit = _data["totalEmissionUnit"];
-            this.bsTotalAnnualCost = _data["bsTotalAnnualCost"];
-            this.psTotalAnnualCost = _data["psTotalAnnualCost"];
-            this.costDifference = _data["costDifference"];
-            this.macResult = _data["macResult"];
-            this.qcComment = _data["qcComment"];
-            this.qcStatusBaselineResult = _data["qcStatusBaselineResult"];
-            this.qcStatuProjectResult = _data["qcStatuProjectResult"];
-            this.qcStatusLekageResult = _data["qcStatusLekageResult"];
-            this.qcStatusTotalEmission = _data["qcStatusTotalEmission"];
-            this.qcStatusmacResult = _data["qcStatusmacResult"];
-            this.qcStatuscostDifference = _data["qcStatuscostDifference"];
-            this.qcStatuspsTotalAnnualCost = _data["qcStatuspsTotalAnnualCost"];
-            this.qcStatusbsTotalAnnualCost = _data["qcStatusbsTotalAnnualCost"];
-            this.assessmentYear = _data["assessmentYear"] ? AssessmentYear.fromJS(_data["assessmentYear"]) : new AssessmentYear();
-            this.assement = _data["assement"] ? Assessment.fromJS(_data["assement"]) : new Assessment();
-            if (Array.isArray(_data["projectionResult"])) {
-                this.projectionResult = [] as any;
-                for (let item of _data["projectionResult"])
-                    this.projectionResult.push(ProjectionResault.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): AssessmentResault {
-        data = typeof data === 'object' ? data : {};
-        let result = new AssessmentResault();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["baselineResult"] = this.baselineResult;
-        data["baselineResultUnit"] = this.baselineResultUnit;
-        data["projectResult"] = this.projectResult;
-        data["projectResultUnit"] = this.projectResultUnit;
-        data["lekageResult"] = this.lekageResult;
-        data["lekageResultUnit"] = this.lekageResultUnit;
-        data["totalEmission"] = this.totalEmission;
-        data["totalEmissionUnit"] = this.totalEmissionUnit;
-        data["bsTotalAnnualCost"] = this.bsTotalAnnualCost;
-        data["psTotalAnnualCost"] = this.psTotalAnnualCost;
-        data["costDifference"] = this.costDifference;
-        data["macResult"] = this.macResult;
-        data["qcComment"] = this.qcComment;
-        data["qcStatusBaselineResult"] = this.qcStatusBaselineResult;
-        data["qcStatuProjectResult"] = this.qcStatuProjectResult;
-        data["qcStatusLekageResult"] = this.qcStatusLekageResult;
-        data["qcStatusTotalEmission"] = this.qcStatusTotalEmission;
-        data["qcStatusmacResult"] = this.qcStatusmacResult;
-        data["qcStatuscostDifference"] = this.qcStatuscostDifference;
-        data["qcStatuspsTotalAnnualCost"] = this.qcStatuspsTotalAnnualCost;
-        data["qcStatusbsTotalAnnualCost"] = this.qcStatusbsTotalAnnualCost;
-        data["assessmentYear"] = this.assessmentYear ? this.assessmentYear.toJSON() : <any>undefined;
-        data["assement"] = this.assement ? this.assement.toJSON() : <any>undefined;
-        if (Array.isArray(this.projectionResult)) {
-            data["projectionResult"] = [];
-            for (let item of this.projectionResult)
-                data["projectionResult"].push(item.toJSON());
-        }
-        return data;
-    }
-
-    clone(): AssessmentResault {
-        const json = this.toJSON();
-        let result = new AssessmentResault();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAssessmentResault {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    baselineResult: number;
-    baselineResultUnit: string;
-    projectResult: number;
-    projectResultUnit: string;
-    lekageResult: number;
-    lekageResultUnit: string;
-    totalEmission: number;
-    totalEmissionUnit: string;
-    bsTotalAnnualCost: number;
-    psTotalAnnualCost: number;
-    costDifference: number;
-    macResult: number;
-    qcComment: string;
-    qcStatusBaselineResult: AssessmentResaultQcStatusBaselineResult;
-    qcStatuProjectResult: AssessmentResaultQcStatuProjectResult;
-    qcStatusLekageResult: AssessmentResaultQcStatusLekageResult;
-    qcStatusTotalEmission: AssessmentResaultQcStatusTotalEmission;
-    qcStatusmacResult: AssessmentResaultQcStatusmacResult;
-    qcStatuscostDifference: AssessmentResaultQcStatuscostDifference;
-    qcStatuspsTotalAnnualCost: AssessmentResaultQcStatuspsTotalAnnualCost;
-    qcStatusbsTotalAnnualCost: AssessmentResaultQcStatusbsTotalAnnualCost;
-    assessmentYear: AssessmentYear;
-    assement: Assessment;
-    projectionResult: ProjectionResault[];
-}
-
-export class GetManyMitigationActionTypeResponseDto implements IGetManyMitigationActionTypeResponseDto {
-    data: MitigationActionType[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyMitigationActionTypeResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(MitigationActionType.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyMitigationActionTypeResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyMitigationActionTypeResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyMitigationActionTypeResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyMitigationActionTypeResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyMitigationActionTypeResponseDto {
-    data: MitigationActionType[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class MitigationActionType implements IMitigationActionType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    methodology: Methodology[];
-    uniqueIdentification: string;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-
-    constructor(data?: IMitigationActionType) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.methodology = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            if (Array.isArray(_data["methodology"])) {
-                this.methodology = [] as any;
-                for (let item of _data["methodology"])
-                    this.methodology.push(Methodology.fromJS(item));
-            }
-            this.uniqueIdentification = _data["uniqueIdentification"];
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-        }
-    }
-
-    static fromJS(data: any): MitigationActionType {
-        data = typeof data === 'object' ? data : {};
-        let result = new MitigationActionType();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        if (Array.isArray(this.methodology)) {
-            data["methodology"] = [];
-            for (let item of this.methodology)
-                data["methodology"].push(item.toJSON());
-        }
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        return data;
-    }
-
-    clone(): MitigationActionType {
-        const json = this.toJSON();
-        let result = new MitigationActionType();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IMitigationActionType {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    methodology: Methodology[];
-    uniqueIdentification: string;
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-}
-
-export class ProjectionYear implements IProjectionYear {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    year: number;
-    assessment: Assessment;
-
-    constructor(data?: IProjectionYear) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.assessment = new Assessment();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.year = _data["year"];
-            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : new Assessment();
-        }
-    }
-
-    static fromJS(data: any): ProjectionYear {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProjectionYear();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["year"] = this.year;
-        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): ProjectionYear {
-        const json = this.toJSON();
-        let result = new ProjectionYear();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IProjectionYear {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    year: number;
-    assessment: Assessment;
-}
-
-export class GetManyApplicabilityEntityResponseDto implements IGetManyApplicabilityEntityResponseDto {
-    data: ApplicabilityEntity[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-
-    constructor(data?: IGetManyApplicabilityEntityResponseDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.data = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(ApplicabilityEntity.fromJS(item));
-            }
-            this.count = _data["count"];
-            this.total = _data["total"];
-            this.page = _data["page"];
-            this.pageCount = _data["pageCount"];
-        }
-    }
-
-    static fromJS(data: any): GetManyApplicabilityEntityResponseDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetManyApplicabilityEntityResponseDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["count"] = this.count;
-        data["total"] = this.total;
-        data["page"] = this.page;
-        data["pageCount"] = this.pageCount;
-        return data;
-    }
-
-    clone(): GetManyApplicabilityEntityResponseDto {
-        const json = this.toJSON();
-        let result = new GetManyApplicabilityEntityResponseDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetManyApplicabilityEntityResponseDto {
-    data: ApplicabilityEntity[];
-    count: number;
-    total: number;
-    page: number;
-    pageCount: number;
-}
-
-export class ApplicabilityEntity implements IApplicabilityEntity {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    uniqueIdentification: string;
-    assessment: Assessment;
-    methodologies: Methodology[];
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-
-    constructor(data?: IApplicabilityEntity) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.methodologies = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.uniqueIdentification = _data["uniqueIdentification"];
-            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : <any>undefined;
-            if (Array.isArray(_data["methodologies"])) {
-                this.methodologies = [] as any;
-                for (let item of _data["methodologies"])
-                    this.methodologies.push(Methodology.fromJS(item));
-            }
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-        }
-    }
-
-    static fromJS(data: any): ApplicabilityEntity {
-        data = typeof data === 'object' ? data : {};
-        let result = new ApplicabilityEntity();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["uniqueIdentification"] = this.uniqueIdentification;
-        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
-        if (Array.isArray(this.methodologies)) {
-            data["methodologies"] = [];
-            for (let item of this.methodologies)
-                data["methodologies"].push(item.toJSON());
-        }
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        return data;
-    }
-
-    clone(): ApplicabilityEntity {
-        const json = this.toJSON();
-        let result = new ApplicabilityEntity();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IApplicabilityEntity {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    uniqueIdentification: string;
-    assessment: Assessment;
-    methodologies: Methodology[];
-    id: number;
-    name: string;
-    description: string;
-    sortOrder: number;
-}
-
-export class ReportAssessment implements IReportAssessment {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    report: Report;
-    assessment: Assessment;
-
-    constructor(data?: IReportAssessment) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.report = new Report();
-            this.assessment = new Assessment();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.report = _data["report"] ? Report.fromJS(_data["report"]) : new Report();
-            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : new Assessment();
-        }
-    }
-
-    static fromJS(data: any): ReportAssessment {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReportAssessment();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["report"] = this.report ? this.report.toJSON() : <any>undefined;
-        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): ReportAssessment {
-        const json = this.toJSON();
-        let result = new ReportAssessment();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IReportAssessment {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    report: Report;
-    assessment: Assessment;
-}
-
-export class Assessment implements IAssessment {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    baseYear: number;
-    projectStartDate: moment.Moment;
-    projectDuration: number;
-    ghgAssessTypeForMac: string;
-    assessmentStatus: AssessmentStatus;
-    assessmentType: string;
-    emmisionReductionValue: number;
-    macValue: number;
-    baselineScenario: string;
-    projectScenario: string;
-    isGuided: boolean;
-    isProposal: boolean;
-    lekageScenario: string;
-    projectionIndicator: string;
-    projectionBaseYear: number;
-    easyOfUseDataCollection: string;
-    methodologyCode: string;
-    methodologyVersion: string;
-    country: Country;
-    methodology: Methodology;
-    user: User;
-    project: Project;
-    assessmentObjective: AssessmentObjective[];
-    assessmentYear: AssessmentYear[];
-    assessmentResult: AssessmentResault[];
-    mitigationActionType: MitigationActionType;
-    ndc: Ndc;
-    subNdc: SubNdc;
-    parameters: Parameter[];
-    projectionYear: ProjectionYear[];
-    applicability: ApplicabilityEntity[];
-    reportAssessment: ReportAssessment[];
-    projectionResult: ProjectionResault[];
-
-    constructor(data?: IAssessment) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.methodology = new Methodology();
-            this.user = new User();
-            this.project = new Project();
-            this.assessmentObjective = [];
-            this.assessmentYear = [];
-            this.assessmentResult = [];
-            this.mitigationActionType = new MitigationActionType();
-            this.ndc = new Ndc();
-            this.subNdc = new SubNdc();
-            this.parameters = [];
-            this.projectionYear = [];
-            this.reportAssessment = [];
-            this.projectionResult = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.createdBy = _data["createdBy"];
-            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
-            this.editedBy = _data["editedBy"];
-            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.id = _data["id"];
-            this.baseYear = _data["baseYear"];
-            this.projectStartDate = _data["projectStartDate"] ? moment(_data["projectStartDate"].toString()) : <any>undefined;
-            this.projectDuration = _data["projectDuration"];
-            this.ghgAssessTypeForMac = _data["ghgAssessTypeForMac"];
-            this.assessmentStatus = _data["assessmentStatus"];
-            this.assessmentType = _data["assessmentType"];
-            this.emmisionReductionValue = _data["emmisionReductionValue"];
-            this.macValue = _data["macValue"];
-            this.baselineScenario = _data["baselineScenario"];
-            this.projectScenario = _data["projectScenario"];
-            this.isGuided = _data["isGuided"];
-            this.isProposal = _data["isProposal"];
-            this.lekageScenario = _data["lekageScenario"];
-            this.projectionIndicator = _data["projectionIndicator"];
-            this.projectionBaseYear = _data["projectionBaseYear"];
-            this.easyOfUseDataCollection = _data["easyOfUseDataCollection"];
-            this.methodologyCode = _data["methodologyCode"];
-            this.methodologyVersion = _data["methodologyVersion"];
-            this.country = _data["country"] ? Country.fromJS(_data["country"]) : <any>undefined;
-            this.methodology = _data["methodology"] ? Methodology.fromJS(_data["methodology"]) : new Methodology();
-            this.user = _data["user"] ? User.fromJS(_data["user"]) : new User();
-            this.project = _data["project"] ? Project.fromJS(_data["project"]) : new Project();
-            if (Array.isArray(_data["assessmentObjective"])) {
-                this.assessmentObjective = [] as any;
-                for (let item of _data["assessmentObjective"])
-                    this.assessmentObjective.push(AssessmentObjective.fromJS(item));
-            }
-            if (Array.isArray(_data["assessmentYear"])) {
-                this.assessmentYear = [] as any;
-                for (let item of _data["assessmentYear"])
-                    this.assessmentYear.push(AssessmentYear.fromJS(item));
-            }
-            if (Array.isArray(_data["assessmentResult"])) {
-                this.assessmentResult = [] as any;
-                for (let item of _data["assessmentResult"])
-                    this.assessmentResult.push(AssessmentResault.fromJS(item));
-            }
-            this.mitigationActionType = _data["mitigationActionType"] ? MitigationActionType.fromJS(_data["mitigationActionType"]) : new MitigationActionType();
-            this.ndc = _data["ndc"] ? Ndc.fromJS(_data["ndc"]) : new Ndc();
-            this.subNdc = _data["subNdc"] ? SubNdc.fromJS(_data["subNdc"]) : new SubNdc();
-            if (Array.isArray(_data["parameters"])) {
-                this.parameters = [] as any;
-                for (let item of _data["parameters"])
-                    this.parameters.push(Parameter.fromJS(item));
-            }
-            if (Array.isArray(_data["projectionYear"])) {
-                this.projectionYear = [] as any;
-                for (let item of _data["projectionYear"])
-                    this.projectionYear.push(ProjectionYear.fromJS(item));
-            }
-            if (Array.isArray(_data["applicability"])) {
-                this.applicability = [] as any;
-                for (let item of _data["applicability"])
-                    this.applicability.push(ApplicabilityEntity.fromJS(item));
-            }
-            if (Array.isArray(_data["reportAssessment"])) {
-                this.reportAssessment = [] as any;
-                for (let item of _data["reportAssessment"])
-                    this.reportAssessment.push(ReportAssessment.fromJS(item));
-            }
-            if (Array.isArray(_data["projectionResult"])) {
-                this.projectionResult = [] as any;
-                for (let item of _data["projectionResult"])
-                    this.projectionResult.push(ProjectionResault.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): Assessment {
-        data = typeof data === 'object' ? data : {};
-        let result = new Assessment();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["createdBy"] = this.createdBy;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        data["editedBy"] = this.editedBy;
-        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["id"] = this.id;
-        data["baseYear"] = this.baseYear;
-        data["projectStartDate"] = this.projectStartDate ? this.projectStartDate.toISOString() : <any>undefined;
-        data["projectDuration"] = this.projectDuration;
-        data["ghgAssessTypeForMac"] = this.ghgAssessTypeForMac;
-        data["assessmentStatus"] = this.assessmentStatus;
-        data["assessmentType"] = this.assessmentType;
-        data["emmisionReductionValue"] = this.emmisionReductionValue;
-        data["macValue"] = this.macValue;
-        data["baselineScenario"] = this.baselineScenario;
-        data["projectScenario"] = this.projectScenario;
-        data["isGuided"] = this.isGuided;
-        data["isProposal"] = this.isProposal;
-        data["lekageScenario"] = this.lekageScenario;
-        data["projectionIndicator"] = this.projectionIndicator;
-        data["projectionBaseYear"] = this.projectionBaseYear;
-        data["easyOfUseDataCollection"] = this.easyOfUseDataCollection;
-        data["methodologyCode"] = this.methodologyCode;
-        data["methodologyVersion"] = this.methodologyVersion;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
-        data["methodology"] = this.methodology ? this.methodology.toJSON() : <any>undefined;
-        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
-        data["project"] = this.project ? this.project.toJSON() : <any>undefined;
-        if (Array.isArray(this.assessmentObjective)) {
-            data["assessmentObjective"] = [];
-            for (let item of this.assessmentObjective)
-                data["assessmentObjective"].push(item.toJSON());
-        }
-        if (Array.isArray(this.assessmentYear)) {
-            data["assessmentYear"] = [];
-            for (let item of this.assessmentYear)
-                data["assessmentYear"].push(item.toJSON());
-        }
-        if (Array.isArray(this.assessmentResult)) {
-            data["assessmentResult"] = [];
-            for (let item of this.assessmentResult)
-                data["assessmentResult"].push(item.toJSON());
-        }
-        data["mitigationActionType"] = this.mitigationActionType ? this.mitigationActionType.toJSON() : <any>undefined;
-        data["ndc"] = this.ndc ? this.ndc.toJSON() : <any>undefined;
-        data["subNdc"] = this.subNdc ? this.subNdc.toJSON() : <any>undefined;
-        if (Array.isArray(this.parameters)) {
-            data["parameters"] = [];
-            for (let item of this.parameters)
-                data["parameters"].push(item.toJSON());
-        }
-        if (Array.isArray(this.projectionYear)) {
-            data["projectionYear"] = [];
-            for (let item of this.projectionYear)
-                data["projectionYear"].push(item.toJSON());
-        }
-        if (Array.isArray(this.applicability)) {
-            data["applicability"] = [];
-            for (let item of this.applicability)
-                data["applicability"].push(item.toJSON());
-        }
-        if (Array.isArray(this.reportAssessment)) {
-            data["reportAssessment"] = [];
-            for (let item of this.reportAssessment)
-                data["reportAssessment"].push(item.toJSON());
-        }
-        if (Array.isArray(this.projectionResult)) {
-            data["projectionResult"] = [];
-            for (let item of this.projectionResult)
-                data["projectionResult"].push(item.toJSON());
-        }
-        return data;
-    }
-
-    clone(): Assessment {
-        const json = this.toJSON();
-        let result = new Assessment();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAssessment {
-    createdBy: string;
-    createdOn: moment.Moment;
-    editedBy: string;
-    editedOn: moment.Moment;
-    status: number;
-    id: number;
-    baseYear: number;
-    projectStartDate: moment.Moment;
-    projectDuration: number;
-    ghgAssessTypeForMac: string;
-    assessmentStatus: AssessmentStatus;
-    assessmentType: string;
-    emmisionReductionValue: number;
-    macValue: number;
-    baselineScenario: string;
-    projectScenario: string;
-    isGuided: boolean;
-    isProposal: boolean;
-    lekageScenario: string;
-    projectionIndicator: string;
-    projectionBaseYear: number;
-    easyOfUseDataCollection: string;
-    methodologyCode: string;
-    methodologyVersion: string;
-    country: Country;
-    methodology: Methodology;
-    user: User;
-    project: Project;
-    assessmentObjective: AssessmentObjective[];
-    assessmentYear: AssessmentYear[];
-    assessmentResult: AssessmentResault[];
-    mitigationActionType: MitigationActionType;
-    ndc: Ndc;
-    subNdc: SubNdc;
-    parameters: Parameter[];
-    projectionYear: ProjectionYear[];
-    applicability: ApplicabilityEntity[];
-    reportAssessment: ReportAssessment[];
-    projectionResult: ProjectionResault[];
 }
 
 export class SubNdc implements ISubNdc {
@@ -29683,6 +27153,170 @@ export interface ICaActionHistory {
     project: Project;
 }
 
+export class GetManyMitigationActionTypeResponseDto implements IGetManyMitigationActionTypeResponseDto {
+    data: MitigationActionType[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyMitigationActionTypeResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(MitigationActionType.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyMitigationActionTypeResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyMitigationActionTypeResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyMitigationActionTypeResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyMitigationActionTypeResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyMitigationActionTypeResponseDto {
+    data: MitigationActionType[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class MitigationActionType implements IMitigationActionType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    methodology: Methodology[];
+    uniqueIdentification: string;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+
+    constructor(data?: IMitigationActionType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.methodology = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            if (Array.isArray(_data["methodology"])) {
+                this.methodology = [] as any;
+                for (let item of _data["methodology"])
+                    this.methodology.push(Methodology.fromJS(item));
+            }
+            this.uniqueIdentification = _data["uniqueIdentification"];
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): MitigationActionType {
+        data = typeof data === 'object' ? data : {};
+        let result = new MitigationActionType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        if (Array.isArray(this.methodology)) {
+            data["methodology"] = [];
+            for (let item of this.methodology)
+                data["methodology"].push(item.toJSON());
+        }
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): MitigationActionType {
+        const json = this.toJSON();
+        let result = new MitigationActionType();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IMitigationActionType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    methodology: Methodology[];
+    uniqueIdentification: string;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+}
+
 export class GetManyProjectApprovalStatusResponseDto implements IGetManyProjectApprovalStatusResponseDto {
     data: ProjectApprovalStatus[];
     count: number;
@@ -30262,6 +27896,81 @@ export interface IReportProject {
     project: Project;
 }
 
+export class ReportAssessment implements IReportAssessment {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    report: Report;
+    assessment: Assessment;
+
+    constructor(data?: IReportAssessment) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.report = new Report();
+            this.assessment = new Assessment();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.report = _data["report"] ? Report.fromJS(_data["report"]) : new Report();
+            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : new Assessment();
+        }
+    }
+
+    static fromJS(data: any): ReportAssessment {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportAssessment();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["report"] = this.report ? this.report.toJSON() : <any>undefined;
+        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): ReportAssessment {
+        const json = this.toJSON();
+        let result = new ReportAssessment();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IReportAssessment {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    report: Report;
+    assessment: Assessment;
+}
+
 export class Report implements IReport {
     createdBy: string;
     createdOn: moment.Moment;
@@ -30702,20 +28411,18 @@ export interface ISector {
     uniqueIdentification: string;
 }
 
-export class CountrySector implements ICountrySector {
+export class LearningMaterialSector implements ILearningMaterialSector {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
     editedOn: moment.Moment;
     status: number;
     id: number;
-    country: Country;
-    sector: Sector;
-    countryId: number;
-    sectorId: number;
     uniqueIdentification: string;
+    learningMaterial2: LearningMaterial;
+    sector: Sector;
 
-    constructor(data?: ICountrySector) {
+    constructor(data?: ILearningMaterialSector) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -30723,7 +28430,7 @@ export class CountrySector implements ICountrySector {
             }
         }
         if (!data) {
-            this.country = new Country();
+            this.learningMaterial2 = new LearningMaterial();
             this.sector = new Sector();
         }
     }
@@ -30736,17 +28443,15 @@ export class CountrySector implements ICountrySector {
             this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
             this.status = _data["status"];
             this.id = _data["id"];
-            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
-            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
-            this.countryId = _data["countryId"];
-            this.sectorId = _data["sectorId"];
             this.uniqueIdentification = _data["uniqueIdentification"];
+            this.learningMaterial2 = _data["learningMaterial2"] ? LearningMaterial.fromJS(_data["learningMaterial2"]) : new LearningMaterial();
+            this.sector = _data["sector"] ? Sector.fromJS(_data["sector"]) : new Sector();
         }
     }
 
-    static fromJS(data: any): CountrySector {
+    static fromJS(data: any): LearningMaterialSector {
         data = typeof data === 'object' ? data : {};
-        let result = new CountrySector();
+        let result = new LearningMaterialSector();
         result.init(data);
         return result;
     }
@@ -30759,68 +28464,50 @@ export class CountrySector implements ICountrySector {
         data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["id"] = this.id;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
-        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
-        data["countryId"] = this.countryId;
-        data["sectorId"] = this.sectorId;
         data["uniqueIdentification"] = this.uniqueIdentification;
+        data["learningMaterial2"] = this.learningMaterial2 ? this.learningMaterial2.toJSON() : <any>undefined;
+        data["sector"] = this.sector ? this.sector.toJSON() : <any>undefined;
         return data;
     }
 
-    clone(): CountrySector {
+    clone(): LearningMaterialSector {
         const json = this.toJSON();
-        let result = new CountrySector();
+        let result = new LearningMaterialSector();
         result.init(json);
         return result;
     }
 }
 
-export interface ICountrySector {
+export interface ILearningMaterialSector {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
     editedOn: moment.Moment;
     status: number;
     id: number;
-    country: Country;
-    sector: Sector;
-    countryId: number;
-    sectorId: number;
     uniqueIdentification: string;
+    learningMaterial2: LearningMaterial;
+    sector: Sector;
 }
 
-export class Country implements ICountry {
+export class LearningMaterial implements ILearningMaterial {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
     editedOn: moment.Moment;
     status: number;
     id: number;
-    code: string;
-    code_extended: string;
-    name: string;
-    description: string;
-    sortOrder: number;
-    submissions: string;
-    emissionSummary: string;
-    ndcDocuments: string;
-    isSystemUse: boolean;
-    flagPath: string;
-    registeredDate: moment.Moment;
-    isMember: boolean;
-    countryStatus: CountryStatus;
-    region: string;
-    climateActionModule: boolean;
-    ghgModule: boolean;
-    macModule: boolean;
-    dataCollectionModule: boolean;
-    dataCollectionGhgModule: boolean;
-    hasExelTem: boolean;
+    documentType: string;
+    documentName: string;
+    document: string;
+    thumbnail: string;
+    isPublish: number;
+    deletedAt: moment.Moment;
     uniqueIdentification: string;
-    defaultValue: DefaultValue[];
-    countrysector: CountrySector[];
+    learningMaterialusertype: LearningMaterialUserType[];
+    learningMaterialsector: LearningMaterialSector[];
 
-    constructor(data?: ICountry) {
+    constructor(data?: ILearningMaterial) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -30828,8 +28515,8 @@ export class Country implements ICountry {
             }
         }
         if (!data) {
-            this.defaultValue = [];
-            this.countrysector = [];
+            this.learningMaterialusertype = [];
+            this.learningMaterialsector = [];
         }
     }
 
@@ -30841,43 +28528,29 @@ export class Country implements ICountry {
             this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
             this.status = _data["status"];
             this.id = _data["id"];
-            this.code = _data["code"];
-            this.code_extended = _data["code_extended"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.sortOrder = _data["sortOrder"];
-            this.submissions = _data["submissions"];
-            this.emissionSummary = _data["emissionSummary"];
-            this.ndcDocuments = _data["ndcDocuments"];
-            this.isSystemUse = _data["isSystemUse"];
-            this.flagPath = _data["flagPath"];
-            this.registeredDate = _data["registeredDate"] ? moment(_data["registeredDate"].toString()) : <any>undefined;
-            this.isMember = _data["isMember"];
-            this.countryStatus = _data["countryStatus"];
-            this.region = _data["region"];
-            this.climateActionModule = _data["climateActionModule"];
-            this.ghgModule = _data["ghgModule"];
-            this.macModule = _data["macModule"];
-            this.dataCollectionModule = _data["dataCollectionModule"];
-            this.dataCollectionGhgModule = _data["dataCollectionGhgModule"];
-            this.hasExelTem = _data["hasExelTem"];
+            this.documentType = _data["documentType"];
+            this.documentName = _data["documentName"];
+            this.document = _data["document"];
+            this.thumbnail = _data["thumbnail"];
+            this.isPublish = _data["isPublish"];
+            this.deletedAt = _data["deletedAt"] ? moment(_data["deletedAt"].toString()) : <any>undefined;
             this.uniqueIdentification = _data["uniqueIdentification"];
-            if (Array.isArray(_data["defaultValue"])) {
-                this.defaultValue = [] as any;
-                for (let item of _data["defaultValue"])
-                    this.defaultValue.push(DefaultValue.fromJS(item));
+            if (Array.isArray(_data["learningMaterialusertype"])) {
+                this.learningMaterialusertype = [] as any;
+                for (let item of _data["learningMaterialusertype"])
+                    this.learningMaterialusertype.push(LearningMaterialUserType.fromJS(item));
             }
-            if (Array.isArray(_data["countrysector"])) {
-                this.countrysector = [] as any;
-                for (let item of _data["countrysector"])
-                    this.countrysector.push(CountrySector.fromJS(item));
+            if (Array.isArray(_data["learningMaterialsector"])) {
+                this.learningMaterialsector = [] as any;
+                for (let item of _data["learningMaterialsector"])
+                    this.learningMaterialsector.push(LearningMaterialSector.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): Country {
+    static fromJS(data: any): LearningMaterial {
         data = typeof data === 'object' ? data : {};
-        let result = new Country();
+        let result = new LearningMaterial();
         result.init(data);
         return result;
     }
@@ -30890,78 +28563,2456 @@ export class Country implements ICountry {
         data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["id"] = this.id;
-        data["code"] = this.code;
-        data["code_extended"] = this.code_extended;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["sortOrder"] = this.sortOrder;
-        data["submissions"] = this.submissions;
-        data["emissionSummary"] = this.emissionSummary;
-        data["ndcDocuments"] = this.ndcDocuments;
-        data["isSystemUse"] = this.isSystemUse;
-        data["flagPath"] = this.flagPath;
-        data["registeredDate"] = this.registeredDate ? this.registeredDate.toISOString() : <any>undefined;
-        data["isMember"] = this.isMember;
-        data["countryStatus"] = this.countryStatus;
-        data["region"] = this.region;
-        data["climateActionModule"] = this.climateActionModule;
-        data["ghgModule"] = this.ghgModule;
-        data["macModule"] = this.macModule;
-        data["dataCollectionModule"] = this.dataCollectionModule;
-        data["dataCollectionGhgModule"] = this.dataCollectionGhgModule;
-        data["hasExelTem"] = this.hasExelTem;
+        data["documentType"] = this.documentType;
+        data["documentName"] = this.documentName;
+        data["document"] = this.document;
+        data["thumbnail"] = this.thumbnail;
+        data["isPublish"] = this.isPublish;
+        data["deletedAt"] = this.deletedAt ? this.deletedAt.toISOString() : <any>undefined;
         data["uniqueIdentification"] = this.uniqueIdentification;
-        if (Array.isArray(this.defaultValue)) {
-            data["defaultValue"] = [];
-            for (let item of this.defaultValue)
-                data["defaultValue"].push(item.toJSON());
+        if (Array.isArray(this.learningMaterialusertype)) {
+            data["learningMaterialusertype"] = [];
+            for (let item of this.learningMaterialusertype)
+                data["learningMaterialusertype"].push(item.toJSON());
         }
-        if (Array.isArray(this.countrysector)) {
-            data["countrysector"] = [];
-            for (let item of this.countrysector)
-                data["countrysector"].push(item.toJSON());
+        if (Array.isArray(this.learningMaterialsector)) {
+            data["learningMaterialsector"] = [];
+            for (let item of this.learningMaterialsector)
+                data["learningMaterialsector"].push(item.toJSON());
         }
         return data;
     }
 
-    clone(): Country {
+    clone(): LearningMaterial {
         const json = this.toJSON();
-        let result = new Country();
+        let result = new LearningMaterial();
         result.init(json);
         return result;
     }
 }
 
-export interface ICountry {
+export interface ILearningMaterial {
     createdBy: string;
     createdOn: moment.Moment;
     editedBy: string;
     editedOn: moment.Moment;
     status: number;
     id: number;
-    code: string;
-    code_extended: string;
+    documentType: string;
+    documentName: string;
+    document: string;
+    thumbnail: string;
+    isPublish: number;
+    deletedAt: moment.Moment;
+    uniqueIdentification: string;
+    learningMaterialusertype: LearningMaterialUserType[];
+    learningMaterialsector: LearningMaterialSector[];
+}
+
+export class LearningMaterialUserType implements ILearningMaterialUserType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    uniqueIdentification: string;
+    learningMaterial: LearningMaterial;
+    userType: UserType;
+
+    constructor(data?: ILearningMaterialUserType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.learningMaterial = new LearningMaterial();
+            this.userType = new UserType();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
+            this.learningMaterial = _data["learningMaterial"] ? LearningMaterial.fromJS(_data["learningMaterial"]) : new LearningMaterial();
+            this.userType = _data["userType"] ? UserType.fromJS(_data["userType"]) : new UserType();
+        }
+    }
+
+    static fromJS(data: any): LearningMaterialUserType {
+        data = typeof data === 'object' ? data : {};
+        let result = new LearningMaterialUserType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        data["learningMaterial"] = this.learningMaterial ? this.learningMaterial.toJSON() : <any>undefined;
+        data["userType"] = this.userType ? this.userType.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): LearningMaterialUserType {
+        const json = this.toJSON();
+        let result = new LearningMaterialUserType();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILearningMaterialUserType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    uniqueIdentification: string;
+    learningMaterial: LearningMaterial;
+    userType: UserType;
+}
+
+export class UserType implements IUserType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    learningMaterialusertype: LearningMaterialUserType[];
+    institutionType: InstitutionType;
+    id: number;
     name: string;
     description: string;
     sortOrder: number;
-    submissions: string;
-    emissionSummary: string;
-    ndcDocuments: string;
-    isSystemUse: boolean;
-    flagPath: string;
-    registeredDate: moment.Moment;
-    isMember: boolean;
-    countryStatus: CountryStatus;
-    region: string;
-    climateActionModule: boolean;
-    ghgModule: boolean;
-    macModule: boolean;
-    dataCollectionModule: boolean;
-    dataCollectionGhgModule: boolean;
-    hasExelTem: boolean;
+
+    constructor(data?: IUserType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.learningMaterialusertype = [];
+            this.institutionType = new InstitutionType();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            if (Array.isArray(_data["learningMaterialusertype"])) {
+                this.learningMaterialusertype = [] as any;
+                for (let item of _data["learningMaterialusertype"])
+                    this.learningMaterialusertype.push(LearningMaterialUserType.fromJS(item));
+            }
+            this.institutionType = _data["institutionType"] ? InstitutionType.fromJS(_data["institutionType"]) : new InstitutionType();
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): UserType {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        if (Array.isArray(this.learningMaterialusertype)) {
+            data["learningMaterialusertype"] = [];
+            for (let item of this.learningMaterialusertype)
+                data["learningMaterialusertype"].push(item.toJSON());
+        }
+        data["institutionType"] = this.institutionType ? this.institutionType.toJSON() : <any>undefined;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): UserType {
+        const json = this.toJSON();
+        let result = new UserType();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserType {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    learningMaterialusertype: LearningMaterialUserType[];
+    institutionType: InstitutionType;
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+}
+
+export class User implements IUser {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    userTypeId: number;
+    userType: UserType;
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    institution: Institution;
+    assessments: Assessment[];
+    telephone: string;
+    mobile: string;
+    designation: string;
+    country: Country;
+    salt: string;
+    password: string;
+    resetToken: string;
+    deletedAt: moment.Moment;
+    canNotDelete: boolean;
     uniqueIdentification: string;
-    defaultValue: DefaultValue[];
-    countrysector: CountrySector[];
+    fullName: string;
+    _fullname: string;
+
+    constructor(data?: IUser) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.userType = new UserType();
+            this.institution = new Institution();
+            this.assessments = [];
+            this.country = new Country();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.userTypeId = _data["userTypeId"];
+            this.userType = _data["userType"] ? UserType.fromJS(_data["userType"]) : new UserType();
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.username = _data["username"];
+            this.email = _data["email"];
+            this.institution = _data["institution"] ? Institution.fromJS(_data["institution"]) : new Institution();
+            if (Array.isArray(_data["assessments"])) {
+                this.assessments = [] as any;
+                for (let item of _data["assessments"])
+                    this.assessments.push(Assessment.fromJS(item));
+            }
+            this.telephone = _data["telephone"];
+            this.mobile = _data["mobile"];
+            this.designation = _data["designation"];
+            this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
+            this.salt = _data["salt"];
+            this.password = _data["password"];
+            this.resetToken = _data["resetToken"];
+            this.deletedAt = _data["deletedAt"] ? moment(_data["deletedAt"].toString()) : <any>undefined;
+            this.canNotDelete = _data["canNotDelete"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
+            this.fullName = _data["fullName"];
+            this._fullname = _data["_fullname"];
+        }
+    }
+
+    static fromJS(data: any): User {
+        data = typeof data === 'object' ? data : {};
+        let result = new User();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["userTypeId"] = this.userTypeId;
+        data["userType"] = this.userType ? this.userType.toJSON() : <any>undefined;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["username"] = this.username;
+        data["email"] = this.email;
+        data["institution"] = this.institution ? this.institution.toJSON() : <any>undefined;
+        if (Array.isArray(this.assessments)) {
+            data["assessments"] = [];
+            for (let item of this.assessments)
+                data["assessments"].push(item.toJSON());
+        }
+        data["telephone"] = this.telephone;
+        data["mobile"] = this.mobile;
+        data["designation"] = this.designation;
+        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        data["salt"] = this.salt;
+        data["password"] = this.password;
+        data["resetToken"] = this.resetToken;
+        data["deletedAt"] = this.deletedAt ? this.deletedAt.toISOString() : <any>undefined;
+        data["canNotDelete"] = this.canNotDelete;
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        data["fullName"] = this.fullName;
+        data["_fullname"] = this._fullname;
+        return data;
+    }
+
+    clone(): User {
+        const json = this.toJSON();
+        let result = new User();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUser {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    userTypeId: number;
+    userType: UserType;
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    institution: Institution;
+    assessments: Assessment[];
+    telephone: string;
+    mobile: string;
+    designation: string;
+    country: Country;
+    salt: string;
+    password: string;
+    resetToken: string;
+    deletedAt: moment.Moment;
+    canNotDelete: boolean;
+    uniqueIdentification: string;
+    fullName: string;
+    _fullname: string;
+}
+
+export class GetManyAssessmentObjectiveResponseDto implements IGetManyAssessmentObjectiveResponseDto {
+    data: AssessmentObjective[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyAssessmentObjectiveResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(AssessmentObjective.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyAssessmentObjectiveResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyAssessmentObjectiveResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyAssessmentObjectiveResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyAssessmentObjectiveResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyAssessmentObjectiveResponseDto {
+    data: AssessmentObjective[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class AssessmentObjective implements IAssessmentObjective {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    objective: string;
+    assessmentId: number;
+
+    constructor(data?: IAssessmentObjective) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.objective = _data["objective"];
+            this.assessmentId = _data["assessmentId"];
+        }
+    }
+
+    static fromJS(data: any): AssessmentObjective {
+        data = typeof data === 'object' ? data : {};
+        let result = new AssessmentObjective();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["objective"] = this.objective;
+        data["assessmentId"] = this.assessmentId;
+        return data;
+    }
+
+    clone(): AssessmentObjective {
+        const json = this.toJSON();
+        let result = new AssessmentObjective();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IAssessmentObjective {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    objective: string;
+    assessmentId: number;
+}
+
+export class GetManyAssessmentYearResponseDto implements IGetManyAssessmentYearResponseDto {
+    data: AssessmentYear[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyAssessmentYearResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(AssessmentYear.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyAssessmentYearResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyAssessmentYearResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyAssessmentYearResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyAssessmentYearResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyAssessmentYearResponseDto {
+    data: AssessmentYear[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class GetManyVerificationDetailResponseDto implements IGetManyVerificationDetailResponseDto {
+    data: VerificationDetail[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyVerificationDetailResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(VerificationDetail.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyVerificationDetailResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyVerificationDetailResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyVerificationDetailResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyVerificationDetailResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyVerificationDetailResponseDto {
+    data: VerificationDetail[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class GetManyParameterResponseDto implements IGetManyParameterResponseDto {
+    data: Parameter[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyParameterResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(Parameter.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyParameterResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyParameterResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyParameterResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyParameterResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyParameterResponseDto {
+    data: Parameter[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class GetManyParameterRequestResponseDto implements IGetManyParameterRequestResponseDto {
+    data: ParameterRequest[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyParameterRequestResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(ParameterRequest.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyParameterRequestResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyParameterRequestResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyParameterRequestResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyParameterRequestResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyParameterRequestResponseDto {
+    data: ParameterRequest[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class ParameterRequest implements IParameterRequest {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    parameter: Parameter;
+    deadline: moment.Moment;
+    deadlineDataEntry: moment.Moment;
+    reasonForExceedRange: string;
+    requestedDate: moment.Moment;
+    value: string;
+    valueInParameterStandard: string;
+    noteDataRequest: string;
+    noteDataEntry: string;
+    noteDataApprover: string;
+    noteCase1: string;
+    noteCase2: string;
+    noteCase3: string;
+    userDataEntry: number;
+    userIdFerfyie: number;
+    userQA: number;
+    dataRequestStatus: ParameterRequestDataRequestStatus;
+    qaStatus: ParameterRequestQaStatus;
+    qaStatusUpdatedDate: moment.Moment;
+    qaDeadline: moment.Moment;
+    qaAssighnDate: moment.Moment;
+    qaComment: string;
+    qcUserName: string;
+
+    constructor(data?: IParameterRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.parameter = _data["parameter"] ? Parameter.fromJS(_data["parameter"]) : <any>undefined;
+            this.deadline = _data["deadline"] ? moment(_data["deadline"].toString()) : <any>undefined;
+            this.deadlineDataEntry = _data["deadlineDataEntry"] ? moment(_data["deadlineDataEntry"].toString()) : <any>undefined;
+            this.reasonForExceedRange = _data["reasonForExceedRange"];
+            this.requestedDate = _data["requestedDate"] ? moment(_data["requestedDate"].toString()) : <any>undefined;
+            this.value = _data["value"];
+            this.valueInParameterStandard = _data["valueInParameterStandard"];
+            this.noteDataRequest = _data["noteDataRequest"];
+            this.noteDataEntry = _data["noteDataEntry"];
+            this.noteDataApprover = _data["noteDataApprover"];
+            this.noteCase1 = _data["noteCase1"];
+            this.noteCase2 = _data["noteCase2"];
+            this.noteCase3 = _data["noteCase3"];
+            this.userDataEntry = _data["UserDataEntry"];
+            this.userIdFerfyie = _data["UserIdFerfyie"];
+            this.userQA = _data["UserQA"];
+            this.dataRequestStatus = _data["dataRequestStatus"];
+            this.qaStatus = _data["qaStatus"];
+            this.qaStatusUpdatedDate = _data["qaStatusUpdatedDate"] ? moment(_data["qaStatusUpdatedDate"].toString()) : <any>undefined;
+            this.qaDeadline = _data["qaDeadline"] ? moment(_data["qaDeadline"].toString()) : <any>undefined;
+            this.qaAssighnDate = _data["qaAssighnDate"] ? moment(_data["qaAssighnDate"].toString()) : <any>undefined;
+            this.qaComment = _data["qaComment"];
+            this.qcUserName = _data["qcUserName"];
+        }
+    }
+
+    static fromJS(data: any): ParameterRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new ParameterRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["parameter"] = this.parameter ? this.parameter.toJSON() : <any>undefined;
+        data["deadline"] = this.deadline ? this.deadline.toISOString() : <any>undefined;
+        data["deadlineDataEntry"] = this.deadlineDataEntry ? this.deadlineDataEntry.toISOString() : <any>undefined;
+        data["reasonForExceedRange"] = this.reasonForExceedRange;
+        data["requestedDate"] = this.requestedDate ? this.requestedDate.toISOString() : <any>undefined;
+        data["value"] = this.value;
+        data["valueInParameterStandard"] = this.valueInParameterStandard;
+        data["noteDataRequest"] = this.noteDataRequest;
+        data["noteDataEntry"] = this.noteDataEntry;
+        data["noteDataApprover"] = this.noteDataApprover;
+        data["noteCase1"] = this.noteCase1;
+        data["noteCase2"] = this.noteCase2;
+        data["noteCase3"] = this.noteCase3;
+        data["UserDataEntry"] = this.userDataEntry;
+        data["UserIdFerfyie"] = this.userIdFerfyie;
+        data["UserQA"] = this.userQA;
+        data["dataRequestStatus"] = this.dataRequestStatus;
+        data["qaStatus"] = this.qaStatus;
+        data["qaStatusUpdatedDate"] = this.qaStatusUpdatedDate ? this.qaStatusUpdatedDate.toISOString() : <any>undefined;
+        data["qaDeadline"] = this.qaDeadline ? this.qaDeadline.toISOString() : <any>undefined;
+        data["qaAssighnDate"] = this.qaAssighnDate ? this.qaAssighnDate.toISOString() : <any>undefined;
+        data["qaComment"] = this.qaComment;
+        data["qcUserName"] = this.qcUserName;
+        return data;
+    }
+
+    clone(): ParameterRequest {
+        const json = this.toJSON();
+        let result = new ParameterRequest();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IParameterRequest {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    parameter: Parameter;
+    deadline: moment.Moment;
+    deadlineDataEntry: moment.Moment;
+    reasonForExceedRange: string;
+    requestedDate: moment.Moment;
+    value: string;
+    valueInParameterStandard: string;
+    noteDataRequest: string;
+    noteDataEntry: string;
+    noteDataApprover: string;
+    noteCase1: string;
+    noteCase2: string;
+    noteCase3: string;
+    userDataEntry: number;
+    userIdFerfyie: number;
+    userQA: number;
+    dataRequestStatus: ParameterRequestDataRequestStatus;
+    qaStatus: ParameterRequestQaStatus;
+    qaStatusUpdatedDate: moment.Moment;
+    qaDeadline: moment.Moment;
+    qaAssighnDate: moment.Moment;
+    qaComment: string;
+    qcUserName: string;
+}
+
+export class Parameter implements IParameter {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    name: string;
+    originalName: string;
+    isAlternative: boolean;
+    isEnabledAlternative: boolean;
+    parentParameter: Parameter;
+    parentParameterId: number;
+    isBaseline: boolean;
+    isProject: boolean;
+    isLekage: boolean;
+    isProjection: boolean;
+    isDefault: boolean;
+    isHistorical: boolean;
+    vehical: string;
+    fuelType: string;
+    route: string;
+    powerPlant: string;
+    feedstock: string;
+    soil: string;
+    stratum: string;
+    residue: string;
+    landClearance: string;
+    uomDataRequest: string;
+    uomDataEntry: string;
+    value: string;
+    conversionValue: string;
+    baseYear: number;
+    projectionBaseYear: number;
+    useDefaultValue: boolean;
+    assessmentYear: number;
+    projectionYear: number;
+    code: string;
+    enterDataAssumption: string;
+    methodologyCode: string;
+    methodologyVersion: string;
+    countryCodeExtended: string;
+    isAcceptedByVerifier: number;
+    defaultValueId: number;
+    institution: Institution;
+    assessment: Assessment;
+    defaultValue: DefaultValue;
+    parameterRequest: ParameterRequest;
+    verificationDetail: VerificationDetail[];
+    hasChild: boolean;
+    verifierAcceptance: ParameterVerifierAcceptance;
+    verifierConcern: string;
+    previouseParameterId: number;
+
+    constructor(data?: IParameter) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.verificationDetail = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.originalName = _data["originalName"];
+            this.isAlternative = _data["isAlternative"];
+            this.isEnabledAlternative = _data["isEnabledAlternative"];
+            this.parentParameter = _data["ParentParameter"] ? Parameter.fromJS(_data["ParentParameter"]) : <any>undefined;
+            this.parentParameterId = _data["ParentParameterId"];
+            this.isBaseline = _data["isBaseline"];
+            this.isProject = _data["isProject"];
+            this.isLekage = _data["isLekage"];
+            this.isProjection = _data["isProjection"];
+            this.isDefault = _data["isDefault"];
+            this.isHistorical = _data["isHistorical"];
+            this.vehical = _data["vehical"];
+            this.fuelType = _data["fuelType"];
+            this.route = _data["route"];
+            this.powerPlant = _data["powerPlant"];
+            this.feedstock = _data["feedstock"];
+            this.soil = _data["soil"];
+            this.stratum = _data["stratum"];
+            this.residue = _data["residue"];
+            this.landClearance = _data["landClearance"];
+            this.uomDataRequest = _data["uomDataRequest"];
+            this.uomDataEntry = _data["uomDataEntry"];
+            this.value = _data["value"];
+            this.conversionValue = _data["conversionValue"];
+            this.baseYear = _data["baseYear"];
+            this.projectionBaseYear = _data["projectionBaseYear"];
+            this.useDefaultValue = _data["useDefaultValue"];
+            this.assessmentYear = _data["AssessmentYear"];
+            this.projectionYear = _data["projectionYear"];
+            this.code = _data["code"];
+            this.enterDataAssumption = _data["enterDataAssumption"];
+            this.methodologyCode = _data["methodologyCode"];
+            this.methodologyVersion = _data["methodologyVersion"];
+            this.countryCodeExtended = _data["countryCodeExtended"];
+            this.isAcceptedByVerifier = _data["isAcceptedByVerifier"];
+            this.defaultValueId = _data["defaultValueId"];
+            this.institution = _data["institution"] ? Institution.fromJS(_data["institution"]) : <any>undefined;
+            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : <any>undefined;
+            this.defaultValue = _data["defaultValue"] ? DefaultValue.fromJS(_data["defaultValue"]) : <any>undefined;
+            this.parameterRequest = _data["parameterRequest"] ? ParameterRequest.fromJS(_data["parameterRequest"]) : <any>undefined;
+            if (Array.isArray(_data["verificationDetail"])) {
+                this.verificationDetail = [] as any;
+                for (let item of _data["verificationDetail"])
+                    this.verificationDetail.push(VerificationDetail.fromJS(item));
+            }
+            this.hasChild = _data["hasChild"];
+            this.verifierAcceptance = _data["verifierAcceptance"];
+            this.verifierConcern = _data["verifierConcern"];
+            this.previouseParameterId = _data["previouseParameterId"];
+        }
+    }
+
+    static fromJS(data: any): Parameter {
+        data = typeof data === 'object' ? data : {};
+        let result = new Parameter();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["originalName"] = this.originalName;
+        data["isAlternative"] = this.isAlternative;
+        data["isEnabledAlternative"] = this.isEnabledAlternative;
+        data["ParentParameter"] = this.parentParameter ? this.parentParameter.toJSON() : <any>undefined;
+        data["ParentParameterId"] = this.parentParameterId;
+        data["isBaseline"] = this.isBaseline;
+        data["isProject"] = this.isProject;
+        data["isLekage"] = this.isLekage;
+        data["isProjection"] = this.isProjection;
+        data["isDefault"] = this.isDefault;
+        data["isHistorical"] = this.isHistorical;
+        data["vehical"] = this.vehical;
+        data["fuelType"] = this.fuelType;
+        data["route"] = this.route;
+        data["powerPlant"] = this.powerPlant;
+        data["feedstock"] = this.feedstock;
+        data["soil"] = this.soil;
+        data["stratum"] = this.stratum;
+        data["residue"] = this.residue;
+        data["landClearance"] = this.landClearance;
+        data["uomDataRequest"] = this.uomDataRequest;
+        data["uomDataEntry"] = this.uomDataEntry;
+        data["value"] = this.value;
+        data["conversionValue"] = this.conversionValue;
+        data["baseYear"] = this.baseYear;
+        data["projectionBaseYear"] = this.projectionBaseYear;
+        data["useDefaultValue"] = this.useDefaultValue;
+        data["AssessmentYear"] = this.assessmentYear;
+        data["projectionYear"] = this.projectionYear;
+        data["code"] = this.code;
+        data["enterDataAssumption"] = this.enterDataAssumption;
+        data["methodologyCode"] = this.methodologyCode;
+        data["methodologyVersion"] = this.methodologyVersion;
+        data["countryCodeExtended"] = this.countryCodeExtended;
+        data["isAcceptedByVerifier"] = this.isAcceptedByVerifier;
+        data["defaultValueId"] = this.defaultValueId;
+        data["institution"] = this.institution ? this.institution.toJSON() : <any>undefined;
+        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
+        data["defaultValue"] = this.defaultValue ? this.defaultValue.toJSON() : <any>undefined;
+        data["parameterRequest"] = this.parameterRequest ? this.parameterRequest.toJSON() : <any>undefined;
+        if (Array.isArray(this.verificationDetail)) {
+            data["verificationDetail"] = [];
+            for (let item of this.verificationDetail)
+                data["verificationDetail"].push(item.toJSON());
+        }
+        data["hasChild"] = this.hasChild;
+        data["verifierAcceptance"] = this.verifierAcceptance;
+        data["verifierConcern"] = this.verifierConcern;
+        data["previouseParameterId"] = this.previouseParameterId;
+        return data;
+    }
+
+    clone(): Parameter {
+        const json = this.toJSON();
+        let result = new Parameter();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IParameter {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    name: string;
+    originalName: string;
+    isAlternative: boolean;
+    isEnabledAlternative: boolean;
+    parentParameter: Parameter;
+    parentParameterId: number;
+    isBaseline: boolean;
+    isProject: boolean;
+    isLekage: boolean;
+    isProjection: boolean;
+    isDefault: boolean;
+    isHistorical: boolean;
+    vehical: string;
+    fuelType: string;
+    route: string;
+    powerPlant: string;
+    feedstock: string;
+    soil: string;
+    stratum: string;
+    residue: string;
+    landClearance: string;
+    uomDataRequest: string;
+    uomDataEntry: string;
+    value: string;
+    conversionValue: string;
+    baseYear: number;
+    projectionBaseYear: number;
+    useDefaultValue: boolean;
+    assessmentYear: number;
+    projectionYear: number;
+    code: string;
+    enterDataAssumption: string;
+    methodologyCode: string;
+    methodologyVersion: string;
+    countryCodeExtended: string;
+    isAcceptedByVerifier: number;
+    defaultValueId: number;
+    institution: Institution;
+    assessment: Assessment;
+    defaultValue: DefaultValue;
+    parameterRequest: ParameterRequest;
+    verificationDetail: VerificationDetail[];
+    hasChild: boolean;
+    verifierAcceptance: ParameterVerifierAcceptance;
+    verifierConcern: string;
+    previouseParameterId: number;
+}
+
+export class VerificationDetail implements IVerificationDetail {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    year: number;
+    assessmentId: number;
+    updatedDate: moment.Moment;
+    rootCause: string;
+    explanation: string;
+    correctiveAction: string;
+    action: string;
+    isAccepted: boolean;
+    isNDC: boolean;
+    isMethodology: boolean;
+    isBaseline: boolean;
+    isProject: boolean;
+    isLekage: boolean;
+    isProjection: boolean;
+    isResult: boolean;
+    isDataRequested: boolean;
+    verificationStatus: VerificationDetailVerificationStatus;
+    verificationStage: number;
+    userVerifier: number;
+    isAssumption: boolean;
+    assumption: string;
+    assessmentYear: AssessmentYear;
+    parameter: Parameter;
+
+    constructor(data?: IVerificationDetail) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.assessmentYear = new AssessmentYear();
+            this.parameter = new Parameter();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.year = _data["year"];
+            this.assessmentId = _data["assessmentId"];
+            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
+            this.rootCause = _data["rootCause"];
+            this.explanation = _data["explanation"];
+            this.correctiveAction = _data["correctiveAction"];
+            this.action = _data["action"];
+            this.isAccepted = _data["isAccepted"];
+            this.isNDC = _data["isNDC"];
+            this.isMethodology = _data["isMethodology"];
+            this.isBaseline = _data["isBaseline"];
+            this.isProject = _data["isProject"];
+            this.isLekage = _data["isLekage"];
+            this.isProjection = _data["isProjection"];
+            this.isResult = _data["isResult"];
+            this.isDataRequested = _data["isDataRequested"];
+            this.verificationStatus = _data["verificationStatus"];
+            this.verificationStage = _data["verificationStage"];
+            this.userVerifier = _data["userVerifier"];
+            this.isAssumption = _data["isAssumption"];
+            this.assumption = _data["assumption"];
+            this.assessmentYear = _data["assessmentYear"] ? AssessmentYear.fromJS(_data["assessmentYear"]) : new AssessmentYear();
+            this.parameter = _data["parameter"] ? Parameter.fromJS(_data["parameter"]) : new Parameter();
+        }
+    }
+
+    static fromJS(data: any): VerificationDetail {
+        data = typeof data === 'object' ? data : {};
+        let result = new VerificationDetail();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["year"] = this.year;
+        data["assessmentId"] = this.assessmentId;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["rootCause"] = this.rootCause;
+        data["explanation"] = this.explanation;
+        data["correctiveAction"] = this.correctiveAction;
+        data["action"] = this.action;
+        data["isAccepted"] = this.isAccepted;
+        data["isNDC"] = this.isNDC;
+        data["isMethodology"] = this.isMethodology;
+        data["isBaseline"] = this.isBaseline;
+        data["isProject"] = this.isProject;
+        data["isLekage"] = this.isLekage;
+        data["isProjection"] = this.isProjection;
+        data["isResult"] = this.isResult;
+        data["isDataRequested"] = this.isDataRequested;
+        data["verificationStatus"] = this.verificationStatus;
+        data["verificationStage"] = this.verificationStage;
+        data["userVerifier"] = this.userVerifier;
+        data["isAssumption"] = this.isAssumption;
+        data["assumption"] = this.assumption;
+        data["assessmentYear"] = this.assessmentYear ? this.assessmentYear.toJSON() : <any>undefined;
+        data["parameter"] = this.parameter ? this.parameter.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): VerificationDetail {
+        const json = this.toJSON();
+        let result = new VerificationDetail();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IVerificationDetail {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    year: number;
+    assessmentId: number;
+    updatedDate: moment.Moment;
+    rootCause: string;
+    explanation: string;
+    correctiveAction: string;
+    action: string;
+    isAccepted: boolean;
+    isNDC: boolean;
+    isMethodology: boolean;
+    isBaseline: boolean;
+    isProject: boolean;
+    isLekage: boolean;
+    isProjection: boolean;
+    isResult: boolean;
+    isDataRequested: boolean;
+    verificationStatus: VerificationDetailVerificationStatus;
+    verificationStage: number;
+    userVerifier: number;
+    isAssumption: boolean;
+    assumption: string;
+    assessmentYear: AssessmentYear;
+    parameter: Parameter;
+}
+
+export class AssessmentYear implements IAssessmentYear {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    assessmentYear: string;
+    qaStatus: AssessmentYearQaStatus;
+    qaDeadline: moment.Moment;
+    qaAssighnDate: moment.Moment;
+    verificationUser: number;
+    verificationStatus: AssessmentYearVerificationStatus;
+    verificationAssighnDate: moment.Moment;
+    verificationDeadline: moment.Moment;
+    verifierComment: string;
+    isVerificationSuccess: boolean;
+    assessmentAssumption: string;
+    assessment: Assessment;
+    verificationDetail: VerificationDetail[];
+
+    constructor(data?: IAssessmentYear) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.assessment = new Assessment();
+            this.verificationDetail = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.assessmentYear = _data["assessmentYear"];
+            this.qaStatus = _data["qaStatus"];
+            this.qaDeadline = _data["qaDeadline"] ? moment(_data["qaDeadline"].toString()) : <any>undefined;
+            this.qaAssighnDate = _data["qaAssighnDate"] ? moment(_data["qaAssighnDate"].toString()) : <any>undefined;
+            this.verificationUser = _data["verificationUser"];
+            this.verificationStatus = _data["verificationStatus"];
+            this.verificationAssighnDate = _data["verificationAssighnDate"] ? moment(_data["verificationAssighnDate"].toString()) : <any>undefined;
+            this.verificationDeadline = _data["verificationDeadline"] ? moment(_data["verificationDeadline"].toString()) : <any>undefined;
+            this.verifierComment = _data["verifierComment"];
+            this.isVerificationSuccess = _data["isVerificationSuccess"];
+            this.assessmentAssumption = _data["assessmentAssumption"];
+            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : new Assessment();
+            if (Array.isArray(_data["verificationDetail"])) {
+                this.verificationDetail = [] as any;
+                for (let item of _data["verificationDetail"])
+                    this.verificationDetail.push(VerificationDetail.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AssessmentYear {
+        data = typeof data === 'object' ? data : {};
+        let result = new AssessmentYear();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["assessmentYear"] = this.assessmentYear;
+        data["qaStatus"] = this.qaStatus;
+        data["qaDeadline"] = this.qaDeadline ? this.qaDeadline.toISOString() : <any>undefined;
+        data["qaAssighnDate"] = this.qaAssighnDate ? this.qaAssighnDate.toISOString() : <any>undefined;
+        data["verificationUser"] = this.verificationUser;
+        data["verificationStatus"] = this.verificationStatus;
+        data["verificationAssighnDate"] = this.verificationAssighnDate ? this.verificationAssighnDate.toISOString() : <any>undefined;
+        data["verificationDeadline"] = this.verificationDeadline ? this.verificationDeadline.toISOString() : <any>undefined;
+        data["verifierComment"] = this.verifierComment;
+        data["isVerificationSuccess"] = this.isVerificationSuccess;
+        data["assessmentAssumption"] = this.assessmentAssumption;
+        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
+        if (Array.isArray(this.verificationDetail)) {
+            data["verificationDetail"] = [];
+            for (let item of this.verificationDetail)
+                data["verificationDetail"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): AssessmentYear {
+        const json = this.toJSON();
+        let result = new AssessmentYear();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IAssessmentYear {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    assessmentYear: string;
+    qaStatus: AssessmentYearQaStatus;
+    qaDeadline: moment.Moment;
+    qaAssighnDate: moment.Moment;
+    verificationUser: number;
+    verificationStatus: AssessmentYearVerificationStatus;
+    verificationAssighnDate: moment.Moment;
+    verificationDeadline: moment.Moment;
+    verifierComment: string;
+    isVerificationSuccess: boolean;
+    assessmentAssumption: string;
+    assessment: Assessment;
+    verificationDetail: VerificationDetail[];
+}
+
+export class GetManyAssessmentResaultResponseDto implements IGetManyAssessmentResaultResponseDto {
+    data: AssessmentResault[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyAssessmentResaultResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(AssessmentResault.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyAssessmentResaultResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyAssessmentResaultResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyAssessmentResaultResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyAssessmentResaultResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyAssessmentResaultResponseDto {
+    data: AssessmentResault[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class GetManyProjectionResaultResponseDto implements IGetManyProjectionResaultResponseDto {
+    data: ProjectionResault[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyProjectionResaultResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(ProjectionResault.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyProjectionResaultResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyProjectionResaultResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyProjectionResaultResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyProjectionResaultResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyProjectionResaultResponseDto {
+    data: ProjectionResault[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class ProjectionResault implements IProjectionResault {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    projectionYear: number;
+    baselineResult: number;
+    baselineResultUnit: string;
+    projectResult: number;
+    projectResultUnit: string;
+    leakageResult: number;
+    leakageResultUnit: string;
+    emissionReduction: number;
+    emissionReductionUnit: string;
+    assementResult: AssessmentResault;
+    qcStatus: ProjectionResaultQcStatus;
+    qcComment: string;
+    projectionResualt: number;
+    assement: Assessment;
+
+    constructor(data?: IProjectionResault) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.assementResult = new AssessmentResault();
+            this.assement = new Assessment();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.projectionYear = _data["projectionYear"];
+            this.baselineResult = _data["baselineResult"];
+            this.baselineResultUnit = _data["baselineResultUnit"];
+            this.projectResult = _data["projectResult"];
+            this.projectResultUnit = _data["projectResultUnit"];
+            this.leakageResult = _data["leakageResult"];
+            this.leakageResultUnit = _data["leakageResultUnit"];
+            this.emissionReduction = _data["emissionReduction"];
+            this.emissionReductionUnit = _data["emissionReductionUnit"];
+            this.assementResult = _data["assementResult"] ? AssessmentResault.fromJS(_data["assementResult"]) : new AssessmentResault();
+            this.qcStatus = _data["qcStatus"];
+            this.qcComment = _data["qcComment"];
+            this.projectionResualt = _data["projectionResualt"];
+            this.assement = _data["assement"] ? Assessment.fromJS(_data["assement"]) : new Assessment();
+        }
+    }
+
+    static fromJS(data: any): ProjectionResault {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProjectionResault();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["projectionYear"] = this.projectionYear;
+        data["baselineResult"] = this.baselineResult;
+        data["baselineResultUnit"] = this.baselineResultUnit;
+        data["projectResult"] = this.projectResult;
+        data["projectResultUnit"] = this.projectResultUnit;
+        data["leakageResult"] = this.leakageResult;
+        data["leakageResultUnit"] = this.leakageResultUnit;
+        data["emissionReduction"] = this.emissionReduction;
+        data["emissionReductionUnit"] = this.emissionReductionUnit;
+        data["assementResult"] = this.assementResult ? this.assementResult.toJSON() : <any>undefined;
+        data["qcStatus"] = this.qcStatus;
+        data["qcComment"] = this.qcComment;
+        data["projectionResualt"] = this.projectionResualt;
+        data["assement"] = this.assement ? this.assement.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): ProjectionResault {
+        const json = this.toJSON();
+        let result = new ProjectionResault();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IProjectionResault {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    projectionYear: number;
+    baselineResult: number;
+    baselineResultUnit: string;
+    projectResult: number;
+    projectResultUnit: string;
+    leakageResult: number;
+    leakageResultUnit: string;
+    emissionReduction: number;
+    emissionReductionUnit: string;
+    assementResult: AssessmentResault;
+    qcStatus: ProjectionResaultQcStatus;
+    qcComment: string;
+    projectionResualt: number;
+    assement: Assessment;
+}
+
+export class AssessmentResault implements IAssessmentResault {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    baselineResult: number;
+    baselineResultUnit: string;
+    projectResult: number;
+    projectResultUnit: string;
+    lekageResult: number;
+    lekageResultUnit: string;
+    totalEmission: number;
+    totalEmissionUnit: string;
+    bsTotalAnnualCost: number;
+    psTotalAnnualCost: number;
+    costDifference: number;
+    macResult: number;
+    qcComment: string;
+    qcStatusBaselineResult: AssessmentResaultQcStatusBaselineResult;
+    qcStatuProjectResult: AssessmentResaultQcStatuProjectResult;
+    qcStatusLekageResult: AssessmentResaultQcStatusLekageResult;
+    qcStatusTotalEmission: AssessmentResaultQcStatusTotalEmission;
+    qcStatusmacResult: AssessmentResaultQcStatusmacResult;
+    qcStatuscostDifference: AssessmentResaultQcStatuscostDifference;
+    qcStatuspsTotalAnnualCost: AssessmentResaultQcStatuspsTotalAnnualCost;
+    qcStatusbsTotalAnnualCost: AssessmentResaultQcStatusbsTotalAnnualCost;
+    assessmentYear: AssessmentYear;
+    isResultupdated: boolean;
+    assement: Assessment;
+    projectionResult: ProjectionResault[];
+
+    constructor(data?: IAssessmentResault) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.assessmentYear = new AssessmentYear();
+            this.assement = new Assessment();
+            this.projectionResult = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.baselineResult = _data["baselineResult"];
+            this.baselineResultUnit = _data["baselineResultUnit"];
+            this.projectResult = _data["projectResult"];
+            this.projectResultUnit = _data["projectResultUnit"];
+            this.lekageResult = _data["lekageResult"];
+            this.lekageResultUnit = _data["lekageResultUnit"];
+            this.totalEmission = _data["totalEmission"];
+            this.totalEmissionUnit = _data["totalEmissionUnit"];
+            this.bsTotalAnnualCost = _data["bsTotalAnnualCost"];
+            this.psTotalAnnualCost = _data["psTotalAnnualCost"];
+            this.costDifference = _data["costDifference"];
+            this.macResult = _data["macResult"];
+            this.qcComment = _data["qcComment"];
+            this.qcStatusBaselineResult = _data["qcStatusBaselineResult"];
+            this.qcStatuProjectResult = _data["qcStatuProjectResult"];
+            this.qcStatusLekageResult = _data["qcStatusLekageResult"];
+            this.qcStatusTotalEmission = _data["qcStatusTotalEmission"];
+            this.qcStatusmacResult = _data["qcStatusmacResult"];
+            this.qcStatuscostDifference = _data["qcStatuscostDifference"];
+            this.qcStatuspsTotalAnnualCost = _data["qcStatuspsTotalAnnualCost"];
+            this.qcStatusbsTotalAnnualCost = _data["qcStatusbsTotalAnnualCost"];
+            this.assessmentYear = _data["assessmentYear"] ? AssessmentYear.fromJS(_data["assessmentYear"]) : new AssessmentYear();
+            this.isResultupdated = _data["isResultupdated"];
+            this.assement = _data["assement"] ? Assessment.fromJS(_data["assement"]) : new Assessment();
+            if (Array.isArray(_data["projectionResult"])) {
+                this.projectionResult = [] as any;
+                for (let item of _data["projectionResult"])
+                    this.projectionResult.push(ProjectionResault.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AssessmentResault {
+        data = typeof data === 'object' ? data : {};
+        let result = new AssessmentResault();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["baselineResult"] = this.baselineResult;
+        data["baselineResultUnit"] = this.baselineResultUnit;
+        data["projectResult"] = this.projectResult;
+        data["projectResultUnit"] = this.projectResultUnit;
+        data["lekageResult"] = this.lekageResult;
+        data["lekageResultUnit"] = this.lekageResultUnit;
+        data["totalEmission"] = this.totalEmission;
+        data["totalEmissionUnit"] = this.totalEmissionUnit;
+        data["bsTotalAnnualCost"] = this.bsTotalAnnualCost;
+        data["psTotalAnnualCost"] = this.psTotalAnnualCost;
+        data["costDifference"] = this.costDifference;
+        data["macResult"] = this.macResult;
+        data["qcComment"] = this.qcComment;
+        data["qcStatusBaselineResult"] = this.qcStatusBaselineResult;
+        data["qcStatuProjectResult"] = this.qcStatuProjectResult;
+        data["qcStatusLekageResult"] = this.qcStatusLekageResult;
+        data["qcStatusTotalEmission"] = this.qcStatusTotalEmission;
+        data["qcStatusmacResult"] = this.qcStatusmacResult;
+        data["qcStatuscostDifference"] = this.qcStatuscostDifference;
+        data["qcStatuspsTotalAnnualCost"] = this.qcStatuspsTotalAnnualCost;
+        data["qcStatusbsTotalAnnualCost"] = this.qcStatusbsTotalAnnualCost;
+        data["assessmentYear"] = this.assessmentYear ? this.assessmentYear.toJSON() : <any>undefined;
+        data["isResultupdated"] = this.isResultupdated;
+        data["assement"] = this.assement ? this.assement.toJSON() : <any>undefined;
+        if (Array.isArray(this.projectionResult)) {
+            data["projectionResult"] = [];
+            for (let item of this.projectionResult)
+                data["projectionResult"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): AssessmentResault {
+        const json = this.toJSON();
+        let result = new AssessmentResault();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IAssessmentResault {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    baselineResult: number;
+    baselineResultUnit: string;
+    projectResult: number;
+    projectResultUnit: string;
+    lekageResult: number;
+    lekageResultUnit: string;
+    totalEmission: number;
+    totalEmissionUnit: string;
+    bsTotalAnnualCost: number;
+    psTotalAnnualCost: number;
+    costDifference: number;
+    macResult: number;
+    qcComment: string;
+    qcStatusBaselineResult: AssessmentResaultQcStatusBaselineResult;
+    qcStatuProjectResult: AssessmentResaultQcStatuProjectResult;
+    qcStatusLekageResult: AssessmentResaultQcStatusLekageResult;
+    qcStatusTotalEmission: AssessmentResaultQcStatusTotalEmission;
+    qcStatusmacResult: AssessmentResaultQcStatusmacResult;
+    qcStatuscostDifference: AssessmentResaultQcStatuscostDifference;
+    qcStatuspsTotalAnnualCost: AssessmentResaultQcStatuspsTotalAnnualCost;
+    qcStatusbsTotalAnnualCost: AssessmentResaultQcStatusbsTotalAnnualCost;
+    assessmentYear: AssessmentYear;
+    isResultupdated: boolean;
+    assement: Assessment;
+    projectionResult: ProjectionResault[];
+}
+
+export class ProjectionYear implements IProjectionYear {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    year: number;
+    assessment: Assessment;
+
+    constructor(data?: IProjectionYear) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.assessment = new Assessment();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.year = _data["year"];
+            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : new Assessment();
+        }
+    }
+
+    static fromJS(data: any): ProjectionYear {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProjectionYear();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["year"] = this.year;
+        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): ProjectionYear {
+        const json = this.toJSON();
+        let result = new ProjectionYear();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IProjectionYear {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    year: number;
+    assessment: Assessment;
+}
+
+export class GetManyApplicabilityEntityResponseDto implements IGetManyApplicabilityEntityResponseDto {
+    data: ApplicabilityEntity[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+
+    constructor(data?: IGetManyApplicabilityEntityResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.data = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(ApplicabilityEntity.fromJS(item));
+            }
+            this.count = _data["count"];
+            this.total = _data["total"];
+            this.page = _data["page"];
+            this.pageCount = _data["pageCount"];
+        }
+    }
+
+    static fromJS(data: any): GetManyApplicabilityEntityResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetManyApplicabilityEntityResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["count"] = this.count;
+        data["total"] = this.total;
+        data["page"] = this.page;
+        data["pageCount"] = this.pageCount;
+        return data;
+    }
+
+    clone(): GetManyApplicabilityEntityResponseDto {
+        const json = this.toJSON();
+        let result = new GetManyApplicabilityEntityResponseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetManyApplicabilityEntityResponseDto {
+    data: ApplicabilityEntity[];
+    count: number;
+    total: number;
+    page: number;
+    pageCount: number;
+}
+
+export class ApplicabilityEntity implements IApplicabilityEntity {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    uniqueIdentification: string;
+    assessment: Assessment;
+    methodologies: Methodology[];
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+
+    constructor(data?: IApplicabilityEntity) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.methodologies = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.uniqueIdentification = _data["uniqueIdentification"];
+            this.assessment = _data["assessment"] ? Assessment.fromJS(_data["assessment"]) : <any>undefined;
+            if (Array.isArray(_data["methodologies"])) {
+                this.methodologies = [] as any;
+                for (let item of _data["methodologies"])
+                    this.methodologies.push(Methodology.fromJS(item));
+            }
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.sortOrder = _data["sortOrder"];
+        }
+    }
+
+    static fromJS(data: any): ApplicabilityEntity {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicabilityEntity();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["uniqueIdentification"] = this.uniqueIdentification;
+        data["assessment"] = this.assessment ? this.assessment.toJSON() : <any>undefined;
+        if (Array.isArray(this.methodologies)) {
+            data["methodologies"] = [];
+            for (let item of this.methodologies)
+                data["methodologies"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
+        return data;
+    }
+
+    clone(): ApplicabilityEntity {
+        const json = this.toJSON();
+        let result = new ApplicabilityEntity();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IApplicabilityEntity {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    uniqueIdentification: string;
+    assessment: Assessment;
+    methodologies: Methodology[];
+    id: number;
+    name: string;
+    description: string;
+    sortOrder: number;
+}
+
+export class Assessment implements IAssessment {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    baseYear: number;
+    projectStartDate: moment.Moment;
+    projectDuration: number;
+    ghgAssessTypeForMac: string;
+    assessmentStatus: AssessmentStatus;
+    assessmentType: string;
+    emmisionReductionValue: number;
+    macValue: number;
+    baselineScenario: string;
+    projectScenario: string;
+    isGuided: boolean;
+    isProposal: boolean;
+    lekageScenario: string;
+    projectionIndicator: string;
+    projectionBaseYear: number;
+    easyOfUseDataCollection: string;
+    methodologyCode: string;
+    methodologyVersion: string;
+    country: Country;
+    methodology: Methodology;
+    user: User;
+    project: Project;
+    assessmentObjective: AssessmentObjective[];
+    assessmentYear: AssessmentYear[];
+    assessmentResult: AssessmentResault[];
+    mitigationActionType: MitigationActionType;
+    ndc: Ndc;
+    subNdc: SubNdc;
+    parameters: Parameter[];
+    projectionYear: ProjectionYear[];
+    applicability: ApplicabilityEntity[];
+    reportAssessment: ReportAssessment[];
+    projectionResult: ProjectionResault[];
+
+    constructor(data?: IAssessment) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.methodology = new Methodology();
+            this.user = new User();
+            this.project = new Project();
+            this.assessmentObjective = [];
+            this.assessmentYear = [];
+            this.assessmentResult = [];
+            this.mitigationActionType = new MitigationActionType();
+            this.ndc = new Ndc();
+            this.subNdc = new SubNdc();
+            this.parameters = [];
+            this.projectionYear = [];
+            this.reportAssessment = [];
+            this.projectionResult = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.createdOn = _data["createdOn"] ? moment(_data["createdOn"].toString()) : <any>undefined;
+            this.editedBy = _data["editedBy"];
+            this.editedOn = _data["editedOn"] ? moment(_data["editedOn"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+            this.baseYear = _data["baseYear"];
+            this.projectStartDate = _data["projectStartDate"] ? moment(_data["projectStartDate"].toString()) : <any>undefined;
+            this.projectDuration = _data["projectDuration"];
+            this.ghgAssessTypeForMac = _data["ghgAssessTypeForMac"];
+            this.assessmentStatus = _data["assessmentStatus"];
+            this.assessmentType = _data["assessmentType"];
+            this.emmisionReductionValue = _data["emmisionReductionValue"];
+            this.macValue = _data["macValue"];
+            this.baselineScenario = _data["baselineScenario"];
+            this.projectScenario = _data["projectScenario"];
+            this.isGuided = _data["isGuided"];
+            this.isProposal = _data["isProposal"];
+            this.lekageScenario = _data["lekageScenario"];
+            this.projectionIndicator = _data["projectionIndicator"];
+            this.projectionBaseYear = _data["projectionBaseYear"];
+            this.easyOfUseDataCollection = _data["easyOfUseDataCollection"];
+            this.methodologyCode = _data["methodologyCode"];
+            this.methodologyVersion = _data["methodologyVersion"];
+            this.country = _data["country"] ? Country.fromJS(_data["country"]) : <any>undefined;
+            this.methodology = _data["methodology"] ? Methodology.fromJS(_data["methodology"]) : new Methodology();
+            this.user = _data["user"] ? User.fromJS(_data["user"]) : new User();
+            this.project = _data["project"] ? Project.fromJS(_data["project"]) : new Project();
+            if (Array.isArray(_data["assessmentObjective"])) {
+                this.assessmentObjective = [] as any;
+                for (let item of _data["assessmentObjective"])
+                    this.assessmentObjective.push(AssessmentObjective.fromJS(item));
+            }
+            if (Array.isArray(_data["assessmentYear"])) {
+                this.assessmentYear = [] as any;
+                for (let item of _data["assessmentYear"])
+                    this.assessmentYear.push(AssessmentYear.fromJS(item));
+            }
+            if (Array.isArray(_data["assessmentResult"])) {
+                this.assessmentResult = [] as any;
+                for (let item of _data["assessmentResult"])
+                    this.assessmentResult.push(AssessmentResault.fromJS(item));
+            }
+            this.mitigationActionType = _data["mitigationActionType"] ? MitigationActionType.fromJS(_data["mitigationActionType"]) : new MitigationActionType();
+            this.ndc = _data["ndc"] ? Ndc.fromJS(_data["ndc"]) : new Ndc();
+            this.subNdc = _data["subNdc"] ? SubNdc.fromJS(_data["subNdc"]) : new SubNdc();
+            if (Array.isArray(_data["parameters"])) {
+                this.parameters = [] as any;
+                for (let item of _data["parameters"])
+                    this.parameters.push(Parameter.fromJS(item));
+            }
+            if (Array.isArray(_data["projectionYear"])) {
+                this.projectionYear = [] as any;
+                for (let item of _data["projectionYear"])
+                    this.projectionYear.push(ProjectionYear.fromJS(item));
+            }
+            if (Array.isArray(_data["applicability"])) {
+                this.applicability = [] as any;
+                for (let item of _data["applicability"])
+                    this.applicability.push(ApplicabilityEntity.fromJS(item));
+            }
+            if (Array.isArray(_data["reportAssessment"])) {
+                this.reportAssessment = [] as any;
+                for (let item of _data["reportAssessment"])
+                    this.reportAssessment.push(ReportAssessment.fromJS(item));
+            }
+            if (Array.isArray(_data["projectionResult"])) {
+                this.projectionResult = [] as any;
+                for (let item of _data["projectionResult"])
+                    this.projectionResult.push(ProjectionResault.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Assessment {
+        data = typeof data === 'object' ? data : {};
+        let result = new Assessment();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
+        data["editedBy"] = this.editedBy;
+        data["editedOn"] = this.editedOn ? this.editedOn.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        data["baseYear"] = this.baseYear;
+        data["projectStartDate"] = this.projectStartDate ? this.projectStartDate.toISOString() : <any>undefined;
+        data["projectDuration"] = this.projectDuration;
+        data["ghgAssessTypeForMac"] = this.ghgAssessTypeForMac;
+        data["assessmentStatus"] = this.assessmentStatus;
+        data["assessmentType"] = this.assessmentType;
+        data["emmisionReductionValue"] = this.emmisionReductionValue;
+        data["macValue"] = this.macValue;
+        data["baselineScenario"] = this.baselineScenario;
+        data["projectScenario"] = this.projectScenario;
+        data["isGuided"] = this.isGuided;
+        data["isProposal"] = this.isProposal;
+        data["lekageScenario"] = this.lekageScenario;
+        data["projectionIndicator"] = this.projectionIndicator;
+        data["projectionBaseYear"] = this.projectionBaseYear;
+        data["easyOfUseDataCollection"] = this.easyOfUseDataCollection;
+        data["methodologyCode"] = this.methodologyCode;
+        data["methodologyVersion"] = this.methodologyVersion;
+        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        data["methodology"] = this.methodology ? this.methodology.toJSON() : <any>undefined;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["project"] = this.project ? this.project.toJSON() : <any>undefined;
+        if (Array.isArray(this.assessmentObjective)) {
+            data["assessmentObjective"] = [];
+            for (let item of this.assessmentObjective)
+                data["assessmentObjective"].push(item.toJSON());
+        }
+        if (Array.isArray(this.assessmentYear)) {
+            data["assessmentYear"] = [];
+            for (let item of this.assessmentYear)
+                data["assessmentYear"].push(item.toJSON());
+        }
+        if (Array.isArray(this.assessmentResult)) {
+            data["assessmentResult"] = [];
+            for (let item of this.assessmentResult)
+                data["assessmentResult"].push(item.toJSON());
+        }
+        data["mitigationActionType"] = this.mitigationActionType ? this.mitigationActionType.toJSON() : <any>undefined;
+        data["ndc"] = this.ndc ? this.ndc.toJSON() : <any>undefined;
+        data["subNdc"] = this.subNdc ? this.subNdc.toJSON() : <any>undefined;
+        if (Array.isArray(this.parameters)) {
+            data["parameters"] = [];
+            for (let item of this.parameters)
+                data["parameters"].push(item.toJSON());
+        }
+        if (Array.isArray(this.projectionYear)) {
+            data["projectionYear"] = [];
+            for (let item of this.projectionYear)
+                data["projectionYear"].push(item.toJSON());
+        }
+        if (Array.isArray(this.applicability)) {
+            data["applicability"] = [];
+            for (let item of this.applicability)
+                data["applicability"].push(item.toJSON());
+        }
+        if (Array.isArray(this.reportAssessment)) {
+            data["reportAssessment"] = [];
+            for (let item of this.reportAssessment)
+                data["reportAssessment"].push(item.toJSON());
+        }
+        if (Array.isArray(this.projectionResult)) {
+            data["projectionResult"] = [];
+            for (let item of this.projectionResult)
+                data["projectionResult"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): Assessment {
+        const json = this.toJSON();
+        let result = new Assessment();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IAssessment {
+    createdBy: string;
+    createdOn: moment.Moment;
+    editedBy: string;
+    editedOn: moment.Moment;
+    status: number;
+    id: number;
+    baseYear: number;
+    projectStartDate: moment.Moment;
+    projectDuration: number;
+    ghgAssessTypeForMac: string;
+    assessmentStatus: AssessmentStatus;
+    assessmentType: string;
+    emmisionReductionValue: number;
+    macValue: number;
+    baselineScenario: string;
+    projectScenario: string;
+    isGuided: boolean;
+    isProposal: boolean;
+    lekageScenario: string;
+    projectionIndicator: string;
+    projectionBaseYear: number;
+    easyOfUseDataCollection: string;
+    methodologyCode: string;
+    methodologyVersion: string;
+    country: Country;
+    methodology: Methodology;
+    user: User;
+    project: Project;
+    assessmentObjective: AssessmentObjective[];
+    assessmentYear: AssessmentYear[];
+    assessmentResult: AssessmentResault[];
+    mitigationActionType: MitigationActionType;
+    ndc: Ndc;
+    subNdc: SubNdc;
+    parameters: Parameter[];
+    projectionYear: ProjectionYear[];
+    applicability: ApplicabilityEntity[];
+    reportAssessment: ReportAssessment[];
+    projectionResult: ProjectionResault[];
 }
 
 export class SubsectionEntity implements ISubsectionEntity {
@@ -31976,6 +32027,69 @@ export interface IGetReportDto {
     reportName: string;
 }
 
+export class ChangeParameterValue implements IChangeParameterValue {
+    parameter: Parameter;
+    isDataEntered: boolean;
+    concern: string;
+    correctData: any;
+    user: User;
+
+    constructor(data?: IChangeParameterValue) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.parameter = new Parameter();
+            this.user = new User();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.parameter = _data["parameter"] ? Parameter.fromJS(_data["parameter"]) : new Parameter();
+            this.isDataEntered = _data["isDataEntered"];
+            this.concern = _data["concern"];
+            this.correctData = _data["correctData"];
+            this.user = _data["user"] ? User.fromJS(_data["user"]) : new User();
+        }
+    }
+
+    static fromJS(data: any): ChangeParameterValue {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChangeParameterValue();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["parameter"] = this.parameter ? this.parameter.toJSON() : <any>undefined;
+        data["isDataEntered"] = this.isDataEntered;
+        data["concern"] = this.concern;
+        data["correctData"] = this.correctData;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): ChangeParameterValue {
+        const json = this.toJSON();
+        let result = new ChangeParameterValue();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IChangeParameterValue {
+    parameter: Parameter;
+    isDataEntered: boolean;
+    concern: string;
+    correctData: any;
+    user: User;
+}
+
 export class GetManyTrackcaEntityResponseDto implements IGetManyTrackcaEntityResponseDto {
     data: TrackcaEntity[];
     count: number;
@@ -32581,6 +32695,7 @@ export class ResetPassword implements IResetPassword {
     email: string;
     token: string;
     password: string;
+    code :  string;
 
     constructor(data?: IResetPassword) {
         if (data) {
@@ -32596,6 +32711,7 @@ export class ResetPassword implements IResetPassword {
             this.email = _data["email"];
             this.token = _data["token"];
             this.password = _data["password"];
+            this.code = _data["code"];
         }
     }
 
@@ -32611,6 +32727,7 @@ export class ResetPassword implements IResetPassword {
         data["email"] = this.email;
         data["token"] = this.token;
         data["password"] = this.password;
+        data["code"] = this.code;
         return data;
     }
 
@@ -32626,6 +32743,7 @@ export interface IResetPassword {
     email: string;
     token: string;
     password: string;
+    code: string;
 }
 
 export class ForgotPasswordDto implements IForgotPasswordDto {
@@ -32736,6 +32854,7 @@ export class UpdateDeadlineDto implements IUpdateDeadlineDto {
     status: number;
     userId: number;
     comment: string;
+    verificationStatus: number;
 
     constructor(data?: IUpdateDeadlineDto) {
         if (data) {
@@ -32757,6 +32876,7 @@ export class UpdateDeadlineDto implements IUpdateDeadlineDto {
             this.status = _data["status"];
             this.userId = _data["userId"];
             this.comment = _data["comment"];
+            this.verificationStatus = _data["verificationStatus"];
         }
     }
 
@@ -32778,6 +32898,7 @@ export class UpdateDeadlineDto implements IUpdateDeadlineDto {
         data["status"] = this.status;
         data["userId"] = this.userId;
         data["comment"] = this.comment;
+        data["verificationStatus"] = this.verificationStatus;
         return data;
     }
 
@@ -32795,6 +32916,7 @@ export interface IUpdateDeadlineDto {
     status: number;
     userId: number;
     comment: string;
+    verificationStatus: number;
 }
 
 export class DefaultValueDtos implements IDefaultValueDtos {
@@ -32876,6 +32998,11 @@ export interface IDefaultValueDtos {
     country: Country;
 }
 
+export enum CountryStatus {
+    Active = <any>"Active",
+    Deactivated = <any>"Deactivated",
+}
+
 export enum ParameterRequestDataRequestStatus {
     Request = <any>"Request",
     Data_Request_Saved = <any>"Data_Request_Saved",
@@ -32889,6 +33016,7 @@ export enum ParameterRequestDataRequestStatus {
     QAFail = <any>"QAFail",
     Verifier_Data_Request = <any>"Verifier_Data_Request",
     Minus1 = <any>"-1",
+    Minus8 = <any>"-8",
 }
 
 export enum ParameterRequestQaStatus {
@@ -32896,6 +33024,14 @@ export enum ParameterRequestQaStatus {
     InProgress = <any>"InProgress",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
+}
+
+export enum ParameterVerifierAcceptance {
+    PENDING = <any>"PENDING",
+    ACCEPTED = <any>"ACCEPTED",
+    REJECTED = <any>"REJECTED",
+    RETURNED = <any>"RETURNED",
+    DATA_ENTERED = <any>"DATA_ENTERED",
 }
 
 export enum VerificationDetailVerificationStatus {
@@ -32906,6 +33042,7 @@ export enum VerificationDetailVerificationStatus {
     FinalAssessment = <any>"FinalAssessment",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
+    AssessmentReturned = <any>"AssessmentReturned",
 }
 
 export enum AssessmentYearQaStatus {
@@ -32923,6 +33060,7 @@ export enum AssessmentYearVerificationStatus {
     FinalAssessment = <any>"FinalAssessment",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
+    AssessmentReturned = <any>"AssessmentReturned",
 }
 
 export enum ProjectionResaultQcStatus {
@@ -32995,11 +33133,6 @@ export enum AssessmentStatus {
     Data_Collection = <any>"Data_Collection",
     QA = <any>"QA",
     QD = <any>"QD",
-}
-
-export enum CountryStatus {
-    Active = <any>"Active",
-    Deactivated = <any>"Deactivated",
 }
 
 export enum DocumentsDocumentOwner {

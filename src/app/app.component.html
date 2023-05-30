@@ -509,6 +509,28 @@
               Activity log
             </div>
 
+            <div
+            *ngIf="
+              userRole.role == 1 ||
+              userRole.role == 2 ||
+              userRole.role == 3 ||
+              userRole.role == 4 ||
+              userRole.role == 5 ||
+              userRole.role == 6 ||
+              userRole.role == 7 ||
+              userRole.role == 8 ||
+              userRole.role == 9 ||
+              userRole.role == 10 ||
+              userRole.role == 11
+            "
+            class="sidebar-items--link align-items-start"
+            [routerLink]="['/reset-password']"
+            routerLinkActive="selected"
+          >
+            <div class=""></div>
+            Reset Your Password
+          </div>
+
             <!-- <div
               class="sidebar-items--link align-items-start"
               [routerLink]="['/landing-page']"

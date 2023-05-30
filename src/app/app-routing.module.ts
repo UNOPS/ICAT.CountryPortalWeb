@@ -63,6 +63,7 @@ import { SummarytrackclimateactionsCountryComponent } from './trackclimateaction
 import { TrackclimateactionsCountryComponent } from './trackclimateactions-country/trackclimateactions-country.component';
 import { VerifyDetailComponentSectorAdmin } from './verification-sector-admin/verify-detail/verify-detail.component';
 import { DefaultValueFormComponent } from './data-request-flow/manage-default-values/default-value-form/default-value-form.component';
+import { SetPasswordComponent } from './login/set-password/set-password.component';
 
 export enum UserRoles {
   COUNTRY_ADMIN = 'Country Admin',
@@ -103,6 +104,7 @@ const routes: Routes = [
   },
   { path: '', redirectTo: '/landing-page', pathMatch: 'full' }, // redirect to `first-component`
   { path: 'login', component: LoginLayoutComponent },
+  { path: 'reset-password', component: SetPasswordComponent },
   {
     path: 'user-list',
     component: UserListComponent,
