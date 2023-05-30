@@ -258,26 +258,35 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   async getverificationStage() {
     let stage = 0;
     await this.checkVerificationStage()
-    if (this.assessmentYear.verificationStatus === 8){
-      if (this.roundOneHeadTable !== undefined){
-        stage = 1
-      } else if (this.roundTwoHeadTable !== undefined){
-        stage = 2
-      } else {
-        stage = 3
-      }
-    } else {
-      if (
-        this.assessmentYear.verificationStatus === 1 ||
-        this.assessmentYear.verificationStatus === 2 ||
-        this.assessmentYear.verificationStatus === 3
-      ) {
-        stage = 1;
-      } else if (this.assessmentYear.verificationStatus === 4) {
-        stage = 2;
-      } else if (this.assessmentYear.verificationStatus === 5) {
-        stage = 3;
-      }
+    // if (this.assessmentYear.verificationStatus === 8){
+    //   if (this.roundOneHeadTable !== undefined){
+    //     stage = 1
+    //   } else if (this.roundTwoHeadTable !== undefined){
+    //     stage = 2
+    //   } else {
+    //     stage = 3
+    //   }
+    // } else {
+    //   if (
+    //     this.assessmentYear.verificationStatus === 1 ||
+    //     this.assessmentYear.verificationStatus === 2 ||
+    //     this.assessmentYear.verificationStatus === 3
+    //   ) {
+    //     stage = 1;
+    //   } else if (this.assessmentYear.verificationStatus === 4) {
+    //     stage = 2;
+    //   } else if (this.assessmentYear.verificationStatus === 5) {
+    //     stage = 3;
+    //   }
+    // }
+    if (this.roundOneHeadTable !== undefined){
+      stage = 1
+    } 
+    if (this.roundTwoHeadTable !== undefined){
+      stage = 2
+    } 
+    if (this.roundThreeHeadTable !== undefined) {
+      stage = 3
     }
 
     return stage;

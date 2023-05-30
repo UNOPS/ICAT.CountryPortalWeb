@@ -119,41 +119,52 @@ export class RaiseConcernAdminComponent implements OnInit {
 
     if (this.assesmentYear && this.assesmentYear !== undefined) {
       await this.checkVerificationStage()
-      if (this.assesmentYear.verificationStatus === 8){
-        if (this.roundOneHeadTable !== undefined){
-          this.verificationRound = 1
-        } else if (this.roundTwoHeadTable !== undefined){
-          this.verificationRound = 2
-        } else {
-          this.verificationRound = 3
-        }
-      } else {
-        if (
-          this.assesmentYear.verificationStatus === 1 ||
-          this.assesmentYear.verificationStatus === 2 ||
-          this.assesmentYear.verificationStatus === 3
-        ) {
-          this.verificationRound = 1;
-        } else if (this.assesmentYear.verificationStatus === 4) {
-          this.verificationRound = 2;
-        } else if (this.assesmentYear.verificationStatus === 5)
-          this.verificationRound = 3;
+      // if (this.assesmentYear.verificationStatus === 8){
+      //   if (this.roundOneHeadTable !== undefined){
+      //     this.verificationRound = 1
+      //   }
+      //   if (this.roundTwoHeadTable !== undefined){
+      //     this.verificationRound = 2
+      //   }
+      //   if (this.roundThreeHeadTable !== undefined){
+      //     this.verificationRound = 3
+      //   }
+      // } else {
+      //   if (
+      //     this.assesmentYear.verificationStatus === 1 ||
+      //     this.assesmentYear.verificationStatus === 2 ||
+      //     this.assesmentYear.verificationStatus === 3
+      //   ) {
+      //     this.verificationRound = 1;
+      //   } else if (this.assesmentYear.verificationStatus === 4) {
+      //     this.verificationRound = 2;
+      //   } else if (this.assesmentYear.verificationStatus === 5)
+      //     this.verificationRound = 3;
+      // }
+      if (this.roundOneHeadTable !== undefined){
+        this.verificationRound = 1
+      }
+      if (this.roundTwoHeadTable !== undefined){
+        this.verificationRound = 2
+      }
+      if (this.roundThreeHeadTable !== undefined){
+        this.verificationRound = 3
       }
     }
 
     if (this.verificationDetails && this.verificationDetails.length > 0) {
-      let concernDetails = this.verificationDetails.find(
-        (a) => a.explanation !== undefined && a.explanation !== null
-      );
+      // let concernDetails = this.verificationDetails.find(
+      //   (a) => a.explanation !== undefined && a.explanation !== null 
+      // );
 
-      if (concernDetails) {
-        this.explanation = concernDetails.explanation;
-      }
+      // if (concernDetails) {
+      //   this.explanation = concernDetails.explanation;
+      // }
 
-      if (concernDetails && concernDetails.updatedDate !== undefined) {
-        this.lastConcernDate = concernDetails.updatedDate.toDate();
-        this.explanation = concernDetails.explanation;
-      }
+      // if (concernDetails && concernDetails.updatedDate !== undefined) {
+      //   this.lastConcernDate = concernDetails.updatedDate.toDate();
+      //   this.explanation = concernDetails.explanation;
+      // }
 
       this.verificationDetail = this.verificationDetails.find(
         (a) => a.verificationStage == this.verificationRound
@@ -162,6 +173,8 @@ export class RaiseConcernAdminComponent implements OnInit {
       if (this.verificationDetail) {
         this.rootCause = this.verificationDetail.rootCause;
         this.correctiveAction = this.verificationDetail.correctiveAction;
+        this.lastConcernDate = this.verificationDetail.updatedDate?.toDate()
+        this.explanation = this.verificationDetail.explanation
       }
     }
   }
