@@ -179,8 +179,8 @@
           <div class="col-12 col-md-8">
             <div class="p-field">
               <label for="institution">Landline *</label>
-              <p-inputMask type="text" name="telephone" mask="+99 99-999-9999" [autoClear]="false"
-                placeholder="+99 999 999-9999" [(ngModel)]="user.telephone" #ftelephone="ngModel"
+              <p-inputMask type="text" name="telephone" mask="{{mask}}" [autoClear]="false" 
+                [placeholder]="mask" [(ngModel)]="user.telephone" #ftelephone="ngModel"
                 [styleClass]="'form-control'">
               </p-inputMask>
               <!-- <p
@@ -206,8 +206,8 @@
             <div class="p-field">
               <label for="mobile">Mobile *</label>
 
-              <p-inputMask type="text" name="mobile" mask="+99 99-999-9999" [autoClear]="false"
-                placeholder="+99 999 999-999" [(ngModel)]="user.mobile" [styleClass]="'form-control'"
+              <p-inputMask type="text" name="mobile" mask="{{mask}}" [autoClear]="false"
+                [placeholder]="mask" [(ngModel)]="user.mobile" [styleClass]="'form-control'"
                 #fmobile="ngModel"></p-inputMask>
               <!-- <p
                 class="info-message text-danger"
