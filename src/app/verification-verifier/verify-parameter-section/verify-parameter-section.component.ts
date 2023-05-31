@@ -38,7 +38,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   assessmenId: number;
 
   @Input()
-  parameters: Parameter[];
+  parameters: any[];
 
   @Input()
   verificationStatus:number;
@@ -107,7 +107,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     private prHistoryProxy : ParameterHistoryControllerServiceProxy,
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
     this.loadUser();
     if (this.multiResult) this.isProjectionResult = true;
@@ -227,6 +227,15 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
 
 
   onComplete(e: any){
+    console.log(this.parameters, this.concernParam)
+    this.parameters = this.parameters.map(para => {
+      if (para.id === this.concernParam?.id){
+        para['isConcernRaised'] = true
+        return para
+      } else {
+        return para
+      }
+    })
     if (e){
       this.displayConcern = false
     }
@@ -249,7 +258,10 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   acceptParametrs() {
     let verificationDetails: VerificationDetail[] = [];
 
-    this.selectedParameter.map((v) => {
+    let parametersToUpdate = [...this.selectedParameter]
+    this.selectedParameter = []
+
+    parametersToUpdate.map((v) => {
 
       v.isAcceptedByVerifier = 1;
 
@@ -320,7 +332,8 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
           detail: 'successfully Save.',
           closable: true,
         });
-        this.isAccept=true
+        // this.isAccept=true
+        this.selectedParameter = []
       });
   }
 
@@ -354,6 +367,8 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
         (a) => !a.isResult && a.parameter && a.parameter.id == parameter.id
       );
     }
+
+    console.log(this.concernVerificationDetails)
 
     this.concernParam = parameter;
 

@@ -410,7 +410,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
       this.router.navigate(['/verification-sector-admin/detail'], {
         queryParams: {
           id: this.assementYear.id,
-         // verificationStatus: object.verificationStatus,
+         verificationStatus: this.assementYear.verificationStatus,
         },
       });
 
@@ -420,13 +420,35 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
       this.router.navigate(['/verification-verifier/detail'], {
         queryParams: {
           id: this.assementYear.id,
-         // verificationStatus: object.verificationStatus,
+         verificationStatus: this.assementYear.verificationStatus,
         },
       });
 
     }
 
    
+  }
+
+  disableSubmit(){
+    if (this.flag === 'sec-admin'){
+      return (this.assementYear.verificationStatus !== 3 || this.assementYear.verificationStatus === 7)
+    } else {
+      return (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 7)
+    }
+  }
+
+  getSubmitLabel(){
+    if (this.flag === 'sec-admin'){
+      if (this.assementYear.verificationStatus !== 3 || this.assementYear.verificationStatus === 7) {
+        return "Submitted"
+      }
+    } else {
+      if (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 7) {
+        return "Submitted"
+      }
+    }
+
+    return "Submit"
   }
 
 }
