@@ -69,6 +69,7 @@
                 [options]="p.displayhisValues"
                 (onChange) = "onSelectHistoricalVal($event, spi, i)"
                 optionLabel="label"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
@@ -106,6 +107,7 @@
                 [autoDisplayFirst]="false"
                 [options]="p.defaultValues"
                 optionLabel="name"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
@@ -137,6 +139,7 @@
                 #value="ngModel"
                 [disabled]="isDisableforSubmitButton"
                 [(ngModel)]="p.value"
+                [required]="true"
                 pInputText
               />
               <p

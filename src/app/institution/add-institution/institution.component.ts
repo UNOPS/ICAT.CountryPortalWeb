@@ -56,6 +56,8 @@ export class InstitutionComponent implements OnInit {
   @ViewChild('op') overlay: any;
   usrrole: any;
   sectorId: any;
+  telephoneLength:number;
+  mask:string;
  // userCountryId:number = 0;
   userSectorId:number = 0;
   dataCollectionModuleStatus:number;
@@ -99,6 +101,27 @@ export class InstitutionComponent implements OnInit {
     if(this.usrrole == "Sector Admin" || this.usrrole =="MRV Admin"){
       this.internalTeam = true
     }
+
+    this.serviceProxy.getOneBaseCountryControllerCountry(
+      this.countryId,
+      undefined,
+      undefined,
+      0
+    )
+    .subscribe((res: any) => {
+      this.telephoneLength =res.telephoneLength;
+    this.mask = res.uniqtelephone + " ";
+    let y =3;
+    for(let x=0;x<this.telephoneLength-1;x++){
+      if (x==y){
+        y +=3;
+        this.mask += "-9"
+      }
+      else {
+        this.mask += "9"
+      }    
+    }
+    })
 
     this.route.queryParams.subscribe((params => {
       this.institutionId = params['id'];

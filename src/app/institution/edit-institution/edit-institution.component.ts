@@ -18,6 +18,9 @@ export class EditInstitutionComponent implements OnInit {
   categoryList: InstitutionCategory[] = [];
   institutionId: number = 0;
   Deactivate:string = "Delete";
+  telephoneLength:number;
+  mask:string;
+  telephone:any;
 
   rejectComment: string;
   rejectCommentRequried: boolean;
@@ -100,6 +103,19 @@ export class EditInstitutionComponent implements OnInit {
     ).subscribe((res) => {
       this.institution = res;
       console.log('rrrr',res);
+      this.telephone =res.telephoneNumber;
+      this.telephoneLength =res.country.telephoneLength;
+      this.mask =res.country.uniqtelephone+ " ";
+      let y =3;
+      for(let x=0;x<this.telephoneLength-1;x++){
+        if (x==y){
+          y +=3;
+          this.mask += "-9"
+        }
+        else {
+          this.mask += "9"
+        }    
+      }
     })
   })
 
