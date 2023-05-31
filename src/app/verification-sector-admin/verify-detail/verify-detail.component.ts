@@ -35,7 +35,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   assesMentYearId: number = 0;
   verificationStatus: number = 0;
   assementYear: AssessmentYear = new AssessmentYear();
-  parameters: Parameter[] = [];
+  parameters: any[] = [];
   baselineParameters: Parameter[] = [];
   projectParameters: Parameter[] = [];
   lekageParameters: Parameter[] = [];
@@ -72,6 +72,11 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
   loggedUser: User;
   assumption:string = '';
+
+  isMethodologyAccepted: boolean = false
+  hasMethodologyConcern: boolean = false
+  isNdcAccepted: boolean = false
+  hasNdcConcern: boolean = false
   
 
   ref: DynamicDialogRef;
@@ -122,7 +127,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
           undefined,
           undefined
         )
-        .subscribe((res) => {
+        .subscribe(async (res) => {
           this.assementYear = res;
 
 
@@ -151,11 +156,11 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
              }
             console.log('asssmntObjectiveName----',this.assessmentObjective);
           });
-
+          
+          await this.getVerificationDetail();
           this.getAssesment();
           this.getProjectionResult();
           this.getAssesmentResult(false);
-          this.getVerificationDetail();
           
         });
     });
@@ -187,11 +192,29 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   }
 
   async getVerificationDetail() {
-    await this.verificationProxy
-      .getVerificationDetails(this.assesMentYearId)
-      .subscribe((a) => {
-        this.verificationDetails = a;
-      });
+    // await this.verificationProxy
+    //   .getVerificationDetails(this.assesMentYearId)
+    //   .subscribe((a) => {
+    //     this.verificationDetails = a;
+    //   });
+    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assesMentYearId).toPromise()
+    for await (let v of this.verificationDetails){
+      if (v.isMethodology){
+        if (v.isAccepted){
+          this.isMethodologyAccepted = true
+        }
+        if (v.explanation){
+          this.hasMethodologyConcern = true
+        }
+      } else if (v.isNDC){
+        if (v.isAccepted){
+          this.isNdcAccepted = true
+        }
+        if (v.explanation){
+          this.hasNdcConcern = true
+        }
+      }
+    }
   }
 
   getAssesmentResult(isCalculate: boolean) {
@@ -258,6 +281,16 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         this.assementYear.assessment = res;
 
         this.parameters = this.assementYear.assessment.parameters;
+
+        this.parameters = this.parameters.map(para => {
+          let v = this.verificationDetails.find(o => o.parameter.id === para.id)
+          if (v){
+            if (v.explanation){
+              para['isConcernRaised'] = true
+            }
+          }
+          return para
+        })
 
         this.baselineParameters =
           this.assementYear.assessment.parameters.filter(

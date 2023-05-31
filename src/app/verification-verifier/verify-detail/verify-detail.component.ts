@@ -31,7 +31,7 @@ export class VerifyDetailComponent implements OnInit {
   assesMentYearId: number = 0;
   verificationStatus: number = 0;
   assementYear: AssessmentYear = new AssessmentYear();
-  parameters: Parameter[] = [];
+  parameters: any[] = [];
   baselineParameters: Parameter[] = [];
   projectParameters: Parameter[] = [];
   lekageParameters: Parameter[] = [];
@@ -108,9 +108,9 @@ export class VerifyDetailComponent implements OnInit {
         undefined,
         undefined
       ).toPromise()
+      await this.getVerificationDetail();
       this.getAssesment();
       this.getAssesmentResult(false);
-      await this.getVerificationDetail();
       this.getProjectionReuslt();
       console.log(this.verificationDetails)
     });
@@ -291,6 +291,16 @@ export class VerifyDetailComponent implements OnInit {
 
 
         this.parameters = this.assementYear.assessment.parameters;
+
+        this.parameters = this.parameters.map(para => {
+          let v = this.verificationDetails.find(o => o.parameter.id === para.id)
+          if (v){
+            if (!v.isAccepted && (v.rootCause === undefined || v.correctiveAction === undefined || v.action === undefined)){
+              para['isConcernRaised'] = true
+            }
+          }
+          return para
+        })
 
         this.baselineParameters =
           this.assementYear.assessment.parameters.filter(
