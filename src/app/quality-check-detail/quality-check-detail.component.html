@@ -236,7 +236,7 @@
 
         <div class="row mb-3" *ngIf="assessmentResult?.baselineResult! != undefined">
         <div class="row mb-3">
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="col-12">
               <div class="p-field">
                 <label for="arBaseline">Baseline Result</label>
@@ -295,11 +295,12 @@
             </div>
           </div>
         </div>
+        <i class="pi pi-ellipsis-v" style="font-size: 1rem" ></i>
       </div>
 
       <div class="row mb-3" *ngIf="assessmentResult?.projectResult! != undefined">
         <div class="row mb-3">
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="col-12">
               <div class="p-field">
                 <label for="arBaseline">Project Result</label>
@@ -356,6 +357,9 @@
                 </button>
               </div>
             </div>
+          </div>
+          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+            <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo()"></i>
           </div>
         </div>
       </div>

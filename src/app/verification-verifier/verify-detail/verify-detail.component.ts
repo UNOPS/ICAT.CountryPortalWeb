@@ -72,6 +72,7 @@ export class VerifyDetailComponent implements OnInit {
   isProjectionAccept:boolean = true;
 
   isNdcDisable:boolean = false;
+  isNdcAccepted:boolean = false;
   isNdcDisableReject:boolean = false;
   isMethodology:boolean = false;
   isMethodologyReject:boolean = false;
@@ -125,13 +126,16 @@ export class VerifyDetailComponent implements OnInit {
         if(ndcObj?.isAccepted == true)
         {
           this.isNdcDisable = true;
+          this.isNdcAccepted = true;
           this.isNdcDisableReject = true;
+        } else {
+          if (ndcObj?.explanation){
+            this.isNdcDisable = true;
+          }
+          this.isNdcAccepted = false;
+          this.isNdcDisableReject = false;
         }
-        if(ndcObj?.isAccepted == false)
-        {
-          this.isNdcDisable = true;
-          this.isNdcDisableReject = true;
-        }
+        
 
         let methObject = this.verificationDetailsFromDb.find((o)=>o.isMethodology == true);
         if(methObject?.isAccepted == true)
@@ -295,7 +299,7 @@ export class VerifyDetailComponent implements OnInit {
         this.parameters = this.parameters.map(para => {
           let v = this.verificationDetails.find(o => o.parameter.id === para.id)
           if (v){
-            if (!v.isAccepted && (v.rootCause === undefined || v.correctiveAction === undefined || v.action === undefined)){
+            if (!v.isAccepted && (v.rootCause === null || v.correctiveAction === null || v.action === null)){
               para['isConcernRaised'] = true
             }
           }
@@ -659,7 +663,7 @@ export class VerifyDetailComponent implements OnInit {
     if(isNdc)
     {
       this.isNdcDisable = true;
-      this.isNdcDisableReject = true;
+      // this.isNdcDisableReject = true;
     }
 
     if(isMethodology)
@@ -683,5 +687,12 @@ export class VerifyDetailComponent implements OnInit {
         vStatus: this.verificationStatus,
       },
     });
+  }
+
+  async onComplete(e: any){
+    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assementYear.id).toPromise()
+    if (e){
+      this.displayConcern = false
+    }
   }
 }

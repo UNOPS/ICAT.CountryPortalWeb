@@ -245,8 +245,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   }
 
 
-  onComplete(e: any){
-    console.log(this.parameters, this.concernParam)
+  async onComplete(e: any){
     this.parameters = this.parameters.map(para => {
       if (para.id === this.concernParam?.id){
         para['isConcernRaised'] = true
@@ -255,6 +254,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
         return para
       }
     })
+    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assessmentYear.id).toPromise()
     if (e){
       this.displayConcern = false
     }

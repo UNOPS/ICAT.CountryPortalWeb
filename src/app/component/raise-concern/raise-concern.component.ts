@@ -118,14 +118,16 @@ export class RaiseConcernComponent implements OnInit {
       // } else if (this.assesmentYear.verificationStatus === 5)
       //   this.verificationRound = 3;
       if (this.roundOneHeadTable !== undefined){
-        this.verificationRound = 1
+        this.verificationRound = 2
+      } else {
+        this.verificationRound = 1;
       }
       if (this.roundTwoHeadTable !== undefined){
-        this.verificationRound = 2
-      }
-      if (this.roundThreeHeadTable !== undefined){
         this.verificationRound = 3
       }
+      // if (this.roundThreeHeadTable !== undefined){
+      //   this.verificationRound = 3
+      // }
     }
 
     if (this.verificationDetails && this.verificationDetails.length > 0) {

@@ -84,7 +84,7 @@
             pRipple
             (click)="parameterAccept(true, false,false)"
           >
-            {{isNdcDisable == true?'Accepted':'Accept'}}
+            {{isNdcAccepted == true?'Accepted':'Accept'}}
           </button>
         </div>
       </div>
@@ -377,7 +377,7 @@
             <textarea
               
               name="RelevantindirectSD"
-              placeholder="Please Enter Your Assumption here"
+              placeholder="Assumptions for the assessment appear here"
               [(ngModel)]="this.assementYear.assessmentAssumption!"
               [readonly]="true"
               rows="5"
@@ -465,6 +465,7 @@
     [assesmentYear]="assementYear"
     [isNdC]="concernIsNdC"
     [isMethodology]="concernIsMethodology"
+    (onCompleteConcern)="onComplete($event)"
   ></app-raise-concern>
 
 </div>

@@ -3,8 +3,7 @@
         <div class="col-6">
             <div class="row">
                 <div class="col-2">
-                    <p-radioButton  name="groupname" [value]="true"
-                        [(ngModel)]="isEnterData"></p-radioButton>
+                    <p-radioButton name="groupname" [value]="true" [(ngModel)]="isEnterData"></p-radioButton>
                 </div>
                 <div class="col-10">
                     <label style="padding-top: 8px">Enter correct data</label>
@@ -38,8 +37,8 @@
         </div>
         <div class="row" *ngIf="type === 'ndc'">
             <label for="">Aggregated Action</label>
-            <p-dropdown name="ndc" [options]="ndcList" [(ngModel)]="selectedNdc" [showClear]="true"
-                [filter]="true" placeholder="Select .." optionLabel="name" appendTo="body">
+            <p-dropdown name="ndc" [options]="ndcList" [(ngModel)]="selectedNdc" [showClear]="true" [filter]="true"
+                placeholder="Select .." optionLabel="name" appendTo="body">
             </p-dropdown>
         </div>
         <br>
@@ -51,21 +50,27 @@
         </div>
         <div class="row" *ngIf="type === 'ndc'">
             <label>Action Area</label>
-            <p-dropdown name="subNdc" [options]="selectedNdc === undefined ? [] : selectedNdc.subNdc" [(ngModel)]="selectedSubNdc" [showClear]="true"
-                [filter]="true" placeholder="Select .." optionLabel="name" appendTo="body">
+            <p-dropdown name="subNdc" [options]="selectedNdc === undefined ? [] : selectedNdc.subNdc"
+                [(ngModel)]="selectedSubNdc" [showClear]="true" [filter]="true" placeholder="Select .."
+                optionLabel="name" appendTo="body">
             </p-dropdown>
+        </div>
+        <div class="row" *ngIf="type === 'result'">
+            <label>Comment</label>
+            <textarea name="scopeTA" class="form-control" class="form-control" style="width: 100%" pInputTextarea
+                [(ngModel)]="resultComment" #fscope="ngModel" [rows]="5" [cols]="30" required
+                maxlength="500"></textarea>
         </div>
         <br>
         <div class="row">
             <div class="col-7"></div>
-            <div class="col-5">
+            <div class="col-5 d-flex align-items-end">
                 <button [disabled]="checkEnable()" class="btn btn-primary text-uppercase" type="submit"
                     (click)="sendValueForVerification(isEnterData)">
-                    {{type === 'ndc' ? 'Send for verification' : (isEnterData ? 'Send for verification' : 'Send to DC team')}}
+                    {{type === 'ndc' ? 'Send for verification' : (type === 'result' ? 'Send to QC' :
+                     (isEnterData ? 'Send to QC' : 'Send to DC team'))}}
                 </button>
             </div>
         </div>
     </div>
 </div>
-
-

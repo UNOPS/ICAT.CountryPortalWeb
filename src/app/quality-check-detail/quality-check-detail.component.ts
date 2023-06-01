@@ -184,7 +184,7 @@ export class QualityCheckDetailComponent implements OnInit {
             this.asseResult = res.data;
            console.log('this.asseResult...', this.asseResult);
 
-           if(this.asseResult.length > 0 && this.asseResult[0]?.isResultupdated)
+           if(this.asseResult.length > 0 && this.asseResult[0]?.isResultupdated && !this.asseResult[0].isResultRecalculating)
            {
              this.isReadyToCAl = false;
              console.log("this.isReadyToCAl..",this.isReadyToCAl)
@@ -1063,5 +1063,9 @@ export class QualityCheckDetailComponent implements OnInit {
     this.roundOneHeadTable = verificationList?.find((o: any) => o.verificationStage == 1);
     this.roundTwoHeadTable = verificationList?.find((o: any) => o.verificationStage == 2);
     this.roundThreeHeadTable = verificationList?.find((o: any) => o.verificationStage == 3);
+  }
+
+  getResultInfo(){
+    
   }
 }
