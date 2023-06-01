@@ -184,15 +184,17 @@
             <p-inputMask
               type="text"
               name="telephone"
-              mask="+99 99-999-9999"
+              mask="{{mask}}"
               [autoClear]="false"
-              placeholder="+99 999 999-9999"
+              placeholder="{{mask}}"
               [(ngModel)]="intelephoneNumber"
               #telephoneNumber="ngModel"
               [styleClass]="'form-control'"
             >
           </p-inputMask>
-          
+          <p class="info-message text-danger" *ngIf="intelephoneNumber!.indexOf('_') > 0">
+            A valid telephone number is required.
+          </p>
           <p
           class="info-message text-danger"
           *ngIf="

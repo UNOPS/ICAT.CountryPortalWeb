@@ -24862,6 +24862,8 @@ export class Country implements ICountry {
     dataCollectionGhgModule: boolean;
     hasExelTem: boolean;
     uniqueIdentification: string;
+    telephoneLength: number;
+    uniqtelephone: number;
     defaultValue: DefaultValue[];
 
     constructor(data?: ICountry) {
@@ -24905,6 +24907,8 @@ export class Country implements ICountry {
             this.dataCollectionGhgModule = _data["dataCollectionGhgModule"];
             this.hasExelTem = _data["hasExelTem"];
             this.uniqueIdentification = _data["uniqueIdentification"];
+            this.telephoneLength = _data["telephoneLength"];
+            this.uniqtelephone = _data["uniqtelephone"];
             if (Array.isArray(_data["defaultValue"])) {
                 this.defaultValue = [] as any;
                 for (let item of _data["defaultValue"])
@@ -24949,6 +24953,8 @@ export class Country implements ICountry {
         data["dataCollectionGhgModule"] = this.dataCollectionGhgModule;
         data["hasExelTem"] = this.hasExelTem;
         data["uniqueIdentification"] = this.uniqueIdentification;
+        data["telephoneLength"] = this.telephoneLength;
+        data["uniqtelephone"] = this.uniqtelephone;
         if (Array.isArray(this.defaultValue)) {
             data["defaultValue"] = [];
             for (let item of this.defaultValue)
@@ -24993,6 +24999,8 @@ export interface ICountry {
     dataCollectionGhgModule: boolean;
     hasExelTem: boolean;
     uniqueIdentification: string;
+    telephoneLength: number;
+    uniqtelephone: number;
     defaultValue: DefaultValue[];
 }
 
@@ -32695,7 +32703,7 @@ export class ResetPassword implements IResetPassword {
     email: string;
     token: string;
     password: string;
-    code :  string;
+    code: string;
 
     constructor(data?: IResetPassword) {
         if (data) {

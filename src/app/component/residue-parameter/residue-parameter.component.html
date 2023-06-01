@@ -50,6 +50,7 @@
                 [autoDisplayFirst]="false"
                 [options]="p.defaultValues"
                 optionLabel="name"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
@@ -66,6 +67,7 @@
                 [options]="p.displayhisValues"
                 (onChange) = "onSelectHistoricalVal($event, spi, i)"
                 optionLabel="label"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
@@ -83,6 +85,7 @@
                 [autoDisplayFirst]="false"
                 [options]="instiTutionList"
                 optionLabel="name"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
@@ -102,6 +105,7 @@
                 [autoDisplayFirst]="false"
                 [options]="p.defaultValues"
                 optionLabel="name"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
@@ -118,6 +122,7 @@
                 [options]="p.displayhisValues"
                 (onChange) = "onSelectHistoricalVal($event, spi, i)"
                 optionLabel="label"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
@@ -133,6 +138,7 @@
                 #value="ngModel"
                 [(ngModel)]="p.value"
                 pInputText
+                [required]="true"
               />
               <p
                 class="info-message text-danger"

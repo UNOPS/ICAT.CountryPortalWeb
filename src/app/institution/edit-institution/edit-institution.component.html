@@ -148,8 +148,8 @@
                  
                 <p-inputMask
                 type="text"
-                placeholder="+99 999 999-9999"
-                mask="+99 99-999-9999"
+                placeholder="{{telephone}}"
+                mask="{{mask}}"
                 name="telephoneNumber"
                 #telephoneNumber="ngModel"
               
@@ -160,6 +160,7 @@
 
                 
               >
+
               <p
               class="info-message text-danger"
               *ngIf="
@@ -170,6 +171,9 @@
               This is a mandatory field
             </p>
             </p-inputMask>
+            <p class="info-message text-danger" *ngIf="institution.telephoneNumber!.indexOf('_') > 0">
+              A valid telephone number is required.
+            </p>
               </div>
             </div>
           </div>
