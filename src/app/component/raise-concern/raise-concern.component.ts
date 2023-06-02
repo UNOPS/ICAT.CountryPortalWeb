@@ -107,24 +107,25 @@ export class RaiseConcernComponent implements OnInit {
     this.comment = '';
     if (this.assesmentYear && this.assesmentYear !== undefined) {
       await this.checkVerificationStage()
-      // if (
-      //   this.assesmentYear.verificationStatus === 1 ||
-      //   this.assesmentYear.verificationStatus === 2 ||
-      //   this.assesmentYear.verificationStatus === 3
-      // ) {
-      //   this.verificationRound = 1;
-      // } else if (this.assesmentYear.verificationStatus === 4) {
-      //   this.verificationRound = 2;
-      // } else if (this.assesmentYear.verificationStatus === 5)
-      //   this.verificationRound = 3;
-      if (this.roundOneHeadTable !== undefined){
-        this.verificationRound = 2
-      } else {
+      if (
+        this.assesmentYear.verificationStatus === 1 ||
+        this.assesmentYear.verificationStatus === 2 ||
+        this.assesmentYear.verificationStatus === 3
+      ) {
         this.verificationRound = 1;
-      }
-      if (this.roundTwoHeadTable !== undefined){
-        this.verificationRound = 3
-      }
+      } else if (this.assesmentYear.verificationStatus === 4) {
+        this.verificationRound = 2;
+      } else if (this.assesmentYear.verificationStatus === 5)
+        this.verificationRound = 3;
+        
+      // if (this.roundOneHeadTable !== undefined){
+      //   this.verificationRound = 2
+      // } else {
+      //   this.verificationRound = 1;
+      // }
+      // if (this.roundTwoHeadTable !== undefined && this.assesmentYear.verificationStatus < 4){
+      //   this.verificationRound = 3
+      // }
       // if (this.roundThreeHeadTable !== undefined){
       //   this.verificationRound = 3
       // }
@@ -226,6 +227,7 @@ export class RaiseConcernComponent implements OnInit {
           detail: 'successfully Save.',
           closable: true,
         });
+        console.log("onCompleteConcern")
         this.onCompleteConcern.emit(true)
       });
 

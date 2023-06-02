@@ -294,8 +294,10 @@
               </div>
             </div>
           </div>
+          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+            <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('baseline')"></i>
+          </div>
         </div>
-        <i class="pi pi-ellipsis-v" style="font-size: 1rem" ></i>
       </div>
 
       <div class="row mb-3" *ngIf="assessmentResult?.projectResult! != undefined">
@@ -358,8 +360,8 @@
               </div>
             </div>
           </div>
-          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
-            <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo()"></i>
+          <div class="col-md-1 d-flex align-items-end" *ngIf="checkShowInfo('project')">
+            <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('project')"></i>
           </div>
         </div>
       </div>
@@ -423,6 +425,9 @@
                   </button>
                 </div>
               </div>
+            </div>
+            <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+              <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('leakage')"></i>
             </div>
           </div>
         </div>
@@ -550,6 +555,9 @@
               </div>
             </div>
           </div>
+          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+            <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('mac')"></i>
+          </div>
         </div>
 
 
@@ -611,6 +619,9 @@
                 </button>
               </div>
             </div>
+          </div>
+          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+            <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('difference')"></i>
           </div>
         </div>
 
@@ -768,6 +779,7 @@
                   <th>Leakage Result</th>
                   <th>Emission Reduction</th>
                   <th></th>
+                  <td></td>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-param>
@@ -810,6 +822,9 @@
                         </td>
                       </tr>
                     </table>
+                  </td>
+                  <td>
+                    <i *ngIf="isReadyToCAl" class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('projection')"></i>
                   </td>
                 </tr>
               </ng-template>
@@ -987,3 +1002,18 @@
   </div>
   <p-toast position="top-right"></p-toast>
 </div>
+
+<p-dialog header="Comments" [(visible)]="displayAction" appendTo="body">
+  <div class="container" style="width: 540px; ">
+    <ng-container *ngFor="let result of resultVds">
+     <p><b>Commented date: </b> {{result.updatedDate | date: "yyyy-MM-dd"}}</p>
+     <p><b>Explanation: </b>{{result.explanation}}</p>
+     <p><b>Root Cause: </b>{{result.rootCause}}</p>
+     <p><b>Corrective Action: </b>{{result.correctiveAction}}</p>
+     <p><b>Comment by {{result.commentBy}}: </b>{{result.comment}}</p>
+     <p><b>Verification Round: </b>{{result.verificationStage}}</p>
+     <br>
+    </ng-container>
+    <!-- <p>{{resultAction}}</p> -->
+  </div>
+</p-dialog>

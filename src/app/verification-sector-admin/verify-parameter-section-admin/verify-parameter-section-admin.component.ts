@@ -611,13 +611,13 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
       console.log(res)
       let result = await this.verificationProxy.sendResultToRecalculate(this.assessmentYear.id).toPromise()
       console.log(result)
-      await this.saveVerificationDetails(res.result.comment)
+      let comment = this.loggedUser.userType.name + '|' + res.result.comment
+      await this.saveVerificationDetails(comment)
     })
   }
 
   async checkVerificationStage() {
     if (this.assessmentYear.assessment.id){
-      console.log(this.assessmentYear.assessment)
       let verificationList = (await this.assessmentYearControllerServiceProxy
         .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentYear.assessment.id, this.assessmentYear.assessmentYear)
         .toPromise())[0]?.verificationDetail;
