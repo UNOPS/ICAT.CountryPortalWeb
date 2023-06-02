@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AssessmentYear, AssessmentYearControllerServiceProxy } from "./service-proxies/service-proxies";
+import { VerificationStatus } from "app/Model/VerificationStatus.enum";
 
 @Injectable()
 export class VerificationService {
@@ -28,4 +29,13 @@ export class VerificationService {
         }
         
     }
+
+    checkStatus(verificationStatus: any){
+        let status = [
+          VerificationStatus.Fail, VerificationStatus['In Remediation'], VerificationStatus['NC Recieved'],
+          VerificationStatus.Pass
+        ]
+    
+        return !status.includes(parseInt(verificationStatus))
+      }
 }

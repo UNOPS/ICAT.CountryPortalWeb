@@ -580,7 +580,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
           detail: 'successfully Save.',
           closable: true,
         });
-        // window.location.reload()
+        window.location.reload()
       });
   }
 

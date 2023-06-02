@@ -16,6 +16,7 @@ import {
   VerificationDetail,
   VerificationDetailVerificationStatus,
 } from 'shared/service-proxies/service-proxies';
+import { VerificationService } from 'shared/verification-service';
 
 @Component({
   selector: 'app-verify-parameter-section',
@@ -106,6 +107,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     private verificationProxy: VerificationControllerServiceProxy,
     private serviceProxy: ServiceProxy,
     private prHistoryProxy : ParameterHistoryControllerServiceProxy,
+    public verificationService: VerificationService
   ) {}
 
   async ngOnInit(): Promise<void> {

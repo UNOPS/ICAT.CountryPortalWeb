@@ -53,6 +53,9 @@ export class RaiseConcernComponent implements OnInit {
   isProjection: boolean;
 
   @Input()
+  isAssumption: boolean;
+
+  @Input()
   parameter: Parameter;
 
   @Output()
@@ -178,6 +181,7 @@ export class RaiseConcernComponent implements OnInit {
       vd.isLekage = this.isLekage;
       vd.isProjection = this.isProjection;
       vd.isResult = this.isResult;
+      vd.isAssumption = this.isAssumption
 
       if (this.isNdC) {
         vd.isNDC = true;
@@ -188,6 +192,7 @@ export class RaiseConcernComponent implements OnInit {
           assesmentYear.id, undefined, undefined, 0
         ).toPromise()
         asssessmentYear.verificationStatus = 6
+        asssessmentYear.editedOn = moment();
         this.serviceProxy.updateOneBaseAssessmentYearControllerAssessmentYear(
           asssessmentYear.id, asssessmentYear
         ).subscribe(res => {

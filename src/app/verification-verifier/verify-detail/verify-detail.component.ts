@@ -21,6 +21,7 @@ import {
   VerificationControllerServiceProxy,
   VerificationDetail,
 } from 'shared/service-proxies/service-proxies';
+import { VerificationService } from 'shared/verification-service';
 
 @Component({
   selector: 'verify-detail-detail',
@@ -29,7 +30,7 @@ import {
 })
 export class VerifyDetailComponent implements OnInit {
   assesMentYearId: number = 0;
-  verificationStatus: number = 0;
+  verificationStatus: any = 0;
   assementYear: AssessmentYear = new AssessmentYear();
   parameters: any[] = [];
   baselineParameters: Parameter[] = [];
@@ -77,6 +78,7 @@ export class VerifyDetailComponent implements OnInit {
   isMethodology:boolean = false;
   isMethodologyReject:boolean = false;
   isAssumptions:boolean = false;
+  isAssumptionAccepted:boolean = false;
   isAssumptionsReject:boolean = false;
 
   @ViewChild('opDRPro') overlayDRPro: any;
@@ -92,7 +94,8 @@ export class VerifyDetailComponent implements OnInit {
     private messageService: MessageService,
     private verificationProxy: VerificationControllerServiceProxy,
     private confirmationService: ConfirmationService,
-    private serviceProxy: ServiceProxy
+    private serviceProxy: ServiceProxy,
+    public verificationService: VerificationService
   ) {}
 
   ngOnInit(): void {
@@ -159,6 +162,18 @@ export class VerifyDetailComponent implements OnInit {
         {
           this. isAssumptions = true;
           this. isAssumptionsReject = true;
+        }
+        if(assumpObject?.isAccepted == true)
+        {
+          this.isAssumptions = true;
+          this.isAssumptionAccepted = true;
+          this.isAssumptionsReject = true;
+        } else {
+          if (assumpObject?.explanation){
+            this.isAssumptions = true;
+          }
+          this.isAssumptionAccepted = false;
+          this.isAssumptionsReject = false;
         }
       });
 
@@ -529,7 +544,7 @@ export class VerifyDetailComponent implements OnInit {
 
   parameterAccept(isNdc: boolean, isMethodology: boolean , isAssumption:boolean) {
     this.confirmationService.confirm({
-      message: 'Are sure you want to accept the parameter(s) ?',
+      message: 'Are sure you want to accept the ' + (isMethodology? 'methodology ?' : (isNdc ? 'aggregated action and action area ?' : (isAssumption ? 'assumption ?' : 'parameter(s) ?'))),
       header: 'Accept Confirmation',
       acceptIcon: 'icon-not-visible',
       rejectIcon: 'icon-not-visible',
@@ -675,7 +690,7 @@ export class VerifyDetailComponent implements OnInit {
     if(isAssumption)
     {
       this.isAssumptions = true;
-      this.isAssumptionsReject = true;
+      // this.isAssumptionsReject = true;
     }
   }
 

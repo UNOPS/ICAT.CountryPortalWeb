@@ -83,7 +83,7 @@
                 isAdmin) ) && flag != 1
             ">
 
-            <button *ngIf="verificationStatus !=3 && verificationStatus !=7 && verificationStatus !=6" pButton pRipple
+            <button *ngIf="verificationService.checkStatus(verificationStatus)" pButton pRipple
               [disabled]="param.isAcceptedByVerifier == 1?true:false" type="button" label="Raise Concern"
               (click)="raiseConcern($event, param)" class="p-button-info"></button>
 
@@ -158,12 +158,12 @@
           assessmentYear?.verificationStatus! > 1 &&
           isAdmin)
       ">
-      <div class="col-12 " style="margin-right: 10%;" *ngIf="flag != 1 && verificationStatus !=3 && verificationStatus !=7 && verificationStatus !=6">
+      <div class="col-12 " style="margin-right: 10%;" *ngIf="flag != 1 && verificationService.checkStatus(verificationStatus)">
         <button type="button" pButton pRipple [disabled]="isResultAccepted" (click)="raiseConcernResult($event)">
           Raise Concern
         </button>
       </div>
-      <div class="col-12" *ngIf="flag != 1">
+      <div class="col-12" *ngIf="flag != 1 && verificationService.checkStatus(verificationStatus)">
         <button *ngIf="verificationStatus !=3" type="button" [disabled]="isResultAccepted" pButton pRipple
           (click)="resultAccept()">
           <!-- Accept -->

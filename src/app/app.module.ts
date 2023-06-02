@@ -187,6 +187,7 @@ import { ResidueParameterComponent } from './component/residue-parameter/residue
 import {PasswordModule} from 'primeng/password';
 import { VerificationActionDialogComponent } from './verification-sector-admin/verification-action-dialog/verification-action-dialog.component';
 import { SetPasswordComponent } from './login/set-password/set-password.component';
+import { VerificationService } from 'shared/verification-service';
 
 export function getRemoteServiceBaseUrl(): string {
   return environment.baseUrlAPI;
@@ -377,6 +378,7 @@ export function getRemoteServiceBaseUrl(): string {
     ParameterHistoryControllerServiceProxy,
     DefaultValueControllerServiceProxy,
     ApplicabilityControllerServiceProxy,
+    VerificationService
   ],
   bootstrap: [AppComponent],
 })

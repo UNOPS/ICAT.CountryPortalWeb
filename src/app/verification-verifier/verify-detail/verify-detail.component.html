@@ -75,7 +75,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(verificationStatus)"
         >
           <button
             type="button"
@@ -91,7 +91,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(verificationStatus)"
         >
           <button
             type="button"
@@ -225,7 +225,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(verificationStatus)"
         >
           <button
             type="button"
@@ -241,7 +241,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC'"
+          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(verificationStatus)"
         >
           <button
             type="button"
@@ -392,23 +392,23 @@
 
         <div class="col-2">
           
-          <button *ngIf="verificationStatus !=3 && verificationStatus !=7 && verificationStatus !=6"
+          <button *ngIf="verificationService.checkStatus(verificationStatus)"
           type="button"
           [disabled]="isAssumptions"
           pButton
           pRipple
           (click)="parameterAccept(false,false,true)"
         >
-         {{isAssumptions ? "Accepted" :"Accept" }} 
+         {{isAssumptionAccepted ? "Accepted" :"Accept" }} 
         </button>
         </div>
         <div class="col-2">
-          <button *ngIf="verificationStatus !=3 && verificationStatus !=7 && verificationStatus !=6"
+          <button *ngIf="verificationService.checkStatus(verificationStatus) "
             type="button"
             [disabled]="isAssumptionsReject"
             pButton
             pRipple
-            (click)="raiseConcern(false, true,true)"
+            (click)="raiseConcern(false, false,true)"
           >
             Raise Concern
           </button>
@@ -465,6 +465,7 @@
     [assesmentYear]="assementYear"
     [isNdC]="concernIsNdC"
     [isMethodology]="concernIsMethodology"
+    [isAssumption]="concernIsAssumption"
     (onCompleteConcern)="onComplete($event)"
   ></app-raise-concern>
 

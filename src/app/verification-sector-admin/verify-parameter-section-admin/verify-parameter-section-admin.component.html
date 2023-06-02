@@ -65,7 +65,7 @@
                 <td *ngIf="
                     assessmentYear !== undefined &&
                     (assessmentYear?.verificationStatus! === 3 || assessmentYear?.verificationStatus! === 8) &&
-                    param.isConcernRaised
+                    param.isConcernRaised && param.isAcceptedByVerifier !== 1 
                   ">
                   <button pButton pRipple type="button" label="View Concern" (click)="raiseConcern($event, param)"
                     class="p-button-info"></button>
