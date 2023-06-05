@@ -49,6 +49,7 @@ export class RaiseConcernSectionComponent implements OnInit {
   ngOnChanges(changes: any) {
     this.commentRequried = false;
     this.comment = '';
+    this.verificationDetail = undefined
 
     if (this.verificationDetails && this.verificationDetails.length > 0) {
       let concernDetails = this.verificationDetails.find(

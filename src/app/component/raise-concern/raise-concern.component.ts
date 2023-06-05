@@ -53,6 +53,9 @@ export class RaiseConcernComponent implements OnInit {
   isProjection: boolean;
 
   @Input()
+  isAssumption: boolean;
+
+  @Input()
   parameter: Parameter;
 
   @Output()
@@ -107,25 +110,28 @@ export class RaiseConcernComponent implements OnInit {
     this.comment = '';
     if (this.assesmentYear && this.assesmentYear !== undefined) {
       await this.checkVerificationStage()
-      // if (
-      //   this.assesmentYear.verificationStatus === 1 ||
-      //   this.assesmentYear.verificationStatus === 2 ||
-      //   this.assesmentYear.verificationStatus === 3
-      // ) {
+      if (
+        this.assesmentYear.verificationStatus === 1 ||
+        this.assesmentYear.verificationStatus === 2 ||
+        this.assesmentYear.verificationStatus === 3
+      ) {
+        this.verificationRound = 1;
+      } else if (this.assesmentYear.verificationStatus === 4) {
+        this.verificationRound = 2;
+      } else if (this.assesmentYear.verificationStatus === 5)
+        this.verificationRound = 3;
+        
+      // if (this.roundOneHeadTable !== undefined){
+      //   this.verificationRound = 2
+      // } else {
       //   this.verificationRound = 1;
-      // } else if (this.assesmentYear.verificationStatus === 4) {
-      //   this.verificationRound = 2;
-      // } else if (this.assesmentYear.verificationStatus === 5)
-      //   this.verificationRound = 3;
-      if (this.roundOneHeadTable !== undefined){
-        this.verificationRound = 1
-      }
-      if (this.roundTwoHeadTable !== undefined){
-        this.verificationRound = 2
-      }
-      if (this.roundThreeHeadTable !== undefined){
-        this.verificationRound = 3
-      }
+      // }
+      // if (this.roundTwoHeadTable !== undefined && this.assesmentYear.verificationStatus < 4){
+      //   this.verificationRound = 3
+      // }
+      // if (this.roundThreeHeadTable !== undefined){
+      //   this.verificationRound = 3
+      // }
     }
 
     if (this.verificationDetails && this.verificationDetails.length > 0) {
@@ -175,6 +181,7 @@ export class RaiseConcernComponent implements OnInit {
       vd.isLekage = this.isLekage;
       vd.isProjection = this.isProjection;
       vd.isResult = this.isResult;
+      vd.isAssumption = this.isAssumption
 
       if (this.isNdC) {
         vd.isNDC = true;
@@ -185,6 +192,7 @@ export class RaiseConcernComponent implements OnInit {
           assesmentYear.id, undefined, undefined, 0
         ).toPromise()
         asssessmentYear.verificationStatus = 6
+        asssessmentYear.editedOn = moment();
         this.serviceProxy.updateOneBaseAssessmentYearControllerAssessmentYear(
           asssessmentYear.id, asssessmentYear
         ).subscribe(res => {
@@ -224,6 +232,7 @@ export class RaiseConcernComponent implements OnInit {
           detail: 'successfully Save.',
           closable: true,
         });
+        console.log("onCompleteConcern")
         this.onCompleteConcern.emit(true)
       });
 

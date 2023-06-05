@@ -77,6 +77,8 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   hasMethodologyConcern: boolean = false
   isNdcAccepted: boolean = false
   hasNdcConcern: boolean = false
+  hasAssumptionConcern: boolean = false
+  isAssumptionAccepted: boolean = false
   
 
   ref: DynamicDialogRef;
@@ -212,6 +214,13 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         }
         if (v.explanation){
           this.hasNdcConcern = true
+        }
+      } else if (v.isAssumption){
+        if (v.isAccepted){
+          this.isAssumptionAccepted = true
+        } 
+        if (v.explanation){
+          this.hasAssumptionConcern = true
         }
       }
     }
@@ -486,7 +495,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
   parameterAccept(isNdc: boolean, isMethodology: boolean) {
     this.confirmationService.confirm({
-      message: 'Are sure you want to accept the parameter(s) ?',
+      message: 'Are sure you want to accept the ' + isMethodology ? 'methodology ?': 'parameter(s) ?',
       header: 'Accept Confirmation',
       acceptIcon: 'icon-not-visible',
       rejectIcon: 'icon-not-visible',

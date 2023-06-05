@@ -20,6 +20,7 @@ import {
   ServiceProxy,
   ParameterVerifierAcceptance,
   AssessmentYearVerificationStatus,
+  VerificationDetail,
 } from 'shared/service-proxies/service-proxies';
 
 @Component({
@@ -118,6 +119,9 @@ export class QualityCheckDetailComponent implements OnInit {
   roundOneHeadTable: any;
   roundTwoHeadTable: any;
   roundThreeHeadTable: any;
+  resultVds: any[] = []
+  displayAction: boolean = false
+  verificationList: VerificationDetail[]
 
   constructor(
     private route: ActivatedRoute,
@@ -144,7 +148,7 @@ export class QualityCheckDetailComponent implements OnInit {
           undefined,
           undefined
         )
-        .subscribe((res) => {
+        .subscribe(async (res) => {
           this.assementYear = res;
           if(this.assementYear.qaStatus== 3 || this.assementYear.qaStatus== 4 )
           {
@@ -184,7 +188,7 @@ export class QualityCheckDetailComponent implements OnInit {
             this.asseResult = res.data;
            console.log('this.asseResult...', this.asseResult);
 
-           if(this.asseResult.length > 0 && this.asseResult[0]?.isResultupdated)
+           if(this.asseResult.length > 0 && this.asseResult[0]?.isResultupdated && !this.asseResult[0].isResultRecalculating)
            {
              this.isReadyToCAl = false;
              console.log("this.isReadyToCAl..",this.isReadyToCAl)
@@ -333,11 +337,18 @@ export class QualityCheckDetailComponent implements OnInit {
           this.getAssesment();
           this.getAssesmentResult(false);
           this.getProjectionResult();
+          await this.getVerificationDetails()
         });
     });
 
 
 
+  }
+
+  async getVerificationDetails(){
+    this.verificationList = (await this.assessmentYearControllerServiceProxy
+      .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assementYear.assessment.id, this.assementYear.assessmentYear)
+      .toPromise())[0]?.verificationDetail;
   }
 
 
@@ -1063,5 +1074,56 @@ export class QualityCheckDetailComponent implements OnInit {
     this.roundOneHeadTable = verificationList?.find((o: any) => o.verificationStage == 1);
     this.roundTwoHeadTable = verificationList?.find((o: any) => o.verificationStage == 2);
     this.roundThreeHeadTable = verificationList?.find((o: any) => o.verificationStage == 3);
+  }
+
+  async getResultInfo(type: any){
+    this.resultVds = []
+    console.log("get result info", type)
+    let verificationList = (await this.assessmentYearControllerServiceProxy
+      .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assementYear.assessment.id, this.assementYear.assessmentYear)
+      .toPromise())[0]?.verificationDetail;
+    let column: string
+    if (type === 'project'){
+      column = 'isProject'
+    } else if (type === 'baseline'){
+      column = 'isBaseline'
+    } else if (type === 'leakage'){
+      column = 'isLekage'
+    } else if (type === 'projection'){
+      column = 'isProjection'
+    }
+
+    let vd = verificationList.filter((o:any) => o.isResult === true && o[column] === true)
+    vd.sort((a: any,b: any) => a.verificationStage - b.verificationStage);
+    this.resultVds = vd
+    this.resultVds = this.resultVds.map(res => {
+      let comment = res.action.split('|')
+      res['commentBy'] = comment[0]
+      res['comment'] = comment[1]
+      return res
+    })
+    
+    this.displayAction = true
+  }
+
+  checkShowInfo(type: string){
+    let column: string
+    if (type === 'project'){
+      column = 'isProject'
+    } else if (type === 'baseline'){
+      column = 'isBaseline'
+    } else if (type === 'leakage'){
+      column = 'isLekage'
+    } else if (type === 'projection'){
+      column = 'isProjection'
+    }
+   
+    let vd = this.verificationList?.find((o: any) => o.isResult === true && o[column] === true)
+
+    if (vd){
+      return true
+    } else {
+      return false
+    }
   }
 }

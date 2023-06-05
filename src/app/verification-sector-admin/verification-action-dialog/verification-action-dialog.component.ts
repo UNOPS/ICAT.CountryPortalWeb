@@ -34,6 +34,8 @@ export class VerificationActionDialogComponent implements OnInit {
   assessmentYear: AssessmentYear
 
   loggedUser: User
+  resultComment: string
+  scenario: string
 
   constructor(
     public config: DynamicDialogConfig,
@@ -79,7 +81,7 @@ export class VerificationActionDialogComponent implements OnInit {
           this.ndcList = this.ndcList.filter((o) => o.country.id == this.userCountryId && o.sector.id == this.userSectorId);
           console.log("+++++++++", this.ndcList)
         });
-    } else {
+    } else if (this.type === 'parameter') {
       let _unit
       if (this.parameter.uomDataRequest){
         _unit = this.parameter.uomDataRequest
@@ -161,7 +163,7 @@ export class VerificationActionDialogComponent implements OnInit {
         }
         console.log(res)
       }
-    } else {
+    } else if (this.type === 'ndc') {
       this.dialogRef.close({result: {ndc: this.selectedNdc, subNdc: this.selectedSubNdc}})
       // let action = `Ndc changed  Original Value : ${this.assessmentYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n
       // Sub Ndc changed  Original Value : ${this.assessmentYear.assessment.project.subNdc?.name} New Value : ${this.selectedSubNdc?.name} \n`;
@@ -199,12 +201,16 @@ export class VerificationActionDialogComponent implements OnInit {
       //       console.log('Error', error);
       //     }
       //   );
+    } else if (this.type === 'result'){
+      this.dialogRef.close({result: {comment: this.resultComment}})
     }
   }
 
   checkEnable() {
-    return (!this.correctValue && !this.correctUnit && this.selectedNdc === undefined) ||
-      (this.correctValue === undefined && this.correctUnit === undefined && !this.selectedNdc)
+    return (!this.correctValue && !this.correctUnit && this.selectedNdc === undefined && this.resultComment === undefined) ||
+      (this.correctValue === undefined && this.correctUnit === undefined && !this.selectedNdc && this.resultComment === undefined)  ||
+      (this.correctValue === undefined && this.correctUnit === undefined && this.selectedNdc === undefined && !this.resultComment)
+
   }
 
 }

@@ -635,7 +635,7 @@ export class ProposeProjectComponent implements OnInit {
   }
 
   //
-  saveForm(formData: NgForm) {
+  async saveForm(formData: NgForm) {
     console.log('hii');
     console.log(formData.form.valid)
     console.log(formData)
@@ -643,8 +643,9 @@ export class ProposeProjectComponent implements OnInit {
       return;
     }
     if (this.project.sector) {
-      let sector = new Sector();
-      sector.id = this.project.sector.id;
+      // let sector = new Sector();
+      // sector.id = this.project.sector.id;
+      let sector = await this.serviceProxy.getOneBaseSectorControllerSector(this.project.sector.id, undefined, undefined, 0).toPromise()
       this.project.sector = sector;
     }
    
@@ -660,17 +661,19 @@ export class ProposeProjectComponent implements OnInit {
     if (this.project.ndc) {
       this.project.currentNdc = this.project.ndc.name;
       this.project.previousNdc = this.project.ndc.name;
-      let ndc = new Ndc();
-      ndc.id = this.project.ndc?.id;
+      // let ndc = new Ndc();
+      // ndc.id = this.project.ndc?.id;
+      let ndc = await this.serviceProxy.getOneBaseNdcControllerNdc(this.project.ndc.id, undefined, undefined, 0).toPromise()
       this.project.ndc = ndc;
     }
 
     if (this.project.subNdc) {
       this.project.currentSubNdc = this.project.subNdc.name;
       this.project.previousSubNdc = this.project.subNdc.name;
-      let subned = new SubNdc();
-      subned.id = this.project.subNdc?.id;
-      this.project.subNdc = subned;
+      // let subned = new SubNdc();
+      // subned.id = this.project.subNdc?.id;
+      let subNdc = await this.serviceProxy.getOneBaseSubNdcControllerSubNdc(this.project.subNdc.id, undefined, undefined, 0).toPromise()
+      this.project.subNdc = subNdc;
     }
 
     if (this.project.institution) {
