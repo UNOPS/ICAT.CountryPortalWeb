@@ -3653,7 +3653,8 @@ else{
     param.value = p.value;
     if (p.isDefaultValue && this.requiredParas) {
       param.value = p.defaultValue.value;
-      // param.defaultValue = p.defaultValue;
+      param.defaultValue = p.defaultValue;
+      param.isDefault = p.isDefaultValue
       param.uomDataEntry = p.UOM;
       param.conversionValue = p.value;
     }

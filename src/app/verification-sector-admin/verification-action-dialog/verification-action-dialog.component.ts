@@ -36,6 +36,8 @@ export class VerificationActionDialogComponent implements OnInit {
   loggedUser: User
   resultComment: string
   scenario: string
+  defaultValues: any = [];
+  selectedDefault: any
 
   constructor(
     public config: DynamicDialogConfig,
@@ -58,11 +60,11 @@ export class VerificationActionDialogComponent implements OnInit {
 
     this.loggedUser = await this.appService.getLoggedUser()
 
+    const token = localStorage.getItem('access_token')!;
+    const tokenPayload = decode<any>(token);
+    this.userCountryId = tokenPayload.countryId;
+    this.userSectorId = tokenPayload.sectorId;
     if (this.type === 'ndc') {
-      const token = localStorage.getItem('access_token')!;
-      const tokenPayload = decode<any>(token);
-      this.userCountryId = tokenPayload.countryId;
-      this.userSectorId = tokenPayload.sectorId;
       this.serviceProxy
         .getManyBaseNdcControllerNdc(
           undefined,
@@ -103,106 +105,147 @@ export class VerificationActionDialogComponent implements OnInit {
         this.instiTutionList = ins
       }
     }
+    console.log(this.parameter)
+    await this.getDefaultValues()
 
+  }
+
+  async getDefaultValues() {
+    let uniqueNames: string[] = []
+    let res = await this.serviceProxy
+      .getManyBaseDefaultValueControllerDefaultValue(
+        undefined,
+        undefined,
+        ['country.id||$eq||' + this.userCountryId],
+        undefined,
+        undefined,
+        undefined,
+        1000,
+        0,
+        0,
+        0
+      ).toPromise()
+
+    let _defaultValues: any = res.data;
+    _defaultValues.map(
+      (a: any) =>
+        (a.name = `${a.value} - ${a.unit} - ${a.administrationLevel} - ${a.source}  - ${a.year}`)
+    );
+    let names: string[] = []
+    if (this.parameter.vehical && this.parameter.vehical !== ""){
+      names.push(this.parameter.vehical)
+    }
+    if (this.parameter.fuelType && this.parameter.fuelType !== ""){
+      names.push(this.parameter.fuelType)
+    }
+    if (this.parameter.route && this.parameter.route !== ""){
+      names.push(this.parameter.route)
+    }
+    if (this.parameter.feedstock && this.parameter.feedstock !== ""){
+      names.push(this.parameter.feedstock)
+    }
+    if (this.parameter.soil && this.parameter.soil !== ""){
+      names.push(this.parameter.soil)
+    }
+    if (this.parameter.stratum && this.parameter.stratum !== ""){
+      names.push(this.parameter.stratum)
+    }
+    if (this.parameter.landClearance && this.parameter.landClearance !== ""){
+      names.push(this.parameter.landClearance)
+    }
+    _defaultValues.forEach((val: any) => {
+      let deName = val.parameterName + " " + val.administrationLevel + " " + val.country.id;
+      names.forEach(name => {
+        let paraName = this.parameter.originalName + " " + name + " " + this.loggedUser.country.id
+        if (paraName === deName){
+          this.defaultValues.push(val)
+        }
+      })
+    })
   }
 
   async sendValueForVerification(_isEnterData: boolean) {
     console.log("clicked")
-    if (this.type === 'parameter') {
-      if (_isEnterData) {
-        // enter direct value
-        console.log("enter direct value", this.correctValue, this.correctUnit)
-        console.log("selected parameter", this.parameter)
-        let body = new ChangeParameterValue()
-        let para = new Parameter()
-        para.id = this.parameter.id
-        body.parameter = para
-        body.isDataEntered = _isEnterData
-        body.concern = this.verificationDetail?.explanation
-        body.correctData = {
-          value: this.correctValue,
-          unit: this.correctUnit.ur_fromUnit
-        }
-        let user = new User()
-        user.id = this.loggedUser.id
-        body.user = user
-        console.log(body)
-        let res = await this.verificationControllerServiceProxy.changeParameterValue(body).toPromise()
-        if (res.status === 'saved') {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Value changed successfully',
-            closable: true,
-          });
-          this.dialogRef.close({isEnterData: _isEnterData, value: this.correctValue + this.correctUnit.ur_fromUnit})
-        }
-        console.log(res)
+    if ((this.correctValue && this.correctUnit) || (this.selectedInstitution && this.correctUnit)
+      || this.resultComment || (this.selectedDefault && this.correctUnit)) {
+      if (this.type === 'parameter') {
+        if (_isEnterData) {
+          // enter direct value
+          let body = new ChangeParameterValue()
+          let para = new Parameter()
+          para.id = this.parameter.id
+          body.parameter = para
+          body.isDataEntered = _isEnterData
+          body.concern = this.verificationDetail?.explanation
+          let user = new User()
+            user.id = this.loggedUser.id
+            body.user = user
+          if (this.parameter.isDefault){
+            // Manage default values\
+            body.correctData = {
+              defaultValue: this.selectedDefault,
+              unit: this.correctUnit.ur_fromUnit
+            }
+            body.isDefault = true
+            
+          } else if (this.parameter.isHistorical){
+            //Manage historical values
+          } else {
+            console.log("enter direct value", this.correctValue, this.correctUnit)
+            console.log("selected parameter", this.parameter)
+           
+            body.correctData = {
+              value: this.correctValue,
+              unit: this.correctUnit.ur_fromUnit
+            }
+            
+            console.log(body)
+          }
+          let res = await this.verificationControllerServiceProxy.changeParameterValue(body).toPromise()
+          if (res.status === 'saved') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Value changed successfully',
+              closable: true,
+            });
+            if (this.parameter.isDefault){
+              this.dialogRef.close({ isEnterData: _isEnterData, value: this.selectedDefault.value + this.correctUnit.ur_fromUnit })
+            } else {
+              this.dialogRef.close({ isEnterData: _isEnterData, value: this.correctValue + this.correctUnit.ur_fromUnit })
+            }
+          }
+          console.log(res)
 
-      } else {
-        // data collection path
-        let body = new ChangeParameterValue()
-        let para = new Parameter()
-        para.id = this.parameter.id
-        body.parameter = para
-        body.isDataEntered = _isEnterData
-        body.concern = this.verificationDetail?.explanation
-        body.correctData = {
-          institution: this.selectedInstitution,
-          unit: this.correctUnit.ur_fromUnit
+        } else {
+          // data collection path
+          let body = new ChangeParameterValue()
+          let para = new Parameter()
+          para.id = this.parameter.id
+          body.parameter = para
+          body.isDataEntered = _isEnterData
+          body.concern = this.verificationDetail?.explanation
+          body.correctData = {
+            institution: this.selectedInstitution,
+            unit: this.correctUnit.ur_fromUnit
+          }
+          let res = await this.verificationControllerServiceProxy.changeParameterValue(body).toPromise()
+          if (res.status === 'saved') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Value changed successfully',
+              closable: true,
+            });
+            this.dialogRef.close({ isEnterData: _isEnterData, value: this.selectedInstitution.name })
+          }
+          console.log(res)
         }
-        let res = await this.verificationControllerServiceProxy.changeParameterValue(body).toPromise()
-        if (res.status === 'saved') {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Value changed successfully',
-            closable: true,
-          });
-          this.dialogRef.close({isEnterData: _isEnterData, value: this.selectedInstitution.name})
-        }
-        console.log(res)
+      } else if (this.type === 'ndc') {
+        this.dialogRef.close({ result: { ndc: this.selectedNdc, subNdc: this.selectedSubNdc } })
+      } else if (this.type === 'result') {
+        this.dialogRef.close({ result: { comment: this.resultComment } })
       }
-    } else if (this.type === 'ndc') {
-      this.dialogRef.close({result: {ndc: this.selectedNdc, subNdc: this.selectedSubNdc}})
-      // let action = `Ndc changed  Original Value : ${this.assessmentYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n
-      // Sub Ndc changed  Original Value : ${this.assessmentYear.assessment.project.subNdc?.name} New Value : ${this.selectedSubNdc?.name} \n`;
-
-      // this.assessmentYear.assessment.project.ndc = this.selectedNdc;
-      // this.assessmentYear.assessment.project.subNdc = this.selectedSubNdc;
-
-      // // console.log("ndcAction", this.assementYear.assessment)
-
-      // let project: Project = await this.serviceProxy.getOneBaseProjectControllerProject(
-      //   this.assessmentYear.assessment.project.id,
-      //   undefined,
-      //   undefined,
-      //   undefined).toPromise()
-
-      // let ndc = new Ndc();
-      // ndc.id = this.selectedNdc.id;
-      // project.ndc = ndc;
-
-      // let subNdc = new SubNdc();
-      // subNdc.id = this.selectedSubNdc?.id;
-      // project.subNdc = subNdc;
-
-      // this.serviceProxy
-      //   .updateOneBaseProjectControllerProject(
-      //     project.id,
-      //     project
-      //   )
-      //   .subscribe(
-      //     (res) => {
-      //       console.log(res)
-      //       // this.saveVerificationDetails(true, false, action);
-      //     },
-      //     (error) => {
-      //       console.log('Error', error);
-      //     }
-      //   );
-    } else if (this.type === 'result'){
-      this.dialogRef.close({result: {comment: this.resultComment}})
     }
   }
 

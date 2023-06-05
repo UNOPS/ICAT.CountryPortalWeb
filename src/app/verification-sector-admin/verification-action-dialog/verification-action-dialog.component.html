@@ -24,10 +24,16 @@
 </div>
 <div class="p-grid p-fluid card">
     <div>
-        <div class="row" *ngIf="isEnterData && type === 'parameter'">
+        <div class="row" *ngIf="isEnterData && type === 'parameter'  && !parameter.isDefault">
             <label for="value">Correct value</label>
             <p-inputNumber type="number" name="value" [(ngModel)]="correctValue" placeholder="Enter value"
                 mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"></p-inputNumber>
+        </div>
+        <div class="row" *ngIf="isEnterData && type === 'parameter' && parameter.isDefault">
+            <label for="value">Select correct value</label>
+            <p-dropdown name="unitType" [options]="defaultValues" [(ngModel)]="selectedDefault" [showClear]="true"
+                [filter]="true" placeholder="Select .." optionLabel="name" appendTo="body">
+            </p-dropdown>
         </div>
         <div class="row" *ngIf="!isEnterData && type === 'parameter'">
             <label for="">Institution</label>
