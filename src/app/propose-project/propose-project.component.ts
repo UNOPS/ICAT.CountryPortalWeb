@@ -190,6 +190,7 @@ export class ProposeProjectComponent implements OnInit {
       }
     });
 
+    // console.log("this.anonymousEditEntytyId",this.anonymousEditEntytyId," this.editEntytyId", this.editEntytyId)
     if (countryId) {
       this.serviceProxy
         .getOneBaseCountryControllerCountry(
@@ -583,7 +584,7 @@ export class ProposeProjectComponent implements OnInit {
         // this.project.mappedInstitution
       });
 
-    if (this.editEntytyId != 0) {
+    if (this.editEntytyId && this.editEntytyId != 0) {
       let docFilter: string[] = new Array();
 
       docFilter.push('documentOwnerId||$eq||' + this.editEntytyId);
@@ -607,7 +608,7 @@ export class ProposeProjectComponent implements OnInit {
     }
 
     //Anonymous form
-    if (this.anonymousEditEntytyId != 0) {
+    else if (this.anonymousEditEntytyId && this.anonymousEditEntytyId != 0) {
       let docFilter: string[] = new Array();
 
       docFilter.push('documentOwnerId||$eq||' + this.anonymousEditEntytyId);
@@ -626,7 +627,7 @@ export class ProposeProjectComponent implements OnInit {
         )
         .subscribe((res: any) => {
           this.selectedDocuments = res.data;
-          console.log('selectedDocuments...', this.selectedDocuments);
+          console.log('selectedDocuments...anno', this.selectedDocuments);
         });
     }
   }
@@ -642,11 +643,11 @@ export class ProposeProjectComponent implements OnInit {
     if (this.exsistingPrpject) {
       return;
     }
-    if (this.project.sector) {
-      let sector = new Sector();
-      sector.id = this.project.sector.id;
-      this.project.sector = sector;
-    }
+    // if (this.project.sector) {
+    //   let sector = new Sector();
+    //   sector.id = this.project.sector.id;
+    //   this.project.sector = sector;
+    // }
    
 
     this.project.proposeDateofCommence = moment(this.proposeDateofCommence);
@@ -657,21 +658,21 @@ export class ProposeProjectComponent implements OnInit {
     //  console.log(this.project)
     //  console.log(this.selectedInstitution)
 
-    if (this.project.ndc) {
-      this.project.currentNdc = this.project.ndc.name;
-      this.project.previousNdc = this.project.ndc.name;
-      let ndc = new Ndc();
-      ndc.id = this.project.ndc?.id;
-      this.project.ndc = ndc;
-    }
+    // if (this.project.ndc) {
+    //   this.project.currentNdc = this.project.ndc.name;
+    //   this.project.previousNdc = this.project.ndc.name;
+    //   let ndc = new Ndc();
+    //   ndc.id = this.project.ndc?.id;
+    //   this.project.ndc = ndc;
+    // }
 
-    if (this.project.subNdc) {
-      this.project.currentSubNdc = this.project.subNdc.name;
-      this.project.previousSubNdc = this.project.subNdc.name;
-      let subned = new SubNdc();
-      subned.id = this.project.subNdc?.id;
-      this.project.subNdc = subned;
-    }
+    // if (this.project.subNdc) {
+    //   this.project.currentSubNdc = this.project.subNdc.name;
+    //   this.project.previousSubNdc = this.project.subNdc.name;
+    //   let subned = new SubNdc();
+    //   subned.id = this.project.subNdc?.id;
+    //   this.project.subNdc = subned;
+    // }
 
     if (this.project.institution) {
       let insti = new Institution();
@@ -1165,9 +1166,9 @@ export class ProposeProjectComponent implements OnInit {
   }
 
   updateStatus(project: Project, aprovalStatus: number) {
-    let sector = new Sector();
-    sector.id = project.sector.id;
-    project.sector = sector;
+    // let sector = new Sector();
+    // sector.id = project.sector.id;
+    // project.sector = sector;
 
     project.proposeDateofCommence = moment(this.proposeDateofCommence);
     project.endDateofCommence = moment(this.endDateofCommence);
@@ -1177,17 +1178,17 @@ export class ProposeProjectComponent implements OnInit {
     //  console.log(this.project)
     //  console.log(this.selectedInstitution)
 
-    if (project.ndc) {
-      let ndc = new Ndc();
-      ndc.id = project.ndc?.id;
-      project.ndc = ndc;
-    }
+    // if (project.ndc) {
+    //   let ndc = new Ndc();
+    //   ndc.id = project.ndc?.id;
+    //   project.ndc = ndc;
+    // }
 
-    if (project.subNdc) {
-      let subned = new SubNdc();
-      subned.id = project.subNdc?.id;
-      project.subNdc = subned;
-    }
+    // if (project.subNdc) {
+    //   let subned = new SubNdc();
+    //   subned.id = project.subNdc?.id;
+    //   project.subNdc = subned;
+    // }
 
     if (project.institution) {
       let insti = new Institution();
@@ -1354,10 +1355,10 @@ export class ProposeProjectComponent implements OnInit {
       this.project.previousNdc = this.originalNdc;
       this.originalNdc = this.project.ndc.name;
 
-      let ndc = new Ndc();
-      ndc.id = this.project.ndc?.id;
-      ndc.name = this.project.ndc?.name;
-      this.project.ndc = ndc;
+      // let ndc = new Ndc();
+      // ndc.id = this.project.ndc?.id;
+      // ndc.name = this.project.ndc?.name;
+      // this.project.ndc = ndc;
     }
 
     if (this.project.subNdc) {
@@ -1365,10 +1366,10 @@ export class ProposeProjectComponent implements OnInit {
       this.project.previousSubNdc = this.originalSubNdc;
       this.originalSubNdc = this.project.subNdc.name;
 
-      let subned = new SubNdc();
-      subned.id = this.project.subNdc?.id;
-      subned.name = this.project.subNdc?.name;
-      this.project.subNdc = subned;
+      // let subned = new SubNdc();
+      // subned.id = this.project.subNdc?.id;
+      // subned.name = this.project.subNdc?.name;
+      // this.project.subNdc = subned;
     }
 
     if (this.project.institution) {
@@ -1443,6 +1444,7 @@ export class ProposeProjectComponent implements OnInit {
     this.isDownloadMode = 1;
     this.isDownloading = true;
 
+// console.log('thi.selectedDocuments', this.selectedDocuments);
     setTimeout(() => {
       // var data = document.getElementById('content')!;
 
@@ -1488,6 +1490,8 @@ export class ProposeProjectComponent implements OnInit {
 
         pdf.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
         pdf.save('download.pdf');
+        this.isDownloadMode = 0;
+        this.isDownloading = false;
       });
     }, 1);
   }
