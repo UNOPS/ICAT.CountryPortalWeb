@@ -26,6 +26,6 @@ export class LoginLayoutService {
     // used show hide login and forgot password forms
     this.showForgotPassword.next(showForgotPassword);
     this.showLoginForm.next(showLoginForm);
-    //this.showSetPassword.next(showSetPassword);
+    this.showSetPassword.next(showSetPassword);
   }
 }

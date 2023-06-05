@@ -112,14 +112,14 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3">
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && !isNdcAccepted">
         <div class="col-12">
           <button type="button" pButton pRipple (click)="ndcAction()">
             Action
           </button>
         </div>
       </div>
-      <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3">
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && hasNdcConcern">
         <div class="col-12">
           <button
             type="button"
@@ -162,7 +162,7 @@
               type="text"
               name="ereduction"
               #ereduction="ngModel"
-              [(ngModel)]="assessmentResult.totalEmission!"
+              [(ngModel)]="assessmentResult?.totalEmission!"
               class="p-inputtext"
               pInputText
             />
@@ -234,7 +234,7 @@
           </button>
         </div>
       </div> -->
-      <div class="col-md-2  d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3">
+      <div class="col-md-2  d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && hasMethodologyConcern">
         <div class="col-12">
           <button
             type="button"
@@ -298,7 +298,7 @@
         [scenario]="assementYear.assessment.baselineScenario"
         [parameters]="baselineParameters"
         ResultLabel="Baseline emission"
-        [ResultValue]="assessmentResult.baselineResult"
+        [ResultValue]="assessmentResult?.baselineResult"
         [verificationDetails]="verificationDetails"
         [isBaseline]="true"
         [isProjection]="false"
@@ -313,7 +313,7 @@
         [scenario]="assementYear.assessment.projectScenario"
         [parameters]="projectParameters"
         ResultLabel="Project emission"
-        [ResultValue]="assessmentResult.projectResult"
+        [ResultValue]="assessmentResult?.projectResult"
         [verificationDetails]="verificationDetails"
         [isProject]="true"
         [isProjection]="false"
@@ -329,7 +329,7 @@
         [scenario]="assementYear.assessment.lekageScenario"
         [parameters]="lekageParameters"
         ResultLabel="Leakage emission"
-        [ResultValue]="assessmentResult.lekageResult"
+        [ResultValue]="assessmentResult?.lekageResult"
         [verificationDetails]="verificationDetails"
         [isLekage]="true"
         [isProjection]="false"

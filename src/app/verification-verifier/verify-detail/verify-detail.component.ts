@@ -13,6 +13,7 @@ import {
   AssessmentYear,
   AssessmentYearVerificationStatus,
   Parameter,
+  ParameterVerifierAcceptance,
   ProjectionResault,
   ProjectionResaultControllerServiceProxy,
   ServiceProxy,
@@ -30,7 +31,7 @@ export class VerifyDetailComponent implements OnInit {
   assesMentYearId: number = 0;
   verificationStatus: number = 0;
   assementYear: AssessmentYear = new AssessmentYear();
-  parameters: Parameter[] = [];
+  parameters: any[] = [];
   baselineParameters: Parameter[] = [];
   projectParameters: Parameter[] = [];
   lekageParameters: Parameter[] = [];
@@ -94,26 +95,24 @@ export class VerifyDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe(async (params) => {
       this.assesMentYearId = params['id'];
       this.verificationStatus = params['verificationStatus'];
       console.log("verificationStatus",this.verificationStatus)
       this.flag = params['flag'];
 
-      this.proxy
-        .getOneBaseAssessmentYearControllerAssessmentYear(
-          this.assesMentYearId,
-          undefined,
-          undefined,
-          undefined
-        )
-        .subscribe((res) => {
-          this.assementYear = res;
-          this.getAssesment();
-          this.getAssesmentResult(false);
-          this.getVerificationDetail();
-          this.getProjectionReuslt();
-        });
+      this.assementYear = await this.proxy
+      .getOneBaseAssessmentYearControllerAssessmentYear(
+        this.assesMentYearId,
+        undefined,
+        undefined,
+        undefined
+      ).toPromise()
+      await this.getVerificationDetail();
+      this.getAssesment();
+      this.getAssesmentResult(false);
+      this.getProjectionReuslt();
+      console.log(this.verificationDetails)
     });
 
     this.loadUser();
@@ -189,11 +188,13 @@ export class VerifyDetailComponent implements OnInit {
   }
 
   async getVerificationDetail() {
-    await this.verificationProxy
-      .getVerificationDetails(this.assesMentYearId)
-      .subscribe((a) => {
-        this.verificationDetails = a;
-      });
+    // await this.verificationProxy
+    //   .getVerificationDetails(this.assesMentYearId)
+    //   .subscribe((a) => {
+    //     console.log(a)
+    //     this.verificationDetails = a;
+    //   });
+    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assesMentYearId).toPromise()
   }
 
   getAssesmentResult(isCalculate: boolean) {
@@ -291,8 +292,21 @@ export class VerifyDetailComponent implements OnInit {
 
         this.parameters = this.assementYear.assessment.parameters;
 
+        this.parameters = this.parameters.map(para => {
+          let v = this.verificationDetails.find(o => o.parameter.id === para.id)
+          if (v){
+            if (!v.isAccepted && (v.rootCause === undefined || v.correctiveAction === undefined || v.action === undefined)){
+              para['isConcernRaised'] = true
+            }
+          }
+          return para
+        })
+
         this.baselineParameters =
-          this.assementYear.assessment.parameters.filter((p) => p.isBaseline);
+          this.assementYear.assessment.parameters.filter(
+            (p) => p.isBaseline
+            && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
+          );
         
         for (let base of this.baselineParameters){
           if(base.isAcceptedByVerifier !=1){
@@ -302,6 +316,7 @@ export class VerifyDetailComponent implements OnInit {
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isProject
+          && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
         );
 
         for (let base of this.projectParameters){
@@ -311,6 +326,7 @@ export class VerifyDetailComponent implements OnInit {
         }
         this.lekageParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isLekage
+          && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
         );
 
         for (let base of this.lekageParameters){
@@ -325,6 +341,7 @@ export class VerifyDetailComponent implements OnInit {
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == Number(this.assementYear.assessmentYear)
+              && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
           );
 
           for (let base of this.projectionParameters){

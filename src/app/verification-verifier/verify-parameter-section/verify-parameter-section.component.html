@@ -15,7 +15,7 @@
       <div class="col-12" *ngIf="flag != 1">
         <button *ngIf="verificationStatus !=3"
           type="button"
-          [disabled]="selectedParameter.length < 1 || isAccept"
+          [disabled]="selectedParameter.length < 1 "
           pButton
           pRipple
           (click)="parameterAccept()"
@@ -73,9 +73,11 @@
           <td>
             <p-checkbox
               [binary]="true"
+              *ngIf="param.isAcceptedByVerifier !== 1"
               (onChange)="checkboxCheck($event, param)"
               name="groupname"
               value="check"
+              [disabled]="param.isConcernRaised"
             ></p-checkbox>
           </td>
         </div>    
@@ -294,6 +296,7 @@
     [isLekage]="isLekage"
     [isProject]="isProject"
     [isProjection]="isProjection"
+    (onCompleteConcern)="onComplete($event)"
   ></app-raise-concern>
 </div>
   <!-- <ng-template pTemplate="footer">

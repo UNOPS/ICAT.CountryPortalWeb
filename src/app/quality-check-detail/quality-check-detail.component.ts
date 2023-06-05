@@ -18,6 +18,8 @@ import {
   ProjectionResaultControllerServiceProxy,
   AssessmentYearControllerServiceProxy,
   ServiceProxy,
+  ParameterVerifierAcceptance,
+  AssessmentYearVerificationStatus,
 } from 'shared/service-proxies/service-proxies';
 
 @Component({
@@ -113,6 +115,9 @@ export class QualityCheckDetailComponent implements OnInit {
   verificationStatusIsNull:boolean=false;
   @ViewChild('opDRPro') overlayDRPro: any;
   @ViewChild('opDRAss') overlayDRAssemnet: any;
+  roundOneHeadTable: any;
+  roundTwoHeadTable: any;
+  roundThreeHeadTable: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -149,7 +154,7 @@ export class QualityCheckDetailComponent implements OnInit {
           this.asseId = this.assementYear.assessment.id;
          
           
-            if(this.assementYear.verificationStatus==undefined || this.assementYear.verificationStatus == null ){
+            if(this.assementYear.verificationStatus==undefined || this.assementYear.verificationStatus == null || this.assementYear.verificationStatus === 8 ){
               this.verificationStatusIsNull=true;
              
             }
@@ -179,7 +184,7 @@ export class QualityCheckDetailComponent implements OnInit {
             this.asseResult = res.data;
            console.log('this.asseResult...', this.asseResult);
 
-           if(this.asseResult.length > 0)
+           if(this.asseResult.length > 0 && this.asseResult[0]?.isResultupdated)
            {
              this.isReadyToCAl = false;
              console.log("this.isReadyToCAl..",this.isReadyToCAl)
@@ -461,20 +466,28 @@ export class QualityCheckDetailComponent implements OnInit {
         this.parameters = this.assementYear.assessment.parameters;
         console.log("para....w",this.parameters)
 
+        let statusToRemove = [ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED]
+
         this.baselineParameters =
-          this.assementYear.assessment.parameters.filter((p) => p.isBaseline);
+          this.assementYear.assessment.parameters.filter(
+            (p) => p.isBaseline
+            && !statusToRemove.includes(p.verifierAcceptance)
+          );
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isProject
+          && !statusToRemove.includes(p.verifierAcceptance)
         );
         this.lekageParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isLekage
+          && !statusToRemove.includes(p.verifierAcceptance)
         );
         this.projectionParameters =
           this.assementYear.assessment.parameters.filter(
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == Number(this.assementYear.assessmentYear)
+              && !statusToRemove.includes(p.verifierAcceptance)
           );
       });
   }
@@ -485,15 +498,30 @@ export class QualityCheckDetailComponent implements OnInit {
     });
   }
 
-  submit() {
-    if (this.assementYear.assessment.assessmentType != 'MAC') {
-      this.getAssesmentResult(true);
-    } else {
-      this.toCalMacResult();
+  async submit() {
+    let notReceived = 0
+    let status = [ ParameterVerifierAcceptance.RETURNED]
+    for await (let para of this.assementYear.assessment.parameters){
+      if (status.includes(para.verifierAcceptance) ){
+        notReceived += 1
+      }
     }
-    this.isReadyToCAl = false;
-    this.isDisable = true;
-    window.location.reload()
+    if (notReceived > 0){
+      this.messageService.add({
+        severity: 'warn',
+        summary: "Warning",
+        detail: "There are parameters in data collection path"
+      })
+    } else {
+      if (this.assementYear.assessment.assessmentType != 'MAC') {
+        this.getAssesmentResult(true);
+      } else {
+        this.toCalMacResult();
+      }
+      this.isReadyToCAl = false;
+      this.isDisable = true;
+      window.location.reload()
+    }
   }
 
   toCalMacResult() {
@@ -961,7 +989,7 @@ export class QualityCheckDetailComponent implements OnInit {
 
   
 
-  submitStatus() {
+  async submitStatus() {
     let para = this.parameters;
     para = para.filter((o)=>o.parameterRequest != null);
     let isallPass =
@@ -978,7 +1006,20 @@ export class QualityCheckDetailComponent implements OnInit {
     this.assementYear.qaStatus = isallPass ? 4 : 3;
 
     if (isallPass) {
-      this.assementYear.verificationStatus = 1;
+      if (this.assementYear.verificationStatus === 8) {
+        await this.checkVerificationStage()
+        if (this.roundOneHeadTable != undefined) {
+          this.assementYear.verificationStatus = 4;
+        }
+
+        if (this.roundTwoHeadTable != undefined) {
+          this.assementYear.verificationStatus = 5;
+        }
+
+      } else {
+        this.assementYear.verificationStatus = 1;
+      }
+
     }
 
     let tempassementYear = this.assementYear;
@@ -1013,5 +1054,14 @@ export class QualityCheckDetailComponent implements OnInit {
         }
       );
       this.isSubmitButtondisable = true;
+  }
+
+  async checkVerificationStage() {
+    let verificationList = (await this.assessmentYearControllerServiceProxy
+      .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assementYear.assessment.id, this.assementYear.assessmentYear)
+      .toPromise())[0]?.verificationDetail;
+    this.roundOneHeadTable = verificationList?.find((o: any) => o.verificationStage == 1);
+    this.roundTwoHeadTable = verificationList?.find((o: any) => o.verificationStage == 2);
+    this.roundThreeHeadTable = verificationList?.find((o: any) => o.verificationStage == 3);
   }
 }

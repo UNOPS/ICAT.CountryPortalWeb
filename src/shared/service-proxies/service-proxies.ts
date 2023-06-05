@@ -17938,6 +17938,59 @@ export class VerificationControllerServiceProxy {
         }
         return _observableOf(<any>null);
     }
+
+    changeParameterValue(body: ChangeParameterValue): Observable<any> {
+        let url_ = this.baseUrl + "/verification/change-parameter-value";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangeParameterValue(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangeParameterValue(<any>response_);
+                } catch (e) {
+                    return <Observable<any>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<any>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processChangeParameterValue(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result201 = resultData201 !== undefined ? resultData201 : <any>null;
+    
+            return _observableOf(result201);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
 }
 
 @Injectable()
@@ -24809,6 +24862,8 @@ export class Country implements ICountry {
     dataCollectionGhgModule: boolean;
     hasExelTem: boolean;
     uniqueIdentification: string;
+    telephoneLength: number;
+    uniqtelephone: number;
     defaultValue: DefaultValue[];
 
     constructor(data?: ICountry) {
@@ -24852,6 +24907,8 @@ export class Country implements ICountry {
             this.dataCollectionGhgModule = _data["dataCollectionGhgModule"];
             this.hasExelTem = _data["hasExelTem"];
             this.uniqueIdentification = _data["uniqueIdentification"];
+            this.telephoneLength = _data["telephoneLength"];
+            this.uniqtelephone = _data["uniqtelephone"];
             if (Array.isArray(_data["defaultValue"])) {
                 this.defaultValue = [] as any;
                 for (let item of _data["defaultValue"])
@@ -24896,6 +24953,8 @@ export class Country implements ICountry {
         data["dataCollectionGhgModule"] = this.dataCollectionGhgModule;
         data["hasExelTem"] = this.hasExelTem;
         data["uniqueIdentification"] = this.uniqueIdentification;
+        data["telephoneLength"] = this.telephoneLength;
+        data["uniqtelephone"] = this.uniqtelephone;
         if (Array.isArray(this.defaultValue)) {
             data["defaultValue"] = [];
             for (let item of this.defaultValue)
@@ -24940,6 +24999,8 @@ export interface ICountry {
     dataCollectionGhgModule: boolean;
     hasExelTem: boolean;
     uniqueIdentification: string;
+    telephoneLength: number;
+    uniqtelephone: number;
     defaultValue: DefaultValue[];
 }
 
@@ -29513,6 +29574,9 @@ export class Parameter implements IParameter {
     parameterRequest: ParameterRequest;
     verificationDetail: VerificationDetail[];
     hasChild: boolean;
+    verifierAcceptance: ParameterVerifierAcceptance;
+    verifierConcern: string;
+    previouseParameterId: number;
 
     constructor(data?: IParameter) {
         if (data) {
@@ -29581,6 +29645,9 @@ export class Parameter implements IParameter {
                     this.verificationDetail.push(VerificationDetail.fromJS(item));
             }
             this.hasChild = _data["hasChild"];
+            this.verifierAcceptance = _data["verifierAcceptance"];
+            this.verifierConcern = _data["verifierConcern"];
+            this.previouseParameterId = _data["previouseParameterId"];
         }
     }
 
@@ -29646,6 +29713,9 @@ export class Parameter implements IParameter {
                 data["verificationDetail"].push(item.toJSON());
         }
         data["hasChild"] = this.hasChild;
+        data["verifierAcceptance"] = this.verifierAcceptance;
+        data["verifierConcern"] = this.verifierConcern;
+        data["previouseParameterId"] = this.previouseParameterId;
         return data;
     }
 
@@ -29707,6 +29777,9 @@ export interface IParameter {
     parameterRequest: ParameterRequest;
     verificationDetail: VerificationDetail[];
     hasChild: boolean;
+    verifierAcceptance: ParameterVerifierAcceptance;
+    verifierConcern: string;
+    previouseParameterId: number;
 }
 
 export class VerificationDetail implements IVerificationDetail {
@@ -30287,6 +30360,7 @@ export class AssessmentResault implements IAssessmentResault {
     qcStatuspsTotalAnnualCost: AssessmentResaultQcStatuspsTotalAnnualCost;
     qcStatusbsTotalAnnualCost: AssessmentResaultQcStatusbsTotalAnnualCost;
     assessmentYear: AssessmentYear;
+    isResultupdated: boolean;
     assement: Assessment;
     projectionResult: ProjectionResault[];
 
@@ -30334,6 +30408,7 @@ export class AssessmentResault implements IAssessmentResault {
             this.qcStatuspsTotalAnnualCost = _data["qcStatuspsTotalAnnualCost"];
             this.qcStatusbsTotalAnnualCost = _data["qcStatusbsTotalAnnualCost"];
             this.assessmentYear = _data["assessmentYear"] ? AssessmentYear.fromJS(_data["assessmentYear"]) : new AssessmentYear();
+            this.isResultupdated = _data["isResultupdated"];
             this.assement = _data["assement"] ? Assessment.fromJS(_data["assement"]) : new Assessment();
             if (Array.isArray(_data["projectionResult"])) {
                 this.projectionResult = [] as any;
@@ -30380,6 +30455,7 @@ export class AssessmentResault implements IAssessmentResault {
         data["qcStatuspsTotalAnnualCost"] = this.qcStatuspsTotalAnnualCost;
         data["qcStatusbsTotalAnnualCost"] = this.qcStatusbsTotalAnnualCost;
         data["assessmentYear"] = this.assessmentYear ? this.assessmentYear.toJSON() : <any>undefined;
+        data["isResultupdated"] = this.isResultupdated;
         data["assement"] = this.assement ? this.assement.toJSON() : <any>undefined;
         if (Array.isArray(this.projectionResult)) {
             data["projectionResult"] = [];
@@ -30426,6 +30502,7 @@ export interface IAssessmentResault {
     qcStatuspsTotalAnnualCost: AssessmentResaultQcStatuspsTotalAnnualCost;
     qcStatusbsTotalAnnualCost: AssessmentResaultQcStatusbsTotalAnnualCost;
     assessmentYear: AssessmentYear;
+    isResultupdated: boolean;
     assement: Assessment;
     projectionResult: ProjectionResault[];
 }
@@ -31958,6 +32035,69 @@ export interface IGetReportDto {
     reportName: string;
 }
 
+export class ChangeParameterValue implements IChangeParameterValue {
+    parameter: Parameter;
+    isDataEntered: boolean;
+    concern: string;
+    correctData: any;
+    user: User;
+
+    constructor(data?: IChangeParameterValue) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.parameter = new Parameter();
+            this.user = new User();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.parameter = _data["parameter"] ? Parameter.fromJS(_data["parameter"]) : new Parameter();
+            this.isDataEntered = _data["isDataEntered"];
+            this.concern = _data["concern"];
+            this.correctData = _data["correctData"];
+            this.user = _data["user"] ? User.fromJS(_data["user"]) : new User();
+        }
+    }
+
+    static fromJS(data: any): ChangeParameterValue {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChangeParameterValue();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["parameter"] = this.parameter ? this.parameter.toJSON() : <any>undefined;
+        data["isDataEntered"] = this.isDataEntered;
+        data["concern"] = this.concern;
+        data["correctData"] = this.correctData;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): ChangeParameterValue {
+        const json = this.toJSON();
+        let result = new ChangeParameterValue();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IChangeParameterValue {
+    parameter: Parameter;
+    isDataEntered: boolean;
+    concern: string;
+    correctData: any;
+    user: User;
+}
+
 export class GetManyTrackcaEntityResponseDto implements IGetManyTrackcaEntityResponseDto {
     data: TrackcaEntity[];
     count: number;
@@ -32563,6 +32703,7 @@ export class ResetPassword implements IResetPassword {
     email: string;
     token: string;
     password: string;
+    code: string;
 
     constructor(data?: IResetPassword) {
         if (data) {
@@ -32578,6 +32719,7 @@ export class ResetPassword implements IResetPassword {
             this.email = _data["email"];
             this.token = _data["token"];
             this.password = _data["password"];
+            this.code = _data["code"];
         }
     }
 
@@ -32593,6 +32735,7 @@ export class ResetPassword implements IResetPassword {
         data["email"] = this.email;
         data["token"] = this.token;
         data["password"] = this.password;
+        data["code"] = this.code;
         return data;
     }
 
@@ -32608,6 +32751,7 @@ export interface IResetPassword {
     email: string;
     token: string;
     password: string;
+    code: string;
 }
 
 export class ForgotPasswordDto implements IForgotPasswordDto {
@@ -32718,6 +32862,7 @@ export class UpdateDeadlineDto implements IUpdateDeadlineDto {
     status: number;
     userId: number;
     comment: string;
+    verificationStatus: number;
 
     constructor(data?: IUpdateDeadlineDto) {
         if (data) {
@@ -32739,6 +32884,7 @@ export class UpdateDeadlineDto implements IUpdateDeadlineDto {
             this.status = _data["status"];
             this.userId = _data["userId"];
             this.comment = _data["comment"];
+            this.verificationStatus = _data["verificationStatus"];
         }
     }
 
@@ -32760,6 +32906,7 @@ export class UpdateDeadlineDto implements IUpdateDeadlineDto {
         data["status"] = this.status;
         data["userId"] = this.userId;
         data["comment"] = this.comment;
+        data["verificationStatus"] = this.verificationStatus;
         return data;
     }
 
@@ -32777,6 +32924,7 @@ export interface IUpdateDeadlineDto {
     status: number;
     userId: number;
     comment: string;
+    verificationStatus: number;
 }
 
 export class DefaultValueDtos implements IDefaultValueDtos {
@@ -32886,6 +33034,14 @@ export enum ParameterRequestQaStatus {
     Pass = <any>"Pass",
 }
 
+export enum ParameterVerifierAcceptance {
+    PENDING = <any>"PENDING",
+    ACCEPTED = <any>"ACCEPTED",
+    REJECTED = <any>"REJECTED",
+    RETURNED = <any>"RETURNED",
+    DATA_ENTERED = <any>"DATA_ENTERED",
+}
+
 export enum VerificationDetailVerificationStatus {
     Pending = <any>"Pending",
     PreAssessment = <any>"PreAssessment",
@@ -32894,6 +33050,7 @@ export enum VerificationDetailVerificationStatus {
     FinalAssessment = <any>"FinalAssessment",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
+    AssessmentReturned = <any>"AssessmentReturned",
 }
 
 export enum AssessmentYearQaStatus {
@@ -32911,6 +33068,7 @@ export enum AssessmentYearVerificationStatus {
     FinalAssessment = <any>"FinalAssessment",
     Fail = <any>"Fail",
     Pass = <any>"Pass",
+    AssessmentReturned = <any>"AssessmentReturned",
 }
 
 export enum ProjectionResaultQcStatus {

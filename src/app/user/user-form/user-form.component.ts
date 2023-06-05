@@ -73,6 +73,9 @@ export class UserFormComponent implements OnInit {
   countryId: number;
   sectorId:number;
   userRole:string;
+  telephoneLength:number;
+  uniq:string;
+  mask:string;
 
   constructor(
     private serviceProxy: ServiceProxy,
@@ -98,6 +101,29 @@ export class UserFormComponent implements OnInit {
       this.sectorId = tokenPayload.sectorId;
       this.userRole = tokenPayload.roles[0]
       console.log("user role..",this.userRole)
+
+      this.serviceProxy.getOneBaseCountryControllerCountry(
+        this.countryId,
+        undefined,
+        undefined,
+        0
+      )
+      .subscribe((res: any) => {
+        this.telephoneLength =res.telephoneLength;
+      this.mask = res.uniqtelephone + " ";
+      let y =3;
+      for(let x=0;x<this.telephoneLength-1;x++){
+        if (x==y){
+          y +=3;
+          this.mask += "-9"
+        }
+        else {
+          this.mask += "9"
+        }    
+      }
+      })
+     
+      
 
     this.user.userType = undefined!;
     this.user.mobile = '';
@@ -218,6 +244,8 @@ export class UserFormComponent implements OnInit {
 
 
       });
+
+      
   }
 
   onChangeUser(event: any) {

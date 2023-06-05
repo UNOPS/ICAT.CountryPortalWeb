@@ -46,10 +46,10 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-param>
-        <ng-container *ngIf="param.institution?.name != null ">
+        <ng-container *ngIf="showParameter(param)">
         <tr>
           <td>{{ param.name }}</td>
-          <td>{{ param.institution?.name }}</td>
+          <td>{{ param.institution ? param.institution?.name : 'N/A' }}</td>
           <td>{{ param.value | number: '1.0-5'}}</td>
           <td>{{ param.uomDataEntry }}</td>
           <td>{{ param.conversionValue | number: '1.0-5'}}</td>

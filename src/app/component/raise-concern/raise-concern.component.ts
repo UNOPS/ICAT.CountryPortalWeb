@@ -1,9 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import {
   AssessmentYear,
+  AssessmentYearControllerServiceProxy,
+  AssessmentYearVerificationStatus,
   Parameter,
   ServiceProxy,
   User,
@@ -53,6 +55,9 @@ export class RaiseConcernComponent implements OnInit {
   @Input()
   parameter: Parameter;
 
+  @Output()
+  onCompleteConcern = new EventEmitter<boolean>();
+
   lastConcernDate: Date = new Date();
 
   commentRequried: boolean = false;
@@ -60,12 +65,16 @@ export class RaiseConcernComponent implements OnInit {
   verificationRound: number = 0;
   verificationDetail: VerificationDetail | undefined;
   loggedUser: User;
+  roundOneHeadTable: any;
+  roundTwoHeadTable: any;
+  roundThreeHeadTable: any;
 
   constructor(
     private verificationProxy: VerificationControllerServiceProxy,
     private messageService: MessageService,
     private router: Router,
-    private serviceProxy: ServiceProxy
+    private serviceProxy: ServiceProxy,
+    private assessmentYearControllerServiceProxy: AssessmentYearControllerServiceProxy
   ) {}
 
   ngOnInit(): void {
@@ -93,20 +102,30 @@ export class RaiseConcernComponent implements OnInit {
       });
   }
 
-  ngOnChanges(changes: any) {
+  async ngOnChanges(changes: any) {
     this.commentRequried = false;
     this.comment = '';
     if (this.assesmentYear && this.assesmentYear !== undefined) {
-      if (
-        this.assesmentYear.verificationStatus === 1 ||
-        this.assesmentYear.verificationStatus === 2 ||
-        this.assesmentYear.verificationStatus === 3
-      ) {
-        this.verificationRound = 1;
-      } else if (this.assesmentYear.verificationStatus === 4) {
-        this.verificationRound = 2;
-      } else if (this.assesmentYear.verificationStatus === 5)
-        this.verificationRound = 3;
+      await this.checkVerificationStage()
+      // if (
+      //   this.assesmentYear.verificationStatus === 1 ||
+      //   this.assesmentYear.verificationStatus === 2 ||
+      //   this.assesmentYear.verificationStatus === 3
+      // ) {
+      //   this.verificationRound = 1;
+      // } else if (this.assesmentYear.verificationStatus === 4) {
+      //   this.verificationRound = 2;
+      // } else if (this.assesmentYear.verificationStatus === 5)
+      //   this.verificationRound = 3;
+      if (this.roundOneHeadTable !== undefined){
+        this.verificationRound = 1
+      }
+      if (this.roundTwoHeadTable !== undefined){
+        this.verificationRound = 2
+      }
+      if (this.roundThreeHeadTable !== undefined){
+        this.verificationRound = 3
+      }
     }
 
     if (this.verificationDetails && this.verificationDetails.length > 0) {
@@ -128,7 +147,7 @@ export class RaiseConcernComponent implements OnInit {
     }
   }
 
-  onComplete() {
+  async onComplete() {
     if (!this.comment || this.comment == '') {
       this.commentRequried = true;
       return;
@@ -162,6 +181,21 @@ export class RaiseConcernComponent implements OnInit {
       }
       if (this.isMethodology) {
         vd.isMethodology = true;
+        let asssessmentYear = await this.serviceProxy.getOneBaseAssessmentYearControllerAssessmentYear(
+          assesmentYear.id, undefined, undefined, 0
+        ).toPromise()
+        asssessmentYear.verificationStatus = 6
+        this.serviceProxy.updateOneBaseAssessmentYearControllerAssessmentYear(
+          asssessmentYear.id, asssessmentYear
+        ).subscribe(res => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'The assessment is failed',
+            closable: true,
+          });
+        })
+
       }
 
       if (this.isParameter) {
@@ -190,10 +224,22 @@ export class RaiseConcernComponent implements OnInit {
           detail: 'successfully Save.',
           closable: true,
         });
+        this.onCompleteConcern.emit(true)
       });
 
     // this.router.navigate(['/non-conformance'], {
     //    queryParams: { id: this.assesmentYear.id },
     //  });
+  }
+
+  async checkVerificationStage() {
+    if (this.assesmentYear.assessment.id){
+      let verificationList = (await this.assessmentYearControllerServiceProxy
+        .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assesmentYear.assessment.id, this.assesmentYear.assessmentYear)
+        .toPromise())[0]?.verificationDetail;
+      this.roundOneHeadTable = verificationList?.find((o: any) => o.verificationStage == 1);
+      this.roundTwoHeadTable = verificationList?.find((o: any) => o.verificationStage == 2);
+      this.roundThreeHeadTable = verificationList?.find((o: any) => o.verificationStage == 3);
+    }
   }
 }

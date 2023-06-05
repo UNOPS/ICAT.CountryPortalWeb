@@ -102,6 +102,9 @@ export class ProposeProjectComponent implements OnInit {
   selectedDocuments: Documents[] = [];
   counID:number;
 
+  telephoneLength:number;
+  mask:string;
+
   isSector: boolean = false;
 
   @ViewChild('gmap') gmap: any;
@@ -198,9 +201,23 @@ export class ProposeProjectComponent implements OnInit {
         .subscribe((res) => {
           this.project.country = res;
           this.isSector = true;
+
+          this.telephoneLength =res.telephoneLength;
+          this.mask = res.uniqtelephone + " ";
+          let y =3;
+          for(let x=0;x<this.telephoneLength-1;x++){
+            if (x==y){
+              y +=3;
+              this.mask += "-9"
+            }
+            else {
+              this.mask += "9"
+            }    
+          }
           // console.log('tokenPayloadmasssge',res);
         });
     } else {
+      this.mask ="+99 999 999-9999"
       this.project.country = new Country();
     }
     // this.project.country = new Country();

@@ -112,9 +112,9 @@
                <p-inputMask
               type="text"
               name="telephoneNumber"
-              mask="+99 99-999-9999"
+              mask="{{mask}}"
               [autoClear]="true"
-              placeholder="+99 999 999-9999"
+              placeholder="{mask}"
               [(ngModel)]="project.telephoneNumber"
               [ngModelOptions]="{ standalone: false }"
               #telephoneNumber="ngModel"

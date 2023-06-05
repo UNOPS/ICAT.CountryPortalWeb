@@ -349,6 +349,11 @@
               [required]="true"
             >
             </p-dropdown>
+            <p
+            class="info-message text-danger"
+            *ngIf="(!selectedHistoricalValue)">
+            This is a mandatory field
+          </p>
           </div>
         </td>
         <td>

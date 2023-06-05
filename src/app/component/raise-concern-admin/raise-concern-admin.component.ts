@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import {
   AssessmentYear,
+  AssessmentYearControllerServiceProxy,
   Parameter,
   ServiceProxy,
   User,
@@ -53,6 +54,9 @@ export class RaiseConcernAdminComponent implements OnInit {
   @Input()
   parameter: Parameter;
 
+  @Output()
+  onCompleteConcern = new EventEmitter<boolean>();
+
   lastConcernDate: Date = new Date();
 
   commentRequried: boolean = false;
@@ -67,13 +71,17 @@ export class RaiseConcernAdminComponent implements OnInit {
   correctiveActionRequried: boolean = false;
 
   loggedUser: User;
+  roundOneHeadTable: any;
+  roundTwoHeadTable: any;
+  roundThreeHeadTable: any;
 
   constructor(
     private verificationProxy: VerificationControllerServiceProxy,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
-    private serviceProxy: ServiceProxy
+    private serviceProxy: ServiceProxy,
+    private assessmentYearControllerServiceProxy: AssessmentYearControllerServiceProxy
   ) {}
 
   ngOnInit(): void {
@@ -101,7 +109,7 @@ export class RaiseConcernAdminComponent implements OnInit {
       });
   }
 
-  ngOnChanges(changes: any) {
+  async ngOnChanges(changes: any) {
     this.explanation = '';
     this.correctiveAction = '';
     this.rootCause = '';
@@ -110,31 +118,53 @@ export class RaiseConcernAdminComponent implements OnInit {
     this.correctiveActionRequried = false;
 
     if (this.assesmentYear && this.assesmentYear !== undefined) {
-      if (
-        this.assesmentYear.verificationStatus === 1 ||
-        this.assesmentYear.verificationStatus === 2 ||
-        this.assesmentYear.verificationStatus === 3
-      ) {
-        this.verificationRound = 1;
-      } else if (this.assesmentYear.verificationStatus === 4) {
-        this.verificationRound = 2;
-      } else if (this.assesmentYear.verificationStatus === 5)
-        this.verificationRound = 3;
+      await this.checkVerificationStage()
+      // if (this.assesmentYear.verificationStatus === 8){
+      //   if (this.roundOneHeadTable !== undefined){
+      //     this.verificationRound = 1
+      //   }
+      //   if (this.roundTwoHeadTable !== undefined){
+      //     this.verificationRound = 2
+      //   }
+      //   if (this.roundThreeHeadTable !== undefined){
+      //     this.verificationRound = 3
+      //   }
+      // } else {
+      //   if (
+      //     this.assesmentYear.verificationStatus === 1 ||
+      //     this.assesmentYear.verificationStatus === 2 ||
+      //     this.assesmentYear.verificationStatus === 3
+      //   ) {
+      //     this.verificationRound = 1;
+      //   } else if (this.assesmentYear.verificationStatus === 4) {
+      //     this.verificationRound = 2;
+      //   } else if (this.assesmentYear.verificationStatus === 5)
+      //     this.verificationRound = 3;
+      // }
+      if (this.roundOneHeadTable !== undefined){
+        this.verificationRound = 1
+      }
+      if (this.roundTwoHeadTable !== undefined){
+        this.verificationRound = 2
+      }
+      if (this.roundThreeHeadTable !== undefined){
+        this.verificationRound = 3
+      }
     }
 
     if (this.verificationDetails && this.verificationDetails.length > 0) {
-      let concernDetails = this.verificationDetails.find(
-        (a) => a.explanation !== undefined && a.explanation !== null
-      );
+      // let concernDetails = this.verificationDetails.find(
+      //   (a) => a.explanation !== undefined && a.explanation !== null 
+      // );
 
-      if (concernDetails) {
-        this.explanation = concernDetails.explanation;
-      }
+      // if (concernDetails) {
+      //   this.explanation = concernDetails.explanation;
+      // }
 
-      if (concernDetails && concernDetails.updatedDate !== undefined) {
-        this.lastConcernDate = concernDetails.updatedDate.toDate();
-        this.explanation = concernDetails.explanation;
-      }
+      // if (concernDetails && concernDetails.updatedDate !== undefined) {
+      //   this.lastConcernDate = concernDetails.updatedDate.toDate();
+      //   this.explanation = concernDetails.explanation;
+      // }
 
       this.verificationDetail = this.verificationDetails.find(
         (a) => a.verificationStage == this.verificationRound
@@ -143,6 +173,8 @@ export class RaiseConcernAdminComponent implements OnInit {
       if (this.verificationDetail) {
         this.rootCause = this.verificationDetail.rootCause;
         this.correctiveAction = this.verificationDetail.correctiveAction;
+        this.lastConcernDate = this.verificationDetail.updatedDate?.toDate()
+        this.explanation = this.verificationDetail.explanation
       }
     }
   }
@@ -205,6 +237,7 @@ export class RaiseConcernAdminComponent implements OnInit {
 
     verificationDetails.push(vd);
 
+
     this.verificationProxy
       .saveVerificationDetails(verificationDetails)
       .subscribe((a) => {
@@ -216,10 +249,22 @@ export class RaiseConcernAdminComponent implements OnInit {
           detail: 'successfully Save.',
           closable: true,
         });
+        this.onCompleteConcern.emit(true)
       });
 
     // this.router.navigate(['/non-conformance'], {
     //   queryParams: { id: this.assesmentYear.id },
     // });
+  }
+
+  async checkVerificationStage() {
+    if (this.assesmentYear.assessment.id){
+      let verificationList = (await this.assessmentYearControllerServiceProxy
+        .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assesmentYear.assessment.id, this.assesmentYear.assessmentYear)
+        .toPromise())[0]?.verificationDetail;
+      this.roundOneHeadTable = verificationList?.find((o: any) => o.verificationStage == 1);
+      this.roundTwoHeadTable = verificationList?.find((o: any) => o.verificationStage == 2);
+      this.roundThreeHeadTable = verificationList?.find((o: any) => o.verificationStage == 3);
+    }
   }
 }

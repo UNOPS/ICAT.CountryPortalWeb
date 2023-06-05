@@ -43,7 +43,7 @@ export class VerifyCaComponent implements OnInit {
     VerificationStatus[VerificationStatus['NC Recieved']],
     VerificationStatus[VerificationStatus['Initial Assessment']],
     VerificationStatus[VerificationStatus['Final Assessment']],
-    VerificationStatus[VerificationStatus.Fail],
+    VerificationStatus[VerificationStatus['Fail']],
     VerificationStatus[VerificationStatus['Pass']],
   ];
 

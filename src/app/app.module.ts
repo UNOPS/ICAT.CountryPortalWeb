@@ -40,7 +40,7 @@ import { ConfirmationService } from 'primeng/api';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ChartModule } from 'primeng/chart';
 import { TreeModule } from 'primeng/tree';
-
+import { ReactiveFormsModule} from '@angular/forms' 
 import { GMapModule } from 'primeng/gmap';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -185,6 +185,8 @@ import { SoilParameterComponent } from './component/soil-parameter/soil-paramete
 import { StratumParameterComponent } from './component/stratum-parameter/stratum-parameter.component';
 import { ResidueParameterComponent } from './component/residue-parameter/residue-parameter.component';
 import {PasswordModule} from 'primeng/password';
+import { VerificationActionDialogComponent } from './verification-sector-admin/verification-action-dialog/verification-action-dialog.component';
+import { SetPasswordComponent } from './login/set-password/set-password.component';
 
 export function getRemoteServiceBaseUrl(): string {
   return environment.baseUrlAPI;
@@ -278,6 +280,8 @@ export function getRemoteServiceBaseUrl(): string {
     SoilParameterComponent,
     StratumParameterComponent,
     ResidueParameterComponent,
+    VerificationActionDialogComponent,
+    SetPasswordComponent,
     
   ],
   imports: [
@@ -287,7 +291,7 @@ export function getRemoteServiceBaseUrl(): string {
     FormsModule,
     HttpClientModule,
     DashboardModule,
-
+    ReactiveFormsModule,
     NgImageSliderModule,
     MultiSelectModule,
     ToastModule,
