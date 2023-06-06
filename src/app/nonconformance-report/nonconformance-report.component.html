@@ -1,1514 +1,1528 @@
-
-
 <p-toast position="top-right"></p-toast>
 <div class="container pl-20 pr-20">
-
-    <div class="p-grid p-fluid card" id="content" #content >
+    <div class="p-grid p-fluid card" id="content" #content>
         <h4 class="mt-4">Non - Conformance Report</h4>
-       
-
-
-
-
-
-
-
         <!-- <div> {{climateactions|json}} </div> -->
-        <div  *ngIf="roundOneHeadTable != null">
-        <div class="row p-2" style="border:1px solid black;">
+        <div *ngIf="roundOneHeadTable != null">
+            <div class="row p-2" style="border:1px solid black;">
+                <div class="masterRoundOne" style="border:1px solid black;">
+                    <div class="row p-2">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Verification Round</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Pre-Assessment</p>
+                            </div>
+                        </div>
 
-        <div class="masterRoundOne" style="border:1px solid black;">
-            <div class="row p-2">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Date Generated</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{this.roundOneHeadTable?.createdOn | date: "yyyy-MM-dd "}}</p>
+                            </div>
+                        </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Verification Round</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>Pre-Assessment</p>
-                    </div>
-                </div>
-    
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Date Generated</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{this.roundOneHeadTable?.createdOn | date: "yyyy-MM-dd "}}</p>
-                    </div>
-                </div>
-    
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Verifier</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{this.roundOneVerifier?.username}}</p>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Verifier</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{this.roundOneVerifier?.username}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Institution</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{this.roundOneVerifier?.institution.name}}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-    
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Institution</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{this.roundOneVerifier?.institution.name}}</p>
-                    </div>
+                <div>
+                    <br>
                 </div>
-    
+
+                <ng-container *ngIf="roundOneList.length >0; else elseBlockroun1">
+                    <div class="roundOnendc" *ngIf="roundOnendcList.length > 0">
+                        <div class="row mb-3"
+                            style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                            <div class="col-md-4">
+                                <h6>Non Conformance Round 1</h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Area : Aggregated Actions/Action Areas </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <h6>Date : {{roundOnendcList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                            </div>
+                            <div class="col-md-2">
+                                <button pButton pRipple type="button" label="Edit" class="p-button-info"
+                                    (click)="toDetailPage()"></button>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Explanation</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundOnendcList[0]?.explanation}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Root Cause</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundOnendcList[0]?.rootCause}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Corrective Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundOnendcList[0]?.correctiveAction}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundOnendcList[0]?.action}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="roundOneMethodology" *ngIf="roundOnemethodologyList?.length != 0">
+                        <div class="row mb-3"
+                            style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                            <div class="col-md-4">
+                                <h6>Non Conformance Round 1</h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Area : Methodology </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <h6>Date : {{roundOnemethodologyList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                            </div>
+                            <div class="col-md-2">
+                                <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                    class="p-button-info"></button>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Explanation</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundOnemethodologyList[0]?.explanation}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Root Cause</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundOnemethodologyList[0]?.rootCause}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Corrective Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundOnemethodologyList[0]?.correctiveAction}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundOnemethodologyList[0]?.action}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="roundOneBaselineEmission" *ngIf="roundOnebaseleineList?.length != 0">
+                        <div *ngFor="let item of roundOnebaseleineList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 1</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : BaselineEmission - {{item?.parameter?.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundOnebaseleineList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="roundOneProjectEmission" *ngIf="roundOneprojectList?.length != 0">
+                        <div *ngFor="let item of roundOneprojectList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 1</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : Project Emmission - {{item?.parameter.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundOneprojectList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="roundOneProjection" *ngIf="roundOneprojectionList?.length != 0">
+                        <div *ngFor="let item of roundOneprojectionList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 1</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : Projection - {{item.parameter.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundOneprojectionList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="roundOnelekage" *ngIf="roundOnelekageList?.length != 0">
+                        <div *ngFor="let item of roundOnelekageList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 1</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : lekage - {{item?.parameter.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundOnelekageList?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="roundOneIsAssumption" *ngIf="roundOneAssumptionList.length > 0">
+                        <div class="row mb-3"
+                            style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                            <div class="col-md-4">
+                                <h6>Non Conformance Round 1</h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Area : Assumption </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <h6>Date : {{roundOneAssumptionList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                            </div>
+                            <div class="col-md-2">
+                                <button pButton pRipple type="button" label="Edit" class="p-button-info"
+                                    (click)="toDetailPage()"></button>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Explanation</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundOneAssumptionList[0]?.explanation}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Root Cause</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundOneAssumptionList[0]?.rootCause}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Corrective Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundOneAssumptionList[0]?.correctiveAction}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="roundOneIsAssumption" *ngIf="roundOneResultList.length > 0">
+                        <ng-container *ngFor="let result of roundOneResultList">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 1</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area :
+                                        <span *ngIf="result.isBaseline">Result - Baseline Emission</span>
+                                        <span *ngIf="result.isProject">Result - Project Emission</span>
+                                        <span *ngIf="result.isLekage">Result - Lekage Emission</span>
+                                        <span *ngIf="result.isProjection">Result - Projection Emission</span>
+                                    </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundOneAssumptionList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" class="p-button-info"
+                                        (click)="toDetailPage()"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{result?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{result?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{result?.correctiveAction}}</p>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+                <ng-template #elseBlockroun1>
+                    <p>NO NON CONFORMAMNCE IN ROUND ONE</p>
+                </ng-template>
             </div>
-        </div> 
+        </div>
         <div>
             <br>
-        </div>   
-
-        <ng-container *ngIf="roundOneList.length >0; else elseBlockroun1" >
-           
-           
-        <div class="roundOnendc" *ngIf="roundOnendcList.length > 0">       
-        <div class="row mb-3"
-            style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-            <div class="col-md-4">
-                <h6>Non Conformance Round 1</h6>
-            </div>
-            <div class="col-md-3">
-                <h6>Area : Aggregated Actions/Action Areas </h6>
-            </div>
-            <div class="col-md-3">
-                <!-- <h6>Date : {{roundOnendcList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-            </div>
-            <div class="col-md-2">
-                <button pButton pRipple type="button" label="Edit" class="p-button-info" (click)="toDetailPage()"></button>
-        
-            </div>
+            <br>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <p><b>Explanation</b></p>
-            </div>
-            <div class="col-md-6">
-                <p>{{roundOnendcList[0]?.explanation}}</p>
+        <div *ngIf="roundTwoHeadTable != null">
+            <div class="row p-2" style="border:1px solid black;">
+                <div class="masterRoundTwo" style="border:1px solid black;">
+                    <div class="row p-2">
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Verification Round</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Initial-Assessment</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Generated Date</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{this.roundTwoHeadTable?.createdOn | date: "yyyy-MM-dd "}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Verifier</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{this.roundTwoVerifier?.username}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Institution</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{this.roundTwoVerifier?.institution.name}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <br>
+                </div>
+
+                <ng-container *ngIf="roundTwoList?.length != 0; else elseBlockroun2">
+                    <div class="roundTwondc" *ngIf="roundTwondcList?.length != 0">
+                        <div class="row mb-3"
+                            style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                            <div class="col-md-4">
+                                <h6>Non Conformance Round 2</h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Area : Aggregated Actions/Action Areas </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <h6>Date : {{roundTwondcList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                            </div>
+                            <div class="col-md-2">
+                                <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                    class="p-button-info"></button>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Explanation</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundTwondcList[0]?.explanation}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Root Cause</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundTwondcList[0]?.rootCause}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Corrective Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundTwondcList[0]?.correctiveAction}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundTwondcList[0]?.action}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="roundTwoMethodology" *ngIf="roundTwomethodologyList?.length != 0">
+                        <div class="row mb-3"
+                            style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                            <div class="col-md-4">
+                                <h6>Non Conformance Round 2</h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Area : Methodology </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <h6>Date : {{roundTwomethodologyList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                            </div>
+                            <div class="col-md-2">
+                                <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                    class="p-button-info"></button>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Explanation</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundTwomethodologyList[0]?.explanation}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Root Cause</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundTwomethodologyList[0]?.rootCause}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Corrective Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundTwomethodologyList[0]?.correctiveAction}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundTwomethodologyList[0]?.action}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="roundTwoBaselineEmission" *ngIf="roundTwobaseleineList?.length != 0">
+                        <div *ngFor="let item of roundTwobaseleineList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 2</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : BaselineEmission - {{item.parameter?.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundTwobaseleineList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="roundTwoProjectEmission" *ngIf="roundTwoprojectList?.length != 0">
+                        <div *ngFor="let item of roundTwoprojectList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 2</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : Project Emmission - {{item?.parameter.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundTwoprojectList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="roundTwoProjection" *ngIf=" roundTwoprojectionList?.length != 0">
+                        <div *ngFor="let item of roundTwoprojectionList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 2</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : Projection - {{item?.parameter.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundTwoprojectionList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="roundTwolekage" *ngIf=" roundTwolekageList?.length != 0">
+                        <div *ngFor="let item of roundTwolekageList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 2</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : lekage - {{item?.parameter.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundTwolekageList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="roundTwoIsAssumption"
+                        *ngIf="roundTwoAssumptionList !== undefined && roundTwoAssumptionList?.length != 0">
+                        <div class="row mb-3"
+                            style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                            <div class="col-md-4">
+                                <h6>Non Conformance Round 2</h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Area : Assumption </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <h6>Date : {{roundTwoAssumptionList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                            </div>
+                            <div class="col-md-2">
+                                <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                    class="p-button-info"></button>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Explanation</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundTwoAssumptionList[0]?.explanation}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Root Cause</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundTwoAssumptionList[0]?.rootCause}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Corrective Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundTwoAssumptionList[0]?.correctiveAction}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="roundOneIsAssumption" *ngIf="roundTwoResultList.length > 0">
+                        <ng-container *ngFor="let result of roundTwoResultList">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 2</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area :
+                                        <span *ngIf="result.isBaseline">Result - Baseline Emission</span>
+                                        <span *ngIf="result.isProject">Result - Project Emission</span>
+                                        <span *ngIf="result.isLekage">Result - Lekage Emission</span>
+                                        <span *ngIf="result.isProjection">Result - Projection Emission</span>
+                                    </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundOneAssumptionList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" class="p-button-info"
+                                        (click)="toDetailPage()"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{result?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{result?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{result?.correctiveAction}}</p>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+                <ng-template #elseBlockroun2>
+                    <p>NO NON CONFORMAMNCE IN ROUND TWO</p>
+                </ng-template>
             </div>
         </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <p><b>Root Cause</b></p>
-            </div>
-            <div class="col-md-6">
-                <p>{{roundOnendcList[0]?.rootCause}}</p>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <p><b>Corrective Action</b></p>
-            </div>
-            <div class="col-md-6">
-                <p>{{roundOnendcList[0]?.correctiveAction}}</p>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <p><b>Action</b></p>
-            </div>
-            <div class="col-md-6">
-                <p>{{roundOnendcList[0]?.action}}</p>
-            </div>
-        </div>
-        </div> 
-
-        <div class="roundOneMethodology" *ngIf="roundOnemethodologyList?.length != 0">       
-            <div class="row mb-3"
-                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                <div class="col-md-4">
-                    <h6>Non Conformance Round 1</h6>
-                </div>
-                <div class="col-md-3">
-                    <h6>Area : Methodology </h6>
-                </div>
-                <div class="col-md-3">
-                    <!-- <h6>Date : {{roundOnemethodologyList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                </div>
-                <div class="col-md-2">
-                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-            
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Explanation</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundOnemethodologyList[0]?.explanation}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Root Cause</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundOnemethodologyList[0]?.rootCause}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Corrective Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundOnemethodologyList[0]?.correctiveAction}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundOnemethodologyList[0]?.action}}</p>
-                </div>
-            </div>
-        </div> 
-
-        <div class="roundOneBaselineEmission" *ngIf="roundOnebaseleineList?.length != 0">   
-            
-            <div *ngFor="let item of roundOnebaseleineList; index as i; ">
-
-            
-
-            <div class="row mb-3"
-                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                <div class="col-md-4">
-                    <h6>Non Conformance Round 1</h6>
-                </div>
-                <div class="col-md-3">
-                    <h6>Area : BaselineEmission - {{item?.parameter?.name}} </h6>
-                </div>
-                <div class="col-md-3">
-                    <!-- <h6>Date : {{roundOnebaseleineList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                </div>
-                <div class="col-md-2">
-                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-            
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Explanation</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.explanation}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Root Cause</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.rootCause}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Corrective Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.correctiveAction}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.action}}</p>
-                </div>
-            </div>
-
-
-        </div>
-        </div> 
-
-
-        <div class="roundOneProjectEmission" *ngIf="roundOneprojectList?.length != 0">   
-            
-            <div *ngFor="let item of roundOneprojectList; index as i; ">
-
-            
-
-            <div class="row mb-3"
-                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                <div class="col-md-4">
-                    <h6>Non Conformance Round 1</h6>
-                </div>
-                <div class="col-md-3">
-                    <h6>Area : Project Emmission - {{item?.parameter.name}} </h6>
-                </div>
-                <div class="col-md-3">
-                    <!-- <h6>Date : {{roundOneprojectList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                </div>
-                <div class="col-md-2">
-                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-            
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Explanation</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.explanation}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Root Cause</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.rootCause}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Corrective Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.correctiveAction}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.action}}</p>
-                </div>
-            </div>
-
-
-        </div>
-        </div> 
-
-
-        <div class="roundOneProjection" *ngIf="roundOneprojectionList?.length != 0">   
-            
-            <div *ngFor="let item of roundOneprojectionList; index as i; ">
-
-            
-
-            <div class="row mb-3"
-                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                <div class="col-md-4">
-                    <h6>Non Conformance Round 1</h6>
-                </div>
-                <div class="col-md-3">
-                    <h6>Area : Projection - {{item.parameter.name}} </h6>
-                </div>
-                <div class="col-md-3">
-                    <!-- <h6>Date : {{roundOneprojectionList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                </div>
-                <div class="col-md-2">
-                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-            
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Explanation</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.explanation}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Root Cause</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.rootCause}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Corrective Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.correctiveAction}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.action}}</p>
-                </div>
-            </div>
-
-
-        </div>
-        </div> 
-
-
-        <div class="roundOnelekage" *ngIf="roundOnelekageList?.length != 0">   
-            
-            <div *ngFor="let item of roundOnelekageList; index as i; ">
-
-            
-
-            <div class="row mb-3"
-                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                <div class="col-md-4">
-                    <h6>Non Conformance Round 1</h6>
-                </div>
-                <div class="col-md-3">
-                    <h6>Area : lekage - {{item?.parameter.name}} </h6>
-                </div>
-                <div class="col-md-3">
-                    <!-- <h6>Date : {{roundOnelekageList?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                </div>
-                <div class="col-md-2">
-                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-            
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Explanation</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.explanation}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Root Cause</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.rootCause}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Corrective Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.correctiveAction}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{item?.action}}</p>
-                </div>
-            </div>
-
-
-        </div>
-        </div> 
-
-
-        <div class="roundOneIsAssumption" *ngIf="roundOneAssumptionList.length > 0">       
-            <div class="row mb-3"
-                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                <div class="col-md-4">
-                    <h6>Non Conformance Round 1</h6>
-                </div>
-                <div class="col-md-3">
-                    <h6>Area : Assumption </h6>
-                </div>
-                <div class="col-md-3">
-                    <!-- <h6>Date : {{roundOneAssumptionList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                </div>
-                <div class="col-md-2">
-                    <button pButton pRipple type="button" label="Edit" class="p-button-info" (click)="toDetailPage()"></button>
-            
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Explanation</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundOneAssumptionList[0]?.explanation}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Root Cause</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundOneAssumptionList[0]?.rootCause}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Corrective Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundOneAssumptionList[0]?.correctiveAction}}</p>
-                </div>
-            </div>
-            </div> 
-             
-          
-           </ng-container> 
-           <ng-template #elseBlockroun1>
-           <p>NO NON CONFORMAMNCE IN ROUND ONE</p>
-           </ng-template>
-
-
-
-        </div>
-        </div>
-
-
-
         <div>
             <br>
             <br>
         </div>
+        <div *ngIf="roundThreeHeadTable != null">
+            <div class="row p-2" style="border:1px solid black;">
 
+                <div class="masterRoundThree" style="border:1px solid black;">
+                    <div class="row p-2">
 
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Verification Round</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Post-Assessment</p>
+                            </div>
+                        </div>
 
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Date Generated</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{this.roundThreeHeadTable?.createdOn | date: "yyyy-MM-dd "}}</p>
+                            </div>
+                        </div>
 
-        <div  *ngIf="roundTwoHeadTable != null">
-        <div class="row p-2" style="border:1px solid black;">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Verifier</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{this.roundThreeVerifier?.username}}</p>
+                            </div>
+                        </div>
 
-            <div class="masterRoundTwo" style="border:1px solid black;">
-                <div class="row p-2">
-    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <p><b>Verification Round</b></p>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Institution</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{this.roundThreeVerifier?.institution.name}}</p>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <p>Initial-Assessment</p>
-                        </div>
-                    </div>
-        
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <p><b>Generated Date</b></p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{this.roundTwoHeadTable?.createdOn | date: "yyyy-MM-dd "}}</p>
-                        </div>
-                    </div>
-        
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <p><b>Verifier</b></p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{this.roundTwoVerifier?.username}}</p>
-                        </div>
-                    </div>
-        
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <p><b>Institution</b></p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{this.roundTwoVerifier?.institution.name}}</p>
-                        </div>
-                    </div>
-        
-                </div>
-            </div> 
-            <div>
-                <br>
-            </div>   
-    
-            <ng-container *ngIf="roundTwoList?.length != 0; else elseBlockroun2" >
-               
-               
-            <div class="roundTwondc" *ngIf="roundTwondcList?.length != 0" >       
-            <div class="row mb-3"
-                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                <div class="col-md-4">
-                    <h6>Non Conformance Round 2</h6>
-                </div>
-                <div class="col-md-3">
-                    <h6>Area : Aggregated Actions/Action Areas </h6>
-                </div>
-                <div class="col-md-3">
-                    <!-- <h6>Date : {{roundTwondcList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                </div>
-                <div class="col-md-2">
-                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-            
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Explanation</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundTwondcList[0]?.explanation}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Root Cause</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundTwondcList[0]?.rootCause}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Corrective Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundTwondcList[0]?.correctiveAction}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundTwondcList[0]?.action}}</p>
-                </div>
-            </div>
-            </div> 
-    
-            <div class="roundTwoMethodology" *ngIf="roundTwomethodologyList?.length != 0">       
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 2</h6>
-                    </div>
-                    <div class="col-md-3">
-                        <h6>Area : Methodology </h6>
-                    </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundTwomethodologyList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                    </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-                
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundTwomethodologyList[0]?.explanation}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundTwomethodologyList[0]?.rootCause}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundTwomethodologyList[0]?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundTwomethodologyList[0]?.action}}</p>
-                    </div>
-                </div>
-            </div> 
-    
-            <div class="roundTwoBaselineEmission" *ngIf="roundTwobaseleineList?.length != 0">   
-                
-                <div *ngFor="let item of roundTwobaseleineList; index as i; ">
-    
-                
-    
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 2</h6>
-                    </div>
-                    <div class="col-md-3">
-                        <h6>Area : BaselineEmission - {{item.parameter.name}} </h6>
-                    </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundTwobaseleineList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                    </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-                
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.explanation}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.rootCause}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.action}}</p>
-                    </div>
-                </div>
-    
-    
-            </div>
-            </div> 
-    
-    
-            <div class="roundTwoProjectEmission" *ngIf="roundTwoprojectList?.length != 0">   
-                
-                <div *ngFor="let item of roundTwoprojectList; index as i; ">
-    
-                
-    
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 2</h6>
-                    </div>
-                    <div class="col-md-3">
-                        <h6>Area : Project Emmission - {{item?.parameter.name}} </h6>
-                    </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundTwoprojectList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                    </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-                
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.explanation}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.rootCause}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.action}}</p>
-                    </div>
-                </div>
-    
-    
-            </div>
-            </div> 
-    
-           
-            <div class="roundTwoProjection" *ngIf=" roundTwoprojectionList?.length != 0">   
-                
-                <div *ngFor="let item of roundTwoprojectionList; index as i; ">
-    
-                
-    
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 2</h6>
-                    </div>
-                    <div class="col-md-3">
-                        <h6>Area : Projection - {{item?.parameter.name}} </h6>
-                    </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundTwoprojectionList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                    </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-                
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.explanation}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.rootCause}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.action}}</p>
-                    </div>
-                </div>
-    
-    
-            </div>
-            </div> 
-    
-    
-            <div class="roundTwolekage" *ngIf=" roundTwolekageList?.length != 0">   
-                
-                <div *ngFor="let item of roundTwolekageList; index as i; ">
-    
-                
-    
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 2</h6>
-                    </div>
-                    <div class="col-md-3">
-                        <h6>Area : lekage - {{item?.parameter.name}} </h6>
-                    </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundTwolekageList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                    </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-                
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.explanation}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.rootCause}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.action}}</p>
-                    </div>
-                </div>
-    
-    
-            </div>
-            </div> 
 
+                    </div>
+                </div>
+                <div>
+                    <br>
+                </div>
 
+                <ng-container *ngIf="roundThreeList?.length != 0; else elseBlockroun3">
+                    <div class="roundThreendc" *ngIf="roundThreendcList?.length != 0">
+                        <div class="row mb-3"
+                            style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                            <div class="col-md-4">
+                                <h6>Non Conformance Round 3</h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Area : Aggregated Actions/Action Areas </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <h6>Date : {{roundThreendcList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                            </div>
+                            <div class="col-md-2">
+                                <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                    class="p-button-info"></button>
 
-            
-            <div class="roundTwoIsAssumption" *ngIf="roundTwoAssumptionList !== undefined && roundTwoAssumptionList?.length != 0" >       
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 2</h6>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Explanation</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundThreendcList[0]?.explanation}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Root Cause</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundThreendcList[0]?.rootCause}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Corrective Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundThreendcList[0]?.correctiveAction}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundThreendcList[0]?.action}}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <h6>Area : Assumption </h6>
+
+                    <div class="roundThreeMethodology" *ngIf="roundThreemethodologyList.length != 0">
+                        <div class="row mb-3"
+                            style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                            <div class="col-md-4">
+                                <h6>Non Conformance Round 3</h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Area : Methodology </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <h6>Date : {{roundThreemethodologyList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                            </div>
+                            <div class="col-md-2">
+                                <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                    class="p-button-info"></button>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Explanation</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundThreemethodologyList[0]?.explanation}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Root Cause</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundThreemethodologyList[0]?.rootCause}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Corrective Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundThreemethodologyList[0]?.correctiveAction}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundThreemethodologyList[0]?.action}}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundTwoAssumptionList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                    <div class="roundThreeBaselineEmission" *ngIf="roundThreebaseleineList?.length != 0">
+                        <div *ngFor="let item of roundThreebaseleineList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 3</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : BaselineEmission - {{item?.parameter.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundThreebaseleineList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-                
+
+                    <div class="roundThreeProjectEmission" *ngIf="roundThreeprojectList?.length != 0">
+                        <div *ngFor="let item of roundThreeprojectList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 3</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : Project Emmission - {{item?.parameter.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundThreeprojectList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
+                    <div class="roundThreeProjection" *ngIf=" roundThreeprojectionList?.length != 0">
+                        <div *ngFor="let item of roundThreeprojectionList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 3</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : Projection - {{item?.parameter.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundThreeprojectionList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <p>{{roundTwoAssumptionList[0]?.explanation}}</p>
+                    <div class="roundThreelekage" *ngIf=" roundThreelekageList?.length != 0">
+                        <div *ngFor="let item of roundThreelekageList; index as i; ">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 3</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area : lekage - {{item?.parameter.name}} </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundThreelekageList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                        class="p-button-info"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.correctiveAction}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{item?.action}}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
+                    <div class="roundThreeIsAssumption" *ngIf="roundThreeAssumptionList?.length != 0">
+                        <div class="row mb-3"
+                            style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                            <div class="col-md-4">
+                                <h6>Non Conformance Round 3</h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Area : Aggregated Actions/Action Areas </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <h6>Date : {{roundThreeAssumptionList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                            </div>
+                            <div class="col-md-2">
+                                <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
+                                    class="p-button-info"></button>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Explanation</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundThreeAssumptionList[0]?.explanation}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Root Cause</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundThreeAssumptionList[0]?.rootCause}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><b>Corrective Action</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{roundThreeAssumptionList[0]?.correctiveAction}}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <p>{{roundTwoAssumptionList[0]?.rootCause}}</p>
+                    <div class="roundOneIsAssumption" *ngIf="roundThreeResultList.length > 0">
+                        <ng-container *ngFor="let result of roundThreeResultList">
+                            <div class="row mb-3"
+                                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
+                                <div class="col-md-4">
+                                    <h6>Non Conformance Round 1</h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Area :
+                                        <span *ngIf="result.isBaseline">Result - Baseline Emission</span>
+                                        <span *ngIf="result.isProject">Result - Project Emission</span>
+                                        <span *ngIf="result.isLekage">Result - Lekage Emission</span>
+                                        <span *ngIf="result.isProjection">Result - Projection Emission</span>
+                                    </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <h6>Date : {{roundOneAssumptionList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
+                                </div>
+                                <div class="col-md-2">
+                                    <button pButton pRipple type="button" label="Edit" class="p-button-info"
+                                        (click)="toDetailPage()"></button>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Explanation</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{result?.explanation}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Root Cause</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{result?.rootCause}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><b>Corrective Action</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{result?.correctiveAction}}</p>
+                                </div>
+                            </div>
+                        </ng-container>
                     </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundTwoAssumptionList[0]?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                </div> 
-                 
-              
-               </ng-container> 
-               <ng-template #elseBlockroun2>
-                <p>NO NON CONFORMAMNCE IN ROUND TWO</p>
-               </ng-template>
-    
-    
-    
+                </ng-container>
+                <ng-template #elseBlockroun3>
+                    <p>NO NON CONFORMANCE IN ROUND THREE</p>
+                </ng-template>
+            </div>
         </div>
-        </div>
-
-
-
-            <div>
-                <br>
-                <br>
-            </div>
-
-
-
-
-
-             <div  *ngIf="roundThreeHeadTable != null">
-             <div class="row p-2" style="border:1px solid black;">
-
-            <div class="masterRoundThree" style="border:1px solid black;">
-                <div class="row p-2">
-    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <p><b>Verification Round</b></p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Post-Assessment</p>
-                        </div>
-                    </div>
-        
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <p><b>Date Generated</b></p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{this.roundThreeHeadTable?.createdOn | date: "yyyy-MM-dd "}}</p>
-                        </div>
-                    </div>
-        
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <p><b>Verifier</b></p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{this.roundThreeVerifier?.username}}</p>
-                        </div>
-                    </div>
-        
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <p><b>Institution</b></p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{this.roundThreeVerifier?.institution.name}}</p>
-                        </div>
-                    </div>
-        
-                </div>
-            </div> 
-            <div>
-                <br>
-            </div>   
-    
-            <ng-container *ngIf="roundThreeList?.length != 0; else elseBlockroun3" >
-               
-               
-            <div class="roundThreendc" *ngIf="roundThreendcList?.length != 0" >       
-            <div class="row mb-3"
-                style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                <div class="col-md-4">
-                    <h6>Non Conformance Round 3</h6>
-                </div>
-                <div class="col-md-3">
-                    <h6>Area : Aggregated Actions/Action Areas </h6>
-                </div>
-                <div class="col-md-3">
-                    <!-- <h6>Date : {{roundThreendcList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                </div>
-                <div class="col-md-2">
-                    <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-            
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Explanation</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundThreendcList[0]?.explanation}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Root Cause</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundThreendcList[0]?.rootCause}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Corrective Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundThreendcList[0]?.correctiveAction}}</p>
-                </div>
-            </div>
-    
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><b>Action</b></p>
-                </div>
-                <div class="col-md-6">
-                    <p>{{roundThreendcList[0]?.action}}</p>
-                </div>
-            </div>
-            </div> 
-    
-            <div class="roundThreeMethodology" *ngIf="roundThreemethodologyList.length != 0">       
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 3</h6>
-                    </div>
-                    <div class="col-md-3">
-                        <h6>Area : Methodology </h6>
-                    </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundThreemethodologyList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                    </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-                
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundThreemethodologyList[0]?.explanation}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundThreemethodologyList[0]?.rootCause}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundThreemethodologyList[0]?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundThreemethodologyList[0]?.action}}</p>
-                    </div>
-                </div>
-            </div> 
-    
-            <div class="roundThreeBaselineEmission" *ngIf="roundThreebaseleineList?.length != 0">   
-                
-                <div *ngFor="let item of roundThreebaseleineList; index as i; ">
-    
-                
-    
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 3</h6>
-                    </div>
-                    <div class="col-md-3">
-                        <h6>Area : BaselineEmission - {{item?.parameter.name}} </h6>
-                    </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundThreebaseleineList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                    </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit"  (click)="toDetailPage()" class="p-button-info"></button>
-                
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.explanation}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.rootCause}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.action}}</p>
-                    </div>
-                </div>
-    
-    
-            </div>
-            </div> 
-    
-    
-            <div class="roundThreeProjectEmission" *ngIf="roundThreeprojectList?.length != 0">   
-                
-                <div *ngFor="let item of roundThreeprojectList; index as i; ">
-    
-                
-    
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 3</h6>
-                    </div>
-                    <div class="col-md-3">
-                        <h6>Area : Project Emmission - {{item?.parameter.name}} </h6>
-                    </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundThreeprojectList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                    </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit"  (click)="toDetailPage()" class="p-button-info"></button>
-                
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.explanation}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.rootCause}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.action}}</p>
-                    </div>
-                </div>
-    
-    
-            </div>
-            </div> 
-    
-           
-            <div class="roundThreeProjection" *ngIf=" roundThreeprojectionList?.length != 0">   
-                
-                <div *ngFor="let item of roundThreeprojectionList; index as i; ">
-    
-                
-    
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 3</h6>
-                    </div>
-                    <div class="col-md-3">
-                        <h6>Area : Projection - {{item?.parameter.name}} </h6>
-                    </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundThreeprojectionList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                    </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-                
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.explanation}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.rootCause}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.action}}</p>
-                    </div>
-                </div>
-    
-    
-            </div>
-            </div> 
-    
-    
-            <div class="roundThreelekage" *ngIf=" roundThreelekageList?.length != 0">   
-                
-                <div *ngFor="let item of roundThreelekageList; index as i; ">
-    
-                
-    
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 3</h6>
-                    </div>
-                    <div class="col-md-3">
-                        <h6>Area : lekage - {{item?.parameter.name}} </h6>
-                    </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundThreelekageList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                    </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-                
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.explanation}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.rootCause}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{item?.action}}</p>
-                    </div>
-                </div>
-    
-    
-            </div>
-            </div> 
-
-
-
-            <div class="roundThreeIsAssumption" *ngIf="roundThreeAssumptionList?.length != 0" >       
-                <div class="row mb-3"
-                    style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
-                    <div class="col-md-4">
-                        <h6>Non Conformance Round 3</h6>
-                    </div>
-                    <div class="col-md-3">
-                        <h6>Area : Aggregated Actions/Action Areas </h6>
-                    </div>
-                    <div class="col-md-3">
-                        <!-- <h6>Date : {{roundThreeAssumptionList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                    </div>
-                    <div class="col-md-2">
-                        <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()" class="p-button-info"></button>
-                
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Explanation</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundThreeAssumptionList[0]?.explanation}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Root Cause</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundThreeAssumptionList[0]?.rootCause}}</p>
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><b>Corrective Action</b></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>{{roundThreeAssumptionList[0]?.correctiveAction}}</p>
-                    </div>
-                </div>
-        
-                
-                </div> 
-                 
-              
-               </ng-container> 
-               <ng-template #elseBlockroun3>
-               <p>NO NON CONFORMANCE IN ROUND THREE</p>
-               </ng-template>
-    
-    
-    
-            </div>
-            </div>
-
-           
-    
-
-
-
-
-
-           
-
-
-
-
-
-
-
-
     </div>
 
     <div class="row mb-3">
         <div class="col-md-6">
-            
         </div>
-        
-        <div class="col-md-2" >
+        <div class="col-md-2">
             <!-- <button *ngIf="isVerificationHistory !=1 && vStatus != 3" [disabled]="assementYear.verificationStatus == 7"
              pButton pRipple type="button"  (click)="toChangeStatus()" class="p-button-info">
              {{assementYear.verificationStatus == 7 ? "Submited" : "Submit" }}
             </button> -->
-            <button *ngIf="isVerificationHistory !=1 && vStatus != 3" [disabled]="disableSubmit()"
-             pButton pRipple type="button"  (click)="toChangeStatus()" class="p-button-info">
-             {{getSubmitLabel() }}
+            <button *ngIf="isVerificationHistory !=1 && vStatus != 3" [disabled]="disableSubmit()" pButton pRipple
+                type="button" (click)="toChangeStatus()" class="p-button-info">
+                {{getSubmitLabel() }}
             </button>
-             <!-- <button *ngIf="vStatus != 3 || assementYear.verificationStatus == 7"
+            <!-- <button *ngIf="vStatus != 3 || assementYear.verificationStatus == 7"
              pButton pRipple type="button" label="Submited" [disabled]="true" class="p-button-info"></button> -->
-    
+
         </div>
-        <div class="col-md-2" >
-            <button pButton pRipple type="button" label="Download" (click)="toDownload()" class="p-button-info"></button>
-    
+        <div class="col-md-2">
+            <button pButton pRipple type="button" label="Download" (click)="toDownload()"
+                class="p-button-info"></button>
+
         </div>
-        <div class="col-md-2" >
+        <div class="col-md-2">
             <button pButton pRipple type="button" label="Back" (click)="toDetailPage()" class="p-button-info"></button>
-    
+
         </div>
     </div>
-
-    
-    
 </div>

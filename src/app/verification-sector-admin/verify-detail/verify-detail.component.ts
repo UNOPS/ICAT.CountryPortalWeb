@@ -77,6 +77,8 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   hasMethodologyConcern: boolean = false
   isNdcAccepted: boolean = false
   hasNdcConcern: boolean = false
+  hasAssumptionConcern: boolean = false
+  isAssumptionAccepted: boolean = false
   
 
   ref: DynamicDialogRef;
@@ -213,6 +215,13 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         if (v.explanation){
           this.hasNdcConcern = true
         }
+      } else if (v.isAssumption){
+        if (v.isAccepted){
+          this.isAssumptionAccepted = true
+        } 
+        if (v.explanation){
+          this.hasAssumptionConcern = true
+        }
       }
     }
   }
@@ -266,6 +275,20 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       });
   }
 
+  parameterFilter(p: Parameter){
+    if (p.isDefault || p.isHistorical){
+      return ![
+        ParameterVerifierAcceptance.REJECTED, 
+        ParameterVerifierAcceptance.RETURNED,].includes(p.verifierAcceptance)
+    } else {
+      return ![
+        ParameterVerifierAcceptance.REJECTED, 
+        ParameterVerifierAcceptance.RETURNED,
+        ParameterVerifierAcceptance.DATA_ENTERED
+      ].includes(p.verifierAcceptance)
+    }
+  }
+
   getAssesment() {
     let statusToRemove = [
       ParameterVerifierAcceptance.REJECTED, 
@@ -294,14 +317,14 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
         this.baselineParameters =
           this.assementYear.assessment.parameters.filter(
-            (p) => p.isBaseline && !statusToRemove.includes(p.verifierAcceptance)
+            (p) => p.isBaseline && this.parameterFilter(p)
           );
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
-          (p) => p.isProject && !statusToRemove.includes(p.verifierAcceptance)
+          (p) => p.isProject && this.parameterFilter(p)
         );
         this.lekageParameters = this.assementYear.assessment.parameters.filter(
-          (p) => p.isLekage && !statusToRemove.includes(p.verifierAcceptance)
+          (p) => p.isLekage && this.parameterFilter(p)
         );
 
         this.projectionParameters =
@@ -309,7 +332,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == Number(this.assementYear.assessmentYear)
-              && !statusToRemove.includes(p.verifierAcceptance)
+              && this.parameterFilter(p)
           );
         let p = this.assementYear.assessment.parameters.filter(
           (p) => p.isProjection
@@ -486,7 +509,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
   parameterAccept(isNdc: boolean, isMethodology: boolean) {
     this.confirmationService.confirm({
-      message: 'Are sure you want to accept the parameter(s) ?',
+      message: 'Are sure you want to accept the ' + isMethodology ? 'methodology ?': 'parameter(s) ?',
       header: 'Accept Confirmation',
       acceptIcon: 'icon-not-visible',
       rejectIcon: 'icon-not-visible',

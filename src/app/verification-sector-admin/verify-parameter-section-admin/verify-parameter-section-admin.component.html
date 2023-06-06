@@ -57,7 +57,7 @@
                 <td *ngIf="
                     assessmentYear !== undefined &&
                     (assessmentYear?.verificationStatus! === 3 || assessmentYear?.verificationStatus! === 8) &&
-                    param.isAcceptedByVerifier !== 1 && param.isConcernRaised
+                    param.isAcceptedByVerifier !== 1 && param.isConcernRaised && param.verifierAcceptance !== 'DATA_ENTERED'
                   ">
                   <button pButton pRipple type="button" label="Action" (click)="parameterAction($event, param)"
                     class="p-button-info"></button>
@@ -65,7 +65,7 @@
                 <td *ngIf="
                     assessmentYear !== undefined &&
                     (assessmentYear?.verificationStatus! === 3 || assessmentYear?.verificationStatus! === 8) &&
-                    param.isConcernRaised
+                    param.isConcernRaised && param.isAcceptedByVerifier !== 1  && param.verifierAcceptance !== 'DATA_ENTERED'
                   ">
                   <button pButton pRipple type="button" label="View Concern" (click)="raiseConcern($event, param)"
                     class="p-button-info"></button>
@@ -107,7 +107,7 @@
   </div>
 
   <div class="row mb-3" *ngIf="assessmentYear.assessment.assessmentType !='MAC' ">
-    <div *ngIf="!isProjectionResult">
+    <div *ngIf="!isProjectionResult" class="col-md-8">
       <div class="col-md-8">
         <div class="col-12">
           <div class="p-field">
@@ -132,7 +132,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="isProjectionResult">
+    <div *ngIf="isProjectionResult" class="col-md-8">
       <div class="col-md-8">
         <div class="col-12">
           <div class="p-field">
@@ -201,16 +201,16 @@
         </div>
       </div>
     </div>
-    <!-- <div class="col-md-2">
+    <div class="col-md-2 d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && hasResultConcern">
       <div class="col-12">
-        <button type="button" pButton pRipple>Action</button>
+        <button type="button" (click)="onResultAction()" pButton pRipple>Action</button>
       </div>
-    </div> -->
+    </div>
 
     <div class="col-md-2 d-flex align-items-end" *ngIf="
-        assessmentYear !== undefined && assessmentYear?.verificationStatus! == 3
+        assessmentYear !== undefined && assessmentYear?.verificationStatus! == 3 && hasResultConcern
       ">
-      <!-- <div class="col-12">
+      <div class="col-12">
         <button
           type="button"
           pButton
@@ -219,7 +219,7 @@
         >
           View Concern
         </button>
-      </div> -->
+      </div>
     </div>
   </div>
 </div>
