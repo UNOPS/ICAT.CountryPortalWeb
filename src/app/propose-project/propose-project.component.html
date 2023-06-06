@@ -49,9 +49,9 @@
               <label for="contatemail">Email*</label>
               <input
                 [disabled]="editEntytyId > 0"
-                pattern="[\w-\.]+@([\w-]+\.)+[\w-]{1,30}$"
+                pattern="[\w-\.]+@([\w-]+\.)+[\w-]{1,100}$"
                 type="text"
-                maxlength="300"
+                maxlength="100"
                 placeholder="Email"
                 name="contatemail"
                 class="p-inputtext"
@@ -150,7 +150,7 @@
                 class="p-inputtext"
                 [(ngModel)]="project.institution"
                 [ngModelOptions]="{ standalone: false }"
-                pattern="^[a-zA-Z0-9 ]{1,64}$"
+                pattern="^[a-zA-Z0-9 ]{1,100}$"
                 pInputText
                 required
               />
@@ -751,10 +751,10 @@
                 #projDuration="ngModel"
                 [(ngModel)]="project.duration"
                 mode="decimal"
-                [min]="1"
+                [min]="0.01"
                 [max]="99"
                 [minFractionDigits]="1"
-                [maxFractionDigits]="1"
+                [maxFractionDigits]="2"
                 [required]="true"
               >
               </p-inputNumber>
@@ -881,7 +881,7 @@
             <p-radioButton
             name="isCity"
             [disabled]="flag==1"
-            value="0"
+            value=0
             [(ngModel)]="isCity"
           ></p-radioButton><label >National</label>
 
@@ -890,7 +890,7 @@
             <p-radioButton
             name="isCity"
             [disabled]="flag==1"
-            value="1"
+            value=1
             [(ngModel)]="isCity"
           ></p-radioButton><label >Sub National</label>
           </div>

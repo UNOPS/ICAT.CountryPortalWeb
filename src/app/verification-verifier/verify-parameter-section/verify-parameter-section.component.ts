@@ -472,6 +472,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     if (verificationDetail) {
       vd = verificationDetail;
     } else {
+      console.log("new result")
       vd.userVerifier = this.loggedUser.id;
       vd.assessmentId = this.assessmentYear.assessment.id;
       let assesmentYear = new AssessmentYear();
@@ -479,7 +480,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       vd.assessmentYear = assesmentYear;
       vd.year = Number(this.assessmentYear.assessmentYear);
       vd.createdOn = moment();
-
+      vd.isResult = true
 
 
       if (this.header == 'Baseline Parameter') {
@@ -501,6 +502,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     vd.isAccepted = true;
     vd.verificationStage = this.getverificationStage();
     vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
+    console.log(vd)
 
     verificationDetails.push(vd);
 
@@ -514,6 +516,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
           closable: true,
         });
         // this.isAccept=true
+        this.isResultAccepted = true
       });
   }
 }
