@@ -32098,6 +32098,8 @@ export class ChangeParameterValue implements IChangeParameterValue {
     concern: string;
     correctData: any;
     user: User;
+    isDefault: boolean;
+    isHistorical: boolean;
 
     constructor(data?: IChangeParameterValue) {
         if (data) {
@@ -32109,6 +32111,8 @@ export class ChangeParameterValue implements IChangeParameterValue {
         if (!data) {
             this.parameter = new Parameter();
             this.user = new User();
+            this.isDefault = false;
+            this.isHistorical = false;
         }
     }
 
@@ -32119,6 +32123,8 @@ export class ChangeParameterValue implements IChangeParameterValue {
             this.concern = _data["concern"];
             this.correctData = _data["correctData"];
             this.user = _data["user"] ? User.fromJS(_data["user"]) : new User();
+            this.isDefault = _data["isDefault"] !== undefined ? _data["isDefault"] : false;
+            this.isHistorical = _data["isHistorical"] !== undefined ? _data["isHistorical"] : false;
         }
     }
 
@@ -32136,6 +32142,8 @@ export class ChangeParameterValue implements IChangeParameterValue {
         data["concern"] = this.concern;
         data["correctData"] = this.correctData;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["isDefault"] = this.isDefault;
+        data["isHistorical"] = this.isHistorical;
         return data;
     }
 
@@ -32153,6 +32161,8 @@ export interface IChangeParameterValue {
     concern: string;
     correctData: any;
     user: User;
+    isDefault: boolean;
+    isHistorical: boolean;
 }
 
 export class GetManyTrackcaEntityResponseDto implements IGetManyTrackcaEntityResponseDto {
@@ -33075,6 +33085,7 @@ export enum ParameterRequestDataRequestStatus {
     Assign_Data_Request_Saved = <any>"Assign_Data_Request_Saved",
     Assign_Data_Request_Sent = <any>"Assign_Data_Request_Sent",
     Data_Entered = <any>"Data_Entered",
+    Data_Reviewed = <any>"Data_Reviewed",
     Data_Approved = <any>"Data_Approved",
     QA_Assign = <any>"QA_Assign",
     QAPass = <any>"QAPass",
@@ -33082,6 +33093,7 @@ export enum ParameterRequestDataRequestStatus {
     Verifier_Data_Request = <any>"Verifier_Data_Request",
     Minus1 = <any>"-1",
     Minus8 = <any>"-8",
+    Minus9 = <any>"-9",
 }
 
 export enum ParameterRequestQaStatus {
