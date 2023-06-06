@@ -8,13 +8,14 @@
             <label for="projStatus">Climate action</label>
             <p-dropdown
             name="climateActiontype"
+            optionLabel="climateActionName"
             [options]='climateAction'
             [(ngModel)]="searchBy.climateaction"
             #fsector="ngModel"
             [showClear]="true"
             [filter]="true"
             placeholder="Select .."
-            (ngModelChange)="onCAChange($event)"
+            (ngModelChange)="onCAChange($event)" 
           >
           </p-dropdown>
           </div>

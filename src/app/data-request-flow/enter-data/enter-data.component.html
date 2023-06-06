@@ -289,14 +289,14 @@
 <p-dialog [(visible)]="confirm1" header="Add Data" (onHide)="onHideDialog()">
   <div
     class="container"
-    style="width: 700px; height: 225px; margin-left: 50px; margin-top: 0px"
+    style="width: 800px; height: 225px; margin-left: 50px; margin-top: 0px"
   >
     <table>
       <tr>
         <td style="width: 150px">
           <div class="p-field mb-2">Year</div>
         </td>
-        <td style="width: 150px">
+        <td style="width: 100px">
           <div class="p-field mb-2">Unit</div>
         </td>
         <td style="width: 100px">
@@ -309,8 +309,8 @@
             {{ selectedYear }}
           </div>
         </td>
-        <td>
-          <div class="p-field mb-2" style="width: 150px">
+        <td style="width: 100px">
+          <div class="p-field mb-2" >
             <p-dropdown
               name="unitType"
               [options]="unitTypeList"
@@ -326,7 +326,7 @@
             </p-dropdown>
           </div>
         </td>
-        <td>
+        <td style="width: 150px">
           <div class="p-field mb-2" *ngIf="!isHistorical">
             <input
               placeholder="Type Your Value"
@@ -373,7 +373,7 @@
         <td>
           <div class="p-field mb-2">
             <input
-              style="width: 322%; height: 55px;"
+              style="width: 250%; height: 55px;"
               placeholder="Type Your Assumption"
               type="text"
               class="p-inputtext"

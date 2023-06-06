@@ -29,7 +29,11 @@ export class ApproveDataComponent implements OnInit {
   assementYearDetails: AssessmentYear = new AssessmentYear();
   parameters: Parameter[] = [];
   baselineParameters: Parameter[] = [];
+  baselineParametersAcceptcount :number =0;
+  baselineParameterscount:number =0;
   projectParameters: Parameter[] = [];
+  projectParametersAcceptcount :number =0;
+  projectParameterscount:number =0;
   lekageParameters: Parameter[] = [];
   projectionParameters: Parameter[] = [];
   loading: boolean = false;
@@ -235,10 +239,25 @@ export class ApproveDataComponent implements OnInit {
             (p) => p.isBaseline  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
 
+            for(let n of this.baselineParameters){
+              this.baselineParameterscount += 1;
+              console.log("baselineParameterscount",this.baselineParameterscount)
+              if(n.parameterRequest.dataRequestStatus==11){
+                this.baselineParametersAcceptcount +=1;
+                console.log("baselineParametersAcceptcount",this.baselineParametersAcceptcount)
+              }
+            }
         this.projectParameters =
           this.assementYearDetails.assessment.parameters.filter(
             (p) => p.isProject  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
+
+          for(let n of this.projectParameters){
+            this.projectParameterscount += 1;
+            if(n.parameterRequest.dataRequestStatus==11){
+              this.projectParametersAcceptcount +=1;
+            }
+          }
         this.lekageParameters =
           this.assementYearDetails.assessment.parameters.filter(
             (p) => p.isLekage  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
