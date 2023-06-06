@@ -17991,6 +17991,59 @@ export class VerificationControllerServiceProxy {
         }
         return _observableOf(<any>null);
     }
+
+    sendResultToRecalculate(assessmentYearId: number): Observable<any> {
+        let url_ = this.baseUrl + "/verification/send-result-to-recalculate?";
+        if (assessmentYearId === undefined || assessmentYearId === null)
+            throw new Error("The parameter 'assessmentYearId' must be defined and cannot be null.");
+        else
+            url_ += "assessmentYearId=" + encodeURIComponent("" + assessmentYearId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSendResultToRecalculate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSendResultToRecalculate(<any>response_);
+                } catch (e) {
+                    return <Observable<any>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<any>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSendResultToRecalculate(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result201 = resultData201 !== undefined ? resultData201 : <any>null;
+    
+            return _observableOf(result201);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
 }
 
 @Injectable()
@@ -30361,6 +30414,7 @@ export class AssessmentResault implements IAssessmentResault {
     qcStatusbsTotalAnnualCost: AssessmentResaultQcStatusbsTotalAnnualCost;
     assessmentYear: AssessmentYear;
     isResultupdated: boolean;
+    isResultRecalculating: boolean;
     assement: Assessment;
     projectionResult: ProjectionResault[];
 
@@ -30409,6 +30463,7 @@ export class AssessmentResault implements IAssessmentResault {
             this.qcStatusbsTotalAnnualCost = _data["qcStatusbsTotalAnnualCost"];
             this.assessmentYear = _data["assessmentYear"] ? AssessmentYear.fromJS(_data["assessmentYear"]) : new AssessmentYear();
             this.isResultupdated = _data["isResultupdated"];
+            this.isResultRecalculating = _data["isResultRecalculating"];
             this.assement = _data["assement"] ? Assessment.fromJS(_data["assement"]) : new Assessment();
             if (Array.isArray(_data["projectionResult"])) {
                 this.projectionResult = [] as any;
@@ -30456,6 +30511,7 @@ export class AssessmentResault implements IAssessmentResault {
         data["qcStatusbsTotalAnnualCost"] = this.qcStatusbsTotalAnnualCost;
         data["assessmentYear"] = this.assessmentYear ? this.assessmentYear.toJSON() : <any>undefined;
         data["isResultupdated"] = this.isResultupdated;
+        data["isResultRecalculating"] = this.isResultRecalculating;
         data["assement"] = this.assement ? this.assement.toJSON() : <any>undefined;
         if (Array.isArray(this.projectionResult)) {
             data["projectionResult"] = [];
@@ -30503,6 +30559,7 @@ export interface IAssessmentResault {
     qcStatusbsTotalAnnualCost: AssessmentResaultQcStatusbsTotalAnnualCost;
     assessmentYear: AssessmentYear;
     isResultupdated: boolean;
+    isResultRecalculating: boolean;
     assement: Assessment;
     projectionResult: ProjectionResault[];
 }

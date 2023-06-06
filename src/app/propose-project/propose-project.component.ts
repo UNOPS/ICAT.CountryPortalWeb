@@ -332,6 +332,7 @@ export class ProposeProjectComponent implements OnInit {
               this.project = res1;
               this.project.ndc = res1.ndc;
               this.project.sector =res1.sector;
+              this.isCity=res1.subNationalLevl1?1:0;
               const latitude = parseFloat(this.project.latitude + '');
               const longitude = parseFloat(this.project.longitude + '');
               await this.addMarker(longitude, latitude);
@@ -350,7 +351,7 @@ export class ProposeProjectComponent implements OnInit {
                 this.project.projectApprovalStatus == undefined
                   ? 'Propose'
                   : this.project.projectApprovalStatus?.name;
-              this.proposedDate = this.project.proposeDateofCommence.toString();
+              this.proposedDate = this.project.createdOn.toString();
               this.isMapped = this.project?.isMappedCorrectly;
               this.disbaleNdcmappedFromDB = this.project?.isMappedCorrectly;
               this.isLikelyhoodFromDb = this.project?.likelyhood;
@@ -426,6 +427,10 @@ export class ProposeProjectComponent implements OnInit {
             .getProjectByIdAnonymous(this.anonymousEditEntytyId)
             .subscribe(async (res) => {
               this.project = res;
+
+              // @ts-ignore
+              this.project.duration=null;
+
               const latitude = parseFloat(this.project.latitude + '');
               const longitude = parseFloat(this.project.longitude + '');
               await this.addMarker(longitude, latitude);
@@ -444,7 +449,7 @@ export class ProposeProjectComponent implements OnInit {
                 this.project.projectApprovalStatus == undefined
                   ? 'Propose'
                   : this.project.projectApprovalStatus?.name;
-              this.proposedDate = this.project.proposeDateofCommence.toString();
+              this.proposedDate = this.project.createdOn.toString();
               this.isMapped = this.project?.isMappedCorrectly;
               this.disbaleNdcmappedFromDB = this.project?.isMappedCorrectly;
               this.isLikelyhoodFromDb = this.project?.likelyhood;
@@ -643,11 +648,17 @@ export class ProposeProjectComponent implements OnInit {
     if (this.exsistingPrpject) {
       return;
     }
-    // if (this.project.sector) {
-    //   let sector = new Sector();
-    //   sector.id = this.project.sector.id;
-    //   this.project.sector = sector;
-    // }
+    const dumpSerctor=this.project.sector;
+    const dumpNdc=this.project.ndc;
+    const dumpSubNdc=this.project.subNdc;
+
+
+   
+    if (this.project.sector) {
+      let sector = new Sector();
+      sector.id = this.project.sector.id;
+      this.project.sector = sector;
+    }
    
 
     this.project.proposeDateofCommence = moment(this.proposeDateofCommence);
@@ -658,20 +669,21 @@ export class ProposeProjectComponent implements OnInit {
     //  console.log(this.project)
     //  console.log(this.selectedInstitution)
 
+
     if (this.project.ndc) {
       this.project.currentNdc = this.project.ndc.name;
       this.project.previousNdc = this.project.ndc.name;
-    //   let ndc = new Ndc();
-    //   ndc.id = this.project.ndc?.id;
-    //   this.project.ndc = ndc;
+      let ndc = new Ndc();
+      ndc.id = this.project.ndc?.id;
+      this.project.ndc = ndc;
     }
 
     if (this.project.subNdc) {
       this.project.currentSubNdc = this.project.subNdc.name;
       this.project.previousSubNdc = this.project.subNdc.name;
-    //   let subned = new SubNdc();
-    //   subned.id = this.project.subNdc?.id;
-    //   this.project.subNdc = subned;
+      let subned = new SubNdc();
+      subned.id = this.project.subNdc?.id;
+      this.project.subNdc = subned;
     }
 
     if (this.project.institution) {
@@ -713,6 +725,10 @@ export class ProposeProjectComponent implements OnInit {
               detail: 'Internal server error, please try again.',
               sticky: true,
             });
+          },()=>{
+            this.project.sector=dumpSerctor;
+    this.project.ndc=dumpNdc;
+    this.project.subNdc=dumpSubNdc; 
           }
         );
       } else {
@@ -738,6 +754,10 @@ export class ProposeProjectComponent implements OnInit {
                 detail: 'Internal server error, please try again.',
                 sticky: true,
               });
+            },()=>{
+              this.project.sector=dumpSerctor;
+      this.project.ndc=dumpNdc;
+      this.project.subNdc=dumpSubNdc; 
             }
             // (res) => {
             //   this.confirmationService.confirm({
@@ -802,12 +822,17 @@ export class ProposeProjectComponent implements OnInit {
                 detail: 'Please Fill All Mandatory Fileds',
                 sticky: true,
               });
+            },()=>{
+              this.project.sector=dumpSerctor;
+      this.project.ndc=dumpNdc;
+      this.project.subNdc=dumpSubNdc; 
             }
           );
 
         console.log(formData);
       }
     }
+
   }
 
   onnameKeyDown(event: any) {
@@ -1166,9 +1191,14 @@ export class ProposeProjectComponent implements OnInit {
   }
 
   updateStatus(project: Project, aprovalStatus: number) {
-    // let sector = new Sector();
-    // sector.id = project.sector.id;
-    // project.sector = sector;
+
+    const dumpSerctor=this.project.sector;
+    const dumpNdc=this.project.ndc;
+    const dumpSubNdc=this.project.subNdc;
+    
+    let sector = new Sector();
+    sector.id = project.sector.id;
+    project.sector = sector;
 
     project.proposeDateofCommence = moment(this.proposeDateofCommence);
     project.endDateofCommence = moment(this.endDateofCommence);
@@ -1178,17 +1208,17 @@ export class ProposeProjectComponent implements OnInit {
     //  console.log(this.project)
     //  console.log(this.selectedInstitution)
 
-    // if (project.ndc) {
-    //   let ndc = new Ndc();
-    //   ndc.id = project.ndc?.id;
-    //   project.ndc = ndc;
-    // }
+    if (project.ndc) {
+      let ndc = new Ndc();
+      ndc.id = project.ndc?.id;
+      project.ndc = ndc;
+    }
 
-    // if (project.subNdc) {
-    //   let subned = new SubNdc();
-    //   subned.id = project.subNdc?.id;
-    //   project.subNdc = subned;
-    // }
+    if (project.subNdc) {
+      let subned = new SubNdc();
+      subned.id = project.subNdc?.id;
+      project.subNdc = subned;
+    }
 
     if (project.institution) {
       let insti = new Institution();
@@ -1234,7 +1264,13 @@ export class ProposeProjectComponent implements OnInit {
                 //   detail: 'project  has save successfully',
                 //   closable: true,
                 // });
-              }
+              },err=>{
+
+              },()=>{
+            this.project.sector=dumpSerctor;
+    this.project.ndc=dumpNdc;
+    this.project.subNdc=dumpSubNdc; 
+          }
 
               // (err) => {
               //   this.messageService.add({
