@@ -157,6 +157,7 @@
    
   </div>
 </div>
+
 <p-dialog [(visible)]="display">
   <div class="container" style="width: 1200px; height: 700px">
     <div *ngIf="isCountryLevel" class="row p-2">
@@ -338,8 +339,14 @@
     </div>
 
     <div>
-      <button [disabled]="!selectedSector || !selectedNdc || !selectedproject || !selectedYr || !selecetedType || !reportName " style="margin-right: 5px" pButton pRipple label="Executive Summary" (click)="confirm()"></button>
+      <button [disabled]="!selectedSector || !selectedNdc || !selectedproject || !selectedYr || !selecetedType || !reportName " style="margin-right: 5px" pButton pRipple label="Executive Summary" (click)="confirm()">  </button>
       <button [disabled]="!selectedSector || !selectedNdc || !selectedproject || !selectedYr || !selecetedType || !reportName" pButton pRipple label="Full Report" (click)="confirmPDF()"></button>
     </div>
+    
   </div>
+  <div  *ngIf="spin" style="z-index: 10000; left: 45%; top: 25%; position: fixed; " >
+    
+    <p-progressSpinner ></p-progressSpinner>
+  </div>
+ 
 </p-dialog>

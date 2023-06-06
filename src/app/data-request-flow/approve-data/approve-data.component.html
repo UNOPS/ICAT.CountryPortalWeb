@@ -467,16 +467,16 @@
         <button
           class="btn btn-primary text-uppercase"
           type="submit"
-          [disabled]="isHideRejectButton || enableQCButton"
+          [disabled]="(isHideRejectButton || enableQCButton ) || (baselineParameterscount==baselineParametersAcceptcount) && (projectParameterscount ==projectParametersAcceptcount)"
           (click)="onAcceptClick()"
         >
-          Accept
+          {{(baselineParameterscount==baselineParametersAcceptcount) && (projectParameterscount ==projectParametersAcceptcount) ?"Accepted" :"Accept"}}
         </button>
         <div *ngIf="isHideRejectButton == false">
         <button
           class="btn btn-primary text-uppercase ml-5"
           type="submit"
-          [disabled]="isRejectButtonDisable"
+          [disabled]="isRejectButtonDisable ||  (baselineParameterscount==baselineParametersAcceptcount) && (projectParameterscount ==projectParametersAcceptcount)"
           (click)="onRejectClick()"
           
         >
