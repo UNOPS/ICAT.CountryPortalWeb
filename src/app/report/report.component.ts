@@ -108,6 +108,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   isCountryLevel:boolean=true;
 
   dataCollectionGhgModuleStatus: number;
+  spin:boolean =false;
 
   searchBy: any = {
     sector: null,
@@ -430,6 +431,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   }
 
   onSectorChange(sectors: Sector[]) {
+    // this.spin=true
     console.log("=============",sectors)
     // let sectorFilter: string[] = new Array();
     this.sectorIdList = sectors.length == 0 ? ['0', ''] : ['0']
@@ -456,6 +458,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     this.ndcProxy.getDateRequest(0, 0, this.sectorIdList)
       .subscribe((res: any) => {
         this.selectedNdc1 = res.items;
+        // this.spin=false
         console.log('selectedNdc111111111', this.selectedNdc1);
       });
   }
@@ -509,6 +512,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   }
  
   onselectedNdcChange(ndc: Ndc[]) {
+ this.spin =true
     this.popUpProject=[];
     this.selectedproject=[];
     this.uniquePopYrList=[];
@@ -554,6 +558,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
               }
             }
           }
+          this.spin=false
           // for (let a = 0; a < this.popUpAssessmentList.length; a++) {
           //   this.yrIdList.push(this.popUpAssessmentList[a]?.id);
           // }
@@ -603,6 +608,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     // )
   }
   confirm() {
+
     // let projIds: string[] = [];
     // let assessType: string[] = [];
     // let yearIds: string[] = [];
@@ -712,6 +718,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
 
     const url = `/final-report/${encodeURI(
       JSON.stringify(this.summeryReport)
+      
     )}`;
 
     console.log('this.summeryReport', this.summeryReport);
@@ -790,9 +797,12 @@ export class ReportComponent implements OnInit, AfterViewInit {
     // .createOneBaseReportControllerReport(
 
     // )
+    
   }
 
   async confirmPDF() {
+    this.spin=true;
+    console.log("000000000000000000",this.spin)
     // let projIds: string[] = [];
     // let assessType: string[] = [];
     // let yearIds: string[] = [];
@@ -912,7 +922,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
 
     let resultPdfData = await this.reportProxy.getReportPdfFileData(this.reportPdfFile).subscribe((a) => {
       console.log(a);
-
+      this.spin=false;
+      console.log("000000000000000000",this.spin)
     })
     console.log("==== %%%  +++++", resultPdfData);
 
@@ -921,7 +932,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
 
     let url = environment.baseUrlAPI + `/${res.fileName}`;
     window.open(url, '_blank');
-
+  
     this.filterReportData()
+   
   }
 }

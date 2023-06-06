@@ -1643,10 +1643,10 @@ configEmissionTargetGraph=()=>{
               // console.log('totalRduction123ass',assement.project.id)
 
                for(let assesrslt of assement.assessmentResult){
-             
+                // console.log('getNdcForDashboardtotalRduction123asstot123',Number(assesrslt.id))
                 totalemissionRduction = totalemissionRduction + (assesrslt.totalEmission?Number(assesrslt.totalEmission):0);
-                  // console.log('totalRduction123asstot1',Number(assesrslt.totalEmission))
-                  console.log('totalRduction123asstot2',totalemissionRduction)
+                  // console.log('getNdcForDashboardtotalRduction123asstot1',Number(assesrslt.totalEmission))
+                  // console.log('totalRduction123asstot2',totalemissionRduction)
                   // console.log('totalRduction123',assement.isProposal,totalRduction)
                }
 
@@ -1665,7 +1665,7 @@ configEmissionTargetGraph=()=>{
 
             }
             this.isNDCdata=ndcNames.length>0?true:false;
-            // console.log('getNdcForDashboardndcNames',ndcNames);
+            console.log('getNdcForDashboardndcNames',ndcNames);
             // console.log('getNdcForDashboardndcReduction',ndcReduction);
             this.basicData = {
     

@@ -54,7 +54,7 @@ export class EditCountryComponent implements OnInit {
       0,
     ).subscribe((res: any) => {
       this.country = res;
-      // console.log(this.country);
+      console.log('this.country',this.country);
       // this.countryId = this.country.id;
       // console.log('########333');
       // console.log(this.countryId);

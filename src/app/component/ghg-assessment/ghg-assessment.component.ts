@@ -367,7 +367,7 @@ export class GhgAssessmentComponent implements OnInit {
     var year = moment().year();
     this.years.push({label: year.toString(),value: year });
     for (let i = 1; i < 30; i++) {
-      this.years.push({label: (year - i).toString(),value: year - i });
+      // this.years.push({label: (year - i).toString(),value: year - i });
       this.years.push({label: (year + i).toString(),value: year + i });
     }
 
@@ -423,7 +423,6 @@ export class GhgAssessmentComponent implements OnInit {
       });
 
     this.years = this.years.sort(function(a,b) {return a.value - b.value});
-
     this.addRoute();
     this.addPowerPlant();
     this.addStratum ();
@@ -2675,15 +2674,15 @@ else{
          let uniqueYearList:any[] = [];
         for(let assement of this.selectedAssessementByCA )
         {
-          for(let years of assement.assessmentYear)
+          for(let asyears of assement.assessmentYear)
           {
             
-            yearList.push(years.assessmentYear)
+            yearList.push(asyears.assessmentYear)
           }
         }
         uniqueYearList = [...new Set( yearList)];
   
-        console.log('years...', yearList);
+        console.log('asyears...', yearList);
         console.log('uniqueYearList..', uniqueYearList);
   
         const result:any[] = [];

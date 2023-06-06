@@ -114,15 +114,18 @@ export class QualityCheckComponent implements OnInit {
 
           // this.parameteters = a.items;
           a.items.forEach((b:any)=>{
-            if( !this.climateAction.includes(b.assessment.project.climateActionName)){
-              this.climateAction.push(b.assessment.project.climateActionName)
-            }
+            this.climateAction.push(b.assessment.project)
+            
+            // if( !this.climateAction.includes(b.assessment.project)){
+            //   this.climateAction.push(b.assessment.project)
+            // }
             
           })
+          console.log(this.climateAction)
         });
 
     this.onSearch();
-    console.log(this.climateAction)
+    
   }
 
   onStatusChange($event: any) {
@@ -134,6 +137,7 @@ export class QualityCheckComponent implements OnInit {
   onSubNdCChange($event: any) { }
 
   onSearch() {
+    
     let event: any = {};
     event.rows = this.rows;
     event.first = 0;
@@ -154,8 +158,8 @@ export class QualityCheckComponent implements OnInit {
     let filtertext = this.searchBy.text ? this.searchBy.text : '';
     let ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
     let subNDC = this.searchBy.subNdc ? this.searchBy.subNdc.id : 0;
-    let ctAction = this.searchBy.climateaction
-    ? this.searchBy.climateaction
+    let ctAction = this.searchBy.climateaction?.climateActionName
+    ? this.searchBy.climateaction?.climateActionName
     : '';
     console.log("===========",ctAction)
     let pageNumber =
