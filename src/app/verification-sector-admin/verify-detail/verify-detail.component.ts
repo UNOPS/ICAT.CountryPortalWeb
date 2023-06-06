@@ -275,6 +275,20 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       });
   }
 
+  parameterFilter(p: Parameter){
+    if (p.isDefault || p.isHistorical){
+      return ![
+        ParameterVerifierAcceptance.REJECTED, 
+        ParameterVerifierAcceptance.RETURNED,].includes(p.verifierAcceptance)
+    } else {
+      return ![
+        ParameterVerifierAcceptance.REJECTED, 
+        ParameterVerifierAcceptance.RETURNED,
+        ParameterVerifierAcceptance.DATA_ENTERED
+      ].includes(p.verifierAcceptance)
+    }
+  }
+
   getAssesment() {
     let statusToRemove = [
       ParameterVerifierAcceptance.REJECTED, 
@@ -303,14 +317,14 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
         this.baselineParameters =
           this.assementYear.assessment.parameters.filter(
-            (p) => p.isBaseline && !statusToRemove.includes(p.verifierAcceptance)
+            (p) => p.isBaseline && this.parameterFilter(p)
           );
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
-          (p) => p.isProject && !statusToRemove.includes(p.verifierAcceptance)
+          (p) => p.isProject && this.parameterFilter(p)
         );
         this.lekageParameters = this.assementYear.assessment.parameters.filter(
-          (p) => p.isLekage && !statusToRemove.includes(p.verifierAcceptance)
+          (p) => p.isLekage && this.parameterFilter(p)
         );
 
         this.projectionParameters =
@@ -318,7 +332,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == Number(this.assementYear.assessmentYear)
-              && !statusToRemove.includes(p.verifierAcceptance)
+              && this.parameterFilter(p)
           );
         let p = this.assementYear.assessment.parameters.filter(
           (p) => p.isProjection

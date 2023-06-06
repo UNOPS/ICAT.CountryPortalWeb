@@ -440,12 +440,15 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     });
 
     this.ref.onClose.subscribe((res) => {
-      if (res?.isEnterData){
-        action = action + ", New value: " + res.value
-      } else {
-        action = action + ", Requested data from " + res.value
+      console.log(res)
+      if (res){
+        if (res?.isEnterData){
+          action = action + ", New value: " + res?.value
+        } else {
+          action = action + ", Requested data from " + res?.value
+        }
+        this.saveVerificationDetails(action, parameter)
       }
-      this.saveVerificationDetails(action, parameter)
     })
 
     
