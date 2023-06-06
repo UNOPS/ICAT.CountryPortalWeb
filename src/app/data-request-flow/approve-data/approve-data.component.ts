@@ -228,7 +228,7 @@ export class ApproveDataComponent implements OnInit {
 
         this.parameters = this.assementYearDetails.assessment?.parameters;
 
-        let statusToRemove = [ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.DATA_ENTERED]
+        let statusToRemove = [ParameterVerifierAcceptance.REJECTED]
 
         this.baselineParameters =
           this.assementYearDetails.assessment?.parameters.filter(
