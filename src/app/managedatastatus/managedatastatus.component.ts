@@ -627,29 +627,33 @@ console.log("+++++++++++++", this.datarequests)
 
   getApproveDataLabel(request: datarequest){
     // datarequests.qaStatus ==4 || datarequests.qaStatus ==1 ? "Approved Data" : "Approve Data"
-    if(request.qaStatus === 4){
+    if(request.qaStatus === 4 || request.qaStatus ==1 ){
       return "Approved Data"
-    } else if (request.qaStatus === 1){
-      if (request.verificationStatus === 8){
-        return "Approve Data"
-      } else {
-        return "Approved Data"
-      }
-    } else {
+    } 
+    // else if (request.qaStatus === 1){
+    //   if (request.verificationStatus === 8){
+    //     return "Approve Data"
+    //   } else {
+    //     return "Approved Data"
+    //   }
+    // } 
+    else {
       return "Approve Data"
     }
   }
 
-  enableApproveData(request: datarequest){
-    if(request.qaStatus === 4){
+  disableApproveData(request: datarequest){
+    if(request.qaStatus === 4 || request.qaStatus === 1){
       return true
-    } else if (request.qaStatus === 1){
-      if (request.verificationStatus === 8){
-        return false
-      } else {
-        return true
-      }
-    } else {
+    } 
+    // else if (request.qaStatus === 1){
+    //   if (request.verificationStatus === 8){
+    //     return false
+    //   } else {
+    //     return true
+    //   }
+    // } 
+    else {
       return false
     }
   }

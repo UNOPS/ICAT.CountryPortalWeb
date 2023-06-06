@@ -73,8 +73,7 @@
             <div class="col-5 d-flex align-items-end">
                 <button [disabled]="checkEnable()" class="btn btn-primary text-uppercase" type="submit"
                     (click)="sendValueForVerification(isEnterData)">
-                    {{type === 'ndc' ? 'Send for verification' : (type === 'result' ? 'Send to QC' :
-                     (isEnterData ? 'Send to QC' : 'Send to DC team'))}}
+                    {{getSubmitLabel()}}
                 </button>
             </div>
         </div>

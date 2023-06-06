@@ -450,6 +450,21 @@ export class QualityCheckDetailComponent implements OnInit {
       });
   }
 
+  parameterFilter(p: Parameter){
+    if (p.isDefault || p.isHistorical){
+      return ![
+        ParameterVerifierAcceptance.REJECTED,
+        ParameterVerifierAcceptance.RETURNED,
+        ParameterVerifierAcceptance.DATA_ENTERED
+      ].includes(p.verifierAcceptance)
+    } else {
+      return ![
+        ParameterVerifierAcceptance.REJECTED,
+        ParameterVerifierAcceptance.RETURNED
+      ].includes(p.verifierAcceptance)
+    }
+  }
+
   getAssesment() {
     this.assesmentProxy
       .getAssment(
@@ -482,23 +497,23 @@ export class QualityCheckDetailComponent implements OnInit {
         this.baselineParameters =
           this.assementYear.assessment.parameters.filter(
             (p) => p.isBaseline
-            && !statusToRemove.includes(p.verifierAcceptance)
+            && this.parameterFilter(p)
           );
 
         this.projectParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isProject
-          && !statusToRemove.includes(p.verifierAcceptance)
+          && this.parameterFilter(p)
         );
         this.lekageParameters = this.assementYear.assessment.parameters.filter(
           (p) => p.isLekage
-          && !statusToRemove.includes(p.verifierAcceptance)
+          && this.parameterFilter(p)
         );
         this.projectionParameters =
           this.assementYear.assessment.parameters.filter(
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == Number(this.assementYear.assessmentYear)
-              && !statusToRemove.includes(p.verifierAcceptance)
+              && this.parameterFilter(p)
           );
       });
   }

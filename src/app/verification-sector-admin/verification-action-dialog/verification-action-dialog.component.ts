@@ -84,30 +84,39 @@ export class VerificationActionDialogComponent implements OnInit {
           console.log("+++++++++", this.ndcList)
         });
     } else if (this.type === 'parameter') {
-      let _unit
-      if (this.parameter.uomDataRequest){
-        _unit = this.parameter.uomDataRequest
-      } else if (this.parameter.uomDataEntry){
-        _unit = this.parameter.uomDataEntry
-      } else {
-        _unit = ''
-      }
-      let res = await this.unitConversionControllerServiceProxy.getUnitTypes(_unit).toPromise()
-      if (res.length > 0){
-        this.unitList = res
-      } else {
-        this.unit.ur_fromUnit = this.parameter.uomDataRequest ? this.parameter.uomDataRequest : this.parameter.uomDataEntry
-        this.unitList.push(this.unit)
-      }
-  
-      let ins = await this.instituationProxy.getInstitutionforAssesment().toPromise()
-      if (ins.length > 0){
-        this.instiTutionList = ins
-      }
+      
+      await this.getUnits()
+      await this.getInstitutions()
     }
-    console.log(this.parameter)
-    await this.getDefaultValues()
+    if (this.parameter.isDefault){
+      await this.getDefaultValues()
+    }
 
+  }
+
+  async getUnits(){
+    let _unit
+    if (this.parameter.uomDataRequest){
+      _unit = this.parameter.uomDataRequest
+    } else if (this.parameter.uomDataEntry){
+      _unit = this.parameter.uomDataEntry
+    } else {
+      _unit = ''
+    }
+    let res = await this.unitConversionControllerServiceProxy.getUnitTypes(_unit).toPromise()
+    if (res.length > 0){
+      this.unitList = res
+    } else {
+      this.unit.ur_fromUnit = this.parameter.uomDataRequest ? this.parameter.uomDataRequest : this.parameter.uomDataEntry
+      this.unitList.push(this.unit)
+    }
+  }
+
+  async getInstitutions(){
+    let ins = await this.instituationProxy.getInstitutionforAssesment().toPromise()
+    if (ins.length > 0){
+      this.instiTutionList = ins
+    } 
   }
 
   async getDefaultValues() {
@@ -164,6 +173,10 @@ export class VerificationActionDialogComponent implements OnInit {
     })
   }
 
+  getHistoricalValues(){
+    
+  }
+
   async sendValueForVerification(_isEnterData: boolean) {
     console.log("clicked")
     if ((this.correctValue && this.correctUnit) || (this.selectedInstitution && this.correctUnit)
@@ -206,7 +219,7 @@ export class VerificationActionDialogComponent implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
-              detail: 'Value changed successfully',
+              detail: 'Successfully sent to Data Collection Team',
               closable: true,
             });
             if (this.parameter.isDefault){
@@ -234,7 +247,7 @@ export class VerificationActionDialogComponent implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
-              detail: 'Value changed successfully',
+              detail: 'Successfully sent to Data Collection Team',
               closable: true,
             });
             this.dialogRef.close({ isEnterData: _isEnterData, value: this.selectedInstitution.name })
@@ -254,6 +267,29 @@ export class VerificationActionDialogComponent implements OnInit {
       (this.correctValue === undefined && this.correctUnit === undefined && !this.selectedNdc && this.resultComment === undefined)  ||
       (this.correctValue === undefined && this.correctUnit === undefined && this.selectedNdc === undefined && !this.resultComment)
 
+  }
+
+  getSubmitLabel(){
+    // type === 'ndc' ? 'Send for verification' : (type === 'result' ? 'Send to QC' :
+    //                  (isEnterData ? 'Send to QC' : 'Send to DC team'))
+
+    if (this.type === 'ndc'){
+      return 'Send for verification'
+    } else {
+      if (this.type === 'result') {
+        return 'Send to QC'
+      } else {
+        if (this.isEnterData){
+          if (this.parameter.isDefault || this.parameter.isHistorical){
+            return 'Send to verifier'
+          } else {
+            return 'Send to DC team'
+          }
+        } else {
+          return 'Send to DC team'
+        }
+      }
+    }
   }
 
 }
