@@ -437,24 +437,36 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
 
   disableSubmit(){
     if (this.flag === 'sec-admin'){
-      return (this.assementYear.verificationStatus !== 3 || this.assementYear.verificationStatus === 7)
+      return ((this.assementYear.verificationStatus !== 3 && this.assementYear.verificationStatus !== 8) || this.assementYear.verificationStatus === 7)
     } else {
-      return (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 7)
+      return (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 8 || this.assementYear.verificationStatus === 7)
     }
   }
 
   getSubmitLabel(){
     if (this.flag === 'sec-admin'){
-      if (this.assementYear.verificationStatus !== 3 || this.assementYear.verificationStatus === 7) {
+      if ((this.assementYear.verificationStatus !== 3 && this.assementYear.verificationStatus !== 8) || this.assementYear.verificationStatus === 7) {
         return "Submitted"
       }
     } else {
-      if (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 7) {
+      if (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 8 || this.assementYear.verificationStatus === 7) {
         return "Submitted"
       }
     }
 
     return "Submit"
+  }
+
+  getStatus(){
+    if (this.assementYear.verificationStatus === 3){
+      if (this.flag === 'sec-admin'){
+        return 'NC Recieved'
+      } else {
+        return 'NC Sent'
+      }
+    } else {
+      return VerificationStatus[this.assementYear.verificationStatus]
+    }
   }
 
 }

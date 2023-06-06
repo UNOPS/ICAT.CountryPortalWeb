@@ -3,7 +3,8 @@
     {{
       this.assementYear !== undefined
         ? "Verification " +
-          VerificationStatusEnum[this.assementYear.verificationStatus]
+          (this.assementYear.verificationStatus === 3 ? 'NC Sent' : 
+          VerificationStatusEnum[this.assementYear.verificationStatus])
         : "Verification "
     }}
   </h4>
