@@ -636,7 +636,7 @@ export class ProposeProjectComponent implements OnInit {
   }
 
   //
-  saveForm(formData: NgForm) {
+  async saveForm(formData: NgForm) {
     console.log('hii');
     console.log(formData.form.valid)
     console.log(formData)
@@ -658,21 +658,21 @@ export class ProposeProjectComponent implements OnInit {
     //  console.log(this.project)
     //  console.log(this.selectedInstitution)
 
-    // if (this.project.ndc) {
-    //   this.project.currentNdc = this.project.ndc.name;
-    //   this.project.previousNdc = this.project.ndc.name;
+    if (this.project.ndc) {
+      this.project.currentNdc = this.project.ndc.name;
+      this.project.previousNdc = this.project.ndc.name;
     //   let ndc = new Ndc();
     //   ndc.id = this.project.ndc?.id;
     //   this.project.ndc = ndc;
-    // }
+    }
 
-    // if (this.project.subNdc) {
-    //   this.project.currentSubNdc = this.project.subNdc.name;
-    //   this.project.previousSubNdc = this.project.subNdc.name;
+    if (this.project.subNdc) {
+      this.project.currentSubNdc = this.project.subNdc.name;
+      this.project.previousSubNdc = this.project.subNdc.name;
     //   let subned = new SubNdc();
     //   subned.id = this.project.subNdc?.id;
     //   this.project.subNdc = subned;
-    // }
+    }
 
     if (this.project.institution) {
       let insti = new Institution();

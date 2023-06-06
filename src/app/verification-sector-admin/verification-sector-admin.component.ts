@@ -40,6 +40,7 @@ export class VerificationSectorAdminComponent implements OnInit {
     VerificationStatus[VerificationStatus.Pending],
     VerificationStatus[VerificationStatus['Pre Assessment']],
     VerificationStatus[VerificationStatus['NC Recieved']],
+    VerificationStatus[VerificationStatus['In Remediation']],
     VerificationStatus[VerificationStatus['Initial Assessment']],
     VerificationStatus[VerificationStatus['Final Assessment']],
     VerificationStatus[VerificationStatus.Fail],

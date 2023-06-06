@@ -41,7 +41,8 @@ export class VerifyHistoryComponent implements OnInit
 verificationStatus: string[] = [
   VerificationStatus[VerificationStatus.Pending],
   VerificationStatus[VerificationStatus['Pre Assessment']],
-  VerificationStatus[VerificationStatus['NC Recieved']],
+  VerificationStatus[VerificationStatus['NC Recieved']] === 'NC Recieved' ? 'NC Sent' : 'NC Recieved',
+  VerificationStatus[VerificationStatus['In Remediation']],
   VerificationStatus[VerificationStatus['Initial Assessment']],
   VerificationStatus[VerificationStatus['Final Assessment']],
   VerificationStatus[VerificationStatus.Fail],
@@ -105,8 +106,9 @@ loadgridData = (event: LazyLoadEvent) => {
   this.totalRecords = 0;
 
   console.log(this.searchBy);
-  let statusId = this.searchBy.status
-    ? Number(VerificationStatus[this.searchBy.status])
+  let status = this.searchBy.status  === 'NC Sent' ? 'NC Recieved' : this.searchBy.status
+  let statusId = status
+    ? Number(VerificationStatus[status])
     : 0;
     console.log("110011",statusId)
   let filtertext = this.searchBy.text ? this.searchBy.text : '';

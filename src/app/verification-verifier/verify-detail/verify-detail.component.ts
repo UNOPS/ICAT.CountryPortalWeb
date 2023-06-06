@@ -21,6 +21,7 @@ import {
   VerificationControllerServiceProxy,
   VerificationDetail,
 } from 'shared/service-proxies/service-proxies';
+import { VerificationService } from 'shared/verification-service';
 
 @Component({
   selector: 'verify-detail-detail',
@@ -29,7 +30,7 @@ import {
 })
 export class VerifyDetailComponent implements OnInit {
   assesMentYearId: number = 0;
-  verificationStatus: number = 0;
+  verificationStatus: any = 0;
   assementYear: AssessmentYear = new AssessmentYear();
   parameters: any[] = [];
   baselineParameters: Parameter[] = [];
@@ -72,10 +73,12 @@ export class VerifyDetailComponent implements OnInit {
   isProjectionAccept:boolean = true;
 
   isNdcDisable:boolean = false;
+  isNdcAccepted:boolean = false;
   isNdcDisableReject:boolean = false;
   isMethodology:boolean = false;
   isMethodologyReject:boolean = false;
   isAssumptions:boolean = false;
+  isAssumptionAccepted:boolean = false;
   isAssumptionsReject:boolean = false;
 
   @ViewChild('opDRPro') overlayDRPro: any;
@@ -91,7 +94,8 @@ export class VerifyDetailComponent implements OnInit {
     private messageService: MessageService,
     private verificationProxy: VerificationControllerServiceProxy,
     private confirmationService: ConfirmationService,
-    private serviceProxy: ServiceProxy
+    private serviceProxy: ServiceProxy,
+    public verificationService: VerificationService
   ) {}
 
   ngOnInit(): void {
@@ -125,13 +129,16 @@ export class VerifyDetailComponent implements OnInit {
         if(ndcObj?.isAccepted == true)
         {
           this.isNdcDisable = true;
+          this.isNdcAccepted = true;
           this.isNdcDisableReject = true;
+        } else {
+          if (ndcObj?.explanation){
+            this.isNdcDisable = true;
+          }
+          this.isNdcAccepted = false;
+          this.isNdcDisableReject = false;
         }
-        if(ndcObj?.isAccepted == false)
-        {
-          this.isNdcDisable = true;
-          this.isNdcDisableReject = true;
-        }
+        
 
         let methObject = this.verificationDetailsFromDb.find((o)=>o.isMethodology == true);
         if(methObject?.isAccepted == true)
@@ -155,6 +162,18 @@ export class VerifyDetailComponent implements OnInit {
         {
           this. isAssumptions = true;
           this. isAssumptionsReject = true;
+        }
+        if(assumpObject?.isAccepted == true)
+        {
+          this.isAssumptions = true;
+          this.isAssumptionAccepted = true;
+          this.isAssumptionsReject = true;
+        } else {
+          if (assumpObject?.explanation){
+            this.isAssumptions = true;
+          }
+          this.isAssumptionAccepted = false;
+          this.isAssumptionsReject = false;
         }
       });
 
@@ -295,7 +314,7 @@ export class VerifyDetailComponent implements OnInit {
         this.parameters = this.parameters.map(para => {
           let v = this.verificationDetails.find(o => o.parameter.id === para.id)
           if (v){
-            if (!v.isAccepted && (v.rootCause === undefined || v.correctiveAction === undefined || v.action === undefined)){
+            if (!v.isAccepted && (v.rootCause === null || v.correctiveAction === null || v.action === null)){
               para['isConcernRaised'] = true
             }
           }
@@ -525,7 +544,7 @@ export class VerifyDetailComponent implements OnInit {
 
   parameterAccept(isNdc: boolean, isMethodology: boolean , isAssumption:boolean) {
     this.confirmationService.confirm({
-      message: 'Are sure you want to accept the parameter(s) ?',
+      message: 'Are sure you want to accept the ' + (isMethodology? 'methodology ?' : (isNdc ? 'aggregated action and action area ?' : (isAssumption ? 'assumption ?' : 'parameter(s) ?'))),
       header: 'Accept Confirmation',
       acceptIcon: 'icon-not-visible',
       rejectIcon: 'icon-not-visible',
@@ -659,7 +678,7 @@ export class VerifyDetailComponent implements OnInit {
     if(isNdc)
     {
       this.isNdcDisable = true;
-      this.isNdcDisableReject = true;
+      // this.isNdcDisableReject = true;
     }
 
     if(isMethodology)
@@ -671,7 +690,7 @@ export class VerifyDetailComponent implements OnInit {
     if(isAssumption)
     {
       this.isAssumptions = true;
-      this.isAssumptionsReject = true;
+      // this.isAssumptionsReject = true;
     }
   }
 
@@ -683,5 +702,12 @@ export class VerifyDetailComponent implements OnInit {
         vStatus: this.verificationStatus,
       },
     });
+  }
+
+  async onComplete(e: any){
+    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assementYear.id).toPromise()
+    if (e){
+      this.displayConcern = false
+    }
   }
 }

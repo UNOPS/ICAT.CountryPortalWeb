@@ -48,6 +48,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
   roundOnelekageList:any;
   roundOnebaseleineList:any;
   roundOneAssumptionList:any;
+  roundOneResultList: any;
 
   roundTwondcList:any;
   roundTwomethodologyList:any;
@@ -56,6 +57,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
   roundTwolekageList:any;
   roundTwobaseleineList:any;
   roundTwoAssumptionList:any;
+  roundTwoResultList: any;
 
   roundThreendcList:any;
   roundThreemethodologyList:any;
@@ -64,6 +66,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
   roundThreelekageList:any;
   roundThreebaseleineList:any;
   roundThreeAssumptionList:any;
+  roundThreeResultList: any;
 
   roundOneHeadTable:any;
   roundTwoHeadTable:any;
@@ -222,27 +225,30 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             this.roundOnendcList = this.roundOneList.filter((o: any)=>o.isNDC == true);
             console.log("this.roundOnendcList...",this.roundOnendcList);
             this.roundOnemethodologyList = this.roundOneList.filter((o: any)=>o.isMethodology == true);
-            this.roundOneprojectList = this.roundOneList.filter((o: any)=>o.isProject == true);
-            this.roundOneprojectionList = this.roundOneList.filter((o: any)=>o.isProjection == true);
-            this.roundOnelekageList = this.roundOneList.filter((o: any)=>o.isLekage == true);
-            this.roundOnebaseleineList = this.roundOneList.filter((o: any)=>o.isBaseline == true);
+            this.roundOneprojectList = this.roundOneList.filter((o: any)=>o.isProject == true && !o.isResult);
+            this.roundOneprojectionList = this.roundOneList.filter((o: any)=>o.isProjection == true && !o.isResult);
+            this.roundOnelekageList = this.roundOneList.filter((o: any)=>o.isLekage == true && !o.isResult);
+            this.roundOnebaseleineList = this.roundOneList.filter((o: any)=>o.isBaseline == true && !o.isResult);
             this.roundOneAssumptionList = this.roundOneList.filter((o: any)=>o.isAssumption == true);
+            this.roundOneResultList = this.roundOneList.filter((o: any) => o.isResult === true);
 
             this.roundTwondcList = this.roundTwoList.filter((o: any)=>o.isNDC == true);
             this.roundTwomethodologyList = this.roundTwoList.filter((o: any)=>o.isMethodology == true);
-            this.roundTwoprojectList = this.roundTwoList.filter((o: any)=>o.isProject == true);
-            this.roundTwoprojectionList = this.roundTwoList.filter((o: any)=>o.isProjection == true);
-            this.roundTwolekageList = this.roundTwoList.filter((o: any)=>o.isLekage == true);
-            this.roundTwobaseleineList = this.roundTwoList.filter((o: any)=>o.isBaseline == true);
+            this.roundTwoprojectList = this.roundTwoList.filter((o: any)=>o.isProject == true && !o.isResult);
+            this.roundTwoprojectionList = this.roundTwoList.filter((o: any)=>o.isProjection == true && !o.isResult);
+            this.roundTwolekageList = this.roundTwoList.filter((o: any)=>o.isLekage == true && !o.isResult);
+            this.roundTwobaseleineList = this.roundTwoList.filter((o: any)=>o.isBaseline == true && !o.isResult);
             this.roundThreeAssumptionList = this.roundTwoList.filter((o: any)=>o.isAssumption == true);
+            this.roundTwoResultList = this.roundTwoList.filter((o: any) => o.isResult === true);
     
             this.roundThreendcList = this.roundThreeList.filter((o: any)=>o.isNDC == true);
             this.roundThreemethodologyList = this.roundThreeList.filter((o: any)=>o.isMethodology == true);
-            this.roundThreeprojectList = this.roundThreeList.filter((o: any)=>o.isProject == true);
-            this.roundThreeprojectionList = this.roundThreeList.filter((o: any)=>o.isProjection == true);
-            this.roundThreelekageList = this.roundThreeList.filter((o: any)=>o.isLekage == true);
-            this.roundThreebaseleineList = this.roundThreeList.filter((o: any)=>o.isBaseline == true);
+            this.roundThreeprojectList = this.roundThreeList.filter((o: any)=>o.isProject == true && !o.isResult);
+            this.roundThreeprojectionList = this.roundThreeList.filter((o: any)=>o.isProjection == true && !o.isResult);
+            this.roundThreelekageList = this.roundThreeList.filter((o: any)=>o.isLekage == true && !o.isResult);
+            this.roundThreebaseleineList = this.roundThreeList.filter((o: any)=>o.isBaseline == true && !o.isResult);
             this.roundThreeAssumptionList = this.roundThreeList.filter((o: any)=>o.isAssumption == true);
+            this.roundThreeResultList = this.roundTwoList.filter((o: any) => o.isResult === true);
     
   
   

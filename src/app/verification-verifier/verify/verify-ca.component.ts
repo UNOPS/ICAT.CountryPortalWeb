@@ -40,7 +40,8 @@ export class VerifyCaComponent implements OnInit {
   verificationStatus: string[] = [
     VerificationStatus[VerificationStatus.Pending],
     VerificationStatus[VerificationStatus['Pre Assessment']],
-    VerificationStatus[VerificationStatus['NC Recieved']],
+    VerificationStatus[VerificationStatus['NC Recieved']] === 'NC Recieved' ? 'NC Sent' : 'NC Recieved' ,
+    VerificationStatus[VerificationStatus['In Remediation']],
     VerificationStatus[VerificationStatus['Initial Assessment']],
     VerificationStatus[VerificationStatus['Final Assessment']],
     VerificationStatus[VerificationStatus['Fail']],
@@ -77,6 +78,7 @@ export class VerifyCaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.verificationStatus)
     this.userName = localStorage.getItem('user_name')!;
 
     let filter1: string[] = [];
@@ -122,9 +124,9 @@ export class VerifyCaComponent implements OnInit {
    // this.loading = true;
     this.totalRecords = 0;
 
-    console.log(this.searchBy);
-    let statusId = this.searchBy.status
-      ? Number(VerificationStatus[this.searchBy.status])
+    let status = this.searchBy.status  === 'NC Sent' ? 'NC Recieved' : this.searchBy.status
+    let statusId = status
+      ? Number(VerificationStatus[status])
       : 0;
     console.log('110011', statusId);
     let filtertext = this.searchBy.text ? this.searchBy.text : '';
