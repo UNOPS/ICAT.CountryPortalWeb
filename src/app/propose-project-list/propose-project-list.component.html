@@ -49,6 +49,7 @@
     <div class="row p-2">
       <p-table
         #table
+    
         [value]="climateactions"
         [lazy]="true"
         (onLazyLoad)="loadgridData($event)"
@@ -69,10 +70,7 @@
           
           <tr>
             <th style="width: 3rem">
-              <p-tableHeaderCheckbox (click)="buttonEnable()" ></p-tableHeaderCheckbox>
-            </th>
-            <th>
-              <div class="col-sm-2" style="width: 70.666667%">
+              <div style="margin-bottom: 5px;">
                 <button
                   pRipple
                   class="fas fa-plus"
@@ -87,10 +85,15 @@
                   ></i>
                 </button>
               </div>
+              <p-tableHeaderCheckbox (click)="buttonEnable()" ></p-tableHeaderCheckbox>
+            </th>
+            <th>
+          
+              View/Accept
             </th>
            
             
-            <th>Name</th>
+            <th >Name</th>
             <th>Project Proponent</th>
             <th>Status of the Project</th>
             <th type="button"  class="pi pi-info-circle "  pTooltip="Proposed - Climate actions those are just proposed by the proponent
@@ -238,7 +241,7 @@
             <td>
                     
                     
-              <button pButton pRipple type="button" label="Assess CA" class="p-btn-sm" (click)="toGhGAsse(climateactions)"></button>
+              <button pButton pRipple  type="button" label="Assess Climate Action" class="p-btn-sm" (click)="toGhGAsse(climateactions)"></button>
             </td>
             <td>
 

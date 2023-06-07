@@ -28,6 +28,7 @@ export class DocumentUploadComponent implements OnInit, OnChanges {
   @Input() showDeleteButton: boolean = true;
   @Input() showUpload: boolean = true;
   @Input() id: number = 0;
+  @Input() viewDocument: boolean = false;
 
   loading: boolean;
   uploadedFiles: any[] = [];
