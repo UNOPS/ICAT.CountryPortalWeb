@@ -1325,6 +1325,7 @@
               [documentOwnerId]="documentOwnerId"
               [isNew]="false"
               [showUpload]="true"
+              [viewDocument]="true"
             >
             </app-document-upload>
           </div>
@@ -1998,9 +1999,9 @@
         pButton
         pRipple
         type="button"
-        [label]="editEntytyId>0?'back':(isSaving?'Back':'Cancel')"
+        [label]="editEntytyId>0?'Back':(isSaving?'Back':'Cancel')"
         class="p-button-raised"
-        (click)="confirmBack(editEntytyId>0?'back':(isSaving?'back':'cancel'))"
+        (click)="confirmBack(editEntytyId>0?'Back':(isSaving?'Back':'Cancel'))"
       ></button>
       <!-- <div *ngIf="isDownloading == false">    [disabled]="isSaving || !fData.form.valid" -->
       <button
