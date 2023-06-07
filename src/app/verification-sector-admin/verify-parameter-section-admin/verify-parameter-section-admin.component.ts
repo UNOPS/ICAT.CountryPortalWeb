@@ -429,6 +429,8 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     } else {
       data['verificationDetail'] = null
     }
+
+    data['assessmentYear'] = this.assessmentYear
     
 
     this.ref = this.dialogService.open(VerificationActionDialogComponent, {

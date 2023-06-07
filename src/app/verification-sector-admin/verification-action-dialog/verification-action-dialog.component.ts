@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AssessmentYear, ChangeParameterValue, Institution, InstitutionControllerServiceProxy, Ndc, Parameter, Project, ServiceProxy, SubNdc, UnitConversionControllerServiceProxy, User, VerificationControllerServiceProxy, VerificationDetail } from 'shared/service-proxies/service-proxies';
+import { AssesmentControllerServiceProxy, AssessmentYear, ChangeParameterValue, Institution, InstitutionControllerServiceProxy, Ndc, Parameter, Project, ServiceProxy, SubNdc, UnitConversionControllerServiceProxy, User, VerificationControllerServiceProxy, VerificationDetail } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 import { AppService } from 'shared/AppService';
 
@@ -39,6 +39,9 @@ export class VerificationActionDialogComponent implements OnInit {
   defaultValues: any = [];
   selectedDefault: any
 
+  historicalValues: any[] = []
+  selectedHistoricalValue: any
+
   constructor(
     public config: DynamicDialogConfig,
     private unitConversionControllerServiceProxy: UnitConversionControllerServiceProxy,
@@ -47,7 +50,8 @@ export class VerificationActionDialogComponent implements OnInit {
     private messageService: MessageService,
     private dialogRef: DynamicDialogRef,
     private serviceProxy: ServiceProxy,
-    private appService: AppService
+    private appService: AppService,
+    private assessmentProxy: AssesmentControllerServiceProxy,
   ) { 
     console.log("config data--------", config.data)
     this.parameter = this.config.data['parameter'];
@@ -84,30 +88,42 @@ export class VerificationActionDialogComponent implements OnInit {
           console.log("+++++++++", this.ndcList)
         });
     } else if (this.type === 'parameter') {
-      let _unit
-      if (this.parameter.uomDataRequest){
-        _unit = this.parameter.uomDataRequest
-      } else if (this.parameter.uomDataEntry){
-        _unit = this.parameter.uomDataEntry
-      } else {
-        _unit = ''
-      }
-      let res = await this.unitConversionControllerServiceProxy.getUnitTypes(_unit).toPromise()
-      if (res.length > 0){
-        this.unitList = res
-      } else {
-        this.unit.ur_fromUnit = this.parameter.uomDataRequest ? this.parameter.uomDataRequest : this.parameter.uomDataEntry
-        this.unitList.push(this.unit)
-      }
-  
-      let ins = await this.instituationProxy.getInstitutionforAssesment().toPromise()
-      if (ins.length > 0){
-        this.instiTutionList = ins
-      }
+      
+      await this.getUnits()
+      await this.getInstitutions()
     }
-    console.log(this.parameter)
-    await this.getDefaultValues()
+    if (this.parameter.isDefault){
+      await this.getDefaultValues()
+    }
+    if (this.parameter.isHistorical){
+      await this.getHistoricalValues()
+    }
 
+  }
+
+  async getUnits(){
+    let _unit
+    if (this.parameter.uomDataRequest){
+      _unit = this.parameter.uomDataRequest
+    } else if (this.parameter.uomDataEntry){
+      _unit = this.parameter.uomDataEntry
+    } else {
+      _unit = ''
+    }
+    let res = await this.unitConversionControllerServiceProxy.getUnitTypes(_unit).toPromise()
+    if (res.length > 0){
+      this.unitList = res
+    } else {
+      this.unit.ur_fromUnit = this.parameter.uomDataRequest ? this.parameter.uomDataRequest : this.parameter.uomDataEntry
+      this.unitList.push(this.unit)
+    }
+  }
+
+  async getInstitutions(){
+    let ins = await this.instituationProxy.getInstitutionforAssesment().toPromise()
+    if (ins.length > 0){
+      this.instiTutionList = ins
+    } 
   }
 
   async getDefaultValues() {
@@ -164,6 +180,58 @@ export class VerificationActionDialogComponent implements OnInit {
     })
   }
 
+  async getHistoricalValues() {
+    let assessments = await this.assessmentProxy.getAssessmentsByCountryMethodology(
+      this.assessmentYear.assessment.methodology.id, this.userCountryId).toPromise()
+    let paraCode = this.parameter.code
+    let assessmentIds = assessments.map(ass => { return ass.id });
+    let filter: string[] | undefined = []
+    filter.push('assessment.id||$in||' + assessmentIds) &
+      filter.push('code||$eq||' + paraCode)
+    if (this.parameter.vehical) filter.push('vehical||$eq||' + this.parameter.vehical)
+    if (this.parameter.fuelType) filter.push('fuelType||$eq||' + this.parameter.fuelType)
+    if (this.parameter.powerPlant) filter.push('powerPlant||$eq||' + this.parameter.powerPlant)
+    if (this.parameter.route) filter.push('route||$eq||' + this.parameter.route)
+    if (this.parameter.feedstock) filter.push('feedstock||$eq||' + this.parameter.feedstock)
+    if (this.parameter.residue) filter.push('residue||$eq||' + this.parameter.residue)
+    if (this.parameter.soil) filter.push('soil||$eq||' + this.parameter.soil)
+    if (this.parameter.stratum) filter.push('stratum||$eq||' + this.parameter.stratum)
+    if (this.parameter.landClearance) filter.push('landClearance||$eq||' + this.parameter.landClearance)
+
+    this.serviceProxy
+      .getManyBaseParameterControllerParameter(
+        undefined,
+        undefined,
+        filter,
+        undefined,
+        undefined,
+        undefined,
+        1000,
+        0,
+        0,
+        0
+      ).subscribe((res: any) => {
+        let parameters = res.data.filter((p: any) => (p.code == paraCode) && p.value)
+        this.historicalValues = parameters.map((p: any) => {
+          return {
+            label: p.assessmentYear + ' - ' + p.value + ' ' + p.uomDataEntry,
+            value: p.value,
+            unit: p.uomDataEntry,
+            year: p.assessmentYear
+          }
+        })
+        let answer: any[] = [];
+        this.historicalValues.forEach((x: any) => {
+          if (!answer.some(y => JSON.stringify(y) === JSON.stringify(x))) {
+            answer.push(x)
+          }
+        })
+        this.historicalValues = answer
+        this.historicalValues = this.historicalValues.filter((val: any) => (val.unit === this.parameter.uomDataEntry) || (val.unit === this.parameter.uomDataRequest))
+        this.historicalValues.sort((a: any, b: any) => b.year - a.year);
+      })
+  }
+
   async sendValueForVerification(_isEnterData: boolean) {
     console.log("clicked")
     if ((this.correctValue && this.correctUnit) || (this.selectedInstitution && this.correctUnit)
@@ -206,7 +274,7 @@ export class VerificationActionDialogComponent implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
-              detail: 'Value changed successfully',
+              detail: 'Successfully sent to Data Collection Team',
               closable: true,
             });
             if (this.parameter.isDefault){
@@ -234,7 +302,7 @@ export class VerificationActionDialogComponent implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
-              detail: 'Value changed successfully',
+              detail: 'Successfully sent to Data Collection Team',
               closable: true,
             });
             this.dialogRef.close({ isEnterData: _isEnterData, value: this.selectedInstitution.name })
@@ -254,6 +322,29 @@ export class VerificationActionDialogComponent implements OnInit {
       (this.correctValue === undefined && this.correctUnit === undefined && !this.selectedNdc && this.resultComment === undefined)  ||
       (this.correctValue === undefined && this.correctUnit === undefined && this.selectedNdc === undefined && !this.resultComment)
 
+  }
+
+  getSubmitLabel(){
+    // type === 'ndc' ? 'Send for verification' : (type === 'result' ? 'Send to QC' :
+    //                  (isEnterData ? 'Send to QC' : 'Send to DC team'))
+
+    if (this.type === 'ndc'){
+      return 'Send for verification'
+    } else {
+      if (this.type === 'result') {
+        return 'Send to QC'
+      } else {
+        if (this.isEnterData){
+          if (this.parameter.isDefault || this.parameter.isHistorical){
+            return 'Send to verifier'
+          } else {
+            return 'Send to DC team'
+          }
+        } else {
+          return 'Send to DC team'
+        }
+      }
+    }
   }
 
 }
