@@ -440,9 +440,8 @@ export class UserFormComponent implements OnInit {
   }
 
   deleteUser() {
-    // console.log("asdsd")
 
-    this.user.status=this.user.status?0:-10;
+    this.user.status=1;
     this.serviceProxy
       .updateOneBaseUsersControllerUser(this.user.id,this.user)
       .subscribe((res) => {

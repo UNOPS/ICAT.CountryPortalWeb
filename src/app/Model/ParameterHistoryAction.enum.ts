@@ -7,4 +7,5 @@ export enum ParameterHistoryAction {
     ApproveData = 6,
     AssignVerifier = 7,
     Verifier = 8,
+    RaisedConcern = 9
   }
