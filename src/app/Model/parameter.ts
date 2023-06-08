@@ -24,7 +24,7 @@ class Parameter {
   public historicalValues: any[] = [];
   public displayhisValues: any[] = [];
   public historicalValue: any;
-
+  public historicalParaID: any;
   // public isRootLevel: boolean = false;
   // public isDimentionLevel: boolean = false;
   // public isDimensionValueLevel: boolean = false;

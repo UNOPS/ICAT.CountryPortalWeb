@@ -210,7 +210,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   {
        console.log("dataRequestList...",obj)
        this.paraId = obj.id;
-       console.log("this.paraId...",this.paraId)
+       console.log("this.paraId...",this.paraId) 
 
       // let x = 602;
        this.prHistoryProxy

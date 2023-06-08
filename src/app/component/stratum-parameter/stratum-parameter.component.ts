@@ -47,6 +47,7 @@ export class StratumParameterComponent implements OnInit {
   onSelectHistoricalVal(event:any, idxSec:any, idxPara:any){
     console.log(event.value.value)
     this.parameterSection.stratumSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
+    this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara]["historicalParaID"] = event.value.id
   }
 
   changeUnit(e: any, idxSec:any, idxPara:any ){
