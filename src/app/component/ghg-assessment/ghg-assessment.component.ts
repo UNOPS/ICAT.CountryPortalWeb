@@ -2551,10 +2551,12 @@ else{
                 sectionparam.parameters = sectionparam.parameters.map(para =>{
                   // let parameters = res.data.filter((p:any) => (p.code == para.Code) && p.value )
                   let parameters = qcPassParameterRequest.filter((p:any) => (p.parameter.code == para.Code) && p.parameter.value )
+
                   
-                  para.historicalValues = parameters.map((p: any) => {
+                  para.historicalValues = parameters.map((dr: any) => {
+                    let p =dr.parameter;
                     return {
-                      label: p.assessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
+                      label: p.AssessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
                       value: p.value,
                       unit: p.uomDataEntry,
                       year: p.assessmentYear
