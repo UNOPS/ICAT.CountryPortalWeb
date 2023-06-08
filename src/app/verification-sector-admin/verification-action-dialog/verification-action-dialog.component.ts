@@ -235,7 +235,7 @@ export class VerificationActionDialogComponent implements OnInit {
   async sendValueForVerification(_isEnterData: boolean) {
     console.log("clicked")
     if ((this.correctValue && this.correctUnit) || (this.selectedInstitution && this.correctUnit)
-      || this.resultComment || (this.selectedDefault && this.correctUnit)) {
+      || this.resultComment || (this.selectedDefault && this.correctUnit) ||  (this.selectedHistoricalValue && this.correctUnit)) {
       if (this.type === 'parameter') {
         if (_isEnterData) {
           // enter direct value
@@ -258,6 +258,11 @@ export class VerificationActionDialogComponent implements OnInit {
             
           } else if (this.parameter.isHistorical){
             //Manage historical values
+            body.correctData = {
+              historicalValue: this.selectedHistoricalValue,
+              unit: this.correctUnit.ur_fromUnit
+            }
+            body.isHistorical = true
           } else {
             console.log("enter direct value", this.correctValue, this.correctUnit)
             console.log("selected parameter", this.parameter)
@@ -279,6 +284,8 @@ export class VerificationActionDialogComponent implements OnInit {
             });
             if (this.parameter.isDefault){
               this.dialogRef.close({ isEnterData: _isEnterData, value: this.selectedDefault.value + this.correctUnit.ur_fromUnit })
+            } else if (this.parameter.isHistorical){
+              this.dialogRef.close({ isEnterData: _isEnterData, value: this.selectedHistoricalValue.value + this.correctUnit.ur_fromUnit })
             } else {
               this.dialogRef.close({ isEnterData: _isEnterData, value: this.correctValue + this.correctUnit.ur_fromUnit })
             }
