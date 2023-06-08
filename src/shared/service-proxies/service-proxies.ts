@@ -29649,6 +29649,7 @@ export class Parameter implements IParameter {
     isProjection: boolean;
     isDefault: boolean;
     isHistorical: boolean;
+    historicalParaID: number;
     vehical: string;
     fuelType: string;
     route: string;
@@ -29716,6 +29717,7 @@ export class Parameter implements IParameter {
             this.isProjection = _data["isProjection"];
             this.isDefault = _data["isDefault"];
             this.isHistorical = _data["isHistorical"];
+            this.historicalParaID = _data["historicalParaID"];
             this.vehical = _data["vehical"];
             this.fuelType = _data["fuelType"];
             this.route = _data["route"];
@@ -29784,6 +29786,7 @@ export class Parameter implements IParameter {
         data["isProjection"] = this.isProjection;
         data["isDefault"] = this.isDefault;
         data["isHistorical"] = this.isHistorical;
+        data["historicalParaID"] = this.historicalParaID;
         data["vehical"] = this.vehical;
         data["fuelType"] = this.fuelType;
         data["route"] = this.route;
@@ -29852,6 +29855,7 @@ export interface IParameter {
     isProjection: boolean;
     isDefault: boolean;
     isHistorical: boolean;
+    historicalParaID: number;
     vehical: string;
     fuelType: string;
     route: string;
