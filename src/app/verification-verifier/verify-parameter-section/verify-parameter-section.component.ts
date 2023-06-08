@@ -98,6 +98,8 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
 
   isProjectionResult = false;
   isResultAccepted: boolean = false
+  hasResultConcern: boolean;
+  isResultRaised: boolean;
 
   constructor(
     private qaServiceProxy: QualityCheckControllerServiceProxy,
@@ -161,6 +163,9 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     let vd = this.verificationDetails.find((a: any )=> a.isResult === true && a[column] === true)
     if (vd?.isAccepted){
       this.isResultAccepted = true
+    }
+    if (vd?.explanation){
+      this.hasResultConcern = true
     }
 
   }
@@ -259,6 +264,11 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assessmentYear.id).toPromise()
     if (e){
       this.displayConcern = false
+      this.selectedParameter = []
+    }
+    if (this.isResultRaised){
+      this.hasResultConcern = true
+      this.isResultRaised = false
     }
   }
 
@@ -396,7 +406,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     this.displayConcern = true;
   }
 
-  raiseConcernResult(event: any) {
+  async raiseConcernResult(event: any) {
     this.raiseConcernSection = this.ResultLabel;
     this.isParameter = false;
     this.isValue = true;
@@ -423,6 +433,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     }
 
     this.displayConcern = true;
+    this.isResultRaised = true
   }
 
   resultAccept(){
