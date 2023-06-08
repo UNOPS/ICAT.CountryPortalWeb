@@ -46,8 +46,9 @@
   >
     <ng-template pTemplate="header">
       <tr >
-        <th  class="col-md-9"  >File Name</th>
+        <th  class="col-md-8"  >File Name</th>
         <th class="col-md-1"></th>
+        <th *ngIf="viewDocument" class="col-md-1"></th>
         <th class="col-md-1"></th>
         <th class="col-md-1"></th>
         
@@ -66,6 +67,17 @@
               icon="pi pi-download"
               pButton
               ng-reflect-icon="pi pi-download"
+              target="_blank"
+            ></a>
+          </td>
+
+          <td *ngIf="viewDocument" class="col-md-1">
+            <a
+              [href]="doc.viewUrl"
+              class="p-button p-component p-button-icon-only mr-10"
+              icon="pi pi-eye"
+              pButton
+              ng-reflect-icon="pi pi-eye"
               target="_blank"
             ></a>
           </td>

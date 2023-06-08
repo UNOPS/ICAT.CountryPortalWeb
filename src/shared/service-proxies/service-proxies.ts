@@ -23900,6 +23900,59 @@ export class ParameterRequestControllerServiceProxy {
         }
         return _observableOf(<any>null);
     }
+
+    getQCpassParameterRequest(parameteIds: string[]): Observable<any> {
+        let url_ = this.baseUrl + "/parameter-request/getQCpassParameterRequest/{parameteIds}?";
+        if (parameteIds === undefined || parameteIds === null)
+            throw new Error("The parameter 'parameteIds' must be defined and cannot be null.");
+        else
+            parameteIds && parameteIds.forEach(item => { url_ += "parameteIds=" + encodeURIComponent("" + item) + "&"; });
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetQCpassParameterRequest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetQCpassParameterRequest(<any>response_);
+                } catch (e) {
+                    return <Observable<any>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<any>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetQCpassParameterRequest(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
 }
 
 @Injectable()
@@ -32639,6 +32692,7 @@ export class Documents implements IDocuments {
     relativePath: string;
     country: Country;
     url: string;
+    viewUrl: string;
 
     constructor(data?: IDocuments) {
         if (data) {
@@ -32667,6 +32721,7 @@ export class Documents implements IDocuments {
             this.relativePath = _data["relativePath"];
             this.country = _data["country"] ? Country.fromJS(_data["country"]) : new Country();
             this.url = _data["url"];
+            this.viewUrl = _data["viewUrl"];
         }
     }
 
@@ -32692,6 +32747,7 @@ export class Documents implements IDocuments {
         data["relativePath"] = this.relativePath;
         data["country"] = this.country ? this.country.toJSON() : <any>undefined;
         data["url"] = this.url;
+        data["viewUrl"] = this.viewUrl;
         return data;
     }
 
@@ -32717,6 +32773,7 @@ export interface IDocuments {
     relativePath: string;
     country: Country;
     url: string;
+    viewUrl: string;
 }
 
 export class AuthCredentialDto implements IAuthCredentialDto {

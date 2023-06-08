@@ -30,6 +30,7 @@ import {
   DefaultValueControllerServiceProxy,
   User,
   Country,
+  ParameterRequestControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
 import Parameter from 'app/Model/parameter';
 import ParameterSections from 'app/Model/parameter-sections';
@@ -355,6 +356,7 @@ export class GhgAssessmentComponent implements OnInit {
     private instituationProxy: InstitutionControllerServiceProxy,
     private assessmentProxy: AssesmentControllerServiceProxy,
     private applicabilityControllerServiceProxy:ApplicabilityControllerServiceProxy,
+    private parameterRequestControllerServiceProxy:ParameterRequestControllerServiceProxy,
   ) {}
 
   ngOnInit(): void {
@@ -2540,11 +2542,16 @@ else{
                 0,
                 0,
                 0
-              ).subscribe((res: any) => {
-                console.log(res)
+              ).subscribe(async (res: any) => {
+                
+                let parametersIds:string[] = res.data.map((p:any) => p.id);
+           let qcPassParameterRequest =  await this.parameterRequestControllerServiceProxy.getQCpassParameterRequest(parametersIds).toPromise();
 
+           console.log('sectionparam.parameters',qcPassParameterRequest)
                 sectionparam.parameters = sectionparam.parameters.map(para =>{
-                  let parameters = res.data.filter((p:any) => (p.code == para.Code) && p.value )
+                  // let parameters = res.data.filter((p:any) => (p.code == para.Code) && p.value )
+                  let parameters = qcPassParameterRequest.filter((p:any) => (p.parameter.code == para.Code) && p.parameter.value )
+                  
                   para.historicalValues = parameters.map((p: any) => {
                     return {
                       label: p.assessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
@@ -3717,6 +3724,7 @@ else{
     this.clear();
     this.loadJson();
     this.methodAssessments = this.selectedMethodology.assessments
+    console.log("this.selectedMethodology",this.selectedMethodology)
   }
 
   onBaselineScenarioChange(event: any){
