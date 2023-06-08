@@ -540,14 +540,17 @@ export class QualityCheckDetailComponent implements OnInit {
         detail: "There are parameters in data collection path"
       })
     } else {
+      console.log("cccccccccc",this.assementYear.assessment.assessmentType)
       if (this.assementYear.assessment.assessmentType != 'MAC') {
+        // console.log("cccccccccc",this.assementYear.assessment.assessmentType)
         this.getAssesmentResult(true);
       } else {
+        console.log("cccccccccc",this.assementYear.assessment.assessmentType)
         this.toCalMacResult();
       }
       this.isReadyToCAl = false;
       this.isDisable = true;
-      window.location.reload()
+      // window.location.reload()
     }
   }
 
@@ -656,6 +659,8 @@ export class QualityCheckDetailComponent implements OnInit {
                   if(res!= null)
                   {
                       console.log("going to reload the page...")
+                      setTimeout(() => {
+                        },500);
                       window.location.reload();
                      
                   }
