@@ -2559,7 +2559,8 @@ else{
                       label: p.AssessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
                       value: p.value,
                       unit: p.uomDataEntry,
-                      year: p.assessmentYear
+                      year: p.assessmentYear,
+                      id:p.id
                     }
                   })
                   let answer: any[] = [];
@@ -3674,6 +3675,7 @@ else{
       param.isHistorical = p.isHistorical
       param.uomDataEntry = p.UOM;
       param.conversionValue = p.value;
+      param.historicalParaID= p.historicalParaID;
     }
     param.uomDataRequest = p.UOM;
     param.methodologyCode = this.methodologyCode;
