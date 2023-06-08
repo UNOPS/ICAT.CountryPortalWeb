@@ -232,6 +232,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         this.assementYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
+        'sec-admin',
         "1234"
       )
       .subscribe((res) => {

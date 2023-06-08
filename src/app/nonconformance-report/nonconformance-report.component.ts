@@ -103,6 +103,8 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
     VerificationStatus[VerificationStatus['Final Assessment']],
 
   ];
+
+  isReviewComplete: boolean
  
   
   constructor(
@@ -137,7 +139,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
           undefined,
           undefined
         )
-        .subscribe((res) => {
+        .subscribe(async (res) => {
           this.assementYear = res;
          // console.log("my year........", this.assementYear);
           this.recievdAssementYear =this.assementYear.assessmentYear;
@@ -145,8 +147,8 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
          // console.log("my year111..",this.recievdAssementYear);
          // console.log("my id111...", this.assessmentId);
 
-          
-
+         let assessment = await this.serviceProxy.getOneBaseAssesmentControllerAssessment(this.assementYear.assessment.id, undefined, undefined, 0).toPromise()
+       
           this.assYearProxy
           .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentId,this.recievdAssementYear)
           .subscribe((a) => {
@@ -154,6 +156,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             this.assmentYearList = a;
             //console.log("big list=========", a);
             this.verificationList = a[0]?.verificationDetail;
+            
             console.log("this.verificationList=========", this.verificationList);
             this.roundOneList = this.verificationList.filter((o: any)=>o.verificationStage == 1 && o.isAccepted == 0);
             console.log("this.roundOneList=========", this.roundOneList);
@@ -271,10 +274,20 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
    // let assessmentId = 1;
 
 
-   
+  }
 
+  checkReviewComplete(vdList: any, parameters: any) {
+    this.isReviewComplete = true
 
+    for (let para of parameters) {
+      let vd = vdList.find((o: any) => o.parameter.id === para.id)
+      if (vd === undefined) {
+        this.isReviewComplete = false
+        break;
+      }
+    }
 
+    
   }
 
   toPopUp(item:any)
@@ -460,7 +473,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
   getStatus(){
     if (this.assementYear.verificationStatus === 3){
       if (this.flag === 'sec-admin'){
-        return 'NC Recieved'
+        return 'NC Received'
       } else {
         return 'NC Sent'
       }

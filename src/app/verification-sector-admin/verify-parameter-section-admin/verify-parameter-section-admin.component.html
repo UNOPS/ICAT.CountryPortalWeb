@@ -201,14 +201,14 @@
         </div>
       </div>
     </div>
-    <div class="col-md-2 d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && hasResultConcern">
+    <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 || assessmentYear?.verificationStatus! == 8) && hasResultConcern && !isResultActionDone">
       <div class="col-12">
         <button type="button" (click)="onResultAction()" pButton pRipple>Action</button>
       </div>
     </div>
 
     <div class="col-md-2 d-flex align-items-end" *ngIf="
-        assessmentYear !== undefined && assessmentYear?.verificationStatus! == 3 && hasResultConcern
+        assessmentYear !== undefined && (assessmentYear?.verificationStatus! == 3 || assessmentYear?.verificationStatus! == 8) && hasResultConcern && !isResultActionDone
       ">
       <div class="col-12">
         <button

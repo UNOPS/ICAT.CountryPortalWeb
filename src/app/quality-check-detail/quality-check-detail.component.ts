@@ -363,6 +363,7 @@ export class QualityCheckDetailComponent implements OnInit {
         this.assementYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
+        '',
         "1234"
         // true
       )
@@ -1112,10 +1113,12 @@ export class QualityCheckDetailComponent implements OnInit {
     vd.sort((a: any,b: any) => a.verificationStage - b.verificationStage);
     this.resultVds = vd
     this.resultVds = this.resultVds.map(res => {
-      let comment = res.action.split('|')
-      res['commentBy'] = comment[0]
-      res['comment'] = comment[1]
-      return res
+      let comment = res.action?.split('|')
+      if (comment){
+        res['commentBy'] = comment[0]
+        res['comment'] = comment[1]
+        return res
+      }
     })
     
     this.displayAction = true
