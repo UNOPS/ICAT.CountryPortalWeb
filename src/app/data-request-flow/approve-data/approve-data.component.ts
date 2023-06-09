@@ -90,7 +90,7 @@ export class ApproveDataComponent implements OnInit {
       this.assessmentId = params['id'];
       console.log('id...', this.assessmentId);
     });
-*/
+    */
     this.userName = localStorage.getItem('user_name')!;
     this.route.queryParams.subscribe((params) => {
       this.assesmentYearId = params['id'];
@@ -513,6 +513,9 @@ export class ApproveDataComponent implements OnInit {
       }
     }
     this.selectedParameters = []
+    this.baselineParametersAcceptcount = 0
+    this.projectParametersAcceptcount = 0
+    // this.getAssesment()
   }
 
   clearParameters() {
@@ -521,5 +524,28 @@ export class ApproveDataComponent implements OnInit {
     this.selectedLeakageParameters = [];
     this.selectedProjectParameters = [];
     this.selectedProjectionParameters = [];
+  }
+
+  disableAccept() {
+    return (this.isHideRejectButton || this.enableQCButton) ||
+      (this.baselineParameters.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters.length == this.projectParametersAcceptcount) &&
+      (this.lekageParameters.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters.length === this.projectionParametersAcceptcount)
+  }
+
+  disableReject() {
+    return this.isRejectButtonDisable ||
+      (this.baselineParameters.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters.length == this.projectParametersAcceptcount)&&
+      (this.lekageParameters.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters.length === this.projectionParametersAcceptcount)
+  }
+
+  getAcceptLabel() {
+    return ((this.baselineParameters.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters.length == this.projectParametersAcceptcount)&&
+      (this.lekageParameters.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters.length === this.projectionParametersAcceptcount)) ? 'Accepted' : 'Accept'
   }
 }
