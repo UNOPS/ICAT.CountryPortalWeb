@@ -35,7 +35,9 @@ export class ApproveDataComponent implements OnInit {
   projectParametersAcceptcount :number =0;
   projectParameterscount:number =0;
   lekageParameters: Parameter[] = [];
+  lekageParametersAcceptcount :number =0;
   projectionParameters: Parameter[] = [];
+  projectionParametersAcceptcount :number =0;
   loading: boolean = false;
   confirm1: boolean;
   institutionList: any[] = [];
@@ -67,6 +69,7 @@ export class ApproveDataComponent implements OnInit {
   isHideRejectButton: boolean = false;
   hideAllButtons: any;
   finalQC: any;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -262,6 +265,13 @@ export class ApproveDataComponent implements OnInit {
           this.assementYearDetails.assessment.parameters.filter(
             (p) => p.isLekage  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
+
+          for(let n of this.lekageParameters){
+            this.lekageParametersAcceptcount += 1;
+            if(n.parameterRequest.dataRequestStatus==11){
+              this.lekageParametersAcceptcount +=1;
+            }
+          }
         this.projectionParameters =
           this.assementYearDetails.assessment.parameters.filter(
             (p) =>
@@ -269,6 +279,12 @@ export class ApproveDataComponent implements OnInit {
               p.projectionBaseYear == this.headerAssessmentYear &&
               !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
+          for(let n of this.projectionParameters){
+            this.projectionParametersAcceptcount += 1;
+            if(n.parameterRequest.dataRequestStatus==11){
+              this.projectionParametersAcceptcount +=1;
+            }
+          }
         console.log('projectionParameters', this.projectionParameters);
       });
   }
