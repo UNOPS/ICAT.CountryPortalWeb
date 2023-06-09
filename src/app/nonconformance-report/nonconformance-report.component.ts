@@ -104,7 +104,8 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
 
   ];
 
-  isReviewComplete: boolean
+  isReviewComplete: boolean = true
+  verificationRound: number
  
   
   constructor(
@@ -167,6 +168,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             console.log("this.roundThreeList...",this.roundThreeList)
             if(this.roundOneHeadTable !=null)
             {
+              this.verificationRound = 1
               let verifierId = this.roundOneHeadTable.userVerifier;
 
               this.serviceProxy.
@@ -185,6 +187,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             this.roundTwoHeadTable = this.verificationList?.find((o: any)=>o.verificationStage == 2);
             if(this.roundTwoHeadTable !=null)
             {
+              this.verificationRound = 2
               let verifierId = this.roundTwoHeadTable.userVerifier;
 
               this.serviceProxy.
@@ -205,6 +208,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             this.roundThreeHeadTable = this.verificationList?.find((o: any)=>o.verificationStage == 3);
             if(this.roundThreeHeadTable !=null)
             {
+              this.verificationRound = 3
               let verifierId = this.roundThreeHeadTable.userVerifier;
 
               this.serviceProxy.
@@ -220,6 +224,9 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             });
 
             }
+
+            this.checkReviewComplete(this.verificationList, assessment.parameters)
+            console.log(this.isReviewComplete)
 
            // console.log("round one head table=========", this.roundOneHeadTable);
             // above roundone..roundtwo lists shows verification details for
@@ -279,15 +286,40 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
   checkReviewComplete(vdList: any, parameters: any) {
     this.isReviewComplete = true
 
+    console.log(vdList)
+
     for (let para of parameters) {
-      let vd = vdList.find((o: any) => o.parameter.id === para.id)
+      let vd = vdList.find((o: any) => o.parameter?.id === para.id && o.verificationStage === this.verificationRound)
       if (vd === undefined) {
         this.isReviewComplete = false
         break;
       }
     }
 
-    
+    if (this.isReviewComplete){
+      let columns = ['isNdc', 'isMethodology', 'isAssumption']
+      for (let col of columns){
+        let vd = vdList.find((o: any) => o[col] && o.verificationStage === this.verificationRound)
+        if (vd === undefined){
+          this.isReviewComplete = false
+          break;
+        }
+      }
+    }
+
+    if (this.isReviewComplete){
+      let resultColumns = ['isBaseline', 'isProject', 'isLekage', 'isProjection']
+      for (let col of resultColumns){
+        let vd = vdList.find((o: any) => o[col] && o.isResult && o.verificationStage === this.verificationRound)
+        if (vd === undefined){
+          this.isReviewComplete = false
+          break;
+        }
+      }
+    }
+
+
+
   }
 
   toPopUp(item:any)
@@ -450,8 +482,11 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
 
   disableSubmit(){
     if (this.flag === 'sec-admin'){
-      return ((this.assementYear.verificationStatus !== 3 && this.assementYear.verificationStatus !== 8) || this.assementYear.verificationStatus === 7)
+      return ((this.assementYear.verificationStatus !== 3) || this.assementYear.verificationStatus === 7)
     } else {
+      if (!this.isReviewComplete){
+        return true
+      } 
       return (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 8 || this.assementYear.verificationStatus === 7)
     }
   }

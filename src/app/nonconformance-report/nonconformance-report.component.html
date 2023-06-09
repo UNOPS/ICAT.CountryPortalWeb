@@ -49,7 +49,7 @@
                 </div>
 
                 <ng-container *ngIf="roundOneList.length >0; else elseBlockroun1">
-                    <div class="roundOnendc" *ngIf="roundOnendcList.length > 0">
+                    <div class="roundOnendc" *ngIf="roundOnendcList?.length > 0">
                         <div class="row mb-3"
                             style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
                             <div class="col-md-4">
@@ -104,7 +104,7 @@
                         </div>
                     </div>
 
-                    <div class="roundOneMethodology" *ngIf="roundOnemethodologyList?.length != 0">
+                    <div class="roundOneMethodology" *ngIf="roundOnemethodologyList && roundOnemethodologyList?.length != 0">
                         <div class="row mb-3"
                             style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
                             <div class="col-md-4">
@@ -393,7 +393,7 @@
                         </div>
                     </div>
 
-                    <div class="roundOneIsAssumption" *ngIf="roundOneAssumptionList.length > 0">
+                    <div class="roundOneIsAssumption" *ngIf="roundOneAssumptionList?.length > 0">
                         <div class="row mb-3"
                             style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
                             <div class="col-md-4">
@@ -439,7 +439,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="roundOneIsAssumption" *ngIf="roundOneResultList.length > 0">
+                    <div class="roundOneIsAssumption" *ngIf="roundOneResultList?.length > 0">
                         <ng-container *ngFor="let result of roundOneResultList">
                             <div class="row mb-3"
                                 style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
@@ -550,8 +550,8 @@
                     <br>
                 </div>
 
-                <ng-container *ngIf="roundTwoList?.length != 0; else elseBlockroun2">
-                    <div class="roundTwondc" *ngIf="roundTwondcList?.length != 0">
+                <ng-container *ngIf="roundTwoList && roundTwoList?.length != 0; else elseBlockroun2">
+                    <div class="roundTwondc" *ngIf="roundTwondcList && roundTwondcList?.length != 0">
                         <div class="row mb-3"
                             style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
                             <div class="col-md-4">
@@ -607,7 +607,7 @@
                         </div>
                     </div>
 
-                    <div class="roundTwoMethodology" *ngIf="roundTwomethodologyList?.length != 0">
+                    <div class="roundTwoMethodology" *ngIf="roundTwomethodologyList && roundTwomethodologyList?.length != 0">
                         <div class="row mb-3"
                             style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
                             <div class="col-md-4">
@@ -940,7 +940,7 @@
 
                     </div>
 
-                    <div class="roundOneIsAssumption" *ngIf="roundTwoResultList.length > 0">
+                    <div class="roundOneIsAssumption" *ngIf="roundTwoResultList?.length > 0">
                         <ng-container *ngFor="let result of roundTwoResultList">
                             <div class="row mb-3"
                                 style="background-clip: border-box; background: rgb(160, 193, 204); padding: 5px;">
@@ -1499,6 +1499,7 @@
         </div>
         <p><b>Status of the assessment: </b>  {{getStatus()}}</p>
     </div>
+    <p *ngIf="!isReviewComplete && flag !== 'sec-admin'" style="color: red;">Note: Please review all the data before submitting the report</p>
 
     <div class="row mb-3">
         <div class="col-md-6">
