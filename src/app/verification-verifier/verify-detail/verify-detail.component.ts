@@ -222,6 +222,7 @@ export class VerifyDetailComponent implements OnInit {
         this.assementYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
+        'verifier',
         "1234"
       )
       .subscribe((res) => {

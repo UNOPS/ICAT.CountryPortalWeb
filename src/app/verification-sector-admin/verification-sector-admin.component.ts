@@ -39,7 +39,7 @@ export class VerificationSectorAdminComponent implements OnInit {
   verificationStatus: string[] = [
     VerificationStatus[VerificationStatus.Pending],
     VerificationStatus[VerificationStatus['Pre Assessment']],
-    VerificationStatus[VerificationStatus['NC Recieved']],
+    VerificationStatus[VerificationStatus['NC Received']],
     VerificationStatus[VerificationStatus['In Remediation']],
     VerificationStatus[VerificationStatus['Initial Assessment']],
     VerificationStatus[VerificationStatus['Final Assessment']],

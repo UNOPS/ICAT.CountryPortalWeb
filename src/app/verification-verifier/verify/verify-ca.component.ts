@@ -40,7 +40,7 @@ export class VerifyCaComponent implements OnInit {
   verificationStatus: string[] = [
     VerificationStatus[VerificationStatus.Pending],
     VerificationStatus[VerificationStatus['Pre Assessment']],
-    VerificationStatus[VerificationStatus['NC Recieved']] === 'NC Recieved' ? 'NC Sent' : 'NC Recieved' ,
+    VerificationStatus[VerificationStatus['NC Received']] === 'NC Received' ? 'NC Sent' : 'NC Received' ,
     VerificationStatus[VerificationStatus['In Remediation']],
     VerificationStatus[VerificationStatus['Initial Assessment']],
     VerificationStatus[VerificationStatus['Final Assessment']],
@@ -124,7 +124,7 @@ export class VerifyCaComponent implements OnInit {
    // this.loading = true;
     this.totalRecords = 0;
 
-    let status = this.searchBy.status  === 'NC Sent' ? 'NC Recieved' : this.searchBy.status
+    let status = this.searchBy.status  === 'NC Sent' ? 'NC Received' : this.searchBy.status
     let statusId = status
       ? Number(VerificationStatus[status])
       : 0;

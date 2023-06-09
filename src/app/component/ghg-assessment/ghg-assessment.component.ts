@@ -3521,7 +3521,7 @@ else{
         let assesYear = res;
 
         this.assesmentResaultProxy
-          .getAssesmentResult(assesmentId, assesYear[0].ay_id, true,"1234")
+          .getAssesmentResult(assesmentId, assesYear[0].ay_id, true, '', "1234")
           .subscribe((res) => {
 
          
@@ -3675,7 +3675,7 @@ else{
       param.isHistorical = p.isHistorical
       param.uomDataEntry = p.UOM;
       param.conversionValue = p.value;
-      param.historicalParaID= p.historicalParaID;
+      param['historicalParaID']= p.historicalParaID;
     }
     param.uomDataRequest = p.UOM;
     param.methodologyCode = this.methodologyCode;

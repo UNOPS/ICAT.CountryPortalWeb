@@ -145,7 +145,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnChanges(changes: any) {
+  async ngOnChanges(changes: any) {
     let column: string
     if (this.header == 'Baseline Parameter') {
       column = 'isBaseline'
@@ -160,7 +160,20 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       column = 'isProjection'
     }
 
-    let vd = this.verificationDetails.find((a: any )=> a.isResult === true && a[column] === true)
+    let round: number
+    if (
+      this.assessmentYear.verificationStatus === 1 ||
+      this.assessmentYear.verificationStatus === 2 ||
+      this.assessmentYear.verificationStatus === 3
+    ) {
+      round = 1;
+    } else if (this.assessmentYear.verificationStatus === 4) {
+      round = 2;
+    } else if (this.assessmentYear.verificationStatus === 5)
+    round = 3;
+
+    let vd = this.verificationDetails.find((a: any )=> a.isResult === true && a[column] === true && a.verificationStage === round )
+    console.log(vd)
     if (vd?.isAccepted){
       this.isResultAccepted = true
     }
@@ -203,6 +216,8 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   }
 
   checkboxCheck(event: any, param: Parameter) {
+    let c = document.getElementById('checkbox'+param.id)
+    console.log(c)
     if (event.checked) {
       this.selectedParameter.push(param);
     } else {
