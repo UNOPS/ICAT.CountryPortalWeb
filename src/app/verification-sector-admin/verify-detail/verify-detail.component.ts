@@ -312,6 +312,9 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
             if (v.explanation){
               para['isConcernRaised'] = true
             }
+            if (v.rootCause || v.correctiveAction){
+              para['canActiveAction'] = true
+            }
           }
           return para
         })

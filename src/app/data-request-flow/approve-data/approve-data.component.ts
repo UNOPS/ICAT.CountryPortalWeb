@@ -241,6 +241,7 @@ export class ApproveDataComponent implements OnInit {
           this.assementYearDetails.assessment?.parameters.filter(
             (p) => p.isBaseline  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
+          console.log(this.baselineParameters)
 
             for(let n of this.baselineParameters){
               this.baselineParameterscount += 1;
@@ -280,7 +281,7 @@ export class ApproveDataComponent implements OnInit {
               !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
           for(let n of this.projectionParameters){
-            this.projectionParametersAcceptcount += 1;
+            // this.projectionParametersAcceptcount += 1;
             if(n.parameterRequest.dataRequestStatus==11){
               this.projectionParametersAcceptcount +=1;
             }

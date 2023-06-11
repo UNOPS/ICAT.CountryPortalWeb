@@ -152,7 +152,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
        
           this.assYearProxy
           .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentId,this.recievdAssementYear)
-          .subscribe((a) => {
+          .subscribe(async (a) => {
            // console.log("ass year list",this.verificationList)
             this.assmentYearList = a;
             //console.log("big list=========", a);
@@ -225,7 +225,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
 
             }
 
-            this.checkReviewComplete(this.verificationList, assessment.parameters)
+            await this.checkReviewComplete(this.verificationList, assessment.parameters)
             console.log(this.isReviewComplete)
 
            // console.log("round one head table=========", this.roundOneHeadTable);
@@ -283,24 +283,22 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
 
   }
 
-  checkReviewComplete(vdList: any, parameters: any) {
+  async checkReviewComplete(vdList: any, parameters: any) {
     this.isReviewComplete = true
+    console.log("verificationRound", this.verificationRound)
+    let hasBaseline = false
+    let hasProject = false
+    let hasLekage = false
+    let hasProjection = false
 
-    console.log(vdList)
-
-    for (let para of parameters) {
-      let vd = vdList.find((o: any) => o.parameter?.id === para.id && o.verificationStage === this.verificationRound)
+    for await (let para of parameters) {
+      if (para.isBaseline) hasBaseline = true
+      if (para.isProject) hasProject = true
+      if (para.isLekage) hasLekage = true
+      if (para.isProjection) hasProjection = true
+      let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStage === this.verificationRound))
       if (vd === undefined) {
-        this.isReviewComplete = false
-        break;
-      }
-    }
-
-    if (this.isReviewComplete){
-      let columns = ['isNdc', 'isMethodology', 'isAssumption']
-      for (let col of columns){
-        let vd = vdList.find((o: any) => o[col] && o.verificationStage === this.verificationRound)
-        if (vd === undefined){
+        if (!para.isAlternative){
           this.isReviewComplete = false
           break;
         }
@@ -308,18 +306,30 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
     }
 
     if (this.isReviewComplete){
-      let resultColumns = ['isBaseline', 'isProject', 'isLekage', 'isProjection']
+      let columns = ['isNDC', 'isMethodology', 'isAssumption']
+      for await (let col of columns){
+        let vd = vdList.find((o: any) => o[col] && (o.isAccepted || o.verificationStage === this.verificationRound))
+        if (vd === undefined){
+          this.isReviewComplete = false
+          break;
+        }
+      }
+    }
+
+    if (this.isReviewComplete){ 
+      let resultColumns = []
+      if (hasBaseline) resultColumns.push('isBaseline')
+      if (hasProject) resultColumns.push('isProject')
+      if (hasLekage) resultColumns.push('isLekage')
+      if (hasProjection) resultColumns.push('isProjection')
       for (let col of resultColumns){
-        let vd = vdList.find((o: any) => o[col] && o.isResult && o.verificationStage === this.verificationRound)
+        let vd = vdList.find((o: any) => o[col] && o.isResult && (o.isAccepted || o.verificationStage === this.verificationRound))
         if (vd === undefined){
           this.isReviewComplete = false
           break;
         }
       }
     }
-
-
-
   }
 
   toPopUp(item:any)

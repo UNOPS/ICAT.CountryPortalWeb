@@ -416,7 +416,7 @@
         <ng-template pTemplate="body" let-projectionParameter>
           <tr>
             <td>
-              <p-tableCheckbox  *ngIf="projectionParameter.parameterRequest.dataRequestStatus === 9" [value]="projectionParameters">
+              <p-tableCheckbox  *ngIf="projectionParameter.parameterRequest.dataRequestStatus === 9" [value]="projectionParameter">
               </p-tableCheckbox>
             </td>
             <td>{{ projectionParameter.name }}</td>
