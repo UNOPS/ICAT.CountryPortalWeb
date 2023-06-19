@@ -696,8 +696,11 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       console.log(res)
       this.selectedNdc = res.result.ndc
       this.selectedSubNdc = res.result.subNdc
-      let action = `Ndc changed  Original Value : ${this.assementYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n
-        Sub Ndc changed  Original Value : ${this.assementYear.assessment.project.subNdc?.name} New Value : ${this.selectedSubNdc?.name} \n`;
+      let action = `Ndc changed,  Original Value : ${this.assementYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n`;
+
+      if (this.assementYear.assessment.project.subNdc !== null || this.selectedSubNdc !== undefined){
+        action = action + `Sub Ndc changed,  Original Value : ${this.assementYear.assessment.project.subNdc?.name} New Value : ${this.selectedSubNdc?.name} \n`
+      }
 
       this.assementYear.assessment.project.ndc = this.selectedNdc;
       this.assementYear.assessment.project.subNdc = this.selectedSubNdc;
