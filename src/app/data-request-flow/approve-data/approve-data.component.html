@@ -141,7 +141,7 @@
 
           <tr>
             <th style="width: 3rem">
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              <p-tableHeaderCheckbox *ngIf="baselineParametersAcceptcount !== baselineParameters.length"></p-tableHeaderCheckbox>
             </th>
             <th>Parameter</th>
             <th>Data Provider</th>
@@ -155,7 +155,7 @@
         <ng-template pTemplate="body" let-baselineParameters>
           <tr>
             <td>
-              <p-tableCheckbox [value]="baselineParameters"> </p-tableCheckbox>
+              <p-tableCheckbox *ngIf="baselineParameters.parameterRequest.dataRequestStatus === 9" [value]="baselineParameters"> </p-tableCheckbox>
             </td>
             <td>{{ baselineParameters.name }}</td>
             <td>{{ baselineParameters.institution.name }}</td>
@@ -228,7 +228,7 @@
 
           <tr>
             <th style="width: 3rem">
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              <p-tableHeaderCheckbox *ngIf="projectParametersAcceptcount !== projectParameters.length"></p-tableHeaderCheckbox>
             </th>
             <th>Parameter</th>
             <th>Data Provider</th>
@@ -242,7 +242,7 @@
         <ng-template pTemplate="body" let-projectParameters>
           <tr>
             <td>
-              <p-tableCheckbox [value]="projectParameters"> </p-tableCheckbox>
+              <p-tableCheckbox  *ngIf="projectParameters.parameterRequest.dataRequestStatus === 9" [value]="projectParameters"> </p-tableCheckbox>
             </td>
             <td>{{ projectParameters.name }}</td>
             <td>{{ projectParameters.institution.name }}</td>
@@ -315,7 +315,7 @@
 
           <tr>
             <th style="width: 3rem">
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              <p-tableHeaderCheckbox *ngIf="lekageParametersAcceptcount !== lekageParameters.length"></p-tableHeaderCheckbox>
             </th>
             <th>Parameter</th>
             <th>Data Provider</th>
@@ -329,7 +329,7 @@
         <ng-template pTemplate="body" let-lekageParameters>
           <tr>
             <td>
-              <p-tableCheckbox [value]="lekageParameters"> </p-tableCheckbox>
+              <p-tableCheckbox  *ngIf="lekageParameters.parameterRequest.dataRequestStatus === 9" [value]="lekageParameters"> </p-tableCheckbox>
             </td>
             <td>{{ lekageParameters.name }}</td>
             <td>{{ lekageParameters.institution.name }}</td>
@@ -402,7 +402,7 @@
 
           <tr>
             <th style="width: 3rem">
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              <p-tableHeaderCheckbox *ngIf="projectionParametersAcceptcount !== projectionParameters.length"></p-tableHeaderCheckbox>
             </th>
             <th>Parameter</th>
             <th>Data Provider</th>
@@ -413,46 +413,46 @@
             <th>Info</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-projectionParameters>
+        <ng-template pTemplate="body" let-projectionParameter>
           <tr>
             <td>
-              <p-tableCheckbox [value]="projectionParameters">
+              <p-tableCheckbox  *ngIf="projectionParameter.parameterRequest.dataRequestStatus === 9" [value]="projectionParameter">
               </p-tableCheckbox>
             </td>
-            <td>{{ projectionParameters.name }}</td>
+            <td>{{ projectionParameter.name }}</td>
             <td>
               {{
-                projectionParameters.institution
-                  ? projectionParameters.institution.name
+                projectionParameter.institution
+                  ? projectionParameter.institution.name
                   : ""
               }}
             </td>
             <td>
-              {{ projectionParameters.value }}
+              {{ projectionParameter.value }}
             </td>
             <td>
-              {{ projectionParameters.uomDataEntry }}
+              {{ projectionParameter.uomDataEntry }}
             </td>
 
             <td>
               {{
-                projectionParameters.parameterRequest.dataRequestStatus == 9
+                projectionParameter.parameterRequest.dataRequestStatus == 9
                   ? "Pending"
                   : ""
               }}
               {{
-                projectionParameters.parameterRequest.dataRequestStatus == 11
+                projectionParameter.parameterRequest.dataRequestStatus == 11
                   ? "Accepted"
                   : ""
               }}
               {{
-                projectionParameters.parameterRequest.dataRequestStatus == -9
+                projectionParameter.parameterRequest.dataRequestStatus == -9
                   ? "Rejected"
                   : ""
               }}
             </td>
             <td>
-              <i class="pi pi-ellipsis-v" style="font-size: 2rem" (click)="getInfo(projectionParameters)"></i>
+              <i class="pi pi-ellipsis-v" style="font-size: 2rem" (click)="getInfo(projectionParameter)"></i>
             </td>
             <!-- <td>{{ dataRequestList.id }}</td> -->
           </tr>
@@ -467,16 +467,16 @@
         <button
           class="btn btn-primary text-uppercase"
           type="submit"
-          [disabled]="(isHideRejectButton || enableQCButton ) || (baselineParameterscount==baselineParametersAcceptcount) && (projectParameterscount ==projectParametersAcceptcount)"
+          [disabled]="disableAccept()"
           (click)="onAcceptClick()"
         >
-          {{(baselineParameterscount==baselineParametersAcceptcount) && (projectParameterscount ==projectParametersAcceptcount) ?"Accepted" :"Accept"}}
+          {{getAcceptLabel()}}
         </button>
         <div *ngIf="isHideRejectButton == false">
         <button
           class="btn btn-primary text-uppercase ml-5"
           type="submit"
-          [disabled]="isRejectButtonDisable ||  (baselineParameterscount==baselineParametersAcceptcount) && (projectParameterscount ==projectParametersAcceptcount)"
+          [disabled]="disableReject()"
           (click)="onRejectClick()"
           
         >

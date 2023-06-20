@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
+import { climateAction } from 'app/propose-project-list/propose-project-list.component';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { reduce } from 'rxjs/operators';
@@ -28,10 +29,18 @@ export class ManagedatastatusComponent implements OnInit {
 
   searchBy: any = {
     text: null,
+    year: null,
+    climateaction: null,
+    status: null
   };
 
   first = 0;
   sectorId: number = 1;
+  yearList: any;
+  statusList: any[] = [
+    {name: 'Not Approved', code: 'notApproved'},
+    {name: 'Approved', code: 'approved'}
+  ]
 
 
   constructor(private serviceProxy: ServiceProxy,
@@ -40,7 +49,9 @@ export class ManagedatastatusComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private assYearProxy: AssessmentYearControllerServiceProxy,
-    private climateactionserviceproxy: ProjectControllerServiceProxy) { }
+    private climateactionserviceproxy: ProjectControllerServiceProxy,
+    private assessmentYearProxy: AssessmentYearControllerServiceProxy
+  ) { }
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
     console.log("work");
@@ -54,9 +65,10 @@ export class ManagedatastatusComponent implements OnInit {
   datarequests1: datarequest;
   asseYearId: any;
   alldatarequests: any;
+  dataReqCA: climateAction[] = []
 
 
-  ngOnInit() {
+  async ngOnInit() {
 
 
 
@@ -83,6 +95,12 @@ export class ManagedatastatusComponent implements OnInit {
         }
       })
     //  this.loadgridData();
+
+    let res = await this.assYearProxy.assessmentYearForManageDataStatus(0, 0, '', 0, 5, 0, 0, '', 'true', '').toPromise()
+    console.log(res)
+    for await (let r of res){
+      this.dataReqCA.push(r.assessment.project)
+    }
 
   }
 
@@ -138,9 +156,37 @@ export class ManagedatastatusComponent implements OnInit {
   //   this.alldatarequests=this.datarequests.length!=0?this.datarequests.slice(event.first?event.first:0,end):undefined;
   // }
 
+  onCAChange(e: any) {
+    console.log(this.searchBy)
+    if (this.searchBy.climateaction) {
+      this.assessmentYearProxy
+        .getAllByProjectId(this.searchBy.climateaction.id)
+        .subscribe((res: any) => {
+          this.yearList = res;
+          const tempYearList = getUniqueListBy(this.yearList, 'assessmentYear');
+          this.yearList = tempYearList;
+          console.log('yearlist----', this.yearList);
+        });
+    }
 
+    function getUniqueListBy(arr: any, key: any) {
+      return [
+        ...new Map(
+          arr.map((item: { [x: string]: any }) => [item[key], item])
+        ).values(),
+      ];
+    }
 
+    this.onSearch();
+  }
 
+  onYearChange(e: any){
+    this.onSearch();
+  }
+
+  onStatusChange(e: any){
+    this.onSearch()
+  }
 
 
 
@@ -150,7 +196,12 @@ export class ManagedatastatusComponent implements OnInit {
     this.loading = true;
 
     let filterText = this.searchBy.text ? this.searchBy.text : '';
+    let climateActionId = this.searchBy.climateaction
+      ? this.searchBy.climateaction.id
+      : 0;
+    let year = this.searchBy.year ? this.searchBy.year.assessmentYear : '';
     let projectStatusId = 0;
+    let status = this.searchBy.status ? this.searchBy.status.code : ''
 
     let sectorId = this.sectorId;
     let statusId = 0;
@@ -184,7 +235,11 @@ export class ManagedatastatusComponent implements OnInit {
       this.projectApprovalStatusId,
       // this.countryId,
       // sectorId,
-      0
+      0,
+      climateActionId,
+      year,
+      'false',
+      status
     ).subscribe(res => {
 
       console.log('assessmentYearForManageDataStatus', res)
@@ -209,16 +264,16 @@ export class ManagedatastatusComponent implements OnInit {
 
 
         // console.log( assesment.project.climateActionName)
-        datarequests1.name = assementYear.assesment.project.climateActionName;
+        datarequests1.name = assementYear.assessment.project.climateActionName;
         datarequests1.year = assementYear.assessmentYear ? assementYear.assessmentYear : "";
-        datarequests1.type = assementYear.assesment.assessmentType;
+        datarequests1.type = assementYear.assessment.assessmentType;
         datarequests1.assenmentYearId = assementYear.id;
         datarequests1.qaStatus = assementYear.qaStatus;
         datarequests1.verificationStatus = assementYear.verificationStatus
 
         // console.log("assesIs",assesment.id)
         this.parameterProxy
-          .getDateRequestToManageDataStatus(assementYear.assesment.id, assementYear.assessmentYear)
+          .getDateRequestToManageDataStatus(assementYear.assessment.id, assementYear.assessmentYear)
           .subscribe(res => {
             datarequests1.totalreqCount = res.length;
 
@@ -247,8 +302,9 @@ export class ManagedatastatusComponent implements OnInit {
 
         this.datarequests.push(datarequests1);
 
-console.log("+++++++++++++", this.datarequests)
       }
+      this.datarequests.sort((a,b) => a.qaStatus - b.qaStatus)
+      console.log("+++++++++++++", this.datarequests)
 
 
 
