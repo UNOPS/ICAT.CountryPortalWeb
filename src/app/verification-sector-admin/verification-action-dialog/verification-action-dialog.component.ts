@@ -92,10 +92,10 @@ export class VerificationActionDialogComponent implements OnInit {
       await this.getUnits()
       await this.getInstitutions()
     }
-    if (this.parameter.isDefault){
+    if (this.parameter?.isDefault){
       await this.getDefaultValues()
     }
-    if (this.parameter.isHistorical){
+    if (this.parameter?.isHistorical){
       await this.getHistoricalValues()
     }
 
@@ -235,7 +235,7 @@ export class VerificationActionDialogComponent implements OnInit {
   async sendValueForVerification(_isEnterData: boolean) {
     console.log("clicked")
     if ((this.correctValue && this.correctUnit) || (this.selectedInstitution && this.correctUnit)
-      || this.resultComment || (this.selectedDefault && this.correctUnit) ||  (this.selectedHistoricalValue && this.correctUnit)) {
+      || this.resultComment || (this.selectedDefault && this.correctUnit) ||  (this.selectedHistoricalValue && this.correctUnit) || (this.selectedNdc)) {
       if (this.type === 'parameter') {
         if (_isEnterData) {
           // enter direct value

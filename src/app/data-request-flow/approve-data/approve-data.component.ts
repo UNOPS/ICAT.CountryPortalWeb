@@ -35,7 +35,9 @@ export class ApproveDataComponent implements OnInit {
   projectParametersAcceptcount :number =0;
   projectParameterscount:number =0;
   lekageParameters: Parameter[] = [];
+  lekageParametersAcceptcount :number =0;
   projectionParameters: Parameter[] = [];
+  projectionParametersAcceptcount :number =0;
   loading: boolean = false;
   confirm1: boolean;
   institutionList: any[] = [];
@@ -68,6 +70,7 @@ export class ApproveDataComponent implements OnInit {
   hideAllButtons: any;
   finalQC: any;
 
+
   constructor(
     private route: ActivatedRoute,
     private proxy: ServiceProxy,
@@ -87,7 +90,7 @@ export class ApproveDataComponent implements OnInit {
       this.assessmentId = params['id'];
       console.log('id...', this.assessmentId);
     });
-*/
+    */
     this.userName = localStorage.getItem('user_name')!;
     this.route.queryParams.subscribe((params) => {
       this.assesmentYearId = params['id'];
@@ -238,6 +241,7 @@ export class ApproveDataComponent implements OnInit {
           this.assementYearDetails.assessment?.parameters.filter(
             (p) => p.isBaseline  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
+          console.log(this.baselineParameters)
 
             for(let n of this.baselineParameters){
               this.baselineParameterscount += 1;
@@ -262,6 +266,13 @@ export class ApproveDataComponent implements OnInit {
           this.assementYearDetails.assessment.parameters.filter(
             (p) => p.isLekage  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
+
+          for(let n of this.lekageParameters){
+            this.lekageParametersAcceptcount += 1;
+            if(n.parameterRequest.dataRequestStatus==11){
+              this.lekageParametersAcceptcount +=1;
+            }
+          }
         this.projectionParameters =
           this.assementYearDetails.assessment.parameters.filter(
             (p) =>
@@ -269,6 +280,12 @@ export class ApproveDataComponent implements OnInit {
               p.projectionBaseYear == this.headerAssessmentYear &&
               !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
+          for(let n of this.projectionParameters){
+            // this.projectionParametersAcceptcount += 1;
+            if(n.parameterRequest.dataRequestStatus==11){
+              this.projectionParametersAcceptcount +=1;
+            }
+          }
         console.log('projectionParameters', this.projectionParameters);
       });
   }
@@ -497,6 +514,9 @@ export class ApproveDataComponent implements OnInit {
       }
     }
     this.selectedParameters = []
+    this.baselineParametersAcceptcount = 0
+    this.projectParametersAcceptcount = 0
+    // this.getAssesment()
   }
 
   clearParameters() {
@@ -505,5 +525,28 @@ export class ApproveDataComponent implements OnInit {
     this.selectedLeakageParameters = [];
     this.selectedProjectParameters = [];
     this.selectedProjectionParameters = [];
+  }
+
+  disableAccept() {
+    return (this.isHideRejectButton || this.enableQCButton) ||
+      (this.baselineParameters.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters.length == this.projectParametersAcceptcount) &&
+      (this.lekageParameters.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters.length === this.projectionParametersAcceptcount)
+  }
+
+  disableReject() {
+    return this.isRejectButtonDisable ||
+      (this.baselineParameters.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters.length == this.projectParametersAcceptcount)&&
+      (this.lekageParameters.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters.length === this.projectionParametersAcceptcount)
+  }
+
+  getAcceptLabel() {
+    return ((this.baselineParameters.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters.length == this.projectParametersAcceptcount)&&
+      (this.lekageParameters.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters.length === this.projectionParametersAcceptcount)) ? 'Accepted' : 'Accept'
   }
 }

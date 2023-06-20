@@ -46,7 +46,7 @@ export class SoilParameterComponent implements OnInit {
   onSelectHistoricalVal(event:any, idxSec:any, idxPara:any){
     console.log(event.value.value)
     this.parameterSection.soilSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
-    this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara]["historicalParaID"] = event.value.id
+    this.parameterSection.soilSection.sectionparameters[idxSec].parameters[idxPara]["historicalParaID"] = event.value.id
   }
 
   changeUnit(e: any, idxSec:any, idxPara:any ){

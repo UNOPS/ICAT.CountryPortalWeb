@@ -378,7 +378,17 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     this.displayConcern = true;
   }
 
-  onComplete(e: any){
+  async onComplete(e: any){
+    this.parameters = this.parameters.map(para => {
+      if (para.id === this.concernParam?.id){
+        para['canActiveAction'] = true
+        return para
+      } else {
+        return para
+      }
+    })
+    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assessmentYear.id).toPromise()
+    
     if (e){
       this.displayConcern = false
     }
