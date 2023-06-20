@@ -327,10 +327,10 @@ export class AllResultComponent implements OnInit, AfterViewInit {
     //     console.log('AssemntList', res.data);
     //   });
 
-    let event: any = {};
-    event.rows = this.rows;
-    event.first = 0;
-    this.loadgridData(event);
+    // let event: any = {};
+    // event.rows = this.rows;
+    // event.first = 0;
+    // this.loadgridData(event);
   }
 
   loadgridData = (event: LazyLoadEvent) => {

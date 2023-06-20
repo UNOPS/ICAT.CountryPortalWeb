@@ -68,14 +68,15 @@ export class VerificationSectorAdminComponent implements OnInit {
     private serviceProxy: ServiceProxy,
     private vrServiceProxy: VerificationControllerServiceProxy,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messageService: MessageService
   ) {}
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
-    this.onSearch();
+    // this.onSearch();
   }
 
   onStatusChange($event: any) {
@@ -91,7 +92,7 @@ export class VerificationSectorAdminComponent implements OnInit {
   }
 
   loadgridData = (event: LazyLoadEvent) => {
-    // this.loading = true;
+    this.loading = true;
     this.totalRecords = 0;
 
     console.log(this.searchBy);
@@ -114,7 +115,14 @@ export class VerificationSectorAdminComponent implements OnInit {
           this.paras = a.items;
           console.log('hey aassse year', this.paras);
           this.totalRecords = a.meta.totalItems;
-          // this.loading = false;
+          this.loading = false;
+        }, error => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error loading'
+          })
+          this.loading = false
         });
     }, 1);
   };

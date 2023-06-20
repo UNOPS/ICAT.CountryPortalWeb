@@ -102,7 +102,7 @@ onSearch() {
 
 
 loadgridData = (event: LazyLoadEvent) => {
- // this.loading = true;
+ this.loading = true;
   this.totalRecords = 0;
 
   console.log(this.searchBy);
@@ -132,7 +132,7 @@ loadgridData = (event: LazyLoadEvent) => {
         this.paras = a.items.filter((o: any)=>o.verificationStatus == 6 || o.verificationStatus == 7 );
         console.log('hey aassse year',this.paras)
         this.totalRecords =this.paras.length;
-      //  this.loading = false;
+       this.loading = false;
       });
   }, 1);
 };
