@@ -309,23 +309,23 @@ export class AllResultComponent implements OnInit, AfterViewInit {
 
 
 
-    this.serviceProxy
-      .getManyBaseAssesmentControllerAssessment(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        1000,
-        0,
-        0,
-        0
-      )
-      .subscribe((res: any) => {
-        this.assessmentList = res.data;
-        console.log('AssemntList', res.data);
-      });
+    // this.serviceProxy
+    //   .getManyBaseAssesmentControllerAssessment(
+    //     undefined,
+    //     undefined,
+    //     undefined,
+    //     undefined,
+    //     undefined,
+    //     undefined,
+    //     1000,
+    //     0,
+    //     0,
+    //     0
+    //   )
+    //   .subscribe((res: any) => {
+    //     this.assessmentList = res.data;
+    //     console.log('AssemntList', res.data);
+    //   });
 
     let event: any = {};
     event.rows = this.rows;

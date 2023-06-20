@@ -147,8 +147,26 @@
         </p>
         </div>
         <div>
-          <label class="mt-10" for="">Submission Date</label>
-          <input 
+          <label class="mt-10" for="">Submission Date</label> 
+        </div>
+          <div>
+            <p-calendar
+            [(ngModel)] ="submitdate"
+            name="subdate"
+            placeholder="DD/MM/YYYY"
+            dateFormat="dd/mm/yy"
+            #subdate="ngModel"
+          ></p-calendar>
+          <p
+          class="info-message text-danger"
+          *ngIf="
+            !submitdate &&
+            (confirm2 || subdate.touched || subdate.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
+          <!-- <input 
            type="text" 
            class="p-inputtext w-100" 
            [(ngModel)]="submitdate" 
@@ -168,7 +186,7 @@
               "
             >
               This is a mandatory field
-            </p>
+            </p> -->
         </div>
         
         <br />
