@@ -17001,7 +17001,7 @@ export class AssessmentYearControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    assessmentYearForManageDataStatus(page: number, limit: number, filterText: string, projectStatusId: number, projectApprovalStatusId: number, isProposal: number): Observable<any> {
+    assessmentYearForManageDataStatus(page: number, limit: number, filterText: string, projectStatusId: number, projectApprovalStatusId: number, isProposal: number, climateActionId: number, year: string, getAll: string, approveStatus: string): Observable<any> {
         let url_ = this.baseUrl + "/assessment-year/assessmentYearForManageDataStatus?";
         if (page === undefined || page === null)
             throw new Error("The parameter 'page' must be defined and cannot be null.");
@@ -17027,6 +17027,22 @@ export class AssessmentYearControllerServiceProxy {
             throw new Error("The parameter 'isProposal' must be defined and cannot be null.");
         else
             url_ += "isProposal=" + encodeURIComponent("" + isProposal) + "&";
+        if (climateActionId === undefined || climateActionId === null)
+            throw new Error("The parameter 'climateActionId' must be defined and cannot be null.");
+        else
+            url_ += "climateActionId=" + encodeURIComponent("" + climateActionId) + "&";
+        if (year === undefined || year === null)
+            throw new Error("The parameter 'year' must be defined and cannot be null.");
+        else
+            url_ += "year=" + encodeURIComponent("" + year) + "&";
+        if (getAll === undefined || getAll === null)
+            throw new Error("The parameter 'getAll' must be defined and cannot be null.");
+        else
+            url_ += "getAll=" + encodeURIComponent("" + getAll) + "&";
+        if (approveStatus === undefined || approveStatus === null)
+            throw new Error("The parameter 'approveStatus' must be defined and cannot be null.");
+        else
+            url_ += "approveStatus=" + encodeURIComponent("" + approveStatus) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
