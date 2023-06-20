@@ -1,6 +1,9 @@
 <form #fData="ngForm" (ngSubmit)="createAssementCA(fData)" >
   <div class="p-grid p-fluid col-sm-12">
     <div class="row p-2 mt-4">
+      <div  *ngIf="spin" style="z-index: 10000; left: 45%; top: 25%; position: fixed; " >   
+        <p-progressSpinner ></p-progressSpinner>
+      </div>
       <div class="col-12 col-md-3">
         <div>
           <label for="projectownership">Select Specific Climate Action*</label>

@@ -22253,7 +22253,7 @@ export class AssesmentResaultControllerServiceProxy {
     /**
      * @param api_key (optional) A Custom Header
      */
-    getAssesmentResult(assessmentId: number, assessmentYearId: number, calculate: boolean, api_key: string | undefined): Observable<any> {
+    getAssesmentResult(assessmentId: number, assessmentYearId: number, calculate: boolean, flag: string, api_key: string | undefined): Observable<any> {
         let url_ = this.baseUrl + "/assesment-resault/assesment-resault/GetAssesmentResult/{AssessmentId}/{AssessmentYearId}/{calculate}?";
         if (assessmentId === undefined || assessmentId === null)
             throw new Error("The parameter 'assessmentId' must be defined and cannot be null.");
@@ -22267,6 +22267,10 @@ export class AssesmentResaultControllerServiceProxy {
             throw new Error("The parameter 'calculate' must be defined and cannot be null.");
         else
             url_ += "calculate=" + encodeURIComponent("" + calculate) + "&";
+        if (flag === undefined || flag === null)
+            throw new Error("The parameter 'flag' must be defined and cannot be null.");
+        else
+            url_ += "flag=" + encodeURIComponent("" + flag) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

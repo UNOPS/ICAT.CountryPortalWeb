@@ -536,6 +536,15 @@ back()
 
   XLSX.writeFile(wb, this.fileName);
 
+    // var sJson = JSON.stringify( this.excellist);
+    // var element = document.createElement('a');
+    // element.setAttribute('href', "data:text/json;charset=UTF-8," + encodeURIComponent(sJson));
+    // element.setAttribute('download', "data.json");
+    // element.style.display = 'none';
+    // document.body.appendChild(element);
+    // element.click(); // simulate click
+    // document.body.removeChild(element)
+
    /* save to file */
   // XLSX.writeFile(wb, this.fileName);
   }
