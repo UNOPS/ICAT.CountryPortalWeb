@@ -588,7 +588,7 @@ export class ResultComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, 'sheet1');
     /* save to file */
     XLSX.writeFile(wb, this.fileName);
-
+   
  
   }
 }
