@@ -158,7 +158,7 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
     const tokenPayload = decode<any>(token);
     
     this.mainSubscription = this.requestTrigger
-    .pipe(debounceTime(5000)) // Adjust the debounce time (in milliseconds) as per your requirements
+    .pipe(debounceTime(1000)) // Adjust the debounce time (in milliseconds) as per your requirements
     .subscribe(() => {
       if(tokenPayload.sectorId){   //because this page only shows CA,SA,MRV,TT.this also can be don by using user roles from tocken
       this.isCountryLevel=false;
@@ -272,41 +272,41 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
       // console.log('pair...',this.typePair)
       //
   
-      this.serviceProxy
-        .getManyBaseAssesmentControllerAssessment(
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          ['editedOn,DESC'],
-          undefined,
-          1000,
-          0,
-          0,
-          0
-        )
-        .subscribe((res: any) => {
-          this.assessmentList = res.data;
-          // console.log('assessment list', this.assessmentList);
-        });
+      // this.serviceProxy
+      //   .getManyBaseAssesmentControllerAssessment(
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     ['editedOn,DESC'],
+      //     undefined,
+      //     1000,
+      //     0,
+      //     0,
+      //     0
+      //   )
+      //   .subscribe((res: any) => {
+      //     this.assessmentList = res.data;
+      //     // console.log('assessment list', this.assessmentList);
+      //   });
   
-      this.serviceProxy
-        .getManyBaseAssessmentYearControllerAssessmentYear(
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          ['editedOn,DESC'],
-          undefined,
-          1000,
-          0,
-          0,
-          0
-        )
-        .subscribe((res: any) => {
-          this.assessmentYrList = res.data;
-          // console.log('yr list', this.assessmentYrList);
-        });
+      // this.serviceProxy
+      //   .getManyBaseAssessmentYearControllerAssessmentYear(
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     ['editedOn,DESC'],
+      //     undefined,
+      //     1000,
+      //     0,
+      //     0,
+      //     0
+      //   )
+      //   .subscribe((res: any) => {
+      //     this.assessmentYrList = res.data;
+      //     // console.log('yr list', this.assessmentYrList);
+      //   });
 
     })  
     this.requestTrigger.next()
