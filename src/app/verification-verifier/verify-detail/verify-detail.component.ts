@@ -222,6 +222,7 @@ export class VerifyDetailComponent implements OnInit {
         this.assementYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
+        'verifier',
         "1234"
       )
       .subscribe((res) => {
@@ -312,10 +313,12 @@ export class VerifyDetailComponent implements OnInit {
         this.parameters = this.assementYear.assessment.parameters;
 
         this.parameters = this.parameters.map(para => {
-          let v = this.verificationDetails.find(o => o.parameter.id === para.id)
-          if (v){
-            if (!v.isAccepted && (v.rootCause === null || v.correctiveAction === null || v.action === null)){
-              para['isConcernRaised'] = true
+          if (para.verifierAcceptance !== ParameterVerifierAcceptance.DATA_ENTERED){
+            let v = this.verificationDetails.find(o => o.parameter.id === para.id)
+            if (v){
+              if (!v.isAccepted && (v.rootCause === null || v.correctiveAction === null || v.action === null)){
+                para['isConcernRaised'] = true
+              }
             }
           }
           return para

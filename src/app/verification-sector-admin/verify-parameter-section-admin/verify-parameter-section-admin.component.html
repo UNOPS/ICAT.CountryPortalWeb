@@ -57,9 +57,9 @@
                 <td *ngIf="
                     assessmentYear !== undefined &&
                     (assessmentYear?.verificationStatus! === 3 || assessmentYear?.verificationStatus! === 8) &&
-                    param.isAcceptedByVerifier !== 1 && param.isConcernRaised && param.verifierAcceptance !== 'DATA_ENTERED'
+                    param.isAcceptedByVerifier !== 1 && param.isConcernRaised && param.verifierAcceptance !== 'DATA_ENTERED' 
                   ">
-                  <button pButton pRipple type="button" label="Action" (click)="parameterAction($event, param)"
+                  <button pButton pRipple type="button" label="Action" (click)="parameterAction($event, param)" [disabled]="!param.canActiveAction"
                     class="p-button-info"></button>
                 </td>
                 <td *ngIf="
@@ -201,14 +201,14 @@
         </div>
       </div>
     </div>
-    <div class="col-md-2 d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && hasResultConcern">
+    <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 || assessmentYear?.verificationStatus! == 8) && hasResultConcern && !isResultActionDone">
       <div class="col-12">
         <button type="button" (click)="onResultAction()" pButton pRipple>Action</button>
       </div>
     </div>
 
     <div class="col-md-2 d-flex align-items-end" *ngIf="
-        assessmentYear !== undefined && assessmentYear?.verificationStatus! == 3 && hasResultConcern
+        assessmentYear !== undefined && (assessmentYear?.verificationStatus! == 3 || assessmentYear?.verificationStatus! == 8) && hasResultConcern && !isResultActionDone
       ">
       <div class="col-12">
         <button

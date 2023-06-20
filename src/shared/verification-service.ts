@@ -32,7 +32,7 @@ export class VerificationService {
 
     checkStatus(verificationStatus: any){
         let status = [
-          VerificationStatus.Fail, VerificationStatus['In Remediation'], VerificationStatus['NC Recieved'],
+          VerificationStatus.Fail, VerificationStatus['In Remediation'], VerificationStatus['NC Received'],
           VerificationStatus.Pass
         ]
     

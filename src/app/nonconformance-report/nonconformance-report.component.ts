@@ -103,6 +103,9 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
     VerificationStatus[VerificationStatus['Final Assessment']],
 
   ];
+
+  isReviewComplete: boolean = true
+  verificationRound: number
  
   
   constructor(
@@ -137,7 +140,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
           undefined,
           undefined
         )
-        .subscribe((res) => {
+        .subscribe(async (res) => {
           this.assementYear = res;
          // console.log("my year........", this.assementYear);
           this.recievdAssementYear =this.assementYear.assessmentYear;
@@ -145,15 +148,16 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
          // console.log("my year111..",this.recievdAssementYear);
          // console.log("my id111...", this.assessmentId);
 
-          
-
+         let assessment = await this.serviceProxy.getOneBaseAssesmentControllerAssessment(this.assementYear.assessment.id, undefined, undefined, 0).toPromise()
+       
           this.assYearProxy
           .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentId,this.recievdAssementYear)
-          .subscribe((a) => {
+          .subscribe(async (a) => {
            // console.log("ass year list",this.verificationList)
             this.assmentYearList = a;
             //console.log("big list=========", a);
             this.verificationList = a[0]?.verificationDetail;
+            
             console.log("this.verificationList=========", this.verificationList);
             this.roundOneList = this.verificationList.filter((o: any)=>o.verificationStage == 1 && o.isAccepted == 0);
             console.log("this.roundOneList=========", this.roundOneList);
@@ -164,6 +168,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             console.log("this.roundThreeList...",this.roundThreeList)
             if(this.roundOneHeadTable !=null)
             {
+              this.verificationRound = 1
               let verifierId = this.roundOneHeadTable.userVerifier;
 
               this.serviceProxy.
@@ -182,6 +187,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             this.roundTwoHeadTable = this.verificationList?.find((o: any)=>o.verificationStage == 2);
             if(this.roundTwoHeadTable !=null)
             {
+              this.verificationRound = 2
               let verifierId = this.roundTwoHeadTable.userVerifier;
 
               this.serviceProxy.
@@ -202,6 +208,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             this.roundThreeHeadTable = this.verificationList?.find((o: any)=>o.verificationStage == 3);
             if(this.roundThreeHeadTable !=null)
             {
+              this.verificationRound = 3
               let verifierId = this.roundThreeHeadTable.userVerifier;
 
               this.serviceProxy.
@@ -217,6 +224,9 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             });
 
             }
+
+            await this.checkReviewComplete(this.verificationList, assessment.parameters)
+            console.log(this.isReviewComplete)
 
            // console.log("round one head table=========", this.roundOneHeadTable);
             // above roundone..roundtwo lists shows verification details for
@@ -271,10 +281,55 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
    // let assessmentId = 1;
 
 
-   
+  }
 
+  async checkReviewComplete(vdList: any, parameters: any) {
+    this.isReviewComplete = true
+    console.log("verificationRound", this.verificationRound)
+    let hasBaseline = false
+    let hasProject = false
+    let hasLekage = false
+    let hasProjection = false
 
+    for await (let para of parameters) {
+      if (para.isBaseline) hasBaseline = true
+      if (para.isProject) hasProject = true
+      if (para.isLekage) hasLekage = true
+      if (para.isProjection) hasProjection = true
+      let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStage === this.verificationRound))
+      if (vd === undefined) {
+        if (!para.isAlternative){
+          this.isReviewComplete = false
+          break;
+        }
+      }
+    }
 
+    if (this.isReviewComplete){
+      let columns = ['isNDC', 'isMethodology', 'isAssumption']
+      for await (let col of columns){
+        let vd = vdList.find((o: any) => o[col] && (o.isAccepted || o.verificationStage === this.verificationRound))
+        if (vd === undefined){
+          this.isReviewComplete = false
+          break;
+        }
+      }
+    }
+
+    if (this.isReviewComplete){ 
+      let resultColumns = []
+      if (hasBaseline) resultColumns.push('isBaseline')
+      if (hasProject) resultColumns.push('isProject')
+      if (hasLekage) resultColumns.push('isLekage')
+      if (hasProjection) resultColumns.push('isProjection')
+      for (let col of resultColumns){
+        let vd = vdList.find((o: any) => o[col] && o.isResult && (o.isAccepted || o.verificationStage === this.verificationRound))
+        if (vd === undefined){
+          this.isReviewComplete = false
+          break;
+        }
+      }
+    }
   }
 
   toPopUp(item:any)
@@ -437,8 +492,11 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
 
   disableSubmit(){
     if (this.flag === 'sec-admin'){
-      return ((this.assementYear.verificationStatus !== 3 && this.assementYear.verificationStatus !== 8) || this.assementYear.verificationStatus === 7)
+      return ((this.assementYear.verificationStatus !== 3) || this.assementYear.verificationStatus === 7)
     } else {
+      if (!this.isReviewComplete){
+        return true
+      } 
       return (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 8 || this.assementYear.verificationStatus === 7)
     }
   }
@@ -460,7 +518,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
   getStatus(){
     if (this.assementYear.verificationStatus === 3){
       if (this.flag === 'sec-admin'){
-        return 'NC Recieved'
+        return 'NC Received'
       } else {
         return 'NC Sent'
       }

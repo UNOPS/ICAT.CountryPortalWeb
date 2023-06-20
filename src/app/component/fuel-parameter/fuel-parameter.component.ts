@@ -57,6 +57,8 @@ export class FuelParameterComponent implements OnInit {
   onSelectHistoricalVal(event:any, idxSec:any, idxPara:any){
     console.log(event.value.value)
     this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
+    console.log("000000000000000000000",event)
+    this.parameterSection.fuelSection.sectionparameters[idxSec].parameters[idxPara]["historicalParaID"] = event.value.id
   }
 
   onChangeIshistorical(e: any, i: number){

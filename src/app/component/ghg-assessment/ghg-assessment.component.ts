@@ -66,6 +66,7 @@ export class GhgAssessmentComponent implements OnInit {
   @Input()
   IsProposal: boolean;
 
+  spin:boolean =false;
   common: string = 'Common';
   climateActions: Project[] = [];
   selectedClimateAction: Project;
@@ -461,6 +462,7 @@ export class GhgAssessmentComponent implements OnInit {
         );
       });
       var filterMeth: any = ['isActive||$eq||' + 1];
+    
     this.serviceProxy
       .getManyBaseMethodologyControllerMethodology(
         undefined,
@@ -539,7 +541,7 @@ export class GhgAssessmentComponent implements OnInit {
 
    
 if(this.projectId && this.projectId>0){
-  
+  this.spin=true;
 
   this.serviceProxy
   .getOneBaseProjectControllerProject(
@@ -551,6 +553,7 @@ if(this.projectId && this.projectId>0){
   .subscribe(async (res) => {
     this.selectedClimateAction=res
     this.climateActions.push(res)
+    this.spin=false;
     this.projectDuration =res.duration;
     this.selectedNdc = this.ndcList.find(
       (a) => a.name === res.previousNdc
@@ -570,6 +573,7 @@ if(this.projectId && this.projectId>0){
   })
 }
 else{
+  this.spin=true;
   this.serviceProxy
   .getManyBaseProjectControllerProject(
     undefined,
@@ -587,6 +591,7 @@ else{
 
     // console.log('this.userCountryId',this.userCountryId,this.userSectorId)
     this.climateActions = res.data;
+    this.spin=false;
     // console.log('this.userCountryId',  this.climateActions)
     this.climateActions = this.climateActions.filter(o=>o.country?o.country.id == this.userCountryId:false && o.sector?o.sector.id == this.userSectorId:false)
     // console.log('this.userCountryId',  this.climateActions)
@@ -2561,7 +2566,8 @@ else{
                       label: p.AssessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
                       value: p.value,
                       unit: p.uomDataEntry,
-                      year: p.assessmentYear
+                      year: p.assessmentYear,
+                      id:p.id
                     }
                   })
                   let answer: any[] = [];
@@ -3522,7 +3528,7 @@ else{
         let assesYear = res;
 
         this.assesmentResaultProxy
-          .getAssesmentResult(assesmentId, assesYear[0].ay_id, true,"1234")
+          .getAssesmentResult(assesmentId, assesYear[0].ay_id, true, '', "1234")
           .subscribe((res) => {
 
          
@@ -3676,6 +3682,7 @@ else{
       param.isHistorical = p.isHistorical
       param.uomDataEntry = p.UOM;
       param.conversionValue = p.value;
+      param['historicalParaID']= p.historicalParaID;
     }
     param.uomDataRequest = p.UOM;
     param.methodologyCode = this.methodologyCode;

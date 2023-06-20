@@ -932,7 +932,6 @@ this.ndcProxy.getDateRequest(0,0,[])
                 ).subscribe((response=>{
                     for(let d of response.data){
                       sum=sum+ d.totalEmission; 
-                      console.log('kkkkkkkkkkkkkkkkkkkkkkkkk',d)
                       
                     }
                   

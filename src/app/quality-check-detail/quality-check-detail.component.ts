@@ -363,6 +363,7 @@ export class QualityCheckDetailComponent implements OnInit {
         this.assementYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
+        '',
         "1234"
         // true
       )
@@ -539,14 +540,17 @@ export class QualityCheckDetailComponent implements OnInit {
         detail: "There are parameters in data collection path"
       })
     } else {
+      console.log("cccccccccc",this.assementYear.assessment.assessmentType)
       if (this.assementYear.assessment.assessmentType != 'MAC') {
+        // console.log("cccccccccc",this.assementYear.assessment.assessmentType)
         this.getAssesmentResult(true);
       } else {
+        console.log("cccccccccc",this.assementYear.assessment.assessmentType)
         this.toCalMacResult();
       }
       this.isReadyToCAl = false;
       this.isDisable = true;
-      window.location.reload()
+      // window.location.reload()
     }
   }
 
@@ -655,6 +659,8 @@ export class QualityCheckDetailComponent implements OnInit {
                   if(res!= null)
                   {
                       console.log("going to reload the page...")
+                      setTimeout(() => {
+                        },500);
                       window.location.reload();
                      
                   }
@@ -1112,10 +1118,12 @@ export class QualityCheckDetailComponent implements OnInit {
     vd.sort((a: any,b: any) => a.verificationStage - b.verificationStage);
     this.resultVds = vd
     this.resultVds = this.resultVds.map(res => {
-      let comment = res.action.split('|')
-      res['commentBy'] = comment[0]
-      res['comment'] = comment[1]
-      return res
+      let comment = res.action?.split('|')
+      if (comment){
+        res['commentBy'] = comment[0]
+        res['comment'] = comment[1]
+        return res
+      }
     })
     
     this.displayAction = true

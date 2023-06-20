@@ -19,6 +19,7 @@ import {
   VerificationDetailVerificationStatus,
 } from 'shared/service-proxies/service-proxies';
 import { VerificationActionDialogComponent } from '../verification-action-dialog/verification-action-dialog.component';
+import { VerificationService } from 'shared/verification-service';
 
 @Component({
   selector: 'app-verify-parameter-section-admin',
@@ -93,6 +94,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   roundTwoHeadTable: any;
   roundThreeHeadTable: any;
   hasResultConcern: boolean;
+  isResultActionDone: boolean = false
 
   constructor(
     private qaServiceProxy: QualityCheckControllerServiceProxy,
@@ -103,6 +105,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     private serviceProxy: ServiceProxy,
     private prHistoryProxy : ParameterHistoryControllerServiceProxy,
     private assessmentYearControllerServiceProxy: AssessmentYearControllerServiceProxy,
+    private verificationService: VerificationService
   ) {}
 
   ngOnInit(): void {
@@ -135,8 +138,9 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnChanges(changes: any) {
-    let column: string
+  async ngOnChanges(changes: any) {
+    console.log(this.ResultValue)
+    let column: string = ''
     if (this.header == 'Baseline Parameters') {
       column = 'isBaseline'
     }
@@ -149,10 +153,28 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     if (this.header == 'Projection Parameters') {
       column = 'isProjection'
     }
+    console.log(column)
 
-    let vd = this.verificationDetails.find((a: any )=> a.isResult === true && a[column] === true)
+    let rounds = await this.verificationService.checkVerificationStage(this.assessmentYear)
+
+    let stage: number
+    if (rounds.roundOneHeadTable !== undefined){
+      stage = 1
+    } 
+    if (rounds.roundTwoHeadTable !== undefined){
+      stage = 2
+    }
+    if (rounds.roundThreeHeadTable !== undefined){
+      stage = 3
+    }
+
+    let vd = this.verificationDetails.find((a: any )=> a.isResult === true && a[column] === true && a.verificationStage === stage)
+    console.log(vd)
     if (vd?.explanation){
       this.hasResultConcern = true
+    }
+    if (vd?.action){
+      this.isResultActionDone = true
     }
   }
 
@@ -356,7 +378,17 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     this.displayConcern = true;
   }
 
-  onComplete(e: any){
+  async onComplete(e: any){
+    this.parameters = this.parameters.map(para => {
+      if (para.id === this.concernParam?.id){
+        para['canActiveAction'] = true
+        return para
+      } else {
+        return para
+      }
+    })
+    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assessmentYear.id).toPromise()
+    
     if (e){
       this.displayConcern = false
     }
@@ -441,7 +473,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
       data: data,
     });
 
-    this.ref.onClose.subscribe((res) => {
+    this.ref.onClose.subscribe(async (res) => {
       console.log(res)
       if (res){
         if (res?.isEnterData){
@@ -449,7 +481,8 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
         } else {
           action = action + ", Requested data from " + res?.value
         }
-        this.saveVerificationDetails(action, parameter)
+        await this.saveVerificationDetails(action, parameter)
+        this.isResultActionDone = true
       }
     })
 
@@ -613,11 +646,13 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     });
 
     this.ref.onClose.subscribe(async (res) => {
-      console.log(res)
-      let result = await this.verificationProxy.sendResultToRecalculate(this.assessmentYear.id).toPromise()
-      console.log(result)
-      let comment = this.loggedUser.userType.name + '|' + res.result.comment
-      await this.saveVerificationDetails(comment)
+      if (res){
+        console.log(res)
+        let result = await this.verificationProxy.sendResultToRecalculate(this.assessmentYear.id).toPromise()
+        console.log(result)
+        let comment = this.loggedUser.userType.name + '|' + res.result.comment
+        await this.saveVerificationDetails(comment)
+      }
     })
   }
 

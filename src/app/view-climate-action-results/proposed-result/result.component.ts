@@ -58,7 +58,7 @@ export class ResultComponent implements OnInit {
   basicOptions: any;
   assessmentYr2: AssessmentYear[] = [];
   yrId: number;
-
+  spin:boolean =false;
   leakage: any;
   isShown: boolean = false;
   title: string;
@@ -72,6 +72,7 @@ export class ResultComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.spin =true
     this.route.queryParams.subscribe((params) => {
       this.assessmentId = params['id'];
       this.assessmentYr = params['yr'];
@@ -443,7 +444,9 @@ export class ResultComponent implements OnInit {
             },
           },
         };
+        this.spin =false
       });
+      
   }
 
   // //PDF DOWNLOAD - START

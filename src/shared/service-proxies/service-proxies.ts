@@ -22253,7 +22253,7 @@ export class AssesmentResaultControllerServiceProxy {
     /**
      * @param api_key (optional) A Custom Header
      */
-    getAssesmentResult(assessmentId: number, assessmentYearId: number, calculate: boolean, api_key: string | undefined): Observable<any> {
+    getAssesmentResult(assessmentId: number, assessmentYearId: number, calculate: boolean, flag: string, api_key: string | undefined): Observable<any> {
         let url_ = this.baseUrl + "/assesment-resault/assesment-resault/GetAssesmentResult/{AssessmentId}/{AssessmentYearId}/{calculate}?";
         if (assessmentId === undefined || assessmentId === null)
             throw new Error("The parameter 'assessmentId' must be defined and cannot be null.");
@@ -22267,6 +22267,10 @@ export class AssesmentResaultControllerServiceProxy {
             throw new Error("The parameter 'calculate' must be defined and cannot be null.");
         else
             url_ += "calculate=" + encodeURIComponent("" + calculate) + "&";
+        if (flag === undefined || flag === null)
+            throw new Error("The parameter 'flag' must be defined and cannot be null.");
+        else
+            url_ += "flag=" + encodeURIComponent("" + flag) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -29649,6 +29653,7 @@ export class Parameter implements IParameter {
     isProjection: boolean;
     isDefault: boolean;
     isHistorical: boolean;
+    historicalParaID: number;
     vehical: string;
     fuelType: string;
     route: string;
@@ -29716,6 +29721,7 @@ export class Parameter implements IParameter {
             this.isProjection = _data["isProjection"];
             this.isDefault = _data["isDefault"];
             this.isHistorical = _data["isHistorical"];
+            this.historicalParaID = _data["historicalParaID"];
             this.vehical = _data["vehical"];
             this.fuelType = _data["fuelType"];
             this.route = _data["route"];
@@ -29784,6 +29790,7 @@ export class Parameter implements IParameter {
         data["isProjection"] = this.isProjection;
         data["isDefault"] = this.isDefault;
         data["isHistorical"] = this.isHistorical;
+        data["historicalParaID"] = this.historicalParaID;
         data["vehical"] = this.vehical;
         data["fuelType"] = this.fuelType;
         data["route"] = this.route;
@@ -29852,6 +29859,7 @@ export interface IParameter {
     isProjection: boolean;
     isDefault: boolean;
     isHistorical: boolean;
+    historicalParaID: number;
     vehical: string;
     fuelType: string;
     route: string;

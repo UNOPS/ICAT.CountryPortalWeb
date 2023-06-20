@@ -62,8 +62,9 @@ export class VehicalParameterComponent implements OnInit {
   }
 
   onSelectHistoricalVal(event:any, idxSec:any, idxPara:any){
-    console.log(event.value.value)
+    console.log(event.value)
     this.parameterSection.vehicalSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
+    this.parameterSection.vehicalSection.sectionparameters[idxSec].parameters[idxPara]["historicalParaID"] = event.value.id
   }
 
   changeUnit(e: any, idxSec:any, idxPara:any ){

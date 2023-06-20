@@ -54,7 +54,7 @@
             <td>
               <p-checkbox [binary]="true" *ngIf="param.isAcceptedByVerifier !== 1"
                 (onChange)="checkboxCheck($event, param)" name="groupname" value="check"
-                [disabled]="param.isConcernRaised"></p-checkbox>
+                [disabled]="param.isConcernRaised" id="{{'checkbox'+param.id}}"></p-checkbox>
             </td>
           </div>
           <td>{{ param.name }}</td>
@@ -159,12 +159,12 @@
           isAdmin)
       ">
       <div class="col-12 " style="margin-right: 10%;" *ngIf="flag != 1 && verificationService.checkStatus(verificationStatus)">
-        <button type="button" pButton pRipple [disabled]="isResultAccepted" (click)="raiseConcernResult($event)">
+        <button type="button" pButton pRipple [disabled]="isResultAccepted " (click)="raiseConcernResult($event)">
           Raise Concern
         </button>
       </div>
       <div class="col-12" *ngIf="flag != 1 && verificationService.checkStatus(verificationStatus)">
-        <button *ngIf="verificationStatus !=3" type="button" [disabled]="isResultAccepted" pButton pRipple
+        <button *ngIf="verificationStatus !=3" type="button" [disabled]="isResultAccepted || hasResultConcern" pButton pRipple
           (click)="resultAccept()">
           <!-- Accept -->
           {{isResultAccepted ? "Accepted" : "Accept"}}

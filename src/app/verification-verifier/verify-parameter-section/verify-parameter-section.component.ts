@@ -98,6 +98,8 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
 
   isProjectionResult = false;
   isResultAccepted: boolean = false
+  hasResultConcern: boolean;
+  isResultRaised: boolean;
 
   constructor(
     private qaServiceProxy: QualityCheckControllerServiceProxy,
@@ -143,7 +145,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnChanges(changes: any) {
+  async ngOnChanges(changes: any) {
     let column: string
     if (this.header == 'Baseline Parameter') {
       column = 'isBaseline'
@@ -158,9 +160,25 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       column = 'isProjection'
     }
 
-    let vd = this.verificationDetails.find((a: any )=> a.isResult === true && a[column] === true)
+    let round: number
+    if (
+      this.assessmentYear.verificationStatus === 1 ||
+      this.assessmentYear.verificationStatus === 2 ||
+      this.assessmentYear.verificationStatus === 3
+    ) {
+      round = 1;
+    } else if (this.assessmentYear.verificationStatus === 4) {
+      round = 2;
+    } else if (this.assessmentYear.verificationStatus === 5)
+    round = 3;
+
+    let vd = this.verificationDetails.find((a: any )=> a.isResult === true && a[column] === true && a.verificationStage === round )
+    console.log(vd)
     if (vd?.isAccepted){
       this.isResultAccepted = true
+    }
+    if (vd?.explanation){
+      this.hasResultConcern = true
     }
 
   }
@@ -198,6 +216,8 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   }
 
   checkboxCheck(event: any, param: Parameter) {
+    let c = document.getElementById('checkbox'+param.id)
+    console.log(c)
     if (event.checked) {
       this.selectedParameter.push(param);
     } else {
@@ -210,7 +230,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   {
        console.log("dataRequestList...",obj)
        this.paraId = obj.id;
-       console.log("this.paraId...",this.paraId)
+       console.log("this.paraId...",this.paraId) 
 
       // let x = 602;
        this.prHistoryProxy
@@ -259,6 +279,11 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assessmentYear.id).toPromise()
     if (e){
       this.displayConcern = false
+      this.selectedParameter = []
+    }
+    if (this.isResultRaised){
+      this.hasResultConcern = true
+      this.isResultRaised = false
     }
   }
 
@@ -396,7 +421,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     this.displayConcern = true;
   }
 
-  raiseConcernResult(event: any) {
+  async raiseConcernResult(event: any) {
     this.raiseConcernSection = this.ResultLabel;
     this.isParameter = false;
     this.isValue = true;
@@ -423,6 +448,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     }
 
     this.displayConcern = true;
+    this.isResultRaised = true
   }
 
   resultAccept(){

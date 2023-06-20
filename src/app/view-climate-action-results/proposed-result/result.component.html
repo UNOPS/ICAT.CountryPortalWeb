@@ -1,4 +1,7 @@
 <div class="container pl-20 pr-20">
+  <div  *ngIf="spin" style="z-index: 10000; left: 45%; top: 25%; position: fixed; " >   
+    <p-progressSpinner ></p-progressSpinner>
+  </div>
   <div id="content" #content>
     <div id="download-content">
     <div class="mb-12">
