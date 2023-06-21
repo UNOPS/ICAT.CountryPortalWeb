@@ -253,6 +253,7 @@ let s=new String("23")
 
    }
   ngOnDestroy(): void {
+    //destroy methods on component destroy
     if(this.aySubscription) this.aySubscription.unsubscribe()
     if (this.emissionReducSubscription) this.emissionReducSubscription.unsubscribe()
   }
@@ -341,6 +342,7 @@ let s=new String("23")
 
       let intest = 0;
       // for(let ndcid of this.ndcids){
+        //trigger debouncing requests after loading first screen length 
         this.requestTriggerEmissionReduction.next()
         this.requestTrigger.next()
 
@@ -463,6 +465,7 @@ let s=new String("23")
 
     }));
 
+    //addedd debouncing to improve speed
     this.aySubscription = this.requestTrigger
     .pipe(debounceTime(this.delayTime))
     .subscribe(() => {
@@ -572,6 +575,7 @@ let s=new String("23")
     //   undefined
     // )
 
+    //addedd debouncing to improve speed
     this.emissionReducSubscription = this.requestTriggerEmissionReduction
     .pipe(debounceTime(this.delayTime))
     .subscribe(() => {
@@ -1056,7 +1060,7 @@ let s=new String("23")
       for(let s of d.subNdc){
 
         // console.log("ssssss",s.name.length>30)
-        if(s.name.length>20){
+        if(s.name?.length>20){
           s.name = s.name.substring(0,32)+"..........."
         }
 

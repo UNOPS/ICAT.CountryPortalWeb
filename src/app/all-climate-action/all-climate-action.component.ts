@@ -127,13 +127,14 @@ export class AllClimateActionComponent implements OnInit,AfterViewInit {
     let filtertext = this.searchBy.text ? this.searchBy.text : '';
     let pageNumber = 1
   
-    this.projectProxy
-        .getAllClimateActionList(pageNumber, this.rows, filtertext, statusId,projectApprovalStatusId,currentProgress,this.sectorId,"1234")
-        .subscribe((a) => {
-          this.climateactions = a.items;
-          this.totalRecords = a.meta.totalItems;
-          console.log('first time climation',this.climateactions);
-        });
+    // Removed as this executing in loadgridData as well
+    // this.projectProxy
+    //     .getAllClimateActionList(pageNumber, this.rows, filtertext, statusId,projectApprovalStatusId,currentProgress,this.sectorId,"1234")
+    //     .subscribe((a) => {
+    //       this.climateactions = a.items;
+    //       this.totalRecords = a.meta.totalItems;
+    //       // console.log('first time climation',this.climateactions);
+    //     });
     
   }
  
@@ -147,7 +148,7 @@ export class AllClimateActionComponent implements OnInit,AfterViewInit {
 
   loadgridData = (event: LazyLoadEvent) => {
     //console.log("below loarding data")
-  //  this.loading = true;
+   this.loading = true;
     this.totalRecords = 0;
     let statusId = this.searchBy.status ? this.searchBy.status.id : 0;
     let currentProgress = this.searchBy.currentProgress ? this.searchBy.currentProgress : '';
@@ -161,15 +162,16 @@ export class AllClimateActionComponent implements OnInit,AfterViewInit {
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
     this.rows = event.rows === undefined ? 10 : event.rows;
     
-    setTimeout(() => {
+    // setTimeout(() => {
       this.projectProxy
         .getAllClimateActionList(pageNumber, this.rows, filtertext, statusId,projectApprovalStatusId,currentProgress,this.sectorId,"1234")
         .subscribe((a) => {
+          this.loading = false
           this.climateactions = a.items;
           this.totalRecords = a.meta.totalItems;
-          console.log('first time climation',this.climateactions);
+          // console.log('first time climation',this.climateactions);
         });
-    });
+    // });
   };
   
   projectSummery() {

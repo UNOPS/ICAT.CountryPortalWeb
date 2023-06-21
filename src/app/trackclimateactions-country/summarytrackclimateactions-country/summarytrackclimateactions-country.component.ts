@@ -17,6 +17,9 @@ export class SummarytrackclimateactionsCountryComponent implements OnInit {
   finalRecords:activeproject[]=[];
   flagIds : any[]=[];
   records : TrackcaEntity[] = [];
+
+  loading: boolean = false
+
   constructor(private serviceProxy: ServiceProxy, 
     private router: Router,
      private activerouter: ActivatedRoute,
@@ -37,31 +40,29 @@ export class SummarytrackclimateactionsCountryComponent implements OnInit {
     //   0,
     //   0
     // ).
+    this.loading = true
     this.trckCAProxy.getTrackClimateActionDetails()
-    .subscribe((res=>{
+    .subscribe((async res=>{
       // this.activities = res.data;
       this.activities = res;
-      console.log('this.activities...',this.activities);
 
       if(this.activities !=undefined)
       {
-        for(let x of this.activities)
-        {
-          this.flagIds.push(x.flag);
-        }
+        // for(let x of this.activities)
+        // {
+        //   this.flagIds.push(x.flag);
+        // }
+        //replaced for loop with map
+        this.flagIds = this.activities.map(x => x.flag)
       }
       
 
-      setTimeout(() => {
+      // setTimeout(() => {
      
-       
-        console.log('this.flagIds...',this.flagIds);
         this.flagIds = [...new Set(this.flagIds)];
-        console.log('this.unique flagIds....',this.flagIds);
-        for(let y of this.flagIds)
+        for await(let y of this.flagIds)
         {
             this.records = this.activities.filter((o)=>o.flag == y);
-            console.log('this.records....',this.records);
 
               let record:activeproject= {
               Years : this.records[0].years,
@@ -74,20 +75,19 @@ export class SummarytrackclimateactionsCountryComponent implements OnInit {
              
             };
 
-            for(let x of this.records)
+            for await(let x of this.records)
             {
               record.ActualEmissionReduction = record.ActualEmissionReduction + x.achieved;
               record.ExpectedEmissionReduction = record.ExpectedEmissionReduction + x.expected;
             }
 
             this.finalRecords.push(record);
-            console.log("finalRecords...",this.finalRecords);
 
         }
   
-        
+        this.loading = false
     
-      },1);
+      // },1);
 
       
     }))

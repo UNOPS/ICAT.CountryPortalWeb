@@ -146,7 +146,7 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.csiSubscription.unsubscribe();
     // this.assessmentSubcription.unsubscribe();
     // this.yearSubscription.unsubscribe();
-    this.mainSubscription.unsubscribe()
+    this.mainSubscription.unsubscribe() // destroy method when loading another component
   }
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
@@ -157,6 +157,7 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
     
+    //added debouncing to improve speed
     this.mainSubscription = this.requestTrigger
     .pipe(debounceTime(1000)) // Adjust the debounce time (in milliseconds) as per your requirements
     .subscribe(() => {
@@ -272,6 +273,7 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
       // console.log('pair...',this.typePair)
       //
   
+      //removed as not using
       // this.serviceProxy
       //   .getManyBaseAssesmentControllerAssessment(
       //     undefined,
@@ -290,6 +292,7 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
       //     // console.log('assessment list', this.assessmentList);
       //   });
   
+      //removed as not using
       // this.serviceProxy
       //   .getManyBaseAssessmentYearControllerAssessmentYear(
       //     undefined,
