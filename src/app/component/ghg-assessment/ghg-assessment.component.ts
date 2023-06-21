@@ -214,6 +214,8 @@ export class GhgAssessmentComponent implements OnInit {
   landclearance: string = 'land clearance';
 
 
+  toolTop: string = '';
+  methcode: any[] = [];
 
   blParameters: ParameterSections;
   prParameters: ParameterSections;
@@ -586,6 +588,7 @@ else{
 
     // console.log('this.userCountryId',this.userCountryId,this.userSectorId)
     this.climateActions = res.data;
+    // console.log(this.climateActions)
     this.spin=false;
     // console.log('this.userCountryId',  this.climateActions)
     this.climateActions = this.climateActions.filter(o=>o.country?o.country.id == this.userCountryId:false && o.sector?o.sector.id == this.userSectorId:false)
@@ -2654,7 +2657,6 @@ else{
     for (let i = 1; i < 30; i++) {
       this.years.push({label: (year + i).toString(),value: year + i });
     }
-    console.log("yyyyyyyyyy",this.years)
 
     this.proposeDateofCommence = new Date(
       this.selectedClimateAction.proposeDateofCommence.year(),
@@ -2692,6 +2694,7 @@ else{
          let uniqueYearList:any[] = [];
         for(let assement of this.selectedAssessementByCA )
         {
+          this.methcode.push(assement.methodologyCode);
           for(let asyears of assement.assessmentYear)
           {
             
@@ -2699,8 +2702,10 @@ else{
           }
         }
         uniqueYearList = [...new Set( yearList)];
-  
-        console.log('asyears...', yearList);
+
+      //  this.methcode.filter((code)=> return this.)
+        
+      console.log('asyears...', yearList);
         console.log('uniqueYearList..', uniqueYearList);
   
         const result:any[] = [];
