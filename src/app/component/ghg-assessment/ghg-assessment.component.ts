@@ -2550,6 +2550,8 @@ else{
               ).subscribe(async (res: any) => {
                 
                 let parametersIds:string[] = res.data.map((p:any) => p.id);
+                // console.log('sectionparam.parametersidsall',res)
+                // console.log('sectionparam.parametersids',parametersIds)
            let qcPassParameterRequest =  await this.parameterRequestControllerServiceProxy.getQCpassParameterRequest(parametersIds).toPromise();
 
            console.log('sectionparam.parameters',qcPassParameterRequest)
