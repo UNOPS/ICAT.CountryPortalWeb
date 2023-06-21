@@ -70,7 +70,8 @@ export class VerifyCaComponent implements OnInit {
     private serviceProxy: ServiceProxy,
     private vrServiceProxy: VerificationControllerServiceProxy,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messageService: MessageService
   ) {}
 
   ngAfterViewInit(): void {
@@ -78,34 +79,34 @@ export class VerifyCaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.verificationStatus)
-    this.userName = localStorage.getItem('user_name')!;
+    // console.log(this.verificationStatus)
+    // this.userName = localStorage.getItem('user_name')!;
 
-    let filter1: string[] = [];
-    filter1.push('username||$eq||' + this.userName);
+    // let filter1: string[] = [];
+    // filter1.push('username||$eq||' + this.userName);
      // lmFilter.push('LearningMaterial.isPublish||$eq||' + 1);
 
-    this.serviceProxy
-      .getManyBaseUsersControllerUser(
-        undefined,
-        undefined,
-        filter1,
-        undefined,
-        undefined,
-        undefined,
-        1000,
-        0,
-        0,
-        0
-      )
-      .subscribe((res: any) => {
+    // this.serviceProxy
+    //   .getManyBaseUsersControllerUser(
+    //     undefined,
+    //     undefined,
+    //     filter1,
+    //     undefined,
+    //     undefined,
+    //     undefined,
+    //     1000,
+    //     0,
+    //     0,
+    //     0
+    //   )
+    //   .subscribe((res: any) => {
        
-        this.loggedUser = res.data;
-        console.log('logged user....', this.loggedUser);
-      });
+    //     this.loggedUser = res.data;
+    //     console.log('logged user....', this.loggedUser);
+    //   });
 
 
-    this.onSearch();
+    // this.onSearch();
   }
 
   onStatusChange($event: any) {
@@ -121,16 +122,14 @@ export class VerifyCaComponent implements OnInit {
   }
 
   loadgridData = (event: LazyLoadEvent) => {
-   // this.loading = true;
+   this.loading = true;
     this.totalRecords = 0;
 
     let status = this.searchBy.status  === 'NC Sent' ? 'NC Received' : this.searchBy.status
     let statusId = status
       ? Number(VerificationStatus[status])
       : 0;
-    console.log('110011', statusId);
     let filtertext = this.searchBy.text ? this.searchBy.text : '';
-    console.log('2222', filtertext);
     let pageNumber =
       event.first === 0 || event.first === undefined
         ? 1
@@ -141,12 +140,17 @@ export class VerifyCaComponent implements OnInit {
       this.vrServiceProxy
         .getVerifierParameters(pageNumber, this.rows, statusId, filtertext)
         .subscribe((a) => {
-         console.log("hiii...hi",a.items)
          this.paras = a.items;
           // this.paras = a.items.filter((o: any)=>o.verificationStatus != 6 && o.verificationStatus != 7 && o.verificationUser == this.loggedUser[0]?.id );
-          console.log('hey aassse year',this.paras)
           this.totalRecords = this.paras.length;
-         // this.loading = false;
+         this.loading = false;
+        }, error => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error loading'
+          })
+          this.loading = false
         });
     }, 1);
   };

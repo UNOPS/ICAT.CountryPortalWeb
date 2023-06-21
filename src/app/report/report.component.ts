@@ -5,12 +5,13 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import {CheckboxModule} from 'primeng/checkbox';
-import { filter } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import {
   Assessment,
   AssessmentYear,
@@ -29,6 +30,7 @@ import decode from 'jwt-decode';
 import { ExcecutiveSummeryReport } from './Dto/executiveSummeryReportDto';
 import { ClimateActionComponent } from 'app/climate-action/climate-action/climate-action.component';
 import { ThrowStmt } from '@angular/compiler';
+import { Subject, Subscription } from 'rxjs';
 // import { FinalReportComponent } from './final-report/final-report.component';
 
 @Component({
@@ -36,7 +38,7 @@ import { ThrowStmt } from '@angular/compiler';
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.css'],
 })
-export class ReportComponent implements OnInit, AfterViewInit {
+export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
   test = 'test';
 
   reports: Report[];
@@ -118,6 +120,13 @@ export class ReportComponent implements OnInit, AfterViewInit {
     text: null,
     countryId: null,
   };
+  sectorSubscription: Subscription;
+  dataReqSubscription: Subscription;
+  csiSubscription: Subscription;
+  assessmentSubcription: Subscription;
+  yearSubscription: Subscription;
+  private requestTrigger: Subject<void> = new Subject<void>();
+  mainSubscription: Subscription;
 
   constructor(
     private serviceProxy: ServiceProxy,
@@ -130,6 +139,15 @@ export class ReportComponent implements OnInit, AfterViewInit {
     private cilmateProxy: ProjectControllerServiceProxy,
     private sectorProxy: SectorControllerServiceProxy,
   ) { }
+
+  ngOnDestroy(): void {
+    // this.sectorSubscription.unsubscribe();
+    // this.dataReqSubscription.unsubscribe();
+    // this.csiSubscription.unsubscribe();
+    // this.assessmentSubcription.unsubscribe();
+    // this.yearSubscription.unsubscribe();
+    this.mainSubscription.unsubscribe()
+  }
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
   }
@@ -139,155 +157,159 @@ export class ReportComponent implements OnInit, AfterViewInit {
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
     
-
-    if(tokenPayload.sectorId){   //because this page only shows CA,SA,MRV,TT.this also can be don by using user roles from tocken
-    this.isCountryLevel=false;
-    this.serviceProxy.getOneBaseSectorControllerSector(tokenPayload.sectorId,undefined,undefined,undefined)
-    .subscribe(res=>{
-      this.selectedSector.push(res);
-      // console.log("reporttokenPayload",res);
-    this.onSectorChange( this.selectedSector);
-
-    })
-
-    }
-
-    this.dataCollectionGhgModuleStatus =tokenPayload.moduleLevels[4];
-
-    // ****update base on loggin details -- get user id from logging details
-    // this.route.queryParams.subscribe((params) =>{
-    //   this.userId = params['id'];
-    // })
-    //this.filterReportData()
-    //this.loadPdfFiles()
-
-    // this.reportProxy.getAllPdfFiles().subscribe((a) => {
-    //   console.log("==== files=====", a);
-    //   this.pdfFiles = a
-    // })
-
-    this.filterReportData()
-
-    this.userId = 1; // country admmin(1) / sector admin(2) ==> if sector admin get it;s id and replace sector id in table loading data paramter
-    if (this.userId == 1) {
-      this.isShown;
-    }
-    if (this.userId == 2) {
-      this.isShown = !this.isShown;
-    }
-
-    this.sectorProxy.getCountrySector(this.countryId).subscribe((res: any) => {
-      this.sectorList = res;
-      console.log("++++" ,this.sectorList)
-    });
-    // this.serviceProxy
-    //   .getManyBaseSectorControllerSector(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['name,ASC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    //   .subscribe((res: any) => {
-    //     this.sectorList = res.data;
-    //   });
-
-    // this.serviceProxy
-    //   .getManyBaseNdcControllerNdc(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['name,ASC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    this.ndcProxy.getDateRequest(0, 0, [])
-      .subscribe((res: any) => {
-        this.ndcList = res.items;
-        // console.log('ndc list...',this.ndcList);
+    this.mainSubscription = this.requestTrigger
+    .pipe(debounceTime(1000)) // Adjust the debounce time (in milliseconds) as per your requirements
+    .subscribe(() => {
+      if(tokenPayload.sectorId){   //because this page only shows CA,SA,MRV,TT.this also can be don by using user roles from tocken
+      this.isCountryLevel=false;
+      this.serviceProxy.getOneBaseSectorControllerSector(tokenPayload.sectorId,undefined,undefined,undefined)
+      .subscribe(res=>{
+        this.selectedSector.push(res);
+        // console.log("reporttokenPayload",res);
+      this.onSectorChange( this.selectedSector);
+  
+      })
+  
+      }
+  
+      this.dataCollectionGhgModuleStatus =tokenPayload.moduleLevels[4];
+  
+      // ****update base on loggin details -- get user id from logging details
+      // this.route.queryParams.subscribe((params) =>{
+      //   this.userId = params['id'];
+      // })
+      //this.filterReportData()
+      //this.loadPdfFiles()
+  
+      // this.reportProxy.getAllPdfFiles().subscribe((a) => {
+      //   console.log("==== files=====", a);
+      //   this.pdfFiles = a
+      // })
+  
+      this.filterReportData()
+  
+      this.userId = 1; // country admmin(1) / sector admin(2) ==> if sector admin get it;s id and replace sector id in table loading data paramter
+      if (this.userId == 1) {
+        this.isShown;
+      }
+      if (this.userId == 2) {
+        this.isShown = !this.isShown;
+      }
+  
+      this.sectorProxy.getCountrySector(this.countryId).subscribe((res: any) => {
+        this.sectorList = res;
+        console.log("++++" ,this.sectorList)
       });
+      // this.serviceProxy
+      //   .getManyBaseSectorControllerSector(
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     ['name,ASC'],
+      //     undefined,
+      //     1000,
+      //     0,
+      //     0,
+      //     0
+      //   )
+      //   .subscribe((res: any) => {
+      //     this.sectorList = res.data;
+      //   });
+  
+      // this.serviceProxy
+      //   .getManyBaseNdcControllerNdc(
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     ['name,ASC'],
+      //     undefined,
+      //     1000,
+      //     0,
+      //     0,
+      //     0
+      //   )
+      this.ndcProxy.getDateRequest(0, 0, [])
+        .subscribe((res: any) => {
+          this.ndcList = res.items;
+          // console.log('ndc list...',this.ndcList);
+        });
+  
+      // this.serviceProxy
+      //   .getManyBaseProjectControllerProject(
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     ['editedOn,DESC'],
+      //     undefined,
+      //     1000,
+      //     0,
+      //     0,
+      //     0
+      //   )
+      this.cilmateProxy.getProjectsForCountrySectorInstitution(0, 0, 0, [], 0, 0)
+        .subscribe((res: any) => {
+          this.climateActionList = res.items;
+          console.log('project list..', this.climateActionList);
+        });
+  
+      if (this.dataCollectionGhgModuleStatus){
+        this.typePair = [
+          { id: 1, name: 'GHG Ex Post', value: 'Ex-post' },
+          { id: 2, name: 'GHG Ex ante', value: 'Ex-ante' },
+        ];
+      } else {
+        this.typePair = [
+          { id: 1, name: 'GHG Ex Post', value: 'Ex-post' },
+          { id: 2, name: 'GHG Ex ante', value: 'Ex-ante' },
+          { id: 3, name: 'MAC Ex Post', value: 'Ex-post' },
+          { id: 4, name: 'MAC Ex ante', value: 'Ex-ante' },
+        ];
+      }
+  
+      // console.log('pair...',this.typePair)
+      //
+  
+      // this.serviceProxy
+      //   .getManyBaseAssesmentControllerAssessment(
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     ['editedOn,DESC'],
+      //     undefined,
+      //     1000,
+      //     0,
+      //     0,
+      //     0
+      //   )
+      //   .subscribe((res: any) => {
+      //     this.assessmentList = res.data;
+      //     // console.log('assessment list', this.assessmentList);
+      //   });
+  
+      // this.serviceProxy
+      //   .getManyBaseAssessmentYearControllerAssessmentYear(
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     undefined,
+      //     ['editedOn,DESC'],
+      //     undefined,
+      //     1000,
+      //     0,
+      //     0,
+      //     0
+      //   )
+      //   .subscribe((res: any) => {
+      //     this.assessmentYrList = res.data;
+      //     // console.log('yr list', this.assessmentYrList);
+      //   });
 
-    // this.serviceProxy
-    //   .getManyBaseProjectControllerProject(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['editedOn,DESC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    this.cilmateProxy.getProjectsForCountrySectorInstitution(0, 0, 0, [], 0, 0)
-      .subscribe((res: any) => {
-        this.climateActionList = res.items;
-        console.log('project list..', this.climateActionList);
-      });
-
-    if (this.dataCollectionGhgModuleStatus){
-      this.typePair = [
-        { id: 1, name: 'GHG Ex Post', value: 'Ex-post' },
-        { id: 2, name: 'GHG Ex ante', value: 'Ex-ante' },
-      ];
-    } else {
-      this.typePair = [
-        { id: 1, name: 'GHG Ex Post', value: 'Ex-post' },
-        { id: 2, name: 'GHG Ex ante', value: 'Ex-ante' },
-        { id: 3, name: 'MAC Ex Post', value: 'Ex-post' },
-        { id: 4, name: 'MAC Ex ante', value: 'Ex-ante' },
-      ];
-    }
-
-    // console.log('pair...',this.typePair)
-    //
-
-    this.serviceProxy
-      .getManyBaseAssesmentControllerAssessment(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        ['editedOn,DESC'],
-        undefined,
-        1000,
-        0,
-        0,
-        0
-      )
-      .subscribe((res: any) => {
-        this.assessmentList = res.data;
-        // console.log('assessment list', this.assessmentList);
-      });
-
-    this.serviceProxy
-      .getManyBaseAssessmentYearControllerAssessmentYear(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        ['editedOn,DESC'],
-        undefined,
-        1000,
-        0,
-        0,
-        0
-      )
-      .subscribe((res: any) => {
-        this.assessmentYrList = res.data;
-        // console.log('yr list', this.assessmentYrList);
-      });
-
+    })  
+    this.requestTrigger.next()
 
   }
 
@@ -356,7 +378,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     let projectId = this.searchBy.ca ? this.searchBy.ca.id.toString() : "";
     let reportName = this.searchBy.text ? this.searchBy.text : "";
 
-    this.reportProxy.getPdfDataAndFilter(ndcId, projectId, sector, reportName).subscribe((a) => {
+    this.dataReqSubscription = this.reportProxy.getPdfDataAndFilter(ndcId, projectId, sector, reportName).subscribe((a) => {
       console.log(a);
       this.pdfFiles = a
     })
