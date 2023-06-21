@@ -1060,7 +1060,7 @@ let s=new String("23")
       for(let s of d.subNdc){
 
         // console.log("ssssss",s.name.length>30)
-        if(s.name.length>20){
+        if(s.name?.length>20){
           s.name = s.name.substring(0,32)+"..........."
         }
 
