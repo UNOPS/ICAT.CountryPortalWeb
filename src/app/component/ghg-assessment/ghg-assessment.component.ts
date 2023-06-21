@@ -367,12 +367,7 @@ export class GhgAssessmentComponent implements OnInit {
     this.userCountryId  = tokenPayload.countryId;
     this.userSectorId = tokenPayload.sectorId;
 
-    var year = moment().year();
-    this.years.push({label: year.toString(),value: year });
-    for (let i = 1; i < 30; i++) {
-      // this.years.push({label: (year - i).toString(),value: year - i });
-      this.years.push({label: (year + i).toString(),value: year + i });
-    }
+    
 
     this.userName = localStorage.getItem('user_name')!;
     let filterUser: string[] = [];
@@ -2637,11 +2632,9 @@ else{
    console.log("my event....gg.",event)
    if(this.selectedClimateAction.projectApprovalStatus?.id==5){
      this.hasPrevActiveCA = true
-
    }
    else{
     this.hasPrevActiveCA = false;
-
    }
     this.selectedNdc = this.ndcList.find(
       (a) => a.id === this.selectedClimateAction.ndc?.id
@@ -2654,6 +2647,14 @@ else{
     )!;
 
     this.selectDefaultMethodForSUBNDc();
+
+    let year = this.selectedClimateAction.proposeDateofCommence.year();
+    this.years=[];
+    this.years.push({label: year.toString(),value: year });
+    for (let i = 1; i < 30; i++) {
+      this.years.push({label: (year + i).toString(),value: year + i });
+    }
+    console.log("yyyyyyyyyy",this.years)
 
     this.proposeDateofCommence = new Date(
       this.selectedClimateAction.proposeDateofCommence.year(),
