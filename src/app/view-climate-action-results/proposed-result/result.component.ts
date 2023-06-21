@@ -506,212 +506,213 @@ export class ResultComponent implements OnInit {
   async downloadExcel() {
     console.log("selectedProjects..",this.allParameter)
 
-    let res2: any;
-    res2 = await this.asseProxi
-      .getMethodologyNameByAssessmentId(this.assessmentId)
-      .toPromise();
-    let methodName = res2.methodology.displayName;
+    // let res2: any;
+    // res2 = await this.asseProxi
+    //   .getMethodologyNameByAssessmentId(this.assessmentId)
+    //   .toPromise();
+    // let methodName = res2.methodology.displayName;
 
+    // for (let x of this.allParameter) {
+    //   console.log('selectedProjects..', x);
+
+    //   let obj: excelGhgParameter = {
+    //     Methodology: '',
+    //     Version_of_The_Methodology: '',
+    //     Original_Name_of_The_Parameter: '',
+    //     Parameter_Name: '',
+    //     Entered_Value: '',
+    //     Entered_Unit: '',
+    //     Converted_Value: '',
+    //     Requested_Unit: '',
+    //     Institution: '',
+    //     Assessment_Type: '',
+    //     Alternative_Parameter: '',
+    //     // parentParameter:'',
+    //     // parentParameterId:'',
+    //     Baseline_Parameter: '',
+    //     Base_Year: '',
+    //     Project_Parameter: '',
+    //     Leakage_Parameter: '',
+    //     Assessment_Year: '',
+    //     Projection_Parameter: '',
+    //     Projection_Base_Year: '',
+    //     Projection_Year: '',
+    //     Vehicle: '',
+    //     Fuel_type: '',
+    //     Route: '',
+    //     Power_plant: '',
+    //     DefaultValue: '',
+    //   };
+
+    //   obj.Methodology = methodName;
+    //   obj.Version_of_The_Methodology = x.methodologyVersion;
+    //   obj.Original_Name_of_The_Parameter = x.originalName;
+    //   obj.Parameter_Name = x.name;
+    //   obj.Entered_Value = x.value;
+    //   obj.Entered_Unit = x.uomDataEntry;
+    //   obj.Converted_Value = x.conversionValue;
+    //   obj.Requested_Unit = x.uomDataRequest;
+    //   obj.Institution = x?.institution ? x?.institution?.name : 'N/A';
+    //   obj.Assessment_Type = this.assement.assessmentType;
+    //   obj.Alternative_Parameter = x.isAlternative ? 'Yes' : 'No';
+    //   // obj.parentParameter=x.parentParameter;
+    //   // obj.parentParameterId=x.parentParameterId;
+    //   obj.Baseline_Parameter = x.isBaseline ? 'Yes' : 'No';
+    //   obj.Base_Year = x.baseYear;
+    //   obj.Project_Parameter = x.isProject ? 'Yes' : 'No';
+    //   obj.Leakage_Parameter = x.isLekage ? 'Yes' : 'No';
+    //   obj.Assessment_Year = this.assessmentYr;
+    //   obj.Projection_Parameter = x.isProjection ? 'Yes' : 'No';
+    //   obj.Projection_Base_Year = x.projectionBaseYear
+    //     ? x.projectionBaseYear
+    //     : 'N/A';
+    //   obj.Projection_Year = x.projectionYear ? x.projectionYear : 'N/A';
+    //   obj.Vehicle = x.vehical ? x.vehical : 'N/A';
+    //   obj.Fuel_type = x.fuelType ? x.fuelType : 'N/A';
+    //   obj.Route = x.route ? x.route : 'N/A';
+    //   obj.Power_plant = x.powerPlant ? x.powerPlant : 'N/A';
+    //   obj.DefaultValue = x?.defaultValue ? x?.defaultValue?.name : 'N/A';
+
+    //   this.excellist.push(obj);
+    // }
+
+    // this.excellist.push(
+    //   {},
+    //   {
+    //     Baseline_Parameter: this.baselineEmission,
+    //     Project_Parameter: this.projectEmission,
+    //     Leakage_Parameter: this.leakageEmission,
+    //     Emission_Reduction: this.totalEmission,
+    //   }
+    // );
+
+    // const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.excellist);
+    // const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(wb, ws, 'sheet1');
+    // /* save to file */
+    // XLSX.writeFile(wb, this.fileName);
+
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet([]);
+    const nameValuePairs = [
+      [
+        'Assessment Name',
+        `Assessment of ${this.title} Specific Climate Action - ${this.project.climateActionName}`,
+      ],
+      ['Aggregated Actions', this.assement.ndc ? this.assement.ndc.name : '-'],
+      ['Action Areas', this.assement.subNdc ? this.assement.subNdc.name : '-'],
+      ['Objective of Assessment', this.objectiveName.join(',')],
+      ['Baseline Year', this.assement.baseYear],
+      ['Project Year ', this.assessmentYr],
+      ['Assessment Approach ', this.assement.assessmentType],
+      ['Assessment Methodology ', this.assement.methodology.displayName],
+      ['Version of The Methodology ', this.assement.methodology.version],
+    ];
+
+    const namevalue = XLSX.utils.sheet_add_aoa(worksheet, nameValuePairs);
+
+    const tableData = [
+      [
+        // 'Version of The Methodology',
+        'Original_Name_of_The_Parameter',
+        'Parameter Name',
+        'Entered Value',
+        'Entered Unit',
+        'Converted Value',
+        'Requested Unit',
+        'Institution',
+        'Alternative Parameter',
+        'Baseline Parameter',
+        'Project Parameter',
+        'Leakage Parameter',
+        'Projection Parameter',
+        'Projection Base Year',
+        'Vehicle',
+        'Fuel type',
+        'Power plant',
+        'DefaultValue',
+      ],
+    ];
     for (let x of this.allParameter) {
-      console.log('selectedProjects..', x);
-
-      let obj: excelGhgParameter = {
-        Methodology: '',
-        Version_of_The_Methodology: '',
-        Original_Name_of_The_Parameter: '',
-        Parameter_Name: '',
-        Entered_Value: '',
-        Entered_Unit: '',
-        Converted_Value: '',
-        Requested_Unit: '',
-        Institution: '',
-        Assessment_Type: '',
-        Alternative_Parameter: '',
-        // parentParameter:'',
-        // parentParameterId:'',
-        Baseline_Parameter: '',
-        Base_Year: '',
-        Project_Parameter: '',
-        Leakage_Parameter: '',
-        Assessment_Year: '',
-        Projection_Parameter: '',
-        Projection_Base_Year: '',
-        Projection_Year: '',
-        Vehicle: '',
-        Fuel_type: '',
-        Route: '',
-        Power_plant: '',
-        DefaultValue: '',
-      };
-
-      obj.Methodology = methodName;
-      obj.Version_of_The_Methodology = x.methodologyVersion;
-      obj.Original_Name_of_The_Parameter = x.originalName;
-      obj.Parameter_Name = x.name;
-      obj.Entered_Value = x.value;
-      obj.Entered_Unit = x.uomDataEntry;
-      obj.Converted_Value = x.conversionValue;
-      obj.Requested_Unit = x.uomDataRequest;
-      obj.Institution = x?.institution ? x?.institution?.name : 'N/A';
-      obj.Assessment_Type = this.assement.assessmentType;
-      obj.Alternative_Parameter = x.isAlternative ? 'Yes' : 'No';
-      // obj.parentParameter=x.parentParameter;
-      // obj.parentParameterId=x.parentParameterId;
-      obj.Baseline_Parameter = x.isBaseline ? 'Yes' : 'No';
-      obj.Base_Year = x.baseYear;
-      obj.Project_Parameter = x.isProject ? 'Yes' : 'No';
-      obj.Leakage_Parameter = x.isLekage ? 'Yes' : 'No';
-      obj.Assessment_Year = this.assessmentYr;
-      obj.Projection_Parameter = x.isProjection ? 'Yes' : 'No';
-      obj.Projection_Base_Year = x.projectionBaseYear
-        ? x.projectionBaseYear
-        : 'N/A';
-      obj.Projection_Year = x.projectionYear ? x.projectionYear : 'N/A';
-      obj.Vehicle = x.vehical ? x.vehical : 'N/A';
-      obj.Fuel_type = x.fuelType ? x.fuelType : 'N/A';
-      obj.Route = x.route ? x.route : 'N/A';
-      obj.Power_plant = x.powerPlant ? x.powerPlant : 'N/A';
-      obj.DefaultValue = x?.defaultValue ? x?.defaultValue?.name : 'N/A';
-
-      this.excellist.push(obj);
+      tableData.push([
+        // x.methodologyVersion,
+        x.originalName,
+        x.name,
+        x.value,
+        x.uomDataEntry,
+        x.conversionValue,
+        x.uomDataRequest,
+        x?.institution ? x?.institution?.name : 'N/A',
+        x.isAlternative ? 'Yes' : 'No',
+        x.isBaseline ? 'Yes' : 'No',
+        x.isProject ? 'Yes' : 'No',
+        x.isLekage ? 'Yes' : 'No',
+        x.isProjection ? 'Yes' : 'No',
+        x.projectionBaseYear ? x.projectionBaseYear.toString() : 'N/A',
+        x.projectionYear ? x.projectionYear.toString() : 'N/A',
+        x.vehical ? x.vehical : 'N/A',
+        x.fuelType ? x.fuelType : 'N/A',
+        x.route ? x.route : 'N/A',
+        x.powerPlant ? x.powerPlant : 'N/A',
+        x?.defaultValue ? x?.defaultValue?.name : 'N/A',
+      ]);
     }
 
-    this.excellist.push(
-      {},
-      {
-        Baseline_Parameter: this.baselineEmission,
-        Project_Parameter: this.projectEmission,
-        Leakage_Parameter: this.leakageEmission,
-        Emission_Reduction: this.totalEmission,
+    const tableRange = XLSX.utils.sheet_add_aoa(worksheet, tableData, {
+      origin: 'A11',
+    });
+    const result = [];
+    if (this.baselineEmission) {
+      result.push(['Baseline Emission', this.baselineEmission + ' tCO₂e']);
+    } 
+    if (this.projectEmission) {
+      result.push(['Project Emission', this.projectEmission + ' tCO₂e']);
+    } 
+     if (this.leakageEmission) {
+      result.push(['Leakage Emission', this.leakageEmission + ' tCO₂e']);
+    } 
+     if (this.totalEmission) {
+      result.push(['Emission Reduction', this.totalEmission + ' tCO₂e']);
+    }
+
+    XLSX.utils.sheet_add_aoa(worksheet, result, {
+      origin: 'A' + (this.allParameter.length + 13),
+    });
+
+    if (this.projectionParameter.length > 0) {
+      const projectionResult = [
+        [
+          'Projection Result',
+        ],
+        [
+          '',
+        ],
+        [
+          'Year',
+          'Baseline Result',
+          'Project Result',
+          'Leakage Result',
+          'Emission Reduction',
+        ],
+      ];
+      for (let param of this.projectionData) {
+        projectionResult.push([
+          param.projectionYear.toString(),
+          param.baselineResult.toString(),
+          param.projectResult.toString(),
+          param.leakageResult>0?param.leakageResult.toString():'0 tCO₂e',
+          param.emissionReduction.toString(),
+
+        ]);
       }
-    );
 
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.excellist);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'sheet1');
-    /* save to file */
-    XLSX.writeFile(wb, this.fileName);
+      XLSX.utils.sheet_add_aoa(worksheet, projectionResult, {
+        origin: 'A' + (this.allParameter.length + 18),
+      });
 
-    // const workbook = XLSX.utils.book_new();
-    // const worksheet = XLSX.utils.aoa_to_sheet([]);
-    // const nameValuePairs = [
-    //   [
-    //     'Assessment Name',
-    //     `Assessment of ${this.title} Specific Climate Action - ${this.project.climateActionName}`,
-    //   ],
-    //   ['Aggregated Actions', this.ndc ? this.ndc.name : '-'],
-    //   ['Action Areas', this.subNdc ? this.subNdc.name : '-'],
-    //   ['Objective of Assessment', this.objectiveName.join(',')],
-    //   ['Baseline Year', this.assement.baseYear],
-    //   ['Project Year ', this.assessmentYr],
-    //   ['Assessment Approach ', this.assement.assessmentType],
-    //   ['Assessment Methodology ', this.assement.methodology.displayName],
-    // ];
-
-    // const namevalue = XLSX.utils.sheet_add_aoa(worksheet, nameValuePairs);
-
-    // const tableData = [
-    //   [
-    //     'Version of The Methodology',
-    //     'Original_Name_of_The_Parameter',
-    //     'Parameter Name',
-    //     'Entered Value',
-    //     'Entered Unit',
-    //     'Converted Value',
-    //     'Requested Unit',
-    //     'Institution',
-    //     'Alternative Parameter',
-    //     'Baseline Parameter',
-    //     'Project Parameter',
-    //     'Leakage Parameter',
-    //     'Projection Parameter',
-    //     'Projection Base Year',
-    //     'Vehicle',
-    //     'Fuel type',
-    //     'Power plant',
-    //     'DefaultValue',
-    //   ],
-    // ];
-    // for (let x of this.allParameter) {
-    //   tableData.push([
-    //     x.methodologyVersion,
-    //     x.originalName,
-    //     x.name,
-    //     x.value,
-    //     x.uomDataEntry,
-    //     x.conversionValue,
-    //     x.uomDataRequest,
-    //     x?.institution ? x?.institution?.name : 'N/A',
-    //     x.isAlternative ? 'Yes' : 'No',
-    //     x.isBaseline ? 'Yes' : 'No',
-    //     x.isProject ? 'Yes' : 'No',
-    //     x.isLekage ? 'Yes' : 'No',
-    //     x.isProjection ? 'Yes' : 'No',
-    //     x.projectionBaseYear ? x.projectionBaseYear.toString() : 'N/A',
-    //     x.projectionYear ? x.projectionYear.toString() : 'N/A',
-    //     x.vehical ? x.vehical : 'N/A',
-    //     x.fuelType ? x.fuelType : 'N/A',
-    //     x.route ? x.route : 'N/A',
-    //     x.powerPlant ? x.powerPlant : 'N/A',
-    //     x?.defaultValue ? x?.defaultValue?.name : 'N/A',
-    //   ]);
-    // }
-
-    // const tableRange = XLSX.utils.sheet_add_aoa(worksheet, tableData, {
-    //   origin: 'A10',
-    // });
-    // const result = [];
-    // if (this.baselineEmission) {
-    //   result.push(['Baseline Emission', this.baselineEmission + ' tCO₂e']);
-    // } 
-    // if (this.projectEmission) {
-    //   result.push(['Project Emission', this.projectEmission + ' tCO₂e']);
-    // } 
-    //  if (this.leakageEmission) {
-    //   result.push(['Leakage Emission', this.leakageEmission + ' tCO₂e']);
-    // } 
-    //  if (this.totalEmission) {
-    //   result.push(['Emission Reduction', this.totalEmission + ' tCO₂e']);
-    // }
-
-    // XLSX.utils.sheet_add_aoa(worksheet, result, {
-    //   origin: 'A' + (this.allParameter.length + 12),
-    // });
-
-    // if (this.projectionParameter.length > 0) {
-    //   const projectionResult = [
-    //     [
-    //       'Projection Result',
-    //     ],
-    //     [
-    //       '',
-    //     ],
-    //     [
-    //       'Year',
-    //       'Baseline Result',
-    //       'Project Result',
-    //       'Leakage Result',
-    //       'Emission Reduction',
-    //     ],
-    //   ];
-    //   for (let param of this.projectionData) {
-    //     projectionResult.push([
-    //       param.projectionYear.toString(),
-    //       param.baselineResult.toString(),
-    //       param.projectResult.toString(),
-    //       param.leakageResult>0?param.leakageResult.toString():'0 tCO₂e',
-    //       param.emissionReduction.toString(),
-
-    //     ]);
-    //   }
-
-    //   XLSX.utils.sheet_add_aoa(worksheet, projectionResult, {
-    //     origin: 'A' + (this.allParameter.length + 17),
-    //   });
-
-    // }
-    // XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-    // XLSX.writeFile(workbook, 'data.xlsx');
+    }
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    XLSX.writeFile(workbook, 'data.xlsx');
    
  
   }
