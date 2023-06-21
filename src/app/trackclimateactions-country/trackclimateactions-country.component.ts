@@ -118,13 +118,13 @@ export class TrackclimateactionsCountryComponent implements OnInit {
 
 
       this.loggedUser = res.data[0];
-      console.log("this.loggedUser..",this.loggedUser.userType.id)
+      // console.log("this.loggedUser..",this.loggedUser.userType.id)
       
       
       });
 
       this.yearList = await this.assYearProxy.getAssessmentYearsListInTrackCA().toPromise();
-      console.log("my fileter asse year...",this.yearList)
+      // console.log("my fileter asse year...",this.yearList)
       setTimeout(() => {
       
         for(let x = 0;x<this.yearList.length;x++)
@@ -183,7 +183,7 @@ export class TrackclimateactionsCountryComponent implements OnInit {
         
        this.ndcList = res.data;
        this.ndcList = this.ndcList.filter((o)=>o.country.id == this.userCountryId );
-       console.log("ndclist..",this.ndcList)
+      //  console.log("ndclist..",this.ndcList)
 
       }));
 
@@ -246,7 +246,7 @@ back()
   
   async loadgridData(event: LazyLoadEvent){
 
-   console.log("this.recievedFlag....",this.recievedFlag)
+  //  console.log("this.recievedFlag....",this.recievedFlag)
    this.activeprojects = [];
    this.activeprojectson1 = [];
    this.activeprojectson = [];
@@ -257,7 +257,7 @@ back()
     {
       this.select = true;
       this.totalRecords = 0;
-
+      this.loading = true
    
  
     let pageNumber =
@@ -282,7 +282,7 @@ back()
       ).subscribe((res=>{
 
 
-        console.log("recievd track ca...",res.data);
+        // console.log("recievd track ca...",res.data);
 
        
         this.activeprojects = [];
@@ -311,6 +311,7 @@ back()
         //  console.log("(!)this.activeprojects...",this.activeprojects);
          
         }
+        this.loading = false
 
        }))
     }
@@ -322,7 +323,7 @@ back()
      
     this.loading = true;
     this.totalRecords = 0;
-    console.log("yer....",this.selectedYear)
+    // console.log("yer....",this.selectedYear)
 
    
     let ndcId = 0;
@@ -369,8 +370,8 @@ back()
       .subscribe((a) => {
           this.trackClimateActions = a.items;
           this.totalRecords = a.meta.totalItems;
-          console.log('first time climation....',this.trackClimateActions);
-          console.log('totalRecords....',a.meta.totalItems);
+          // console.log('first time climation....',this.trackClimateActions);
+          // console.log('totalRecords....',a.meta.totalItems);
 
           for(let project of this.trackClimateActions)
           {
@@ -437,7 +438,7 @@ back()
 
 
           this.activeprojectsload.push(activeproject1); // push one by one modified row for table
-          console.log('this.activeprojectsload...',this.activeprojectsload)
+          // console.log('this.activeprojectsload...',this.activeprojectsload)
 
 
 
@@ -569,15 +570,15 @@ back()
  onNDCChange(event:any){
 
   
-  console.log("selcted ndc..",event)
+  // console.log("selcted ndc..",event)
   let ndcIdArray:any[]=[];
   for(let ndcObj of event)
   {
     ndcIdArray.push(ndcObj.id)
   }
-  console.log("selcted ndcIds..",ndcIdArray)
+  // console.log("selcted ndcIds..",ndcIdArray)
   this.selectedNdcIds = ndcIdArray.join();
-  console.log("selcted ndcIds string..",this.selectedNdcIds)
+  // console.log("selcted ndcIds string..",this.selectedNdcIds)
 
   //this.selectedNdcIds = event.id
   this.onSearch();
@@ -614,7 +615,7 @@ back()
       .createOneBaseTrackClimateControllerTrackcaEntity(trackca)
       .subscribe((resp=>{
         this.response = resp;
-         console.log('mm1',resp)
+        //  console.log('mm1',resp)
         //alert("hello");
        // this.messageService.add({severity:'success', summary:'Confirmed', detail:'Done!'});
 

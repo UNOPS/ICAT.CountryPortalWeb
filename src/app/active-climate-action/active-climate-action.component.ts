@@ -117,21 +117,22 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
       //  console.log("projectStatusList",res.data)
       });
     
-      this.serviceProxy.getManyBaseAssesmentControllerAssessment(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        1000,
-        0,
-        0,
-        0
-       ).subscribe((res: any) => {
-        this.assessmentList = res.data;
-       // console.log("AssemntList",res.data)
-      });
+      //Removed as function is not using
+      // this.serviceProxy.getManyBaseAssesmentControllerAssessment(
+      //   undefined,
+      //   undefined,
+      //   undefined,
+      //   undefined,
+      //   undefined,
+      //   undefined,
+      //   1000,
+      //   0,
+      //   0,
+      //   0
+      //  ).subscribe((res: any) => {
+      //   this.assessmentList = res.data;
+      //  // console.log("AssemntList",res.data)
+      // });
 
   }
   
@@ -146,7 +147,7 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
     });
   }
 
-  isMac(ast:any): boolean {
+  isMac(ast:any): boolean { //This is not using now
     if(ast){
 
       let x = ast.find((o: any)=>o.assessmentType == 'MAC'&&o.isProposal==0);
@@ -159,7 +160,7 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
     
   }
 
-  isGhg(ast:any): boolean {
+  isGhg(ast:any): boolean { //This is not using now
 
     if(ast){
 
@@ -192,8 +193,8 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
 //  climateaction.assessement.find(o=>o.assessementType === 'Ex-Ante'
 
   loadgridData = (event: LazyLoadEvent) => {
-   console.log("works")
-    //this.loading = true;
+  //  console.log("works")
+    this.loading = true;
     this.totalRecords = 0;
     
     let statusId = this.searchBy.status ? this.searchBy.status.id : 0;
@@ -212,12 +213,12 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
     {
       this.asseStatus = -1;
     }
-    console.log("this.asseStatus...",this.asseStatus)
+    // console.log("this.asseStatus...",this.asseStatus)
    // let assessmentStatusName = this.searchBy.assessmentStatus ? this.searchBy.assessmentStatus.assessmentStatus : '';
     //console.log("assessmentStatus",assessmentStatusName)
     let projectApprovalStatusId = this.searchBy.ApprovalStatus ? this.searchBy.ApprovalStatus.id : 0;
     let asseType = this.searchBy.assessmentType1?this.searchBy.assessmentType1:'';
-    console.log("asseType...",asseType)
+    // console.log("asseType...",asseType)
     if (this.searchBy.status !== null){
       this.searchBy.text = this.searchBy.status.name
     } else {
@@ -246,34 +247,34 @@ export class ActiveClimateActionComponent implements OnInit,AfterViewInit{
           this.climateactions = a.items;
           this.totalRecords = a.meta.totalItems;
 
+          //This loop sent to BE as it sends too many requests
+    //       this.climateactions.map(o=>{
+    //         // console.log("  assessement1", o)
+    //         let filter1: string[] = new Array();
+    // filter1.push('project.id||$eq||' + o.id)
+    //         this.serviceProxy.getManyBaseAssesmentControllerAssessment(
+    //           undefined,
+    //           undefined,
+    //           filter1,
+    //           undefined,
+    //           undefined,
+    //           undefined,
+    //           1000,
+    //           0,
+    //           0,
+    //           0
+    //         ).subscribe(res=>{
+    //           o.assessments=res.data;
+    //           // console.log("  assessement", res)
+
+
+    //         })
+
           
-          this.climateactions.map(o=>{
-            console.log("  assessement1", o)
-            let filter1: string[] = new Array();
-    filter1.push('project.id||$eq||' + o.id)
-            this.serviceProxy.getManyBaseAssesmentControllerAssessment(
-              undefined,
-              undefined,
-              filter1,
-              undefined,
-              undefined,
-              undefined,
-              1000,
-              0,
-              0,
-              0
-            ).subscribe(res=>{
-              o.assessments=res.data;
-              console.log("  assessement", res)
-
-
-            })
-
-          
-          })
-         // this.loading = false;
-          console.log(" this.totalRecords", this.totalRecords)
-          console.log("this.climateactions ", this.climateactions)
+    //       })
+         this.loading = false;
+          // console.log(" this.totalRecords", this.totalRecords)
+          // console.log("this.climateactions ", this.climateactions)
         });
     }, 1);
   };
