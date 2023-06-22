@@ -44,17 +44,18 @@ export class AllResultComponent implements OnInit, AfterViewInit {
   countryId: number = 0; // should assign particular country id from login
   sectorId: number = 0; // should assign particular sector id from login
 
-  projects: Project[]=[];
+  projects: Project[] = [];
   assignCAArray: any[] = [];
 
   loading: boolean;
+  spin: boolean = false;
   totalRecords: number = 0;
-  itemsPerPage: number =0;
+  itemsPerPage: number = 0;
   rows: number = 10;
   last: number;
   event: any;
   selectedProject: Assessment;
-  dataCollectionModuleStatus:number;
+  dataCollectionModuleStatus: number;
   dataCollectionGhgModuleStatus: number;
   ////////////////////////////////////
   searchBy: any = {
@@ -65,7 +66,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
   ////////////////////////////////////////
 
   asseType: string[] = [];
-  count:number = 0;
+  count: number = 0;
 
   onSearch() {
     let event: any = {};
@@ -98,13 +99,12 @@ export class AllResultComponent implements OnInit, AfterViewInit {
   //   this.router.navigate(['']); //should insert summery page
   // }
 
-  toDetails(assessments: Assessment,assYr:AssessmentYear)
-  {
-    this.router.navigate(['/result'],{ 
+  toDetails(assessments: Assessment, assYr: AssessmentYear) {
+    this.router.navigate(['/result'], {
       // queryParams: { id: assessments.id, yr: assessments.assessmentYear[0]?.assessmentYear  } // need to add yr after list is done
-      queryParams: { id: assessments.id, yr: assYr.assessmentYear  } // need to add yr after list is done
+      queryParams: { id: assessments.id, yr: assYr.assessmentYear } // need to add yr after list is done
     });  //should insert summery page link
-  
+
   }
 
   constructor(
@@ -113,75 +113,73 @@ export class AllResultComponent implements OnInit, AfterViewInit {
     private AssessmentProxy: AssesmentControllerServiceProxy,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
   }
 
-  handleChange(event:any)
-  {
-    
- console.log("my event is ..",event)
- console.log("my count is ..",this.count)
+  handleChange(event: any) {
 
- if(event.index == 1)
- {
-  
-    this.searchBy.text = '';
-    this.searchBy.assessmentType1='';
-    this.searchBy.climateActionName1='';
-    
-    this.setActive();
- 
- }
- else
- {
-  this.searchBy.text = '';
-  this.searchBy.assessmentType1='';
-  this.searchBy.climateActionName1='';
-  this.setPropose();
-  }
- 
- 
+    console.log("my event is ..", event)
+    console.log("my count is ..", this.count)
+
+    if (event.index == 1) {
+
+      this.searchBy.text = '';
+      this.searchBy.assessmentType1 = '';
+      this.searchBy.climateActionName1 = '';
+
+      this.setActive();
+
+    }
+    else {
+      this.searchBy.text = '';
+      this.searchBy.assessmentType1 = '';
+      this.searchBy.climateActionName1 = '';
+      this.setPropose();
+    }
+
+
   }
 
   setPropose() {
     this.isProposal = 1;
-   // console.log("hiiiiii");
-   this.AssessmentProxy.getAssmentDetails(
-    0,
-    0,
-    '',
-    '',
-    this.isProposal,
-    0,
-    ''
-  )
-    .subscribe((res: any) => {
-      // this.projects = res.data;
-      // console.log('climateactionsyoooo', res);
-      for(let a of res.items){   
-        if (a !== null) {
-       
-       if (
-         !this.assignCAArray.includes(
-           a.project
-             .climateActionName
-         )
-       ) {
-        
-         this.assignCAArray.push(
-           a.project
-             .climateActionName
-         );
-         this.projects.push(
-          a.project
-         );
-       }
-     }}
-     console.log('climateactionsyoooo', res); 
-    });
+    // console.log("hiiiiii");
+    // this.AssessmentProxy.getAssmentDetails(
+    //   0,
+    //   0,
+    //   '',
+    //   '',
+    //   this.isProposal,
+    //   0,
+    //   ''
+    // )
+    //   .subscribe((res: any) => {
+    //     // this.projects = res.data;
+    //     // console.log('climateactionsyoooo', res);
+    //     for (let a of res.items) {
+    //       if (a !== null) {
+
+    //         if (
+    //           !this.assignCAArray.includes(
+    //             a.project
+    //               .climateActionName
+    //           )
+    //         ) {
+
+    //           this.assignCAArray.push(
+    //             a.project
+    //               .climateActionName
+    //           );
+    //           this.projects.push(
+    //             a.project
+    //           );
+    //         }
+    //       }
+    //     }
+    //     console.log('climateactionsyoooo', res);
+    //   });
 
 
     let event: any = {};
@@ -192,43 +190,43 @@ export class AllResultComponent implements OnInit, AfterViewInit {
 
   setActive() {
     this.isProposal = 0;
-   // console.log("byeee");
+    // console.log("byeee");
     // console.log(this.assessmentStage);
-    this.AssessmentProxy.getAssmentDetails(
-      0,
-      0,
-      '',
-      '',
-      this.isProposal,
-      0,
-      ''
-    )
-      .subscribe((res: any) => {
-        // this.projects = res.data;
-        // console.log('climateactionsyoooo', res);
-        this.assignCAArray=[]
-        this.projects=[]
-        for(let a of res.items){   
-          if (a !== null) {
+    // this.AssessmentProxy.getAssmentDetails(
+    //   0,
+    //   0,
+    //   '',
+    //   '',
+    //   this.isProposal,
+    //   0,
+    //   ''
+    // )
+    //   .subscribe((res: any) => {
+    //     // this.projects = res.data;
+    //     // console.log('climateactionsyoooo', res);
+    //     this.assignCAArray=[]
+    //     this.projects=[]
+    //     for(let a of res.items){   
+    //       if (a !== null) {
          
-         if (
-           !this.assignCAArray.includes(
-             a.project
-               .climateActionName
-           )
-         ) {
+    //      if (
+    //        !this.assignCAArray.includes(
+    //          a.project
+    //            .climateActionName
+    //        )
+    //      ) {
           
-           this.assignCAArray.push(
-             a.project
-               .climateActionName
-           );
-           this.projects.push(
-            a.project
-           );
-         }
-       }}
-       console.log('climateactionsyoooo', res);
-      });
+    //        this.assignCAArray.push(
+    //          a.project
+    //            .climateActionName
+    //        );
+    //        this.projects.push(
+    //         a.project
+    //        );
+    //      }
+    //    }}
+    //    console.log('climateactionsyoooo', res);
+    //   });
 
 
 
@@ -245,19 +243,19 @@ export class AllResultComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-
+    this.spin = true
     const token = localStorage.getItem('access_token')!;
     // decode the token to get its payload
     const tokenPayload = decode<any>(token);
-   let model:number[]=[];
-   this.dataCollectionModuleStatus =tokenPayload.moduleLevels[3];
-   this.dataCollectionGhgModuleStatus =tokenPayload.moduleLevels[4];
+    let model: number[] = [];
+    this.dataCollectionModuleStatus = tokenPayload.moduleLevels[3];
+    this.dataCollectionGhgModuleStatus = tokenPayload.moduleLevels[4];
 
 
     if (this.dataCollectionGhgModuleStatus) {
-      this.asseType = ['Ex-ante','Ex-post'];
+      this.asseType = ['Ex-ante', 'Ex-post'];
     } else {
-      this.asseType = ['MAC','Ex-ante','Ex-post'];
+      this.asseType = ['MAC', 'Ex-ante', 'Ex-post'];
     }
     // this.serviceProxy
     //   .getManyBaseProjectControllerProject(
@@ -272,39 +270,40 @@ export class AllResultComponent implements OnInit, AfterViewInit {
     //     0,
     //     0
     //   )
-    this.AssessmentProxy.getAssmentDetails(
-      0,
-      0,
-      '',
-      '',
-      this.isProposal,
-      0,
-      ''
-    )
-      .subscribe((res: any) => {
-        // this.projects = res.data;
-        // console.log('climateactionsyoooo', res);
-        for(let a of res.items){   
-          if (a !== null) {
-         
-         if (
-           !this.assignCAArray.includes(
-             a.project
-               .climateActionName
-           )
-         ) {
-          
-           this.assignCAArray.push(
-             a.project
-               .climateActionName
-           );
-           this.projects.push(
-            a.project
-           );
-         }
-       }}
-        
-      });
+    // this.AssessmentProxy.getAssmentDetails(
+    //   0,
+    //   0,
+    //   '',
+    //   '',
+    //   this.isProposal,
+    //   0,
+    //   ''
+    // )
+    //   .subscribe((res: any) => {
+    //     // this.projects = res.data;
+    //     // console.log('climateactionsyoooo', res);
+    //     for(let a of res.items){   
+    //       if (a !== null) {
+
+    //      if (
+    //        !this.assignCAArray.includes(
+    //          a.project
+    //            .climateActionName
+    //        )
+    //      ) {
+
+    //        this.assignCAArray.push(
+    //          a.project
+    //            .climateActionName
+    //        );
+    //        this.projects.push(
+    //         a.project
+    //        );
+    //        this.spin=false
+    //      }
+    //    }}
+
+    //   });
 
 
 
@@ -335,7 +334,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
 
   loadgridData = (event: LazyLoadEvent) => {
     // console.log("below loarding data")
-    this.loading = true;
+    this.spin = true;
     this.totalRecords = 0;
     // console.log("status",this.searchBy.status)
 
@@ -351,7 +350,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
     let ctAction = this.searchBy.climateActionName1
       ? this.searchBy.climateActionName1.climateActionName
       : '';
-     console.log("status................",assmntType)
+    console.log("status................", assmntType)
     let id = 0;
 
     setTimeout(() => {
@@ -369,6 +368,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
         this.loading = false;
         this.itemsPerPage = a.meta.itemsPerPage
         console.log('hii Assessements ', this.assessments);
+        this.spin = false;
       });
     }, 1);
   };

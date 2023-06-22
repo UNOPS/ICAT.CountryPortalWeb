@@ -30,6 +30,7 @@ import {
   DefaultValueControllerServiceProxy,
   User,
   Country,
+  ProjectControllerServiceProxy,
   ParameterRequestControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
 import Parameter from 'app/Model/parameter';
@@ -48,6 +49,7 @@ import { MethodologyControllerServiceProxy,  } from 'shared/service-proxies/serv
 import { ParameterInfo } from '../parameter-info.enum';
 import { FuelParameterComponent } from '../fuel-parameter/fuel-parameter.component';
 import { VehicalParameterComponent } from '../vehical-parameter/vehical-parameter.component';
+import { Tooltip } from 'chart.js';
 
 declare type ParaInfoType = keyof typeof ParameterInfo;
 
@@ -360,6 +362,7 @@ export class GhgAssessmentComponent implements OnInit {
     private assessmentProxy: AssesmentControllerServiceProxy,
     private applicabilityControllerServiceProxy:ApplicabilityControllerServiceProxy,
     private parameterRequestControllerServiceProxy:ParameterRequestControllerServiceProxy,
+    private projectControllerServiceProxy:ProjectControllerServiceProxy,
   ) {}
 
   ngOnInit(): void {
@@ -548,6 +551,13 @@ if(this.projectId && this.projectId>0){
     0
   )
   .subscribe(async (res) => {
+    console.log(res)
+    this.years=[];
+    let year = res.proposeDateofCommence.year();
+    this.years.push({label: year.toString(),value: year });
+    for (let i = 1; i < 30; i++) {
+      this.years.push({label: (year + i).toString(),value: year + i });
+    }
     this.selectedClimateAction=res
     this.climateActions.push(res)
     this.spin=false;
@@ -560,6 +570,7 @@ if(this.projectId && this.projectId>0){
       (a) => a.id === this.selectedClimateAction.subNdc?.id
     )!;
 
+   
     this.proposeDateofCommence=new Date(
       this.selectedClimateAction.proposeDateofCommence.year(),
       this.selectedClimateAction.proposeDateofCommence.month(),
@@ -2633,6 +2644,15 @@ else{
     this.isDiasbaleEye = false;
    console.log("my event....gggg.",this.selectedClimateAction)
    console.log("my event....gg.",event)
+   this.toolTop= 'You can only select the methodology that was used for previous assessment <Br> That methodology are';
+   this.projectControllerServiceProxy.getmeth(this.selectedClimateAction.id).subscribe((res: any) => {
+    // console.log("my event....gg.",res)
+    this.methcode=res;
+    for(let meth of this.methcode){
+      this.toolTop =this.toolTop + ' <br> <p style="color: yellow">'+meth
+    }
+   })
+  
    if(this.selectedClimateAction.projectApprovalStatus?.id==5){
      this.hasPrevActiveCA = true
    }
