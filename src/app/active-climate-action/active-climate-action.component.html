@@ -95,7 +95,7 @@
                   <td>{{ climateaction.institution }}</td> 
                   <td>{{ climateaction.projectStatus?.name }}</td>
                   
-                  <ng-container *ngIf=" isMac(climateaction.assessments); else elseBlock">
+                  <ng-container *ngIf="climateaction.isMac; else elseBlock">
 
                     <td>
                       <i class="pi pi-check-square" style="font-size: 1rem"></i> 
@@ -108,7 +108,7 @@
                       </td>
                     </ng-template> 
 
-                    <ng-container *ngIf=" isGhg(climateaction.assessments); else elseBlock">
+                    <ng-container *ngIf="climateaction.isGhg; else elseBlock">
 
                       <td>
                         <i class="pi pi-check-square" style="font-size: 1rem"></i> 

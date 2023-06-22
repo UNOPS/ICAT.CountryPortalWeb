@@ -136,7 +136,7 @@ export class ActiveResultComponent implements OnInit, AfterViewInit{
         0
        ).subscribe((res: any) => {
         this.assessmentList = res.data;
-        console.log("Ass...",this.assessmentList);
+        // console.log("Ass...",this.assessmentList);
       });
   
      
