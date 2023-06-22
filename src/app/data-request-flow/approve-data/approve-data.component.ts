@@ -258,8 +258,10 @@ export class ApproveDataComponent implements OnInit {
 
           for(let n of this.projectParameters){
             this.projectParameterscount += 1;
+            console.log("projectParameterscount", this.projectParameterscount)
             if(n.parameterRequest.dataRequestStatus==11){
               this.projectParametersAcceptcount +=1;
+              console.log("projectParametersAcceptcount", this.projectParametersAcceptcount)
             }
           }
         this.lekageParameters =
@@ -304,13 +306,13 @@ export class ApproveDataComponent implements OnInit {
     //       this.isRejectButtonDisable = !r;
     //     }
     //   });
-    console.log(this.assementYear)
+    // console.log(this.assementYear)
     let r = await this.assesmentProxy.checkAssessmentReadyForQC(
       this.assementYear.assessment.id, this.assementYear.assessmentYear
     ).toPromise()
-    console.log('checkAssessmentReadyForQC', r);
+    // console.log('checkAssessmentReadyForQC', r);
     if (r) {
-      console.log('check res...', r);
+      // console.log('check res...', r);
       this.enableQCButton = r;
       this.isRejectButtonDisable = !r;
     }
@@ -385,26 +387,26 @@ export class ApproveDataComponent implements OnInit {
 
   onClickQC() {
     this.isHideRejectButton = true; 
-    console.log('selected qc dead line..', this.selectedQCDeadline);
+    // console.log('selected qc dead line..', this.selectedQCDeadline);
     this.assementYear.qaDeadline = this.selectedQCDeadline;
-    console.log('qc dead line..', this.assementYear);
+    // console.log('qc dead line..', this.assementYear);
     this.proxy
       .updateOneBaseAssessmentYearControllerAssessmentYear(
         this.assementYear.id,
         this.assementYear
       )
       .subscribe((res) => {
-        console.log('my updatedt asse year..', res);
+        // console.log('my updatedt asse year..', res);
       });
 
     let inputParameters = new DataVerifierDto();
     inputParameters.ids = [this.assesmentYearId];
     inputParameters.status = 1;
-    console.log('inputParameters', inputParameters);
+    // console.log('inputParameters', inputParameters);
     this.buttonLabel = 'Sent';
     this.enableQCButton = false;
     this.isRejectButtonDisable = false;
-    console.log('sent');
+    // console.log('sent');
     this.assessmentYearProxy.acceptQC(inputParameters).subscribe(
       (res) => {
         this.messageService.add({
@@ -433,9 +435,9 @@ export class ApproveDataComponent implements OnInit {
   }
 
   getInfo(obj: any) {
-    console.log('dataRequestList...', obj);
+    // console.log('dataRequestList...', obj);
     this.paraId = obj.id;
-    console.log('this.paraId...', this.paraId);
+    // console.log('this.paraId...', this.paraId);
 
     // let x = 602;
     this.prHistoryProxy
@@ -443,7 +445,7 @@ export class ApproveDataComponent implements OnInit {
       .subscribe((res) => {
         this.requestHistoryList = res;
 
-        console.log('this.requestHistoryList...', this.requestHistoryList);
+        // console.log('this.requestHistoryList...', this.requestHistoryList);
       });
     //  let filter1: string[] = [];
     //  filter1.push('parameter.id||$eq||' + this.paraId);
@@ -472,12 +474,12 @@ export class ApproveDataComponent implements OnInit {
   onAcceptClick() {
     this.selectedParameters.push(...this.selectedBaselineParameters, ...this.selectedProjectParameters,
       ...this.selectedLeakageParameters, ...this.selectedProjectionParameters)
-    console.log('selectedParameters', this.selectedParameters);
+    // console.log('selectedParameters', this.selectedParameters);
     if (this.selectedParameters.length > 0) {
       let idList = new Array<number>();
       for (let index = 0; index < this.selectedParameters.length; index++) {
         const element = this.selectedParameters[index];
-        console.log('Review parameter Accept', element);
+        // console.log('Review parameter Accept', element);
         if (
           element.parameterRequest.dataRequestStatus &&
           element.parameterRequest.dataRequestStatus == 9
@@ -491,7 +493,7 @@ export class ApproveDataComponent implements OnInit {
         inputParameters.ids = idList;
         inputParameters.status = 11;
         inputParameters.verificationStatus = this.assementYear.verificationStatus
-        console.log('inputParameters', inputParameters);
+        // console.log('inputParameters', inputParameters);
         this.parameterProxy.acceptReviewData(inputParameters).subscribe(
           async (res) => {
             this.messageService.add({

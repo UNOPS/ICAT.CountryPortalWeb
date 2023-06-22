@@ -131,7 +131,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
       this.isVerificationHistory = params['isVerificationHistory'];
       this.vStatus = params['vStatus'];
     // this.assesMentYearId = 3;
-      console.log("this.flag..,,",params)
+      // console.log("this.flag..,,",params)
 
       this.serviceProxy
         .getOneBaseAssessmentYearControllerAssessmentYear(
@@ -158,14 +158,14 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             //console.log("big list=========", a);
             this.verificationList = a[0]?.verificationDetail;
             
-            console.log("this.verificationList=========", this.verificationList);
+            // console.log("this.verificationList=========", this.verificationList);
             this.roundOneList = this.verificationList.filter((o: any)=>o.verificationStage == 1 && o.isAccepted == 0);
-            console.log("this.roundOneList=========", this.roundOneList);
+            // console.log("this.roundOneList=========", this.roundOneList);
             this.roundTwoList= this.verificationList.filter((o: any)=>o.verificationStage == 2 && o.isAccepted == 0);
             this.roundThreeList= this.verificationList.filter((o: any)=>o.verificationStage == 3 && o.isAccepted == 0);
 
             this.roundOneHeadTable = this.verificationList?.find((o: any)=>o.verificationStage == 1);
-            console.log("this.roundThreeList...",this.roundThreeList)
+            // console.log("this.roundThreeList...",this.roundThreeList)
             if(this.roundOneHeadTable !=null)
             {
               this.verificationRound = 1
@@ -199,9 +199,9 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
               
               ).subscribe((res: any) => {
               this.roundTwoVerifier = res;
-              console.log("this.roundTwoHeadTable...",this.roundTwoHeadTable)
-              console.log("verifierId...",verifierId)
-              console.log("this.roundTwoVerifier...",this.roundTwoVerifier)
+              // console.log("this.roundTwoHeadTable...",this.roundTwoHeadTable)
+              // console.log("verifierId...",verifierId)
+              // console.log("this.roundTwoVerifier...",this.roundTwoVerifier)
             });
 
             }
@@ -226,14 +226,14 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             }
 
             await this.checkReviewComplete(this.verificationList, assessment.parameters)
-            console.log(this.isReviewComplete)
+            // console.log(this.isReviewComplete)
 
            // console.log("round one head table=========", this.roundOneHeadTable);
             // above roundone..roundtwo lists shows verification details for
             // partcular assessment in particular ass year with concerned raised
   
             this.roundOnendcList = this.roundOneList.filter((o: any)=>o.isNDC == true);
-            console.log("this.roundOnendcList...",this.roundOnendcList);
+            // console.log("this.roundOnendcList...",this.roundOnendcList);
             this.roundOnemethodologyList = this.roundOneList.filter((o: any)=>o.isMethodology == true);
             this.roundOneprojectList = this.roundOneList.filter((o: any)=>o.isProject == true && !o.isResult);
             this.roundOneprojectionList = this.roundOneList.filter((o: any)=>o.isProjection == true && !o.isResult);
@@ -285,7 +285,6 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
 
   async checkReviewComplete(vdList: any, parameters: any) {
     this.isReviewComplete = true
-    console.log("verificationRound", this.verificationRound)
     let hasBaseline = false
     let hasProject = false
     let hasLekage = false
@@ -296,9 +295,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
       if (para.isProject) hasProject = true
       if (para.isLekage) hasLekage = true
       if (para.isProjection) hasProjection = true
-      console.log(para.id)
       let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStage === this.verificationRound))
-      console.log(vd)
       if (vd === undefined) {
         if (!para.isAlternative){
           this.isReviewComplete = false
@@ -307,10 +304,10 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
       }
     }
 
-    console.log(this.isReviewComplete)
-
     if (this.isReviewComplete){
-      let columns = ['isNDC', 'isMethodology', 'isAssumption']
+      let columns: string[] = []
+      if (this.assementYear.assessment.assessmentType === 'MAC'){columns = [...['isAssumption']]}
+      else {columns = [...['isNDC', 'isMethodology', 'isAssumption']]}
       for await (let col of columns){
         let vd = vdList.find((o: any) => o[col] && (o.isAccepted || o.verificationStage === this.verificationRound))
         if (vd === undefined){
@@ -319,8 +316,6 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
         }
       }
     }
-
-    console.log(this.isReviewComplete)
 
     if (this.isReviewComplete){ 
       let resultColumns = []
@@ -336,7 +331,6 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
         }
       }
     }
-    console.log(this.isReviewComplete)
   }
 
   toPopUp(item:any)
@@ -461,7 +455,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
           .subscribe(
             (res) => {
               this.messageService.add({ severity: 'success', summary: 'Success', detail: 'successfully updated!' });
-              console.log("++++++++++++++++++++++", this.assementYear)
+              // console.log("++++++++++++++++++++++", this.assementYear)
             },
           );
 
