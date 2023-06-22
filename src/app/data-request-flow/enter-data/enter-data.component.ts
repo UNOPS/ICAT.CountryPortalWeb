@@ -444,7 +444,7 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
       if (
         (element.parameterId?.value != null &&
         element.parameterId?.uomDataEntry != null) ||
-        ((this.selectedValue !== undefined && this.selectedValue !== null) && this.selectedUnit.ur_fromUnit !== '')
+        ((this.selectedValue !== undefined && this.selectedValue !== null&& this.selectedValue !== '') && this.selectedUnit.ur_fromUnit !== '')
       ) {
         idList.push(element.id);
         console.log('element Pushed', element);
@@ -863,7 +863,8 @@ if(this.country.code=="LK"){
   }
 
   onHideDialog(){
-    this.isHistorical = false
+    this.selectedValue = '';
+    this.isHistorical = false;
   }
 
   changeUnit(e: any, para: any, parameterId: any){

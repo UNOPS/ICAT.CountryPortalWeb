@@ -106,7 +106,7 @@
       </div>
     </div>
 
-    <div class="row mb-3" *ngIf="baselineParameters.length > 0">
+    <div class="row mb-3" *ngIf="baselineParameters && baselineParameters.length > 0">
       <h4 class="mt-4 ml-3">Baseline Parameter</h4>
       <p-table
         #table
@@ -193,7 +193,7 @@
       </p-table>
     </div>
 
-    <div class="row mb-3" *ngIf="projectParameters.length > 0">
+    <div class="row mb-3" *ngIf="projectParameters&&projectParameters.length > 0">
       <h4 class="mt-4">Project Parameter</h4>
       <p-table
         #table
@@ -280,7 +280,7 @@
       </p-table>
     </div>
 
-    <div class="row mb-3" *ngIf="lekageParameters.length > 0">
+    <div class="row mb-3" *ngIf="lekageParameters&&lekageParameters.length > 0">
       <h4 class="mt-4">Leakage Parameter</h4>
       <p-table
         #table
@@ -367,7 +367,7 @@
       </p-table>
     </div>
 
-    <div class="row mb-3" *ngIf="projectionParameters.length > 0">
+    <div class="row mb-3" *ngIf="projectionParameters&&projectionParameters.length > 0">
       <h4 class="mt-4">Projection Parameter</h4>
       <p-table
         #table

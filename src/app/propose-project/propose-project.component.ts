@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import {} from 'googlemaps';
 import {
   CaActionHistory,
@@ -123,6 +123,7 @@ export class ProposeProjectComponent implements OnInit {
   @ViewChild('pdfTable') pdfTable: ElementRef;
 
   constructor(
+    private datePipe: DatePipe,
     private serviceProxy: ServiceProxy,
     private confirmationService: ConfirmationService,
     private router: Router,
@@ -136,6 +137,8 @@ export class ProposeProjectComponent implements OnInit {
   {}
 
   ngOnInit(): void {
+    const currentTime = new Date();
+    this.textdlod = 'Downloaded date '+this.datePipe.transform(currentTime, 'yyyy-MM-dd HH:mm:ss');
     const token = localStorage.getItem('access_token')!;
     const countryId = token ? decode<any>(token).countryId : 0;
     this.counID= countryId;
