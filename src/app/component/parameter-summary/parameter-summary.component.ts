@@ -62,7 +62,7 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
   filteredUser: any;
   fullUser: string;
   assessmentYear: any;
-  //:boolean;
+  //:boolean; 
 
   constructor(
     private qaServiceProxy: QualityCheckControllerServiceProxy,
@@ -74,12 +74,12 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('parameters....m', this.parameters);
+    // console.log('parameters....m', this.parameters);
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
     this.userId = tokenPayload.usr;
     console.log('tthis.userId..', this.userId);
-
+    console.log('parameters....m', this.parameters);
     this.serviceProxy
       .getOneBaseAssessmentYearControllerAssessmentYear(
         this.assessmentYearId,
