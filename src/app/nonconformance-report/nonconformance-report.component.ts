@@ -296,7 +296,9 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
       if (para.isProject) hasProject = true
       if (para.isLekage) hasLekage = true
       if (para.isProjection) hasProjection = true
+      console.log(para.id)
       let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStage === this.verificationRound))
+      console.log(vd)
       if (vd === undefined) {
         if (!para.isAlternative){
           this.isReviewComplete = false
@@ -304,6 +306,8 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
         }
       }
     }
+
+    console.log(this.isReviewComplete)
 
     if (this.isReviewComplete){
       let columns = ['isNDC', 'isMethodology', 'isAssumption']
@@ -315,6 +319,8 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
         }
       }
     }
+
+    console.log(this.isReviewComplete)
 
     if (this.isReviewComplete){ 
       let resultColumns = []
@@ -330,6 +336,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
         }
       }
     }
+    console.log(this.isReviewComplete)
   }
 
   toPopUp(item:any)
