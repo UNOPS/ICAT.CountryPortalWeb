@@ -5,7 +5,7 @@ import { climateAction } from 'app/propose-project-list/propose-project-list.com
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { reduce } from 'rxjs/operators';
-import { AssesmentControllerServiceProxy, AssessmentYearControllerServiceProxy, Methodology, MethodologyControllerServiceProxy, ParameterRequest, ParameterRequestControllerServiceProxy, Project, ProjectControllerServiceProxy, ServiceProxy } from 'shared/service-proxies/service-proxies';
+import { AssesmentControllerServiceProxy, AssessmentYearControllerServiceProxy, Methodology, MethodologyControllerServiceProxy, ParameterRequest, ParameterRequestControllerServiceProxy, ParameterVerifierAcceptance, Project, ProjectControllerServiceProxy, ServiceProxy } from 'shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-managedatastatus',
@@ -240,7 +240,7 @@ export class ManagedatastatusComponent implements OnInit {
       year,
       'false',
       status
-    ).subscribe(res => {
+    ).subscribe(async res => {
 
       console.log('assessmentYearForManageDataStatus', res)
       this.loading = false;
@@ -258,18 +258,41 @@ export class ManagedatastatusComponent implements OnInit {
           pendingreqCount: 0,
           pendingdataentries: 0,
           recieved: 0,
-          qaStatus:0,
-          verificationStatus: 0
+          qaStatus: 1,//for disble button befor data load.
+          verificationStatus: 0,
+          isAllParameterAccept: false,
+         
+         
         };
 
-
+ 
         // console.log( assesment.project.climateActionName)
         datarequests1.name = assementYear.assessment.project.climateActionName;
         datarequests1.year = assementYear.assessmentYear ? assementYear.assessmentYear : "";
         datarequests1.type = assementYear.assessment.assessmentType;
         datarequests1.assenmentYearId = assementYear.id;
         datarequests1.qaStatus = assementYear.qaStatus;
-        datarequests1.verificationStatus = assementYear.verificationStatus
+        datarequests1.verificationStatus = assementYear.verificationStatus;
+//       this.assesmentProxy.checkAssessmentReadyForQC(
+//           assementYear.assessment.id,Number(assementYear.assessmentYear) 
+// ).subscribe(res=>{
+//   console.log('++',res)
+//   datarequests1.qcCheck=res;
+// });
+       
+this.assesmentProxy
+.getAssessmentsForApproveData(
+  assementYear.assessment.id,
+   assementYear.assessmentYear,
+  " "
+)
+.subscribe((res) => {
+  datarequests1.isAllParameterAccept=!res.assessment?.parameters.some((obj: {
+    parameterRequest: any;
+    verifierAcceptance: ParameterVerifierAcceptance;         
+    
+}) => obj.parameterRequest.dataRequestStatus !=  11&& obj.verifierAcceptance!=ParameterVerifierAcceptance.REJECTED);
+})
 
         // console.log("assesIs",assesment.id)
         this.parameterProxy
@@ -277,7 +300,7 @@ export class ManagedatastatusComponent implements OnInit {
           .subscribe(res => {
             datarequests1.totalreqCount = res.length;
 
-            console.log("dr_dataRequestStatus", res)
+            console.log("1111111", res)
 
             //  dr_dataRequestStatus
             for (let dr of res) {
@@ -294,10 +317,11 @@ export class ManagedatastatusComponent implements OnInit {
               if (dr.dr_dataRequestStatus == 9 || dr.dr_dataRequestStatus == 8 || dr.dr_dataRequestStatus == 9 || dr.dr_dataRequestStatus == 11) {
                 ++datarequests1.recieved;
               }
-
+              
 
             }
-
+         
+           
           })
 
         this.datarequests.push(datarequests1);
@@ -698,7 +722,10 @@ export class ManagedatastatusComponent implements OnInit {
     }
   }
 
-  disableApproveData(request: datarequest){
+  async disableApproveData(request: datarequest){
+   
+  //  console.log("+++",request.qcCheck)
+
     if(request.qaStatus === 4 || request.qaStatus === 1){
       return true
     } 
@@ -735,5 +762,8 @@ export interface datarequest {
   pendingdataentries: number,
   recieved: number,
   qaStatus:number
-  verificationStatus: number
+  verificationStatus: number,
+  isAllParameterAccept:boolean,
+
+ 
 };

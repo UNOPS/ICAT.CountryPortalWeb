@@ -242,52 +242,59 @@ export class ApproveDataComponent implements OnInit {
             (p) => p.isBaseline  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
           console.log(this.baselineParameters)
-
-            for(let n of this.baselineParameters){
-              this.baselineParameterscount += 1;
-              console.log("baselineParameterscount",this.baselineParameterscount)
-              if(n.parameterRequest.dataRequestStatus==11){
-                this.baselineParametersAcceptcount +=1;
-                console.log("baselineParametersAcceptcount",this.baselineParametersAcceptcount)
+            if(this.baselineParameters){
+              for(let n of this.baselineParameters){
+                this.baselineParameterscount += 1;
+                console.log("baselineParameterscount",this.baselineParameterscount)
+                if(n.parameterRequest.dataRequestStatus==11){
+                  this.baselineParametersAcceptcount +=1;
+                  console.log("baselineParametersAcceptcount",this.baselineParametersAcceptcount)
+                }
               }
             }
+          
         this.projectParameters =
-          this.assementYearDetails.assessment.parameters.filter(
+          this.assementYearDetails?.assessment?.parameters.filter(
             (p) => p.isProject  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
-
-          for(let n of this.projectParameters){
-            this.projectParameterscount += 1;
-            console.log("projectParameterscount", this.projectParameterscount)
-            if(n.parameterRequest.dataRequestStatus==11){
-              this.projectParametersAcceptcount +=1;
-              console.log("projectParametersAcceptcount", this.projectParametersAcceptcount)
+          if(this.projectParameters){
+            for(let n of this.projectParameters){
+              this.projectParameterscount += 1;
+              if(n.parameterRequest.dataRequestStatus==11){
+                this.projectParametersAcceptcount +=1;
+              }
             }
           }
+         
         this.lekageParameters =
-          this.assementYearDetails.assessment.parameters.filter(
+          this.assementYearDetails?.assessment?.parameters.filter(
             (p) => p.isLekage  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
-
-          for(let n of this.lekageParameters){
-            this.lekageParametersAcceptcount += 1;
-            if(n.parameterRequest.dataRequestStatus==11){
-              this.lekageParametersAcceptcount +=1;
+          if(this.lekageParameters){
+            for(let n of this.lekageParameters){
+              this.lekageParametersAcceptcount += 1;
+              if(n.parameterRequest.dataRequestStatus==11){
+                this.lekageParametersAcceptcount +=1;
+              }
             }
           }
+        
         this.projectionParameters =
-          this.assementYearDetails.assessment.parameters.filter(
+          this.assementYearDetails?.assessment?.parameters.filter(
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == this.headerAssessmentYear &&
               !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
-          for(let n of this.projectionParameters){
-            // this.projectionParametersAcceptcount += 1;
-            if(n.parameterRequest.dataRequestStatus==11){
-              this.projectionParametersAcceptcount +=1;
+          if(this.projectionParameters){
+            for(let n of this.projectionParameters){
+              // this.projectionParametersAcceptcount += 1;
+              if(n.parameterRequest.dataRequestStatus==11){
+                this.projectionParametersAcceptcount +=1;
+              }
             }
           }
+         
         console.log('projectionParameters', this.projectionParameters);
       });
   }
@@ -531,24 +538,24 @@ export class ApproveDataComponent implements OnInit {
 
   disableAccept() {
     return (this.isHideRejectButton || this.enableQCButton) ||
-      (this.baselineParameters.length == this.baselineParametersAcceptcount) &&
-      (this.projectParameters.length == this.projectParametersAcceptcount) &&
-      (this.lekageParameters.length === this.lekageParametersAcceptcount) &&
-      (this.projectionParameters.length === this.projectionParametersAcceptcount)
+      (this.baselineParameters?.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters?.length == this.projectParametersAcceptcount) &&
+      (this.lekageParameters?.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters?.length === this.projectionParametersAcceptcount)
   }
 
   disableReject() {
     return this.isRejectButtonDisable ||
-      (this.baselineParameters.length == this.baselineParametersAcceptcount) &&
-      (this.projectParameters.length == this.projectParametersAcceptcount)&&
-      (this.lekageParameters.length === this.lekageParametersAcceptcount) &&
-      (this.projectionParameters.length === this.projectionParametersAcceptcount)
+      (this.baselineParameters?.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters?.length == this.projectParametersAcceptcount)&&
+      (this.lekageParameters?.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters?.length === this.projectionParametersAcceptcount)
   }
 
   getAcceptLabel() {
-    return ((this.baselineParameters.length == this.baselineParametersAcceptcount) &&
-      (this.projectParameters.length == this.projectParametersAcceptcount)&&
-      (this.lekageParameters.length === this.lekageParametersAcceptcount) &&
-      (this.projectionParameters.length === this.projectionParametersAcceptcount)) ? 'Accepted' : 'Accept'
+    return ((this.baselineParameters?.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters?.length == this.projectParametersAcceptcount)&&
+      (this.lekageParameters?.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters?.length === this.projectionParametersAcceptcount)) ? 'Accepted' : 'Accept'
   }
 }
