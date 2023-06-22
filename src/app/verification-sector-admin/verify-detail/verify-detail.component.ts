@@ -844,4 +844,10 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       }
     }
   }
+
+  onComplete(e:any){
+    if (e){
+      this.displayConcern = false
+    }
+  }
 }

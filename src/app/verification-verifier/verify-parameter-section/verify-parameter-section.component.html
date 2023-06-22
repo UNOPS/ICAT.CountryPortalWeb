@@ -54,7 +54,7 @@
             <td>
               <p-checkbox [binary]="true" *ngIf="param.isAcceptedByVerifier !== 1"
                 (onChange)="checkboxCheck($event, param)" name="groupname" value="check"
-                [disabled]="param.isConcernRaised" id="{{'checkbox'+param.id}}"></p-checkbox>
+                [disabled]="disableRaiseConcern(param)" id="{{'checkbox'+param.id}}"></p-checkbox>
             </td>
           </div>
           <td>{{ param.name }}</td>
@@ -83,7 +83,7 @@
                 isAdmin) ) && flag != 1
             ">
 
-            <button *ngIf="verificationService.checkStatus(verificationStatus)" pButton pRipple
+            <button *ngIf="verificationService.checkStatus(assessmentYear?.verificationStatus)" pButton pRipple
               [disabled]="param.isAcceptedByVerifier == 1?true:false" type="button" label="Raise Concern"
               (click)="raiseConcern($event, param)" class="p-button-info"></button>
 
@@ -158,12 +158,12 @@
           assessmentYear?.verificationStatus! > 1 &&
           isAdmin)
       ">
-      <div class="col-12 " style="margin-right: 10%;" *ngIf="flag != 1 && verificationService.checkStatus(verificationStatus)">
+      <div class="col-12 " style="margin-right: 10%;" *ngIf="flag != 1 && verificationService.checkStatus(assessmentYear?.verificationStatus)">
         <button type="button" pButton pRipple [disabled]="isResultAccepted " (click)="raiseConcernResult($event)">
           Raise Concern
         </button>
       </div>
-      <div class="col-12" *ngIf="flag != 1 && verificationService.checkStatus(verificationStatus)">
+      <div class="col-12" *ngIf="flag != 1 && verificationService.checkStatus(assessmentYear?.verificationStatus)">
         <button *ngIf="verificationStatus !=3" type="button" [disabled]="isResultAccepted || hasResultConcern" pButton pRipple
           (click)="resultAccept()">
           <!-- Accept -->
@@ -196,12 +196,12 @@
           assessmentYear?.verificationStatus! > 1 &&
           isAdmin)
       ">
-      <div class="col-12 " style="margin-right: 10%;" *ngIf="flag != 1 && verificationService.checkStatus(verificationStatus)">
+      <div class="col-12 " style="margin-right: 10%;" *ngIf="flag != 1 && verificationService.checkStatus(assessmentYear?.verificationStatus)">
         <button type="button" pButton pRipple [disabled]="isResultAccepted " (click)="raiseConcernResult($event)">
           Raise Concern
         </button>
       </div>
-      <div class="col-12" *ngIf="flag != 1 && verificationService.checkStatus(verificationStatus)">
+      <div class="col-12" *ngIf="flag != 1 && verificationService.checkStatus(assessmentYear?.verificationStatus)">
         <button *ngIf="verificationStatus !=3" type="button" [disabled]="isResultAccepted || hasResultConcern" pButton pRipple
           (click)="resultAccept()">
           <!-- Accept -->

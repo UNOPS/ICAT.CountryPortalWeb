@@ -234,6 +234,7 @@ export class RaiseConcernComponent implements OnInit {
         });
         console.log("onCompleteConcern")
         this.onCompleteConcern.emit(true)
+        if (this.isMethodology) window.location.reload()
       });
 
     // this.router.navigate(['/non-conformance'], {

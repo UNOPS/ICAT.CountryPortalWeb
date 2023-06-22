@@ -168,7 +168,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             // console.log("this.roundThreeList...",this.roundThreeList)
             if(this.roundOneHeadTable !=null)
             {
-              this.verificationRound = 1
+              this.verificationRound = 2
               let verifierId = this.roundOneHeadTable.userVerifier;
 
               this.serviceProxy.
@@ -187,7 +187,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             this.roundTwoHeadTable = this.verificationList?.find((o: any)=>o.verificationStage == 2);
             if(this.roundTwoHeadTable !=null)
             {
-              this.verificationRound = 2
+              this.verificationRound = 3
               let verifierId = this.roundTwoHeadTable.userVerifier;
 
               this.serviceProxy.
@@ -206,24 +206,24 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
 
             }
             this.roundThreeHeadTable = this.verificationList?.find((o: any)=>o.verificationStage == 3);
-            if(this.roundThreeHeadTable !=null)
-            {
-              this.verificationRound = 3
-              let verifierId = this.roundThreeHeadTable.userVerifier;
+            // if(this.roundThreeHeadTable !=null)
+            // {
+            //   this.verificationRound = 3
+            //   let verifierId = this.roundThreeHeadTable.userVerifier;
 
-              this.serviceProxy.
-              getOneBaseUsersControllerUser(
-              verifierId,
-              undefined,
-              undefined,
-              undefined,
+            //   this.serviceProxy.
+            //   getOneBaseUsersControllerUser(
+            //   verifierId,
+            //   undefined,
+            //   undefined,
+            //   undefined,
               
-              ).subscribe((res: any) => {
-              this.roundThreeVerifier = res;
-             // console.log("this.roundThreeVerifier...",this.roundThreeVerifier)
-            });
+            //   ).subscribe((res: any) => {
+            //   this.roundThreeVerifier = res;
+            //  // console.log("this.roundThreeVerifier...",this.roundThreeVerifier)
+            // });
 
-            }
+            // }
 
             await this.checkReviewComplete(this.verificationList, assessment.parameters)
             // console.log(this.isReviewComplete)
@@ -290,6 +290,8 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
     let hasLekage = false
     let hasProjection = false
 
+    console.log(this.verificationRound)
+
     for await (let para of parameters) {
       if (para.isBaseline) hasBaseline = true
       if (para.isProject) hasProject = true
@@ -304,6 +306,8 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
       }
     }
 
+    console.log(this.isReviewComplete)
+
     if (this.isReviewComplete){
       let columns: string[] = []
       if (this.assementYear.assessment.assessmentType === 'MAC'){columns = [...['isAssumption']]}
@@ -317,20 +321,22 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
       }
     }
 
-    if (this.isReviewComplete){ 
-      let resultColumns = []
-      if (hasBaseline) resultColumns.push('isBaseline')
-      if (hasProject) resultColumns.push('isProject')
-      if (hasLekage) resultColumns.push('isLekage')
-      if (hasProjection) resultColumns.push('isProjection')
-      for (let col of resultColumns){
-        let vd = vdList.find((o: any) => o[col] && o.isResult && (o.isAccepted || o.verificationStage === this.verificationRound))
-        if (vd === undefined){
-          this.isReviewComplete = false
-          break;
-        }
-      }
-    }
+    console.log(this.isReviewComplete)
+
+    // if (this.isReviewComplete){ 
+    //   let resultColumns = []
+    //   if (hasBaseline) resultColumns.push('isBaseline')
+    //   if (hasProject) resultColumns.push('isProject')
+    //   if (hasLekage) resultColumns.push('isLekage')
+    //   if (hasProjection) resultColumns.push('isProjection')
+    //   for (let col of resultColumns){
+    //     let vd = vdList.find((o: any) => o[col] && o.isResult && (o.isAccepted || o.verificationStage === this.verificationRound))
+    //     if (vd === undefined){
+    //       this.isReviewComplete = false
+    //       break;
+    //     }
+    //   }
+    // }
   }
 
   toPopUp(item:any)

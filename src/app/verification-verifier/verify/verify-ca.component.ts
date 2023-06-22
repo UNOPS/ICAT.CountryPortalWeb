@@ -38,7 +38,7 @@ export class VerifyCaComponent implements OnInit {
   VerificationStatusEnum = VerificationStatus;
 
   verificationStatus: string[] = [
-    VerificationStatus[VerificationStatus.Pending],
+    // VerificationStatus[VerificationStatus.Pending],
     VerificationStatus[VerificationStatus['Pre Assessment']],
     VerificationStatus[VerificationStatus['NC Received']] === 'NC Received' ? 'NC Sent' : 'NC Received' ,
     VerificationStatus[VerificationStatus['In Remediation']],
@@ -140,9 +140,11 @@ export class VerifyCaComponent implements OnInit {
       this.vrServiceProxy
         .getVerifierParameters(pageNumber, this.rows, statusId, filtertext)
         .subscribe((a) => {
+          console.log(a)
          this.paras = a.items;
           // this.paras = a.items.filter((o: any)=>o.verificationStatus != 6 && o.verificationStatus != 7 && o.verificationUser == this.loggedUser[0]?.id );
-          this.totalRecords = this.paras.length;
+          this.totalRecords = a.meta.totalItems;
+          console.log(this.paras)
          this.loading = false;
         }, error => {
           this.messageService.add({

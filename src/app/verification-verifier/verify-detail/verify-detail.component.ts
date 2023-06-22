@@ -30,7 +30,7 @@ import { VerificationService } from 'shared/verification-service';
 })
 export class VerifyDetailComponent implements OnInit {
   assesMentYearId: number = 0;
-  verificationStatus: any = 0;
+  verificationStatus: number = 0;
   assementYear: AssessmentYear = new AssessmentYear();
   parameters: any[] = [];
   baselineParameters: Parameter[] = [];
@@ -101,7 +101,7 @@ export class VerifyDetailComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(async (params) => {
       this.assesMentYearId = params['id'];
-      this.verificationStatus = params['verificationStatus'];
+      this.verificationStatus = +params['verificationStatus'];
       console.log("verificationStatus",this.verificationStatus)
       this.flag = params['flag'];
 
@@ -125,19 +125,33 @@ export class VerifyDetailComponent implements OnInit {
       .getVerificationDetails(this.assesMentYearId)
       .subscribe((res) => {
         this.verificationDetailsFromDb = res;
-        let ndcObj = this.verificationDetailsFromDb.find((o)=>o.isNDC == true);
-        if(ndcObj?.isAccepted == true)
-        {
-          this.isNdcDisable = true;
-          this.isNdcAccepted = true;
-          this.isNdcDisableReject = true;
-        } else {
-          if (ndcObj?.explanation){
+        let ndcObj = this.verificationDetailsFromDb.filter((o)=>o.isNDC == true );
+        ndcObj.forEach(ndc => {
+          if (ndc.isAccepted){
             this.isNdcDisable = true;
+            this.isNdcAccepted = true;
+            this.isNdcDisableReject = true;
+            return
+          } else {
+            if (ndc.explanation && ndc.verificationStage === this.getverificationStage()) {
+              this.isNdcDisable = true;
+            }
+            this.isNdcAccepted = false;
+            this.isNdcDisableReject = false;
           }
-          this.isNdcAccepted = false;
-          this.isNdcDisableReject = false;
-        }
+        })
+        // if (ndcObj?.isAccepted == true)
+        // {
+        //   this.isNdcDisable = true;
+        //   this.isNdcAccepted = true;
+        //   this.isNdcDisableReject = true;
+        // } else {
+        //   if (ndcObj?.explanation){
+        //     this.isNdcDisable = true;
+        //   }
+        //   this.isNdcAccepted = false;
+        //   this.isNdcDisableReject = false;
+        // }
         
 
         let methObject = this.verificationDetailsFromDb.find((o)=>o.isMethodology == true);
@@ -676,46 +690,53 @@ export class VerifyDetailComponent implements OnInit {
   }
 
   raiseConcern(isNdc: boolean, isMethodology: boolean, isAssumption:boolean) {
-    if (isNdc) {
-      this.raiseConcernSection = 'Aggregated Actions';
-      this.concernVerificationDetails = this.verificationDetails.filter(
-        (a) => a.isNDC
-      );
-    }
-    if (isMethodology) {
-      this.raiseConcernSection = 'Methodology';
-      this.concernVerificationDetails = this.verificationDetails.filter(
-        (a) => a.isMethodology
-      );
-    }
-    if (isAssumption) {
-      this.raiseConcernSection = 'Assumption';
-      this.concernVerificationDetails = this.verificationDetails.filter(
-        (a) => a.isAssumption
-      );
-    }
-
-    this.concernIsNdC = isNdc;
-    this.concernIsMethodology = isMethodology;
-    this.concernIsAssumption = isAssumption;
-    this.displayConcern = true;
-
-    if(isNdc)
-    {
-      this.isNdcDisable = true;
-      // this.isNdcDisableReject = true;
-    }
-
-    if(isMethodology)
-    {
-      this.isMethodology = true;
-      this.isMethodologyReject = true;
-    }
-
-    if(isAssumption)
-    {
-      this.isAssumptions = true;
-      // this.isAssumptionsReject = true;
+    if (isMethodology){
+      this.confirmationService.confirm({
+        message: 'Please be aware that proceeding with this action will result in the failure of the assessment.<br>Are you absolutely sure you wish to continue?',
+        header: 'Confirmation',
+        acceptIcon: 'icon-not-visible',
+        rejectIcon: 'icon-not-visible',
+        accept: () => {
+          this.raiseConcernSection = 'Methodology';
+          this.concernVerificationDetails = this.verificationDetails.filter(
+            (a) => a.isMethodology
+          );
+          this.concernIsMethodology = isMethodology;
+          this.displayConcern = true;
+          this.isMethodology = true;
+          this.isMethodologyReject = true;
+        },
+        reject: () => {},
+      });
+    } else {
+      if (isNdc) {
+        this.raiseConcernSection = 'Aggregated Actions';
+        this.concernVerificationDetails = this.verificationDetails.filter(
+          (a) => a.isNDC
+        );
+      }
+      if (isAssumption) {
+        this.raiseConcernSection = 'Assumption';
+        this.concernVerificationDetails = this.verificationDetails.filter(
+          (a) => a.isAssumption
+        );
+      }
+  
+      this.concernIsNdC = isNdc;
+      this.concernIsAssumption = isAssumption;
+      this.displayConcern = true;
+  
+      if(isNdc)
+      {
+        this.isNdcDisable = true;
+        // this.isNdcDisableReject = true;
+      }
+  
+      if(isAssumption)
+      {
+        this.isAssumptions = true;
+        // this.isAssumptionsReject = true;
+      }
     }
   }
 
@@ -730,9 +751,23 @@ export class VerifyDetailComponent implements OnInit {
   }
 
   async onComplete(e: any){
+    console.log(e)
     this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assementYear.id).toPromise()
     if (e){
       this.displayConcern = false
+    }
+  }
+
+  onHide(){
+    console.log("cdllk")
+    if (this.concernIsNdC){
+      this.isNdcDisable = false;
+    }
+    if (this.concernIsAssumption){
+      this.isAssumptions = false;
+    }
+    if (this.concernIsMethodology){
+      this.isMethodology = false
     }
   }
 }

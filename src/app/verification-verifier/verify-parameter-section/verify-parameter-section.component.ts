@@ -172,14 +172,27 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     } else if (this.assessmentYear.verificationStatus === 5)
     round = 3;
 
-    let vd = this.verificationDetails.find((a: any )=> a.isResult === true && a[column] === true && a.verificationStage === round )
+    let vd = this.verificationDetails.filter((a: any )=> a.isResult === true && a[column] === true  )
     console.log(vd)
-    if (vd?.isAccepted){
-      this.isResultAccepted = true
-    }
-    if (vd?.explanation){
-      this.hasResultConcern = true
-    }
+
+    vd.forEach(v => {
+      if (v.isAccepted){
+        this.isResultAccepted = true
+        return
+      }else {
+        if (v.verificationStage === round && v.explanation){
+          this.hasResultConcern = true
+          return
+        }
+      }
+    })
+    
+    // if (vd?.isAccepted){
+    //   this.isResultAccepted = true
+    // }
+    // if (vd?.explanation){
+    //   this.hasResultConcern = true
+    // }
 
   }
 
@@ -544,5 +557,16 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
         // this.isAccept=true
         this.isResultAccepted = true
       });
+  }
+
+  disableRaiseConcern(param: any){
+    if (this.assessmentYear.verificationStatus === +6){
+      return true
+    } else {
+      if (param.isConcernRaised){
+        return true
+      }
+    }
+    return false
   }
 }
