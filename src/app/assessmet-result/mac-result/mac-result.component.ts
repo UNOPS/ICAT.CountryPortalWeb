@@ -391,7 +391,7 @@ export class MacResultComponent implements OnInit {
       ['Discount Rate', this.getDiscountRate],
       ['Assessment Type', this.assement.assessmentType],
     ];
-
+  
     const namevalue = XLSX.utils.sheet_add_aoa(worksheet, nameValuePairs);
 
     const tableData = [
@@ -422,23 +422,7 @@ export class MacResultComponent implements OnInit {
    
 
 
-// const headerRange = {s:{r:1,c:0},e:{r:1, c:1}}
-// console.log(headerRange)
-//     for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
-//       const cellAddress = XLSX.utils.encode_cell({ r: headerRange.s.r, c: col });
-//       console.log(cellAddress)
-//       const cell = worksheet[cellAddress];
-//       console.log(cell)
-//       cell.s = {
-//         fill: {
-//           fgColor: { rgb: 'FFFF00' } // Set the background color (e.g., yellow)
-//         },
-//         font: {
-//           bold: true // Set the font style to bold
-//         }
-//       };
-//       console.log(cell)
-//     }
+
     const result = [
       [
         'Cost Defference',
@@ -460,6 +444,8 @@ export class MacResultComponent implements OnInit {
      XLSX.utils.sheet_add_aoa(worksheet, result, {
       origin: 'A'+(this.filteredParameters.length+12),
     });
+
+    
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
     XLSX.writeFile(workbook, 'data.xlsx');
   }
