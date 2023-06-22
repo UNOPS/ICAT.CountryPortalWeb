@@ -516,6 +516,8 @@ export class QualityCheckDetailComponent implements OnInit {
               p.projectionBaseYear == Number(this.assementYear.assessmentYear)
               && this.parameterFilter(p)
           );
+
+          console.log(this.baselineParameters.length,this.projectParameters.length,this.lekageParameters.length,this.projectionParameters.length  )
       });
   }
 
