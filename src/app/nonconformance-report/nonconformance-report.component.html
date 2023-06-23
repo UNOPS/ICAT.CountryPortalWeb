@@ -1499,7 +1499,7 @@
         </div>
         <p><b>Status of the assessment: </b>  {{getStatus()}}</p>
     </div>
-    <p *ngIf="!isReviewComplete && flag !== 'sec-admin'" style="color: red;">Note: Please review all the data before submitting the report</p>
+    <p *ngIf="+vStatus !== 6 && (!isReviewComplete && flag !== 'sec-admin')" style="color: red;">Note: Please review all the data before submitting the report</p>
 
     <div class="row mb-3">
         <div class="col-md-6">
@@ -1509,7 +1509,7 @@
              pButton pRipple type="button"  (click)="toChangeStatus()" class="p-button-info">
              {{assementYear.verificationStatus == 7 ? "Submited" : "Submit" }}
             </button> -->
-            <button *ngIf="isVerificationHistory !=1 && vStatus != 3" [disabled]="disableSubmit()" pButton pRipple
+            <button *ngIf="isVerificationHistory !=1 && vStatus != 3 " [disabled]="disableSubmit()" pButton pRipple
                 type="button" (click)="toChangeStatus()" class="p-button-info">
                 {{getSubmitLabel() }}
             </button>

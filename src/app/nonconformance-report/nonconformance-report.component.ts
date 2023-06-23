@@ -18,6 +18,7 @@ import {
   VerificationDetail,
   AssessmentYearControllerServiceProxy,
   AssessmentYear,
+  ParameterVerifierAcceptance,
 } from 'shared/service-proxies/service-proxies';
 
 
@@ -168,7 +169,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             // console.log("this.roundThreeList...",this.roundThreeList)
             if(this.roundOneHeadTable !=null)
             {
-              this.verificationRound = 2
+              this.verificationRound = 1
               let verifierId = this.roundOneHeadTable.userVerifier;
 
               this.serviceProxy.
@@ -187,7 +188,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
             this.roundTwoHeadTable = this.verificationList?.find((o: any)=>o.verificationStage == 2);
             if(this.roundTwoHeadTable !=null)
             {
-              this.verificationRound = 3
+              this.verificationRound = 2
               let verifierId = this.roundTwoHeadTable.userVerifier;
 
               this.serviceProxy.
@@ -293,15 +294,17 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
     console.log(this.verificationRound)
 
     for await (let para of parameters) {
-      if (para.isBaseline) hasBaseline = true
-      if (para.isProject) hasProject = true
-      if (para.isLekage) hasLekage = true
-      if (para.isProjection) hasProjection = true
-      let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStage === this.verificationRound))
-      if (vd === undefined) {
-        if (!para.isAlternative){
-          this.isReviewComplete = false
-          break;
+      if (para.verifierAcceptance !== ParameterVerifierAcceptance.REJECTED){
+        if (para.isBaseline) hasBaseline = true
+        if (para.isProject) hasProject = true
+        if (para.isLekage) hasLekage = true
+        if (para.isProjection) hasProjection = true
+        let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStage === this.verificationRound))
+        if (vd === undefined) {
+          if (!para.isAlternative){
+            this.isReviewComplete = false
+            break;
+          }
         }
       }
     }
@@ -499,12 +502,12 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
 
   disableSubmit(){
     if (this.flag === 'sec-admin'){
-      return ((this.assementYear.verificationStatus !== 3) || this.assementYear.verificationStatus === 7)
+      return ((this.assementYear.verificationStatus !== 3) || this.assementYear.verificationStatus === 7 || this.assementYear.verificationStatus === 6)
     } else {
       if (!this.isReviewComplete){
         return true
       } 
-      return (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 8 || this.assementYear.verificationStatus === 7)
+      return (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 8 || this.assementYear.verificationStatus === 7 || this.assementYear.verificationStatus === 6)
     }
   }
 

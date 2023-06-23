@@ -281,7 +281,9 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
 
 
   async onComplete(e: any){
+    console.log("onCOmplete")
     this.parameters = this.parameters.map(para => {
+      console.log(para.id, this.concernParam?.id)
       if (para.id === this.concernParam?.id){
         para['isConcernRaised'] = true
         return para

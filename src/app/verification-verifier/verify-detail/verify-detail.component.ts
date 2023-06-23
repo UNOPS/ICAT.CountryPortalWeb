@@ -309,7 +309,7 @@ export class VerifyDetailComponent implements OnInit {
         this.assementYear.assessment.id,
         this.assementYear.assessmentYear
       )
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         console.log('rrrrrrrrrrrrrrrrr');
         console.log("para next...",res);
 
@@ -347,18 +347,22 @@ export class VerifyDetailComponent implements OnInit {
 
 
         this.parameters = this.assementYear.assessment.parameters;
+        console.log(this.assementYear.assessment)
 
-        this.parameters = this.parameters.map(para => {
-          if (para.verifierAcceptance !== ParameterVerifierAcceptance.DATA_ENTERED){
-            let v = this.verificationDetails.find(o => o.parameter.id === para.id)
-            if (v){
-              if (!v.isAccepted && (v.rootCause === null || v.correctiveAction === null || v.action === null)){
-                para['isConcernRaised'] = true
+        this.parameters = await Promise.all(
+          this.parameters.map(para => {
+            if (para.verifierAcceptance !== ParameterVerifierAcceptance.DATA_ENTERED){
+              let v = this.verificationDetails.find(o => o.parameter.id === para.id)
+              console.log(para.id, v)
+              if (v){
+                if (!v.isAccepted && (v.rootCause === null || v.correctiveAction === null || v.action === null)){
+                  para['isConcernRaised'] = true
+                }
               }
             }
-          }
-          return para
-        })
+            return para
+          })
+        ) 
 
         this.baselineParameters =
           this.assementYear.assessment.parameters.filter(
