@@ -552,7 +552,7 @@ export class QualityCheckDetailComponent implements OnInit {
       }
       this.isReadyToCAl = false;
       this.isDisable = true;
-      // window.location.reload()
+      window.location.reload()
     }
   }
 
@@ -638,8 +638,18 @@ export class QualityCheckDetailComponent implements OnInit {
             // console.log('my mac...', res);
             // console.log("my mac111...",res['baseLineAnnualCost']);
 
-            setTimeout(() => {
-              let assessmentResult = new AssessmentResault();
+            setTimeout(async () => {
+              let filter = ['assessmentYear.id||$eq||'+this.assementYear.id]
+              let assessmentResult
+              let res = await this.serviceProxy.getManyBaseAssesmentResaultControllerAssessmentResault(
+                undefined, undefined, filter, undefined, undefined, undefined,1000, 0, 1, 0
+              ).toPromise()
+
+              if (res.data.length > 0){
+                assessmentResult = res.data[0]
+              } else {
+                assessmentResult = new AssessmentResault();
+              }
               assessmentResult.bsTotalAnnualCost =
                 this.macResult['baseLineAnnualCost'];
               assessmentResult.psTotalAnnualCost =
@@ -649,6 +659,8 @@ export class QualityCheckDetailComponent implements OnInit {
               assessmentResult.macResult = this.macResult['mac']; //this.result.mac;
               assessmentResult.assessmentYear.id = this.assesMentYearId;
               assessmentResult.assement.id = this.assementYear.assessment.id;
+              assessmentResult.isResultupdated = true
+              assessmentResult.isResultRecalculating = false
               this.assessmentResult = assessmentResult;
 
               // console.log('assessmentResult...', this.assessmentResult);
@@ -658,6 +670,7 @@ export class QualityCheckDetailComponent implements OnInit {
                   this.assessmentResult
                 )
                 .subscribe((res: any) => {
+                  console.log(res)
                   if(res!= null)
                   {
                       // console.log("going to reload the page...")
@@ -1118,6 +1131,12 @@ export class QualityCheckDetailComponent implements OnInit {
       column = 'isBaseline'
     } else if (type === 'psTotal'){
       column = 'isProject'
+    } else if (type === 'final'){
+      column = 'isTotal'
+    } else if (type === 'mac'){
+      column = 'isMac'
+    } else if (type === 'difference'){
+      column = 'isDifference'
     }
 
     let vd = verificationList.filter((o:any) => o.isResult === true && o[column] === true)
@@ -1145,9 +1164,19 @@ export class QualityCheckDetailComponent implements OnInit {
       column = 'isLekage'
     } else if (type === 'projection'){
       column = 'isProjection'
+    } else if (type === 'bsTotal'){
+      column = 'isBaseline'
+    } else if (type === 'psTotal'){
+      column = 'isProject'
+    } else if (type === 'final'){
+      column = 'isTotal'
+    } else if (type === 'mac'){
+      column = 'isMac'
+    } else if (type === 'difference'){
+      column = 'isDifference'
     }
    
-    let vd = this.verificationList?.find((o: any) => o.isResult === true && o[column] === true)
+    let vd = this.verificationList?.find((o: any) => o.isResult === true && o[column] === true && o.action)
 
     if (vd){
       return true

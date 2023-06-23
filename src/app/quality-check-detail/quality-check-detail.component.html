@@ -251,7 +251,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end" *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -272,7 +272,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end" *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -293,7 +293,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+          <div class="col-md-1 d-flex align-items-end" *ngIf="checkShowInfo('baseline')">
             <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('baseline')"></i>
           </div>
         </div>
@@ -317,7 +317,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -338,7 +338,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -367,7 +367,7 @@
 
         <div class="row mb-3" *ngIf="assessmentResult?.lekageResult! != undefined">
           <div class="row mb-3">
-            <div class="col-md-8">
+            <div class="col-md-7">
               <div class="col-12">
                 <div class="p-field">
                   <label for="arBaseline">Leakage Result</label>
@@ -383,7 +383,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 d-flex align-items-end">
+            <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
               <div class="col-12">
                 <div class="p-field">
                   <button
@@ -404,7 +404,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 d-flex align-items-end">
+            <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
               <div class="col-12">
                 <div class="p-field">
                   <button
@@ -425,7 +425,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+            <div class="col-md-1 d-flex align-items-end" *ngIf="checkShowInfo('lekage')">
               <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('leakage')"></i>
             </div>
           </div>
@@ -433,7 +433,7 @@
 
         <div class="row mb-3" *ngIf="assessmentResult?.totalEmission! != undefined">
           <div class="row mb-3">
-            <div class="col-md-8">
+            <div class="col-md-7">
               <div class="col-12">
                 <div class="p-field">
                   <label for="arBaseline">Final Result</label>
@@ -449,7 +449,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 d-flex align-items-end">
+            <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
               <div class="col-12">
                 <div class="p-field">
                   <button
@@ -470,7 +470,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 d-flex align-items-end">
+            <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
               <div class="col-12">
                 <div class="p-field">
                   <button
@@ -491,12 +491,15 @@
                 </div>
               </div>
             </div>
+            <div class="col-md-1 d-flex align-items-end" *ngIf="checkShowInfo('final')">
+              <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('final')"></i>
+            </div>
           </div>
         </div>
 
 
         <div class="row mb-3" *ngIf="assessmentResult?.macResult != undefined">
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="col-12">
               <div class="p-field">
                 <label for="macresult">MAC Result (USD/tCO2e)</label>
@@ -512,7 +515,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -533,7 +536,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -554,7 +557,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+          <div class="col-md-1 d-flex align-items-end" *ngIf="checkShowInfo('mac')">
             <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('mac')"></i>
           </div>
         </div>
@@ -577,7 +580,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -598,7 +601,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -619,7 +622,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+          <div class="col-md-1 d-flex align-items-end" *ngIf="checkShowInfo('difference')">
             <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('difference')"></i>
           </div>
         </div>
@@ -642,7 +645,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -663,7 +666,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -684,7 +687,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+          <div class="col-md-1 d-flex align-items-end" *ngIf="checkShowInfo('psTotal')">
             <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('psTotal')"></i>
           </div>
         </div>
@@ -707,7 +710,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -728,7 +731,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end"  *ngIf="!assessmentResult.isResultRecalculating">
             <div class="col-12">
               <div class="p-field">
                 <button
@@ -749,7 +752,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+          <div class="col-md-1 d-flex align-items-end" *ngIf="checkShowInfo('bsTotal')">
             <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('bsTotal')"></i>
           </div>
         </div>
@@ -783,8 +786,8 @@
                   <th>Project Result</th>
                   <th>Leakage Result</th>
                   <th>Emission Reduction</th>
-                  <th></th>
-                  <td></td>
+                  <th *ngIf="!assessmentResult.isResultRecalculating"></th>
+                  <th *ngIf="checkShowInfo('projection')"></th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-param>
@@ -795,7 +798,7 @@
                   <td>{{ param.leakageResult }}</td>
                   <td>{{ param.emissionReduction }}</td>
 
-                  <td>
+                  <td *ngIf="!assessmentResult.isResultRecalculating">
                     <table>
                       <tr>
                         <td>
@@ -828,7 +831,7 @@
                       </tr>
                     </table>
                   </td>
-                  <td>
+                  <td *ngIf="checkShowInfo('projection')">
                     <i *ngIf="isReadyToCAl" class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('projection')"></i>
                   </td>
                 </tr>
