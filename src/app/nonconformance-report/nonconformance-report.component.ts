@@ -299,7 +299,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
         if (para.isProject) hasProject = true
         if (para.isLekage) hasLekage = true
         if (para.isProjection) hasProjection = true
-        let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStage === this.verificationRound))
+        let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStatus === this.assementYear.verificationStatus))
         if (vd === undefined) {
           if (!para.isAlternative){
             this.isReviewComplete = false
@@ -316,7 +316,7 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
       if (this.assementYear.assessment.assessmentType === 'MAC'){columns = [...['isAssumption']]}
       else {columns = [...['isNDC', 'isMethodology', 'isAssumption']]}
       for await (let col of columns){
-        let vd = vdList.find((o: any) => o[col] && (o.isAccepted || o.verificationStage === this.verificationRound))
+        let vd = vdList.find((o: any) => o[col] && (o.isAccepted || o.verificationStatus === this.assementYear.verificationStatus))
         if (vd === undefined){
           this.isReviewComplete = false
           break;
