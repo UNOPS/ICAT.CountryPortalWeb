@@ -65,7 +65,7 @@ export class ManagedatastatusComponent implements OnInit {
   datarequests1: datarequest;
   asseYearId: any;
   alldatarequests: any;
-  dataReqCA: climateAction[] = []
+  dataReqCA: any[] = []
 
 
   async ngOnInit() {
@@ -101,6 +101,15 @@ export class ManagedatastatusComponent implements OnInit {
     for await (let r of res){
       this.dataReqCA.push(r.assessment.project)
     }
+    console.log(this.dataReqCA)
+
+    this.dataReqCA =   Object.values(
+      this.dataReqCA.reduce((acc, obj) => ({
+        ...acc,
+        [obj.id]: obj
+      }), {})
+    );
+    
 
   }
 

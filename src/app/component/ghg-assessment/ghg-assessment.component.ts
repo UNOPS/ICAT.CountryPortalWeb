@@ -3359,7 +3359,7 @@ else{
         assessment.projectionBaseYear = this.ProjectionbaseYear;
 
         let projectBaseYearParm = this.createProjectionParam(
-          'Projection Base Year ' + assessment.projectionBaseYear,
+          'Projection Base Year '  + paramSuffix + ' ' + assessment.projectionBaseYear,
           this.selectdProjectionBaseYearInstition,
           this.selectdProjectionBaseYearValue,
           this.pBYPDDefaultValue,
