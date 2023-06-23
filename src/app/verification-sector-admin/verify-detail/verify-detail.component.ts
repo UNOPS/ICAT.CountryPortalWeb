@@ -822,4 +822,32 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         });
       });
   }
+
+  getResult(type: any){
+    if (this.assementYear.assessment.assessmentType === 'MAC'){
+      if (type === "baseline"){
+        return this.assessmentResult.bsTotalAnnualCost
+      } else if (type === "project"){
+        return this.assessmentResult.psTotalAnnualCost
+      } else {
+        return ''
+      }
+    } else {
+      if (type === "baseline"){
+        return this.assessmentResult.baselineResult
+      } else if (type === "project"){
+        return this.assessmentResult.projectResult
+      } else if (type === "lekage"){
+        return this.assessmentResult.lekageResult
+      } else {
+        return ''
+      }
+    }
+  }
+
+  onComplete(e:any){
+    if (e){
+      this.displayConcern = false
+    }
+  }
 }

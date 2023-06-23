@@ -472,6 +472,7 @@ let s=new String("23")
       this.asseyearproxy.getAssessmentYearsForCountryAndSectorAdmins(1, 10000, 0, 0)
         .subscribe(req => {
           this.macGrapsForPosts = req;
+          console.log(this.macGrapsForPosts)
           // console.log("asseyear",req)
           this.macGrapsForPosts.forEach((element, index) => {
             this.macGrapsForPosts[index] = [element[0], 'data:image/jpg;base64,' + element[1]]
@@ -479,6 +480,7 @@ let s=new String("23")
   
           this.asseyearproxy.getAssessmentYearsForCountryAndSectorAdmins(1, 10000, 0, 1)
             .subscribe(req => {
+              console.log(req)
               this.macGrapsForAntes = req;
               // console.log("asseyear",req)
               this.macGrapsForAntes.forEach((element, index) => {
@@ -1060,7 +1062,7 @@ let s=new String("23")
       for(let s of d.subNdc){
 
         // console.log("ssssss",s.name.length>30)
-        if(s.name?.length>20){
+        if(s.name.length>20){
           s.name = s.name.substring(0,32)+"..........."
         }
 

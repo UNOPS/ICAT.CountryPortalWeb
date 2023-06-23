@@ -186,12 +186,12 @@ export class QualityCheckDetailComponent implements OnInit {
           )
           .subscribe(async (res: any) => {
             this.asseResult = res.data;
-           console.log('this.asseResult...', this.asseResult);
+          //  console.log('this.asseResult...', this.asseResult);
 
            if(this.asseResult.length > 0 && this.asseResult[0]?.isResultupdated && !this.asseResult[0].isResultRecalculating)
            {
              this.isReadyToCAl = false;
-             console.log("this.isReadyToCAl..",this.isReadyToCAl)
+            //  console.log("this.isReadyToCAl..",this.isReadyToCAl)
              this.isDisable = true;
 
              if(this.asseResult[0].qcStatusBaselineResult == 4)
@@ -288,9 +288,9 @@ export class QualityCheckDetailComponent implements OnInit {
             this.assesmentProxy
             .checkAssessmentReadyForCalculate( this.assementYear.assessment.id,Number( this.assementYear.assessmentYear))
             .subscribe((r) => {
-              console.log('checkAssessmentReadyForcal....', r);
+              // console.log('checkAssessmentReadyForcal....', r);
               this.isReadyToCAl = r;
-              console.log("this.isReadyToCAl..from back",this.isReadyToCAl)
+              // console.log("this.isReadyToCAl..from back",this.isReadyToCAl)
               //this.isReadyToCal.emit(r);
             });
             
@@ -356,8 +356,8 @@ export class QualityCheckDetailComponent implements OnInit {
 
   getAssesmentResult(isCalculate: boolean) {
 
-    console.log(' this.assementYear.assessment.id', this.assementYear.assessment.id,)
-    console.log('this.assesMentYearId',this.assesMentYearId)
+    // console.log(' this.assementYear.assessment.id', this.assementYear.assessment.id,)
+    // console.log('this.assesMentYearId',this.assesMentYearId)
     this.assesmentResaultProxy
       .getAssesmentResult(
         this.assementYear.assessment.id,
@@ -369,7 +369,7 @@ export class QualityCheckDetailComponent implements OnInit {
       )
       .subscribe((res) => {
         this.assessmentResult = res;
-        console.log('assessmentResult',res)
+        // console.log('assessmentResult',res)
         if (isCalculate) {
           this.getAssesmentResult(false);
           this.messageService.add({
@@ -405,7 +405,7 @@ export class QualityCheckDetailComponent implements OnInit {
     //this.items.push(newItem);
     this.isReadyToCAl = newItem;
    // this.isReadyToCAl = true;
-    console.log("ccc result..",newItem)
+    // console.log("ccc result..",newItem)
   }
 
 
@@ -482,7 +482,7 @@ export class QualityCheckDetailComponent implements OnInit {
         this.resultImage = this.assementYear.assessment?.methodology?.resultImage;
         this.methodDocument = this.assementYear.assessment?.methodology?.documents;
         this.assessmentType = this.assementYear.assessment?.assessmentType;
-        console.log("parameter meth..",this.baseImage)
+        // console.log("parameter meth..",this.baseImage)
         // this.paramProxy
         //   .parameterByAssesment(this.assementYear.assessment.id)
         //   .subscribe((res) => {
@@ -491,7 +491,7 @@ export class QualityCheckDetailComponent implements OnInit {
         //   });
 
         this.parameters = this.assementYear.assessment.parameters;
-        console.log("para....w",this.parameters)
+        // console.log("para....w",this.parameters)
 
         let statusToRemove = [ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED]
 
@@ -542,12 +542,12 @@ export class QualityCheckDetailComponent implements OnInit {
         detail: "There are parameters in data collection path"
       })
     } else {
-      console.log("cccccccccc",this.assementYear.assessment.assessmentType)
+      // console.log("cccccccccc",this.assementYear.assessment.assessmentType)
       if (this.assementYear.assessment.assessmentType != 'MAC') {
         // console.log("cccccccccc",this.assementYear.assessment.assessmentType)
         this.getAssesmentResult(true);
       } else {
-        console.log("cccccccccc",this.assementYear.assessment.assessmentType)
+        // console.log("cccccccccc",this.assementYear.assessment.assessmentType)
         this.toCalMacResult();
       }
       this.isReadyToCAl = false;
@@ -574,11 +574,11 @@ export class QualityCheckDetailComponent implements OnInit {
       )
       .subscribe((res: any) => {
         this.macValList = res.data;
-        console.log('this.macValList...', this.macValList);
+        // console.log('this.macValList...', this.macValList);
         this.discountrate = this.macValList.find(
           (o: any) => o.name == 'Discount Rate'
         ).value;
-        console.log('this.assementYear...', this.assementYear.assessmentYear);
+        // console.log('this.assementYear...', this.assementYear.assessmentYear);
 
         this.macValue = {
           DiscountRate: this.macValList.find(
@@ -629,13 +629,13 @@ export class QualityCheckDetailComponent implements OnInit {
         let headers = new HttpHeaders().set('api-key','1234');
         //  console.log("my url...",Url)
         //let fullUrl = 'http://35.154.205.109:3600/mac';
-        console.log("going to call cal engine...,macUrl")
+        // console.log("going to call cal engine...,macUrl")
         this.httpClient.post<any>(macUrl, this.macValue,{'headers':headers}).subscribe(
           (res) => {
             // this.load();
             this.macResult = res;
             // console.log("=================================");
-            console.log('my mac...', res);
+            // console.log('my mac...', res);
             // console.log("my mac111...",res['baseLineAnnualCost']);
 
             setTimeout(() => {
@@ -651,7 +651,7 @@ export class QualityCheckDetailComponent implements OnInit {
               assessmentResult.assement.id = this.assementYear.assessment.id;
               this.assessmentResult = assessmentResult;
 
-              console.log('assessmentResult...', this.assessmentResult);
+              // console.log('assessmentResult...', this.assessmentResult);
 
               this.serviceProxy
                 .createOneBaseAssesmentResaultControllerAssessmentResault(
@@ -660,7 +660,7 @@ export class QualityCheckDetailComponent implements OnInit {
                 .subscribe((res: any) => {
                   if(res!= null)
                   {
-                      console.log("going to reload the page...")
+                      // console.log("going to reload the page...")
                       setTimeout(() => {
                         },500);
                       window.location.reload();
@@ -734,10 +734,10 @@ export class QualityCheckDetailComponent implements OnInit {
     this.router.navigate(['/qc'], {
      
     });
-    console.log(
-      this.parameters.find((m) => m.parameterRequest.qaStatus !== 4) ===
-        undefined
-    );
+    // console.log(
+    //   this.parameters.find((m) => m.parameterRequest.qaStatus !== 4) ===
+    //     undefined
+    // );
 
 
 
@@ -771,7 +771,7 @@ export class QualityCheckDetailComponent implements OnInit {
 
   onRowSelectAssessment(event: any, isApprove: boolean) {
     this.selectdAssementType = event;
-    console.log("this.selectdAssementType...",this.selectdAssementType)
+    // console.log("this.selectdAssementType...",this.selectdAssementType)
     this.isApproveAssement = isApprove;
   }
 
@@ -824,7 +824,7 @@ export class QualityCheckDetailComponent implements OnInit {
           var index = this.projectionResult.indexOf(
             this.selectdProjectionResult
           );
-          console.log(this.selectdProjectionResult);
+          // console.log(this.selectdProjectionResult);
           this.selectdProjectionResult.qcStatus = this.isApprove ? 4 : 3;
 
           this.isApproveAllProjectionResult=await this.projectionResultProxy.checkAllQCApprovmentProjectionResult(this.asseId).toPromise();
@@ -844,7 +844,7 @@ export class QualityCheckDetailComponent implements OnInit {
   }
 
   drWithCommentAssesment() {
-    console.log("hii there...")
+    // console.log("hii there...")
     if (!this.isApproveAssement && this.assesmentResultComment === '') {
       this.commentRequried = true;
       return;
@@ -865,7 +865,7 @@ export class QualityCheckDetailComponent implements OnInit {
       .subscribe(
         async (res:any) => {
 
-          console.log("result...fr",res)
+          // console.log("result...fr",res)
           if(res.qcStatusBaselineResult == 4)
           {
             this.isbsResultButtonsDisable = true;
@@ -964,7 +964,7 @@ export class QualityCheckDetailComponent implements OnInit {
             this.selectdProjectionResult
           );
 
-          console.log(this.assessmentResult);
+          // console.log(this.assessmentResult);
           if (this.selectdAssementType === 1) {
             this.assessmentResult.qcStatusBaselineResult = this
               .isApproveAssement
@@ -1030,7 +1030,7 @@ export class QualityCheckDetailComponent implements OnInit {
       para.find((m) => m.parameterRequest?.qaStatus !== 4) ===
       undefined;
 
-     console.log('is true..',isallPass)
+    //  console.log('is true..',isallPass)
     // console.log('isallPass..',isallPass)
 
     if (this.assementYear.assessment.assessmentType == 'MAC') {
@@ -1101,7 +1101,7 @@ export class QualityCheckDetailComponent implements OnInit {
 
   async getResultInfo(type: any){
     this.resultVds = []
-    console.log("get result info", type)
+    // console.log("get result info", type)
     let verificationList = (await this.assessmentYearControllerServiceProxy
       .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assementYear.assessment.id, this.assementYear.assessmentYear)
       .toPromise())[0]?.verificationDetail;
@@ -1114,6 +1114,10 @@ export class QualityCheckDetailComponent implements OnInit {
       column = 'isLekage'
     } else if (type === 'projection'){
       column = 'isProjection'
+    } else if (type === 'bsTotal'){
+      column = 'isBaseline'
+    } else if (type === 'psTotal'){
+      column = 'isProject'
     }
 
     let vd = verificationList.filter((o:any) => o.isResult === true && o[column] === true)

@@ -225,7 +225,6 @@
         </div>
       </div>
     </div>
-
     <div class="row mb-3" *ngIf="assessmentResult && assessmentResult.id > 0">
       <div class="p-grid p-fluid card">
         <div class="row mb-3">
@@ -493,7 +492,7 @@
               </div>
             </div>
           </div>
-      </div>
+        </div>
 
 
         <div class="row mb-3" *ngIf="assessmentResult?.macResult != undefined">
@@ -562,7 +561,7 @@
 
 
         <div class="row mb-3" *ngIf="assessmentResult.costDifference != undefined">
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="col-12">
               <div class="p-field">
                 <label for="costDifference">Cost Difference ($)</label>
@@ -627,7 +626,7 @@
 
 
         <div class="row mb-3" *ngIf="assessmentResult.psTotalAnnualCost != undefined">
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="col-12">
               <div class="p-field">
                 <label for="psTotalAnnualCost">Project Total Annual Cost ($)</label>
@@ -684,6 +683,9 @@
                 </button>
               </div>
             </div>
+          </div>
+          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+            <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('psTotal')"></i>
           </div>
         </div>
 
@@ -746,6 +748,9 @@
                 </button>
               </div>
             </div>
+          </div>
+          <div class="col-md-1 d-flex align-items-end" *ngIf="isReadyToCAl">
+            <i class="pi pi-ellipsis-v" style="font-size: 1rem" (click)="getResultInfo('bsTotal')"></i>
           </div>
         </div>
 

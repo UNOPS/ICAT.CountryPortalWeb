@@ -76,7 +76,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(verificationStatus)"
+          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(assementYear?.verificationStatus)"
         >
           <button
             type="button"
@@ -92,7 +92,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(verificationStatus)"
+          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(assementYear?.verificationStatus)"
         >
           <button
             type="button"
@@ -143,6 +143,40 @@
       </div>
     </div>
 
+    <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType == 'MAC' ">
+      <div class="col-md-5">
+        <div class="col-5">
+          <label> <strong>MAC Result </strong> </label>
+          <input
+              [disabled]="true"
+              type="number"
+              name="ereduction"
+              #ereduction="ngModel"
+              [(ngModel)]="assessmentResult?.macResult!"
+              class="p-inputtext"
+              pInputText
+            />
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType == 'MAC' ">
+      <div class="col-md-5">
+        <div class="col-5">
+          <label> <strong>Cost Difference </strong> </label>
+          <input
+              [disabled]="true"
+              type="number"
+              name="ereduction"
+              #ereduction="ngModel"
+              [(ngModel)]="assessmentResult?.costDifference!"
+              class="p-inputtext"
+              pInputText
+            />
+        </div>
+      </div>
+    </div>
+    
     <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType != 'MAC' ">
       <div class="col-md-5">
         <div class="col-5">
@@ -226,7 +260,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(verificationStatus)"
+          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(assementYear?.verificationStatus)"
         >
           <button
             type="button"
@@ -242,7 +276,7 @@
       <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
         <div
           class="col-12"
-          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(verificationStatus)"
+          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(assementYear?.verificationStatus)"
         >
           <button
             type="button"
@@ -306,8 +340,8 @@
         [assessmentYear]="assementYear"
         [scenario]="assementYear.assessment.baselineScenario"
         [parameters]="baselineParameters"
-        ResultLabel="Baseline emission"
-        [ResultValue]="assessmentResult?.baselineResult |  number: '1.0-5'"
+        [ResultLabel]="assementYear.assessment.assessmentType === 'MAC' ? 'Total Annual Cost' : 'Baseline emission'"
+        [ResultValue]="getResult('baseline')|  number: '1.0-5'"
         [verificationDetails]="verificationDetails"
         [isBaseline]="true"
         [isAccept]="isBaseAccept"
@@ -322,8 +356,8 @@
         [assessmentYear]="assementYear"
         [scenario]="assementYear.assessment.projectScenario"
         [parameters]="projectParameters"
-        ResultLabel="Project emission"
-        [ResultValue]="assessmentResult?.projectResult"
+        [ResultLabel]="assementYear.assessment.assessmentType === 'MAC' ? 'Total Annual Cost' : 'Project emission'"
+        [ResultValue]="getResult('project')"
         [verificationDetails]="verificationDetails"
         [isProject]="true"
         [isAdmin]="false"
@@ -341,7 +375,7 @@
         [scenario]="assementYear.assessment.lekageScenario"
         [parameters]="lekageParameters"
         ResultLabel="Leakage emission"
-        [ResultValue]="assessmentResult?.lekageResult"
+        [ResultValue]="getResult('lekage')"
         [verificationDetails]="verificationDetails"
         [isLekage]="true"
         [flag]="flag"
@@ -393,7 +427,7 @@
 
         <div class="col-2">
           
-          <button *ngIf="verificationService.checkStatus(verificationStatus)"
+          <button *ngIf="verificationService.checkStatus(assementYear?.verificationStatus)"
           type="button"
           [disabled]="isAssumptions"
           pButton
@@ -404,7 +438,7 @@
         </button>
         </div>
         <div class="col-2">
-          <button *ngIf="verificationService.checkStatus(verificationStatus) "
+          <button *ngIf="verificationService.checkStatus(assementYear?.verificationStatus) "
             type="button"
             [disabled]="isAssumptionsReject"
             pButton
@@ -454,6 +488,7 @@
 </div>
 
 <p-dialog
+  (onHide)="onHide()"
   header="Raise Concern"
   [(visible)]="displayConcern"
   appendTo="body"

@@ -222,6 +222,53 @@
       </div>
     </div>
   </div>
+  <div class="row mb-3" *ngIf="assessmentYear.assessment.assessmentType =='MAC' ">
+    <div class="col-md-8">
+      <div class="col-md-8">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">{{ ResultLabel }}</label>
+            <div class="row p-2 ">
+              <div class="col-12 col-md-9">
+                <div>
+                  <input [disabled]="true" type="text" name="meth" #chgEmission="ngModel" [(ngModel)]="ResultValue"
+                    class="p-inputtext" pInputText />
+                </div>
+              </div>
+
+              <div class="col-12 col-md-3">
+                <div style="margin-top:5px">
+                  <b>tCO₂e</b>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 || assessmentYear?.verificationStatus! == 8) && hasResultConcern && !isResultActionDone">
+      <div class="col-12">
+        <button type="button" (click)="onResultAction()" pButton pRipple>Action</button>
+      </div>
+    </div>
+
+    <div class="col-md-2 d-flex align-items-end" *ngIf="
+        assessmentYear !== undefined && (assessmentYear?.verificationStatus! == 3 || assessmentYear?.verificationStatus! == 8) && hasResultConcern && !isResultActionDone
+      ">
+      <div class="col-12">
+        <button
+          type="button"
+          pButton
+          pRipple
+          (click)="raiseConcernResult($event)"
+        >
+          View Concern
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <p-dialog header="View Concern" [(visible)]="displayConcern" appendTo="body">
