@@ -7,6 +7,7 @@ import {
   AssessmentYearControllerServiceProxy,
   AssessmentYearVerificationStatus,
   Parameter,
+  ParameterVerifierAcceptance,
   ServiceProxy,
   User,
   VerificationControllerServiceProxy,
@@ -214,6 +215,16 @@ export class RaiseConcernComponent implements OnInit {
 
       vd.verificationStatus = Number(this.assesmentYear.verificationStatus);
     }
+
+    if (this.isParameter){
+      if (this.verificationRound > 1){
+        let para = vd.parameter
+        para.verifierAcceptance = ParameterVerifierAcceptance.PENDING
+        await this.serviceProxy.updateOneBaseParameterControllerParameter(para.id, para).toPromise()
+      }
+    }
+
+   
 
     vd.explanation = this.comment;
     vd.verificationStage = this.verificationRound;
