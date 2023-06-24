@@ -3450,13 +3450,15 @@ else{
       //   //this.updateAssesmentProject(res);
       //   this.isSave = true;
       // });
+      console.log("my asse..",assessment);
 
-
-      if (!this.IsProposal&& !assessment.parameters.some(obj => (obj.institution.id!=undefined)&&!obj.isDefault&&!obj.isHistorical)) {
+      if (!this.IsProposal&& !assessment.parameters.some(obj => (obj.institution&&obj.institution.id!=undefined)&&!obj.isDefault&&!obj.isHistorical)) {
         this.messageService.add({severity:'error', summary:'Can Not Save', detail:'This can not be proceed, you have to at least select one data providing institution'});
         return
       }
-      console.log("my asse..",assessment);
+
+  
+     
       console.log("pasing", this.requiredParas)
       if (this.requiredParas){
         this.serviceProxy
