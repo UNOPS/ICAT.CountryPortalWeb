@@ -125,7 +125,7 @@
             type="button"
             pButton
             pRipple
-            (click)="raiseConcern(true, false,false)"
+            (click)="raiseConcern(true, false,false, false)"
           >
             View Concerns
           </button>
@@ -168,6 +168,25 @@
             />
         </div>
       </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && !isTotalResultAccepted && hasTotalResultConcern">
+        <div class="col-12">
+          <button type="button" pButton pRipple (click)="onResultAction('isTotal')">
+            Action
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && hasTotalResultConcern">
+        <div class="col-12">
+          <button
+            type="button"
+            pButton
+            pRipple
+            (click)="raiseConcern(false, false,false,true,'isTotal')"
+          >
+            View Concerns
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType == 'MAC' ">
@@ -185,6 +204,25 @@
             />
         </div>
       </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assementYear?.verificationStatus! == 3 && !hasMacComment) && !isMacResultAccepted && hasMacResultConcern">
+        <div class="col-12">
+          <button type="button" pButton pRipple (click)="onResultAction('isMac')">
+            Action
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assementYear?.verificationStatus! == 3 || !hasMacComment) && hasMacResultConcern">
+        <div class="col-12">
+          <button
+            type="button"
+            pButton
+            pRipple
+            (click)="raiseConcern(false, false,false,true,'isMac')"
+          >
+            View Concerns
+          </button>
+        </div>
+      </div>
     </div>
     
     <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType == 'MAC' ">
@@ -200,6 +238,25 @@
               class="p-inputtext"
               pInputText
             />
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assementYear?.verificationStatus! == 3 || !hasCostComment) && !isCostResultAccepted && hasCostResultConcern">
+        <div class="col-12">
+          <button type="button" pButton pRipple (click)="onResultAction('isDifference')">
+            Action
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assementYear?.verificationStatus! == 3 || !hasCostComment) && hasCostResultConcern">
+        <div class="col-12">
+          <button
+            type="button"
+            pButton
+            pRipple
+            (click)="raiseConcern(false, false,false,true,'isDifference')"
+          >
+            View Concerns
+          </button>
         </div>
       </div>
     </div>
@@ -274,7 +331,7 @@
             type="button"
             pButton
             pRipple
-            (click)="raiseConcern(false, true,false)"
+            (click)="raiseConcern(false, true,false, false)"
           >
             View Concerns
           </button>
@@ -423,7 +480,7 @@
             type="button"
             pButton
             pRipple
-            (click)="raiseConcern(true, false,true)"
+            (click)="raiseConcern(true, false,true, false)"
           >
             View Concerns
           </button>

@@ -79,7 +79,14 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   hasNdcConcern: boolean = false
   hasAssumptionConcern: boolean = false
   isAssumptionAccepted: boolean = false
-  
+  isTotalResultAccepted: boolean = false
+  hasTotalResultConcern: boolean = false
+  isMacResultAccepted: boolean = false
+  hasMacResultConcern: boolean = false
+  isCostResultAccepted: boolean = false
+  hasCostResultConcern: boolean = false
+  hasMacComment: boolean = false
+  hasCostComment: boolean = false
 
   ref: DynamicDialogRef;
 
@@ -103,6 +110,8 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.assesMentYearId = params['id'];
       this.verificationStatus = params['verificationStatus'];
+
+      this.loadUser()
 
       this.serviceProxy
         .getManyBaseNdcControllerNdc(
@@ -221,6 +230,33 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         } 
         if (v.explanation){
           this.hasAssumptionConcern = true
+        }
+      } else if (v.isTotal){
+        if (v.isAccepted){
+          this.isTotalResultAccepted = true
+        }
+        if (v.explanation){
+          this.hasTotalResultConcern = true
+        }
+      } else if (v.isMac){
+        if (v.isAccepted){
+          this.isMacResultAccepted = true
+        }
+        if (v.explanation){
+          this.hasMacResultConcern = true
+        }
+        if (v.action){
+          this.hasMacComment = true
+        }
+      } else if (v.isDifference){
+        if (v.isAccepted){
+          this.isCostResultAccepted = true
+        }
+        if (v.explanation){
+          this.hasCostResultConcern = true
+        } 
+        if (v.action){
+          this.hasCostComment = true
         }
       }
     }
@@ -609,7 +645,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     return stage;
   }
 
-  raiseConcern(isNdc: boolean, isMethodology: boolean, isAssumption:boolean) {
+  raiseConcern(isNdc: boolean, isMethodology: boolean, isAssumption:boolean, isResult:boolean, column?: string) {
     if (isNdc) {
       this.raiseConcernSection = 'NDC';
       this.concernVerificationDetails = this.verificationDetails.filter(
@@ -627,6 +663,24 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       this.concernVerificationDetails = this.verificationDetails.filter(
         (a) => a.isAssumption
       );
+    }
+    if (isResult){
+      if (column === 'isTotal'){
+        this.raiseConcernSection = 'Emission Reduction'
+        this.concernVerificationDetails = this.verificationDetails.filter(
+          (a)=> a.isTotal
+        )
+      } else if (column === 'isMac'){
+        this.raiseConcernSection = 'Mac Result'
+        this.concernVerificationDetails = this.verificationDetails.filter(
+          (a) => a.isMac
+        )
+      } else if (column === 'isDifference'){
+        this.raiseConcernSection = 'Cost Difference'
+        this.concernVerificationDetails = this.verificationDetails.filter(
+          (a) => a.isDifference
+        )
+      }
     }
 
     this.concernIsNdC = isNdc;
@@ -849,5 +903,75 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     if (e){
       this.displayConcern = false
     }
+  }
+
+  onResultAction(column: string){
+   
+    let data:any = {type: 'result'}
+    this.ref = this.dialogService.open(VerificationActionDialogComponent, {
+      header: "Result action",
+      width: '40%',
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
+      baseZIndex: 10000,
+      data: data,
+    });
+
+    this.ref.onClose.subscribe(async (res) => {
+      if (res){
+        console.log(res)
+        let result = await this.verificationProxy.sendResultToRecalculate(this.assementYear.id).toPromise()
+        console.log(result)
+        let comment = this.loggedUser.userType.name + '|' + res.result.comment
+        await this.saveVerificationDetailsResult(column, comment)
+      }
+    })
+  }
+
+  async saveVerificationDetailsResult(column: string, action: string) {
+    let verificationDetail = undefined;
+    let verificationStage = await this.getverificationStage()
+    let verificationDetails = []
+    console.log(column)
+    if (this.verificationDetails) {
+      console.log(this.verificationDetails)
+      verificationDetail = this.verificationDetails.find(
+        (a: any) =>
+          a.isResult === true && a[column] === true &&
+          a.verificationStage == verificationStage
+      );
+      console.log("selected verificationDetail", verificationDetail)
+      let _vd = new VerificationDetail();
+      if (verificationDetail) {
+        _vd = verificationDetail;
+      } else {
+        _vd.assessmentId = this.assementYear.assessment.id;
+        let assesmentYear = new AssessmentYear();
+        assesmentYear.id = this.assementYear.id;
+        _vd.assessmentYear = assesmentYear;
+        _vd.year = Number(this.assementYear.assessmentYear);
+        _vd.createdOn = moment();
+        _vd.isAccepted = false;
+
+       _vd[column] = true
+      }
+      _vd.editedOn = moment();
+      _vd.updatedDate = moment();
+      _vd.verificationStage = await this.getverificationStage();
+      _vd.verificationStatus = Number(this.assementYear.verificationStatus);
+      _vd.action = action
+      verificationDetails.push(_vd)
+    }
+
+    this.verificationProxy
+      .saveVerificationDetails(verificationDetails)
+      .subscribe((a) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'successfully Save.',
+          closable: true,
+        });
+        window.location.reload()
+      });
   }
 }

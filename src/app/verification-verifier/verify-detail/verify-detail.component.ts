@@ -81,8 +81,20 @@ export class VerifyDetailComponent implements OnInit {
   isAssumptionAccepted:boolean = false;
   isAssumptionsReject:boolean = false;
 
+  isTotal: boolean = false
+  isMac: boolean = false
+  isDifference: boolean = false
+
   @ViewChild('opDRPro') overlayDRPro: any;
   @ViewChild('opDRAss') overlayDRAssemnet: any;
+  isResultAccepted: boolean;
+  isResultRaised: boolean;
+  isResult: boolean;
+  hasResultConcern: boolean;
+  isMacResultAccepted: boolean;
+  hasMacResultConcern: boolean;
+  isCostResultAccepted: boolean;
+  hasCostResultConcern: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -189,6 +201,45 @@ export class VerifyDetailComponent implements OnInit {
           this.isAssumptionAccepted = false;
           this.isAssumptionsReject = false;
         }
+
+        let totalResultObj = this.verificationDetailsFromDb.filter((o) => o.isTotal === true)
+        totalResultObj.forEach(tot => {
+          if (tot?.isAccepted){
+            this.isResultAccepted = true
+            return
+          } else {
+            if (tot?.explanation && tot.verificationStage === this.getverificationStage()){
+              this.hasResultConcern = true
+              return
+            }
+          }
+        })
+
+        let macResultObj = this.verificationDetailsFromDb.filter((o) => o.isMac === true)
+        macResultObj.forEach(mac => {
+          if (mac?.isAccepted){
+            this.isMacResultAccepted = true
+            return
+          } else {
+            if (mac?.explanation && mac.verificationStage === this.getverificationStage()){
+              this.hasMacResultConcern = true
+              return
+            }
+          }
+        })
+
+        let costObj = this.verificationDetailsFromDb.filter((o) => o.isDifference === true)
+        costObj.forEach(cost => {
+          if (cost?.isAccepted){
+            this.isCostResultAccepted = true
+            return
+          } else {
+            if (cost?.explanation && cost.verificationStage === this.getverificationStage()){
+              this.hasCostResultConcern = true
+              return
+            }
+          }
+        })
       });
 
 
@@ -773,5 +824,94 @@ export class VerifyDetailComponent implements OnInit {
     if (this.concernIsMethodology){
       this.isMethodology = false
     }
+  }
+
+  async raiseConcernResult(column: string, section: string) {
+    if (section == 'Emission Reduction'){
+      this.isTotal = true
+      this.hasResultConcern = true
+    } else if (section === 'Mac Result'){
+      this.isMac = true
+      this.hasMacResultConcern = true
+    } else if (section === 'Cost Difference'){
+      this.isDifference = true
+      this.hasCostResultConcern = true
+    }
+    this.raiseConcernSection = section;
+    // this.isParameter = false;
+    this.isResult = true;
+    // this.concernParam = undefined;
+
+    if (this.verificationDetails) {
+      this.concernVerificationDetails = this.verificationDetails.filter(
+        (a) => a.isResult && a[column]
+      );
+    }
+
+    this.displayConcern = true;
+  }
+
+  resultAccept(column: string){
+    this.confirmationService.confirm({
+      message: 'Are sure you want to accept the result ?',
+      header: 'Accept Confirmation',
+      acceptIcon: 'icon-not-visible',
+      rejectIcon: 'icon-not-visible',
+      accept: () => {
+        this.acceptResult(column);
+
+      },
+      reject: () => {},
+    });
+  }
+
+  acceptResult(column: string) {
+    let verificationDetails: VerificationDetail[] = [];
+
+    let verificationDetail = undefined;
+
+    if (this.verificationDetails) {
+      verificationDetail = this.verificationDetails.find(
+        (a: any) => a.assessmentId === this.assementYear.assessment.id && a[column] == true && a.isResult === true
+      );
+    }
+    let vd = new VerificationDetail();
+
+    if (verificationDetail) {
+      vd = verificationDetail;
+    } else {
+      console.log("new result")
+      vd.userVerifier = this.loggedUser.id;
+      vd.assessmentId = this.assementYear.assessment.id;
+      let assesmentYear = new AssessmentYear();
+      assesmentYear.id = this.assementYear.id;
+      vd.assessmentYear = assesmentYear;
+      vd.year = Number(this.assementYear.assessmentYear);
+      vd.createdOn = moment();
+      vd.isResult = true
+      vd[column] = true
+    }
+
+    vd.editedOn = moment();
+    vd.updatedDate = moment();
+    vd.isAccepted = true;
+    vd.verificationStage = this.getverificationStage();
+    vd.verificationStatus = Number(this.assementYear.verificationStatus);
+    console.log(vd)
+
+    verificationDetails.push(vd);
+
+    this.verificationProxy
+      .saveVerificationDetails(verificationDetails)
+      .subscribe((a) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'successfully Save.',
+          closable: true,
+        });
+        // this.isAccept=true
+        this.isResultAccepted = true
+      });
   }
 }

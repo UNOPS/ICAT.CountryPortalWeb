@@ -59,6 +59,15 @@ export class RaiseConcernComponent implements OnInit {
   @Input()
   parameter: Parameter;
 
+  @Input()
+  isTotal: boolean;
+
+  @Input()
+  isMac: boolean;
+
+  @Input()
+  isDifference: boolean;
+
   @Output()
   onCompleteConcern = new EventEmitter<boolean>();
 
@@ -183,6 +192,9 @@ export class RaiseConcernComponent implements OnInit {
       vd.isProjection = this.isProjection;
       vd.isResult = this.isResult;
       vd.isAssumption = this.isAssumption
+      vd.isTotal = this.isTotal
+      vd.isMac = this.isMac
+      vd.isDifference = this.isDifference
 
       if (this.isNdC) {
         vd.isNDC = true;

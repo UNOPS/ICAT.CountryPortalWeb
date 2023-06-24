@@ -141,6 +141,38 @@
             />
         </div>
       </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
+        <div
+          class="col-12"
+          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(assementYear?.verificationStatus)"
+        >
+          <button
+            type="button"
+            [disabled]="isResultAccepted || hasResultConcern"
+            pButton
+            pRipple
+            (click)="resultAccept('isTotal')"
+          >
+            {{isNdcAccepted == true?'Accepted':'Accept'}}
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
+        <div
+          class="col-12"
+          *ngIf="this.assementYear.assessment.assessmentType != 'MAC' && verificationService.checkStatus(assementYear?.verificationStatus)"
+        >
+          <button
+            type="button"
+            [disabled]="isResultAccepted"
+            pButton
+            pRipple
+            (click)="raiseConcernResult('isTotal', 'Emission Reduction')"
+          >
+            Raise Concern
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType == 'MAC' ">
@@ -158,6 +190,38 @@
             />
         </div>
       </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
+        <div
+          class="col-12"
+          *ngIf="this.assementYear.assessment.assessmentType == 'MAC' && verificationService.checkStatus(assementYear?.verificationStatus)"
+        >
+          <button
+            type="button"
+            [disabled]="isMacResultAccepted || hasMacResultConcern"
+            pButton
+            pRipple
+            (click)="resultAccept('isMac')"
+          >
+            {{isNdcAccepted == true?'Accepted':'Accept'}}
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
+        <div
+          class="col-12"
+          *ngIf="this.assementYear.assessment.assessmentType == 'MAC' && verificationService.checkStatus(assementYear?.verificationStatus)"
+        >
+          <button
+            type="button"
+            [disabled]="isMacResultAccepted"
+            pButton
+            pRipple
+            (click)="raiseConcernResult('isMac', 'Mac Result')"
+          >
+            Raise Concern
+          </button>
+        </div>
+      </div>
     </div>
     
     <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType == 'MAC' ">
@@ -173,6 +237,38 @@
               class="p-inputtext"
               pInputText
             />
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
+        <div
+          class="col-12"
+          *ngIf="this.assementYear.assessment.assessmentType === 'MAC' && verificationService.checkStatus(assementYear?.verificationStatus)"
+        >
+          <button
+            type="button"
+            [disabled]="isCostResultAccepted || hasCostResultConcern"
+            pButton
+            pRipple
+            (click)="resultAccept('isDifference')"
+          >
+            {{isNdcAccepted == true?'Accepted':'Accept'}}
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="flag != 1">
+        <div
+          class="col-12"
+          *ngIf="this.assementYear.assessment.assessmentType === 'MAC' && verificationService.checkStatus(assementYear?.verificationStatus)"
+        >
+          <button
+            type="button"
+            [disabled]="isCostResultAccepted"
+            pButton
+            pRipple
+            (click)="raiseConcernResult('isDifference', 'Cost Difference')"
+          >
+            Raise Concern
+          </button>
         </div>
       </div>
     </div>
@@ -502,7 +598,12 @@
     [isNdC]="concernIsNdC"
     [isMethodology]="concernIsMethodology"
     [isAssumption]="concernIsAssumption"
+    [isResult]="isResult"
+    [area]="raiseConcernSection"
     (onCompleteConcern)="onComplete($event)"
+    [isTotal]="isTotal"
+    [isMac]="isMac"
+    [isDifference]="isDifference"
   ></app-raise-concern>
 
 </div>
