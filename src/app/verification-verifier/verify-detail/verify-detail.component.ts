@@ -843,9 +843,19 @@ export class VerifyDetailComponent implements OnInit {
     // this.concernParam = undefined;
 
     if (this.verificationDetails) {
-      this.concernVerificationDetails = this.verificationDetails.filter(
-        (a) => a.isResult && a[column]
-      );
+
+      if(column == 'isTotal'){
+        this.concernVerificationDetails = this.verificationDetails.filter(
+          (a) => a.isResult && a.isTotal
+        );
+      }
+        else if( column == 'isMac') {  this.concernVerificationDetails = this.verificationDetails.filter(
+          (a) => a.isResult && a.isMac
+        );}
+        else if (column =='isDifference'){  this.concernVerificationDetails = this.verificationDetails.filter(
+          (a) => a.isResult && a.isDifference
+        );}
+     
     }
 
     this.displayConcern = true;
@@ -889,7 +899,9 @@ export class VerifyDetailComponent implements OnInit {
       vd.year = Number(this.assementYear.assessmentYear);
       vd.createdOn = moment();
       vd.isResult = true
-      vd[column] = true
+      if(column == 'isTotal'){vd.isTotal =true}
+        else if( column == 'isMac') {vd.isMac =true}
+        else if (column =='isDifference'){vd.isDifference=true}
     }
 
     vd.editedOn = moment();

@@ -951,8 +951,11 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         _vd.year = Number(this.assementYear.assessmentYear);
         _vd.createdOn = moment();
         _vd.isAccepted = false;
+        if(column == 'isTotal'){_vd.isTotal =true}
+        else if( column == 'isMac') {_vd.isMac =true}
+        else if (column =='isDifference'){_vd.isDifference=true}
 
-       _vd[column] = true
+      //  _vd[column] = true
       }
       _vd.editedOn = moment();
       _vd.updatedDate = moment();
