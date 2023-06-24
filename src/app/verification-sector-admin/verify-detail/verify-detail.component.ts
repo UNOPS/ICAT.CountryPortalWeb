@@ -32,6 +32,7 @@ import { VerificationActionDialogComponent } from '../verification-action-dialog
   styleUrls: ['./verify-detail.component.css'],
 })
 export class VerifyDetailComponentSectorAdmin implements OnInit {
+
   assesMentYearId: number = 0;
   verificationStatus: number = 0;
   assementYear: AssessmentYear = new AssessmentYear();
@@ -87,11 +88,20 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   hasCostResultConcern: boolean = false
   hasMacComment: boolean = false
   hasCostComment: boolean = false
+  canActiveNdcAction: boolean = false
+  canActiveAssumption: boolean = false
+  canActiveTotalAction: boolean = false
+  canActiveMacAction: boolean = false
+  canActiveDifferenceAction: boolean = false
 
   ref: DynamicDialogRef;
 
   @ViewChild('opDRPro') overlayDRPro: any;
   @ViewChild('opDRAss') overlayDRAssemnet: any;
+  concernIsTotal: boolean = false;
+  concernIsMac: boolean = false;
+  concernIsDiff: boolean = false;
+  isCompleted: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -224,6 +234,9 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         if (v.explanation){
           this.hasNdcConcern = true
         }
+        if (v.rootCause || v.correctiveAction){
+          this.canActiveNdcAction = true
+        }
       } else if (v.isAssumption){
         if (v.isAccepted){
           this.isAssumptionAccepted = true
@@ -238,6 +251,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         if (v.explanation){
           this.hasTotalResultConcern = true
         }
+        if (v.rootCause || v.explanation) this.canActiveTotalAction  = true
       } else if (v.isMac){
         if (v.isAccepted){
           this.isMacResultAccepted = true
@@ -248,6 +262,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         if (v.action){
           this.hasMacComment = true
         }
+        if (v.rootCause || v.explanation) this.canActiveMacAction = true
       } else if (v.isDifference){
         if (v.isAccepted){
           this.isCostResultAccepted = true
@@ -258,6 +273,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         if (v.action){
           this.hasCostComment = true
         }
+        if (v.rootCause || v.explanation) this.canActiveDifferenceAction = true
       }
     }
   }
@@ -683,9 +699,17 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       }
     }
 
+    this.canActiveNdcAction = true
+    this.canActiveTotalAction = true
+    this.canActiveMacAction = true
+    this.canActiveDifferenceAction = true
+
     this.concernIsNdC = isNdc;
     this.concernIsMethodology = isMethodology;
     this.concernIsAssumption = isAssumption;
+    this.concernIsTotal = isResult && column == 'isTotal'
+    this.concernIsMac = isResult && column === 'isMac'
+    this.concernIsDiff = isResult && column === 'isDifference'
     this.displayConcern = true;
   }
 
@@ -900,6 +924,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   }
 
   onComplete(e:any){
+    this.isCompleted = true
     if (e){
       this.displayConcern = false
     }
@@ -973,5 +998,19 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         });
         window.location.reload()
       });
+  }
+
+  onHide() {
+    if(!this.isCompleted) {
+      if (this.concernIsNdC){
+        this.canActiveNdcAction = false
+      } else if(this.concernIsTotal){
+        this.canActiveTotalAction = false
+      } else if (this.concernIsMac){
+        this.canActiveMacAction = false
+      } else if (this.concernIsDiff){
+        this.canActiveDifferenceAction = false
+      }
+    }
   }
 }
