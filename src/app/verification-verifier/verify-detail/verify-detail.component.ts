@@ -95,6 +95,7 @@ export class VerifyDetailComponent implements OnInit {
   hasMacResultConcern: boolean;
   isCostResultAccepted: boolean;
   hasCostResultConcern: boolean;
+  isCompleted: boolean = false
 
   constructor(
     private route: ActivatedRoute,
@@ -806,7 +807,8 @@ export class VerifyDetailComponent implements OnInit {
   }
 
   async onComplete(e: any){
-    console.log(e)
+    this.isCompleted = true
+    console.log( e)
     this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assementYear.id).toPromise()
     if (e){
       this.displayConcern = false
@@ -815,14 +817,16 @@ export class VerifyDetailComponent implements OnInit {
 
   onHide(){
     console.log("cdllk")
-    if (this.concernIsNdC){
-      this.isNdcDisable = false;
-    }
-    if (this.concernIsAssumption){
-      this.isAssumptions = false;
-    }
-    if (this.concernIsMethodology){
-      this.isMethodology = false
+    if (!this.isCompleted){
+      if (this.concernIsNdC){
+        this.isNdcDisable = false;
+      }
+      if (this.concernIsAssumption){
+        this.isAssumptions = false;
+      }
+      if (this.concernIsMethodology){
+        this.isMethodology = false
+      }
     }
   }
 

@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
+  AssessmentResault,
   AssessmentYear,
   AssessmentYearControllerServiceProxy,
   AssessmentYearVerificationStatus,
@@ -27,6 +28,7 @@ import { VerificationService } from 'shared/verification-service';
   styleUrls: ['./verify-parameter-section-admin.component.css'],
 })
 export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
+
   @Input()
   header: string;
   @Input()
@@ -95,6 +97,8 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   roundThreeHeadTable: any;
   hasResultConcern: boolean;
   isResultActionDone: boolean = false
+  canActiveResult: boolean = false;
+  isCompleted: any;
 
   constructor(
     private qaServiceProxy: QualityCheckControllerServiceProxy,
@@ -111,6 +115,10 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadUser();
     if (this.multiResult) this.isProjectionResult = true;
+
+    // if (!this.ResultValue){
+    //   this.ResultValue = new AssessmentResault()
+    // }
   }
 
   loadUser() {
@@ -173,6 +181,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     if (vd?.explanation){
       this.hasResultConcern = true
     }
+    if (vd?.rootCause || vd?.correctiveAction) this.canActiveResult = true
     if (vd?.action){
       this.isResultActionDone = true
     }
@@ -354,6 +363,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     this.isParameter = false;
     this.isValue = true;
     this.concernParam = undefined;
+    this.canActiveResult = true
 
     if (this.verificationDetails) {
       if (this.isBaseline) {
@@ -379,6 +389,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   }
 
   async onComplete(e: any){
+    this.isCompleted = true
     this.parameters = this.parameters.map(para => {
       if (para.id === this.concernParam?.id){
         para['canActiveAction'] = true
@@ -666,5 +677,13 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
       this.roundThreeHeadTable = verificationList?.find((o: any) => o.verificationStage == 3);
     }
   }
- 
+
+  onHide() {
+    if (!this.isCompleted){
+      if (this.isValue) {
+        this.canActiveResult = false
+      }
+    }
+  }
+
 }

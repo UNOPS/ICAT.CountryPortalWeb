@@ -114,7 +114,7 @@
       </div>
       <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && !isNdcAccepted && hasNdcConcern">
         <div class="col-12">
-          <button type="button" pButton pRipple (click)="ndcAction()">
+          <button [disabled]="!canActiveNdcAction" type="button" pButton pRipple (click)="ndcAction()">
             Action
           </button>
         </div>
@@ -170,7 +170,7 @@
       </div>
       <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && !isTotalResultAccepted && hasTotalResultConcern">
         <div class="col-12">
-          <button type="button" pButton pRipple (click)="onResultAction('isTotal')">
+          <button type="button" [disabled]="!canActiveTotalAction" pButton pRipple (click)="onResultAction('isTotal')">
             Action
           </button>
         </div>
@@ -206,7 +206,7 @@
       </div>
       <div class="col-md-2 d-flex align-items-end" *ngIf="(assementYear?.verificationStatus! == 3 && !hasMacComment) && !isMacResultAccepted && hasMacResultConcern">
         <div class="col-12">
-          <button type="button" pButton pRipple (click)="onResultAction('isMac')">
+          <button type="button" [disabled]="!canActiveMacAction" pButton pRipple (click)="onResultAction('isMac')">
             Action
           </button>
         </div>
@@ -242,7 +242,7 @@
       </div>
       <div class="col-md-2 d-flex align-items-end" *ngIf="(assementYear?.verificationStatus! == 3 || !hasCostComment) && !isCostResultAccepted && hasCostResultConcern">
         <div class="col-12">
-          <button type="button" pButton pRipple (click)="onResultAction('isDifference')">
+          <button type="button" [disabled]="!canActiveDifferenceAction" pButton pRipple (click)="onResultAction('isDifference')">
             Action
           </button>
         </div>
@@ -531,7 +531,7 @@
 <p-dialog
   header="View Concern"
   [(visible)]="displayConcern"
- 
+  (onHide)="onHide()"
 >
 <div class="container" style="width: 600px; height: 500px">
   <app-raise-concern-admin
