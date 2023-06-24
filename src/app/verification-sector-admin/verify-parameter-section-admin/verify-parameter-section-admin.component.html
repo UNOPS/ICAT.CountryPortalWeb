@@ -140,7 +140,7 @@
             <div class="row p-2 ">
               <div class="col-12 col-md-9">
                 <div>
-                  <input [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
+                  <input *ngIf="ResultValue" [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
                     [(ngModel)]="ResultValue.baselineResult" class="p-inputtext" pInputText />
                 </div>
               </div>
@@ -163,7 +163,7 @@
             <div class="row p-2 ">
               <div class="col-12 col-md-9">
                 <div>
-                  <input [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
+                  <input *ngIf="ResultValue"  [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
                     [(ngModel)]="ResultValue.projectResult" class="p-inputtext" pInputText />
                 </div>
               </div>
@@ -185,7 +185,7 @@
             <div class="row p-2 ">
               <div class="col-12 col-md-9">
                 <div>
-                  <input [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
+                  <input *ngIf="ResultValue"  [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
                     [(ngModel)]="ResultValue.emissionReduction" class="p-inputtext" pInputText />
                 </div>
               </div>
@@ -203,7 +203,7 @@
     </div>
     <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 || assessmentYear?.verificationStatus! == 8) && hasResultConcern && !isResultActionDone">
       <div class="col-12">
-        <button type="button" (click)="onResultAction()" pButton pRipple>Action</button>
+        <button [disabled]="!canActiveResult" type="button" (click)="onResultAction()" pButton pRipple>Action</button>
       </div>
     </div>
 
@@ -231,7 +231,7 @@
             <div class="row p-2 ">
               <div class="col-12 col-md-9">
                 <div>
-                  <input [disabled]="true" type="text" name="meth" #chgEmission="ngModel" [(ngModel)]="ResultValue"
+                  <input *ngIf="ResultValue"  [disabled]="true" type="text" name="meth" #chgEmission="ngModel" [(ngModel)]="ResultValue"
                     class="p-inputtext" pInputText />
                 </div>
               </div>
@@ -271,7 +271,7 @@
   </div>
 </div>
 
-<p-dialog header="View Concern" [(visible)]="displayConcern" appendTo="body">
+<p-dialog header="View Concern" [(visible)]="displayConcern" appendTo="body" (onHide)="onHide()">
   <div class="container" style="width: 600px; height: 500px">
     <app-raise-concern-admin [area]="raiseConcernSection" [verificationDetails]="concernVerificationDetails"
       [assesmentYear]="assessmentYear" [isParameter]="isParameter" [isResult]="isValue" [parameter]="concernParam!"
