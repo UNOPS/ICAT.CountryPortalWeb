@@ -828,6 +828,9 @@ export class VerifyDetailComponent implements OnInit {
         this.isMethodology = false
       }
     }
+    this.concernIsNdC = false
+    this.concernIsMethodology = false
+    this.concernIsAssumption = false
   }
 
   async raiseConcernResult(column: string, section: string) {

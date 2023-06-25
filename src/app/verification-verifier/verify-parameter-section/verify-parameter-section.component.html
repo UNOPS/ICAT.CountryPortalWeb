@@ -132,17 +132,17 @@
     <div *ngIf="isProjectionResult">
       <div class="p-field">
         <label for="projStatus">Projected Baseline Emission</label>
-        <input [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
+        <input *ngIf="ResultValue" [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
           [(ngModel)]="ResultValue.baselineResult" class="p-inputtext" pInputText />
       </div>
       <div class="p-field">
         <label for="projStatus">Projected Project Result</label>
-        <input [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
+        <input *ngIf="ResultValue" [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
           [(ngModel)]="ResultValue.projectResult" class="p-inputtext" pInputText />
       </div>
       <div class="p-field">
         <label for="projStatus">{{ ResultLabel }}</label>
-        <input [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
+        <input *ngIf="ResultValue" [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
           [(ngModel)]="ResultValue.emissionReduction" class="p-inputtext" pInputText />
       </div>
     </div>
