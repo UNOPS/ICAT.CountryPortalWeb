@@ -220,6 +220,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     //   });
     this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assesMentYearId).toPromise()
     for await (let v of this.verificationDetails){
+      console.log(v)
       if (v.isMethodology){
         if (v.isAccepted){
           this.isMethodologyAccepted = true
@@ -251,7 +252,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         if (v.explanation){
           this.hasTotalResultConcern = true
         }
-        if (v.rootCause || v.explanation) this.canActiveTotalAction  = true
+        if (v.rootCause || v.correctiveAction) this.canActiveTotalAction  = true
       } else if (v.isMac){
         if (v.isAccepted){
           this.isMacResultAccepted = true
@@ -262,7 +263,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         if (v.action){
           this.hasMacComment = true
         }
-        if (v.rootCause || v.explanation) this.canActiveMacAction = true
+        if (v.rootCause || v.correctiveAction) this.canActiveMacAction = true
       } else if (v.isDifference){
         if (v.isAccepted){
           this.isCostResultAccepted = true
@@ -273,9 +274,10 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         if (v.action){
           this.hasCostComment = true
         }
-        if (v.rootCause || v.explanation) this.canActiveDifferenceAction = true
+        if (v.rootCause || v.correctiveAction) this.canActiveDifferenceAction = true
       }
     }
+    console.log(this.hasTotalResultConcern)
   }
 
   getAssesmentResult(isCalculate: boolean) {
@@ -681,28 +683,29 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       );
     }
     if (isResult){
-      if (column === 'isTotal'){
+      if (column === 'isTotal') {
         this.raiseConcernSection = 'Emission Reduction'
         this.concernVerificationDetails = this.verificationDetails.filter(
-          (a)=> a.isTotal
+          (a) => a.isTotal
         )
+
+        this.canActiveTotalAction = true
       } else if (column === 'isMac'){
         this.raiseConcernSection = 'Mac Result'
         this.concernVerificationDetails = this.verificationDetails.filter(
           (a) => a.isMac
         )
+        this.canActiveMacAction = true
       } else if (column === 'isDifference'){
         this.raiseConcernSection = 'Cost Difference'
         this.concernVerificationDetails = this.verificationDetails.filter(
           (a) => a.isDifference
         )
+        this.canActiveDifferenceAction = true
       }
     }
 
     this.canActiveNdcAction = true
-    this.canActiveTotalAction = true
-    this.canActiveMacAction = true
-    this.canActiveDifferenceAction = true
 
     this.concernIsNdC = isNdc;
     this.concernIsMethodology = isMethodology;
