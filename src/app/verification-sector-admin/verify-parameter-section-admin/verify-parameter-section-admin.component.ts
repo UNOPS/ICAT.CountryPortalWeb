@@ -358,7 +358,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     this.displayConcern = true;
   }
 
-  raiseConcernResult(event: any) { //currently not using
+  raiseConcernResult(event: any) { 
     this.raiseConcernSection = this.ResultLabel;
     this.isParameter = false;
     this.isValue = true;
