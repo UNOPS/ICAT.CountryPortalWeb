@@ -2558,18 +2558,18 @@ else{
                 0,
                 0
               ).subscribe(async (res: any) => {
-                
-                let parametersIds:string[] = res.data.map((p:any) => p.id);
+
+                let parametersIds: string[] = res.data.map((p: any) => p.id);
                 // console.log('sectionparam.parametersidsall',res)
                 // console.log('sectionparam.parametersids',parametersIds)
-           let qcPassParameterRequest =  await this.parameterRequestControllerServiceProxy.getQCpassParameterRequest(parametersIds).toPromise();
+                let qcPassParameterRequest = await this.parameterRequestControllerServiceProxy.getQCpassParameterRequest(parametersIds).toPromise();
 
-           console.log('sectionparam.parameters',qcPassParameterRequest)
-                sectionparam.parameters = sectionparam.parameters.map(para =>{
+                console.log('sectionparam.parameters', qcPassParameterRequest)
+                sectionparam.parameters = sectionparam.parameters.map(para => {
                   // let parameters = res.data.filter((p:any) => (p.code == para.Code) && p.value )
-                  let parameters = qcPassParameterRequest.filter((p:any) => (p.parameter.code == para.Code) && p.parameter.value )
+                  let parameters = qcPassParameterRequest.filter((p: any) => (p.parameter.code == para.Code) && p.parameter.value)
 
-                  
+
                   para.historicalValues = parameters.map((dr: any) => {
                     let p =dr.parameter;
                     return {
@@ -2586,8 +2586,9 @@ else{
                       answer.push(x)
                     }
                   })
+                  let unit = this.convertSubscriptsToNormal(para.UOM)
                   para.historicalValues = answer
-                  para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
+                  para.displayhisValues = para.historicalValues.filter(val => val.unit === unit)
                   para.displayhisValues.sort((a: any,b: any) => b.year - a.year);
                   return para
                 })
@@ -2595,6 +2596,25 @@ else{
         }
 
   }
+
+  convertSubscriptsToNormal(str: string) {
+    var result = '';
+
+    result = str.replace(/[₀-₉ₐ-ₙₚₛₜ]/g, function (match) {
+      var charCode = match.charCodeAt(0);
+      var normalCharCode = charCode - 8272;
+      return String.fromCharCode(normalCharCode);
+    });
+
+    result = result.replace(/[⁰-⁹²ᵃ-ᵛᵗⁿʰᵏˡᵐⁱ]/g, function (match) {
+      var charCode = match.charCodeAt(0);
+      var normalCharCode = charCode - 8272;
+      return String.fromCharCode(normalCharCode);
+    });
+
+    return result;
+  }
+
 
   createParameter(jsonParam: any) {
     let params: Parameter[] = [];
