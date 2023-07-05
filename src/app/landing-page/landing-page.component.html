@@ -17,12 +17,12 @@
                 (click)="navigateToSection('about-tool')"
                 >About</a
               >&nbsp;&nbsp;&nbsp;&nbsp;
-              <a
+              <!-- <a
                 fragment="account-about"
                 style="font-size: medium; cursor: pointer"
                 (click)="navigateToSection('Knowledge-Base')"
                 >Knowledge Base</a
-              >&nbsp;&nbsp;&nbsp;&nbsp;
+              >&nbsp;&nbsp;&nbsp;&nbsp; -->
               <a
                 fragment="account-about"
                 style="font-size: medium; cursor: pointer"
@@ -91,7 +91,7 @@
           >
             <div class="col-lg-6">
               <h3>
-                ICAT Transport Climate Action Data Tool<br />
+                ICAT Transport Climate Action Data Tool (TraCAD)<br />
                 
               </h3>
               <!-- <h6>Transport Sector</h6> -->
@@ -143,7 +143,10 @@
       </section>
       <section class="py-5" id="about-tool">
         <div class="container">
-          <h2 class="text-center">About the tools</h2>
+          <h2 class="text-center">About the tool</h2>
+          <h5 class="text-center">The TraCAD tool will provide a more consistent approach to data collection and assessment,
+             which will improve the credibility of impact assessments of policies and actions. TraCAD 
+             has 4 main functionalities :</h5>
           <div class="row">
             <div class="col-md-6">
               <img src="./assets/images/about-tool.JPG" class="w-100" />
@@ -152,62 +155,81 @@
               <div class="row mb-3">
                 <div class="col-12 d-flex align-items-center">
                   <span class="about-bullet one"></span>
-                  <h5 class="mb-0">GHG Assessments</h5>
+                  <h5 class="mb-0"> Data Management</h5>
                 </div>
                 <div class="col-12">
                   <p>
-                    The Tool will facilitate GHG assessments of specific climate
-                    actions using ICAT Pricing guidance and other standard
-                    methodologies
+                    All activities from data entry to quality control can be done in the tool.
+                     The tool can link the multiple stakeholders involved in the data collection process, 
+                     and collect a wide range of data and information on climate actions.
                   </p>
                 </div>
               </div>
+              <br>
+              <br>
+              <br>
               <div class="row mb-3">
                 <div class="col-12 d-flex align-items-center">
                   <span class="about-bullet one"></span>
-                  <h5 class="mb-0">Marginal Abatement Cost Assessments</h5>
+                  <h5 class="mb-0">Greenhouse gas Impact Assessment</h5>
                 </div>
                 <div class="col-12">
                   <p>
-                    This tool will facilitate to assess the cost of reducing  tCO₂e
+                    The tool can conduct greenhouse gas impact assessment using both Ex-ante 
+                    and Ex-post approaches based on international methodologies.
+                    <!-- This tool will facilitate to assess the cost of reducing  tCO₂e -->
                   </p>
                 </div>
               </div>
+              <br>
+              <br>
+              <br>
               <div class="row mb-3">
                 <div class="col-12 d-flex align-items-center">
                   <span class="about-bullet one"></span>
-                  <h5 class="mb-0">Specific Climate Action Tracking</h5>
+                  <h5 class="mb-0">Marginal Abatement Cost (or MAC) Assessment</h5>
                 </div>
                 <div class="col-12">
                   <p>
-                    The Tool will facilitate regular monitoring and tracking the
+                    The tool can calculate the costs associated with selected climate actions and generates a MAC curve.
+                     This helps identify the climate actions providing the least and most emission reductions, 
+                     and what their cost is.
+                    <!-- The Tool will facilitate regular monitoring and tracking the
                     progress of specific climate actions throughout their life
-                    cycle
+                    cycle -->
                   </p>
                 </div>
               </div>
+              <br>
+              <br>
+              <br>
               <div class="row mb-3">
                 <div class="col-12 d-flex align-items-center">
                   <span class="about-bullet one"></span>
-                  <h5 class="mb-0">Methodologies</h5>
+                  <h5 class="mb-0">Tracking Climate Actions</h5>
                 </div>
                 <div class="col-12">
                   <p>
-                    The Tool includes different methodologies developed by ICAT,
+                    The Tool can facilitate regular monitoring and tracking the progress of specific climate actions throughout their life cycle.
+                     Tailored reports can be generated and adjusted according to country reporting needs.
+                    <!-- The Tool includes different methodologies developed by ICAT,
                     CDM, JICA to assess the GHG impact of different specific
-                    climate actions.
+                    climate actions. -->
                   </p>
                 </div>
               </div>
+              <br>
+              <br>
+              <br>
             </div>
           </div>
         </div>
       </section>
-      <section class="section-heighlight py-5" id="Knowledge-Base">
+      <!-- <section class="section-heighlight py-5" id="Knowledge-Base">
         <div class="container">
           <h2>Knowledge Base</h2>
           <div class="row">
-            <div class="col mb-3">
+            <div class="col mb-3"> -->
               <!--
                             <div style="width: 1400px; height: 500px; text-align:center;margin:0; padding:0;">
                                 <ng-image-slider
@@ -224,7 +246,7 @@
                             </div> 
                         -->
 
-              <div
+              <!-- <div
                
               >
                 <p-carousel
@@ -268,7 +290,7 @@
             </div>
           </div>
         </div>
-      </section>
+      </section> -->
 
       <!--
         
@@ -380,8 +402,10 @@
                         <div class="row">
                             <div class="col-12">
                                 <h2>Methodologies</h2>
+                                <h5>The Tool includes different methodologies developed by ICAT, 
+                                  CDM, JICA to assess the GHG impact of different specific climate actions.</h5>
+                                  <br>
                             </div>
-
                          
                             <div *ngFor="let methologie of methologies" class="col-4 mb-4">
                                 <div style="cursor:pointer" class="row">
@@ -581,7 +605,7 @@
 
       <section class="py-5">
         <div class="container">
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-6 d-flex flex-column justify-content-center">
               <h2>Collect, Assess, Improve</h2>
             </div>
@@ -595,11 +619,11 @@
                 to deliver high quality reporting under the Paris Agreement.
               </p>
             </div>
-          </div>
+          </div> -->
           <div class="row">
-            <div class="col">
+            <!-- <div class="col"> -->
               <img src="./assets/images/c-a-i.JPG" class="bg-img-c-a-i" />
-            </div>
+            <!-- </div> -->
           </div>
         </div>
       </section>
