@@ -13,6 +13,7 @@ export const environment = {
 //  baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
   baseUrlExcelUpload: 'http://localhost:7080/parameter/upload',
   baseUrlMac: 'https://icat-ca-tool.climatesi.com/cal-engine/mac',
+  // baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
   baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
   // baseUrlMac: 'https://icat-ca-tool.climatesi.com/cal-engine/mac',
 };

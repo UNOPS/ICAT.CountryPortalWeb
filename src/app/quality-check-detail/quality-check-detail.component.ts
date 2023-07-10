@@ -552,7 +552,14 @@ export class QualityCheckDetailComponent implements OnInit {
       }
       this.isReadyToCAl = false;
       this.isDisable = true;
-      window.location.reload()
+      {
+        // console.log("going to reload the page...")
+        setTimeout(() => {
+          },500);
+        window.location.reload();
+       
+    }
+      // window.location.reload()
     }
   }
 
@@ -635,7 +642,7 @@ export class QualityCheckDetailComponent implements OnInit {
             // this.load();
             this.macResult = res;
             // console.log("=================================");
-            // console.log('my mac...', res);
+            console.log('my mac...', res);
             // console.log("my mac111...",res['baseLineAnnualCost']);
 
             setTimeout(async () => {
