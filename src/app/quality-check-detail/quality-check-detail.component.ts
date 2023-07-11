@@ -548,11 +548,16 @@ export class QualityCheckDetailComponent implements OnInit {
         this.getAssesmentResult(true);
       } else {
         // console.log("cccccccccc",this.assementYear.assessment.assessmentType)
-        this.toCalMacResult();
+        // setTimeout(() => {
+          this.toCalMacResult();
+        // },5500);
+       
       }
+      setTimeout(() => {
       this.isReadyToCAl = false;
       this.isDisable = true;
       window.location.reload()
+    },1000);
     }
   }
 
@@ -627,7 +632,7 @@ export class QualityCheckDetailComponent implements OnInit {
 
         let macUrl = environment.baseUrlMac;
         let headers = new HttpHeaders().set('api-key','1234');
-        //  console.log("my url...",Url)
+         console.log("my url...",this.macValue)
         //let fullUrl = 'http://35.154.205.109:3600/mac';
         // console.log("going to call cal engine...,macUrl")
         this.httpClient.post<any>(macUrl, this.macValue,{'headers':headers}).subscribe(
@@ -635,7 +640,7 @@ export class QualityCheckDetailComponent implements OnInit {
             // this.load();
             this.macResult = res;
             // console.log("=================================");
-            // console.log('my mac...', res);
+            console.log('my mac...', res);
             // console.log("my mac111...",res['baseLineAnnualCost']);
 
             setTimeout(async () => {
@@ -674,12 +679,38 @@ export class QualityCheckDetailComponent implements OnInit {
                   if(res!= null)
                   {
                       // console.log("going to reload the page...")
-                      setTimeout(() => {
-                        },500);
-                      window.location.reload();
+                      // setTimeout(() => {
+                      //   this.serviceProxy
+                      //   .getManyBaseAssesmentControllerAssessment(
+                      //     undefined,
+                      //     undefined,
+                      //     undefined,
+                      //     undefined,
+                      //     ['editedOn,DESC'],
+                      //     undefined,
+                      //     1000,
+                      //     0,
+                      //     0,
+                      //     0
+                      //   )
+                      //   .subscribe(
+                      //     (res: any) => {
+                      //       this.assessmentList1 = res.data;
+                      //     },
+                      //     (error) => {
+                      //       this.messageService.add({
+                      //         severity: 'error',
+                      //         summary: 'Error',
+                      //         detail: 'Error,please try again!.',
+                      //       });
+                      //     }
+                      //   );
+                      //   },1500);
+                      // window.location.reload();
                      
                   }
-                  this.serviceProxy
+                  setTimeout(() => {
+                    this.serviceProxy
                     .getManyBaseAssesmentControllerAssessment(
                       undefined,
                       undefined,
@@ -704,6 +735,7 @@ export class QualityCheckDetailComponent implements OnInit {
                         });
                       }
                     );
+                    },1000);
                 });
             }, 1000);
           },
