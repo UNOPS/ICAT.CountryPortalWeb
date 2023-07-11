@@ -2536,13 +2536,14 @@ else{
           filter.push('code||$in||'+ this.methodParaCodes)
           if (sectionparam.vehical) filter.push('vehical||$eq||'+ sectionparam.vehical)
           if (sectionparam.fuel) filter.push('fuelType||$eq||'+ sectionparam.fuel)
-          if (sectionparam.powerPlant) filter.push('powerPlant||$eq||'+ sectionparam.powerPlant)
-          if (sectionparam.route) filter.push('route||$eq||'+ sectionparam.route)
+          // if (sectionparam.powerPlant) filter.push('powerPlant||$eq||'+ sectionparam.powerPlant) // removed as this is not pre defined
+          // if (sectionparam.route) filter.push('route||$eq||'+ sectionparam.route) // removed as this is not pre defined
           if (sectionparam.feedstock) filter.push('feedstock||$eq||'+ sectionparam.feedstock)
           if (sectionparam.residue) filter.push('residue||$eq||'+ sectionparam.residue)
           if (sectionparam.soil) filter.push('soil||$eq||'+ sectionparam.soil)
-          if (sectionparam.stratum) filter.push('stratum||$eq||'+ sectionparam.stratum)
+          // if (sectionparam.stratum) filter.push('stratum||$eq||'+ sectionparam.stratum) // removed as this is not pre defined
           if (sectionparam.landClearance) filter.push('landClearance||$eq||'+ sectionparam.landClearance)
+
           
           this.serviceProxy
               .getManyBaseParameterControllerParameter(
