@@ -43,14 +43,15 @@
       <!-- <div> {{climateactions|json}} </div> -->
       <div class="row p-2">
         <p-table 
+        #table
         [value]="paras"
          [lazy]="true" 
-        
+         (onLazyLoad)="loadgridData($event)"
          [paginator]="true"
           [rows]="rows" 
-          paginatorDropdownAppendTo="body"
           [showCurrentPageReport]="true"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Entries"
+          paginatorDropdownAppendTo="body"
           [rowsPerPageOptions]="[1, 10, 25, 50]" 
           [totalRecords]="totalRecords" 
           [loading]="loading" 

@@ -39,12 +39,12 @@ export class VerifyHistoryComponent implements OnInit
  VerificationStatusEnum = VerificationStatus;
 
 verificationStatus: string[] = [
-  VerificationStatus[VerificationStatus.Pending],
-  VerificationStatus[VerificationStatus['Pre Assessment']],
-  VerificationStatus[VerificationStatus['NC Received']] === 'NC Received' ? 'NC Sent' : 'NC Received',
-  VerificationStatus[VerificationStatus['In Remediation']],
-  VerificationStatus[VerificationStatus['Initial Assessment']],
-  VerificationStatus[VerificationStatus['Final Assessment']],
+  // VerificationStatus[VerificationStatus.Pending],
+  // VerificationStatus[VerificationStatus['Pre Assessment']],
+  // VerificationStatus[VerificationStatus['NC Received']] === 'NC Received' ? 'NC Sent' : 'NC Received',
+  // VerificationStatus[VerificationStatus['In Remediation']],
+  // VerificationStatus[VerificationStatus['Initial Assessment']],
+  // VerificationStatus[VerificationStatus['Final Assessment']],
   VerificationStatus[VerificationStatus.Fail],
   VerificationStatus[VerificationStatus['Pass']]
 ];
@@ -119,6 +119,7 @@ loadgridData = (event: LazyLoadEvent) => {
       : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
   this.rows = event.rows === undefined ? 10 : event.rows;
   let Active = 0;
+  console.log(pageNumber)
   setTimeout(() => {
     this.vrServiceProxy
       .getVRParameters(
@@ -126,12 +127,13 @@ loadgridData = (event: LazyLoadEvent) => {
         this.rows,
         statusId,
         filtertext,
+        true
       )
       .subscribe((a) => {
-       // this.paras = a.items;
-        this.paras = a.items.filter((o: any)=>o.verificationStatus == 6 || o.verificationStatus == 7 );
+       this.paras = a.items;
+        // this.paras = a.items.filter((o: any)=>o.verificationStatus == 6 || o.verificationStatus == 7 );
         console.log('hey aassse year',this.paras)
-        this.totalRecords =this.paras.length;
+        this.totalRecords = a.meta.totalItems;
        this.loading = false;
       });
   }, 1);
