@@ -3460,10 +3460,11 @@ else{
      
       console.log("pasing", this.requiredParas)
       if (this.requiredParas){
+        this.isDisableforSubmitButton = true;
         this.serviceProxy
           .createOneBaseAssesmentControllerAssessment(assessment)
           .subscribe((res: any) => {
-            this.isDisableforSubmitButton = true;
+            // this.isDisableforSubmitButton = true;
             this.isSubmitted = true
             
             // console.log('....Saved Assessment',assessment);
@@ -3527,11 +3528,11 @@ else{
             }
            // alert('Successfully Saved');
            
-          },err=>{console.log("saving error",err);
-          this.messageService.add({severity:'error', summary:'Error Saving', detail:'Error saving in assessment!'});
-        
-        
-        });
+          }, err => {
+            this.isDisableforSubmitButton = false;
+            console.log("saving error", err);
+            this.messageService.add({ severity: 'error', summary: 'Error Saving', detail: 'Error saving in assessment!' });
+          });
       } else {
         this.isSubmitted = true;
       }
