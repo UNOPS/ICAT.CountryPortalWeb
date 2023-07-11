@@ -2536,13 +2536,14 @@ else{
           filter.push('code||$in||'+ this.methodParaCodes)
           if (sectionparam.vehical) filter.push('vehical||$eq||'+ sectionparam.vehical)
           if (sectionparam.fuel) filter.push('fuelType||$eq||'+ sectionparam.fuel)
-          if (sectionparam.powerPlant) filter.push('powerPlant||$eq||'+ sectionparam.powerPlant)
-          if (sectionparam.route) filter.push('route||$eq||'+ sectionparam.route)
+          // if (sectionparam.powerPlant) filter.push('powerPlant||$eq||'+ sectionparam.powerPlant) // removed as this is not pre defined
+          // if (sectionparam.route) filter.push('route||$eq||'+ sectionparam.route) // removed as this is not pre defined
           if (sectionparam.feedstock) filter.push('feedstock||$eq||'+ sectionparam.feedstock)
           if (sectionparam.residue) filter.push('residue||$eq||'+ sectionparam.residue)
           if (sectionparam.soil) filter.push('soil||$eq||'+ sectionparam.soil)
-          if (sectionparam.stratum) filter.push('stratum||$eq||'+ sectionparam.stratum)
+          // if (sectionparam.stratum) filter.push('stratum||$eq||'+ sectionparam.stratum) // removed as this is not pre defined
           if (sectionparam.landClearance) filter.push('landClearance||$eq||'+ sectionparam.landClearance)
+
           
           this.serviceProxy
               .getManyBaseParameterControllerParameter(
@@ -2557,18 +2558,18 @@ else{
                 0,
                 0
               ).subscribe(async (res: any) => {
-                
-                let parametersIds:string[] = res.data.map((p:any) => p.id);
+
+                let parametersIds: string[] = res.data.map((p: any) => p.id);
                 // console.log('sectionparam.parametersidsall',res)
                 // console.log('sectionparam.parametersids',parametersIds)
-           let qcPassParameterRequest =  await this.parameterRequestControllerServiceProxy.getQCpassParameterRequest(parametersIds).toPromise();
+                let qcPassParameterRequest = await this.parameterRequestControllerServiceProxy.getQCpassParameterRequest(parametersIds).toPromise();
 
-           console.log('sectionparam.parameters',qcPassParameterRequest)
-                sectionparam.parameters = sectionparam.parameters.map(para =>{
+                console.log('sectionparam.parameters', qcPassParameterRequest)
+                sectionparam.parameters = sectionparam.parameters.map(para => {
                   // let parameters = res.data.filter((p:any) => (p.code == para.Code) && p.value )
-                  let parameters = qcPassParameterRequest.filter((p:any) => (p.parameter.code == para.Code) && p.parameter.value )
+                  let parameters = qcPassParameterRequest.filter((p: any) => (p.parameter.code == para.Code) && p.parameter.value)
 
-                  
+
                   para.historicalValues = parameters.map((dr: any) => {
                     let p =dr.parameter;
                     return {
@@ -2585,8 +2586,9 @@ else{
                       answer.push(x)
                     }
                   })
+                  let unit = this.convertSubscriptsToNormal(para.UOM)
                   para.historicalValues = answer
-                  para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
+                  para.displayhisValues = para.historicalValues.filter(val => val.unit === unit)
                   para.displayhisValues.sort((a: any,b: any) => b.year - a.year);
                   return para
                 })
@@ -2594,6 +2596,25 @@ else{
         }
 
   }
+
+  convertSubscriptsToNormal(str: string) {
+    var result = '';
+
+    result = str.replace(/[₀-₉ₐ-ₙₚₛₜ]/g, function (match) {
+      var charCode = match.charCodeAt(0);
+      var normalCharCode = charCode - 8272;
+      return String.fromCharCode(normalCharCode);
+    });
+
+    result = result.replace(/[⁰-⁹²ᵃ-ᵛᵗⁿʰᵏˡᵐⁱ]/g, function (match) {
+      var charCode = match.charCodeAt(0);
+      var normalCharCode = charCode - 8272;
+      return String.fromCharCode(normalCharCode);
+    });
+
+    return result;
+  }
+
 
   createParameter(jsonParam: any) {
     let params: Parameter[] = [];
@@ -3460,10 +3481,11 @@ else{
      
       console.log("pasing", this.requiredParas)
       if (this.requiredParas){
+        this.isDisableforSubmitButton = true;
         this.serviceProxy
           .createOneBaseAssesmentControllerAssessment(assessment)
           .subscribe((res: any) => {
-            this.isDisableforSubmitButton = true;
+            // this.isDisableforSubmitButton = true;
             this.isSubmitted = true
             
             // console.log('....Saved Assessment',assessment);
@@ -3527,11 +3549,11 @@ else{
             }
            // alert('Successfully Saved');
            
-          },err=>{console.log("saving error",err);
-          this.messageService.add({severity:'error', summary:'Error Saving', detail:'Error saving in assessment!'});
-        
-        
-        });
+          }, err => {
+            this.isDisableforSubmitButton = false;
+            console.log("saving error", err);
+            this.messageService.add({ severity: 'error', summary: 'Error Saving', detail: 'Error saving in assessment!' });
+          });
       } else {
         this.isSubmitted = true;
       }

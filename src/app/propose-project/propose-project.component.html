@@ -109,18 +109,17 @@
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="telephoneNumber">Telephone Number*</label>
-               <p-inputMask
+              <input
               type="text"
               name="telephoneNumber"
-              mask="{{mask}}"
-              [autoClear]="false"
-              placeholder="{{mask}}"
+              placeholder="011 111 1111"
+              class="p-inputtext"
               [(ngModel)]="project.telephoneNumber"
               [ngModelOptions]="{ standalone: true }"
               #telephoneNumber="ngModel"
-              [styleClass]="'form-control'"
+              pInputText
               [required]="true"
-            ></p-inputMask>
+            />
               <p
                 class="info-message text-danger"
                 *ngIf="
@@ -170,17 +169,16 @@
             <div class="p-field">
               <label for="mobileNumber">Mobile Number</label>
 
-              <p-inputMask
+              <input
               type="text"
               name="mobileNumber"
-              mask="{{mask}}"
-              [autoClear]="false"
-              placeholder="{{mask}}"
+              class="p-inputtext"
+              placeholder="011 111 1111"
               [(ngModel)]="project.mobileNumber"
               [ngModelOptions]="{ standalone: true }"
               #mobileNumber="ngModel"
-              [styleClass]="'form-control'"
-            ></p-inputMask>
+              pInputText
+            />
             </div>
           </div>
         </div>

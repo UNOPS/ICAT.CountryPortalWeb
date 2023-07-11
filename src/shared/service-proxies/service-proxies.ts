@@ -17713,7 +17713,7 @@ export class VerificationControllerServiceProxy {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getVRParameters(page: number, limit: number, statusId: number, filterText: string): Observable<any> {
+    getVRParameters(page: number, limit: number, statusId: number, filterText: string, isHistory: boolean): Observable<any> {
         let url_ = this.baseUrl + "/verification/verification/GetVRParameters/{page}/{limit}/{statusId}/{filterText}?";
         if (page === undefined || page === null)
             throw new Error("The parameter 'page' must be defined and cannot be null.");
@@ -17731,6 +17731,10 @@ export class VerificationControllerServiceProxy {
             throw new Error("The parameter 'filterText' must be defined and cannot be null.");
         else
             url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (isHistory === undefined || isHistory === null)
+            throw new Error("The parameter 'isHistory' must be defined and cannot be null.");
+        else
+            url_ += "isHistory=" + encodeURIComponent("" + isHistory) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

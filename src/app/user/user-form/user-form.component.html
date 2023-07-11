@@ -179,22 +179,23 @@
           <div class="col-12 col-md-8">
             <div class="p-field">
               <label for="institution">Landline *</label>
-              <p-inputMask type="text" name="telephone" mask="{{mask}}" [autoClear]="false" 
-                [placeholder]="mask" [(ngModel)]="user.telephone" #ftelephone="ngModel"
-                [styleClass]="'form-control'">
-              </p-inputMask>
-              <!-- <p
+              <input type="text" name="telephone" [(ngModel)]="user.telephone" #ftelephone="ngModel"
+                placeholder="011 111 1111"
+              class="p-inputtext"
+              pInputText
+              required />
+              <p
                 class="info-message text-danger"
                 *ngIf="
-                  (!user.telephone || user.telephone!.length < 12) &&
+                  (!user.telephone) &&
                   (fLogin.submitted || ftelephone.touched || ftelephone.dirty)
                 "
               >
                 This is a mandatory field
-              </p> -->
-              <p class="info-message text-danger" *ngIf="user.telephone!.indexOf('_') > 0">
-                A valid telephone number is required.
               </p>
+              <!-- <p class="info-message text-danger" *ngIf="user.telephone!.indexOf('_') > 0">
+                A valid telephone number is required.
+              </p> -->
             </div>
           </div>
         </div>
@@ -206,23 +207,25 @@
             <div class="p-field">
               <label for="mobile">Mobile *</label>
 
-              <p-inputMask type="text" name="mobile" mask="{{mask}}" [autoClear]="false"
-                [placeholder]="mask" [(ngModel)]="user.mobile" [styleClass]="'form-control'"
-                #fmobile="ngModel"></p-inputMask>
-              <!-- <p
+              <input type="text" name="mobile"  [(ngModel)]="user.mobile" placeholder="011 111 1111"
+              class="p-inputtext"
+              pInputText
+              required 
+                #fmobile="ngModel" />
+              <p
                 class="info-message text-danger"
                 *ngIf="
-                  (!user?.mobile || (user?.mobile)!.length < 12) &&
+                  (!user?.mobile ) &&
                   (fLogin.submitted || fmobile.touched || fmobile.dirty)
                 "
               >
                 This is a mandatory field
-              </p> -->
-              <p class="info-message text-danger" *ngIf="
+              </p>
+              <!-- <p class="info-message text-danger" *ngIf="
                   user.mobile !== undefined && user?.mobile!.indexOf('_') > 0
                 ">
                 A valid mobile number is required.
-              </p>
+              </p> -->
             </div>
           </div>
         </div>

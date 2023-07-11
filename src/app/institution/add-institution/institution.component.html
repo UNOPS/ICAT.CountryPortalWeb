@@ -181,20 +181,19 @@
             <div class="p-field">
               <label for="objective">Contact Number*</label>
              
-            <p-inputMask
+            <input
               type="text"
               name="telephone"
-              mask="{{mask}}"
-              [autoClear]="false"
-              placeholder="{{mask}}"
               [(ngModel)]="intelephoneNumber"
               #telephoneNumber="ngModel"
-              [styleClass]="'form-control'"
-            >
-          </p-inputMask>
-          <p class="info-message text-danger" *ngIf="intelephoneNumber!.indexOf('_') > 0">
+              placeholder="011 111 1111"
+              class="p-inputtext"
+              pInputText
+              required
+            />
+          <!-- <p class="info-message text-danger" *ngIf="intelephoneNumber!.indexOf('_') > 0">
             A valid telephone number is required.
-          </p>
+          </p> -->
           <p
           class="info-message text-danger"
           *ngIf="
