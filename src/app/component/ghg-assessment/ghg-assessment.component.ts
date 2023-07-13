@@ -2586,9 +2586,13 @@ else{
                       answer.push(x)
                     }
                   })
-                  let unit = this.convertSubscriptsToNormal(para.UOM)
+                  
                   para.historicalValues = answer
-                  para.displayhisValues = para.historicalValues.filter(val => val.unit === unit)
+                  para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
+                  if (para.displayhisValues.length === 0){
+                    let unit = this.convertSubscriptsToNormal(para.UOM)
+                    para.displayhisValues = para.historicalValues.filter(val => val.unit === unit)
+                  }
                   para.displayhisValues.sort((a: any,b: any) => b.year - a.year);
                   return para
                 })
