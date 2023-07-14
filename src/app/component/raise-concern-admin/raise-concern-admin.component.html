@@ -1,7 +1,7 @@
 <app-raise-concern-section
   [area]="area"
   [verificationDetails]="verificationDetails"
-  [assesmentYear]="assesmentYear"
+  [assessmentYear]="assessmentYear"
   [verificationRound]="1"
   *ngIf="verificationRound > 1"
 >
@@ -10,7 +10,7 @@
 <app-raise-concern-section
   [area]="area"
   [verificationDetails]="verificationDetails"
-  [assesmentYear]="assesmentYear"
+  [assessmentYear]="assessmentYear"
   [verificationRound]="2"
   *ngIf="verificationRound > 2"
 >
@@ -40,7 +40,7 @@
         <div>
           <label for="projStatus">Date :</label>
           <label for="projStatus">{{
-            lastConcernDate | date: "yyyy-MM-dd "
+            lastConcernDate | date : 'yyyy-MM-dd '
           }}</label>
         </div>
       </div>

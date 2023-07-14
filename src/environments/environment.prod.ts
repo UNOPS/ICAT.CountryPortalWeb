@@ -1,18 +1,21 @@
 export const environment = {
   production: true,
-  // baseUrlAPI: 'http://35.154.205.109:7080',
- baseUrlAPI: 'https://icat-ca-tool.climatesi.com/web-api',
-  baseUrlAPIDocdownloadAPI: 'https://icat-ca-tool.climatesi.com/web-api/document/downloadDocument',
-
-  baseUrlAPIDocUploadAPI: 'https://icat-ca-tool.climatesi.com/web-api/document/upload2',
-  baseUrlAPIDocUploadAnonymousAPI: 'https://icat-ca-tool.climatesi.com/web-api/document/uploadFileAnonymous',
-
-  baseUrlJsonFile: 'https://icat-ca-tool.climatesi.com/cal-engine/filename',
-  baseUrlMac: 'https://icat-ca-tool.climatesi.com/cal-engine/mac',
-  baseUrlExcelUpload:  'https://icat-ca-tool.climatesi.com/web-api/parameter/upload',
-  baseUrlAPIDocReportChartDownloadAPI: 'https://icat-ca-tool.climatesi.com/web-api/report/chartDataImage',
-  // baseUrlAPIDocUploadAPI: 'http://35.154.205.109:7080/document/upload2',
-  // baseUrlJsonFile: 'http://35.154.205.109:3600/filename',
-  // baseUrlMac: 'http://35.154.205.109:3600/mac',
+  baseUrlAPI: 'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app',
+  baseUrlAPIDocdownloadAPI:
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/document/downloadDocument',
+  baseUrlAPIDocUploadAPI:
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/document/upload2',
+  baseUrlAPIDocUploadAnonymousAPI:
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/document/uploadFileAnonymous',
+  baseUrlJsonFile:
+    'https://icat-calculationengine-qa-2sshj5de3a-ey.a.run.app/filename',
+  baseUrlMac: 'https://icat-calculationengine-qa-2sshj5de3a-ey.a.run.app/mac',
+  baseUrlExcelUpload:
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/parameter/upload',
+  baseUrlAPIDocReportChartDownloadAPI:
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/report/chartDataImage',
+  baseUrlCountryWeb:
+    'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/',
+  apiKey1: '1234',
+  apiKey2: '56789',
 };
-

@@ -1,19 +1,20 @@
-
-<form #fData="ngForm" name="myForm" (ngSubmit)="createAssementCA(fData)" novalidate>
-
-
-<div class="p-grid p-fluid col-sm-12">
-  <div class="row p-2 mt-4">
+<form
+  #fData="ngForm"
+  name="myForm"
+  (ngSubmit)="createAssessmentCA(fData)"
+  novalidate
+>
+  <div class="p-grid p-fluid col-sm-12">
+    <div class="row p-2 mt-4">
       <div class="col-12 col-md-3">
-        
-          <div>
-            <label for="projectownership">Select Specific Climate Actions*</label>
-          </div>
+        <div>
+          <label for="projectownership">Select Specific Climate Actions*</label>
         </div>
-      
-        <div class="col-12 col-md-7">
-          <div>
-            <p-dropdown
+      </div>
+
+      <div class="col-12 col-md-7">
+        <div>
+          <p-dropdown
             placeholder="Select Specific Climate Actions"
             name="ClimateAction"
             #cations="ngModel"
@@ -22,130 +23,121 @@
             [options]="climateActions"
             optionLabel="climateActionName"
             (ngModelChange)="onChange($event)"
-            
-            ></p-dropdown>
-          </div>
+          ></p-dropdown>
         </div>
-        <div class="col-12 col-md-2">
-          <div class="p-field">
-            <button
-              pButton
-              pRipple
-              [disabled]="isDiasbaleEye"
-              type="button"
-              icon="pi pi-eye"
-              class="p-button-rounded p-button-text"
-              (click)="detail()"
-            ></button>
-          </div>
+      </div>
+      <div class="col-12 col-md-2">
+        <div class="p-field">
+          <button
+            pButton
+            pRipple
+            [disabled]="isDiasbaleEye"
+            type="button"
+            icon="pi pi-eye"
+            class="p-button-rounded p-button-text"
+            (click)="detail()"
+          ></button>
         </div>
-  </div>
-  <div class="row p-2 ">
+      </div>
+    </div>
+    <div class="row p-2">
       <div class="col-12 col-md-3">
-          <div>
-            <label for="ndc">Aggregated Actions</label>
-          </div>
+        <div>
+          <label for="ndc">Aggregated Actions</label>
         </div>
-        <div class="col-12 col-md-7">
-          <div>
-            
-              <input
-                type="text"
-                name="ndc"
-                class="p-inputtext"
-                [(ngModel)] ="ndc"
-                [readonly]="true"
-               
-                pInputText
-              />
-              
-            <!--  <p>{{slectedProject.ndc?.name}}</p> -->
-          </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <input
+            type="text"
+            name="ndc"
+            class="p-inputtext"
+            [(ngModel)]="ndc"
+            [readonly]="true"
+            pInputText
+          />
         </div>
-  </div>
-  <div class="row p-2 ">
+      </div>
+    </div>
+    <div class="row p-2">
       <div class="col-12 col-md-3">
-          <div>
-            <label for="projectownership">Action Areas</label>  
-          </div>
+        <div>
+          <label for="projectownership">Action Areas</label>
         </div>
-        <div class="col-12 col-md-7">
-          <div>
-            <input
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <input
             type="text"
             name="subndc"
             class="p-inputtext"
-            [(ngModel)] ="subNdc"
+            [(ngModel)]="subNdc"
             [readonly]="true"
-           
             pInputText
           />
-          <!--  <p>{{slectedProject.subNdc?.name}}</p> -->
-          </div>
         </div>
-  </div>
-  <div class="row p-2 ">
+      </div>
+    </div>
+    <div class="row p-2">
       <div class="col-12 col-md-3">
-          <div>
-            <label for="projectownership">Date of Commence</label>
-          </div>
+        <div>
+          <label for="projectownership">Date of Commence</label>
         </div>
-        <div class="col-12 col-md-7">
-          <div>
-            <input
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <input
             type="text"
             name="pScenario12"
             class="p-inputtext"
-            [(ngModel)] ="projectStartDate"
+            [(ngModel)]="projectStartDate"
             [readonly]="true"
-           
             pInputText
           />
-          <!--  <p>{{slectedProject.proposeDateofCommence}}</p> -->
-          </div>
         </div>
-  </div>
-  <div class="row p-2 ">
+      </div>
+    </div>
+    <div class="row p-2">
       <div class="col-12 col-md-3">
-          <div>
-            <label for="projectownership">Assessment Year*</label>
-          </div>
+        <div>
+          <label for="projectownership">Assessment Year*</label>
         </div>
-          <div class="col-12 col-md-7">
-            <div>
-              <p-calendar
-              [(ngModel)] ="asseYearNew"
-              name="baseYear"
-              view="year"
-              dateFormat="yy"
-              (ngModelChange)="formatYear()"
-              #asseYear1="ngModel"
-            ></p-calendar>
-            <p
-          class="info-message text-danger"
-          *ngIf="
-            !asseYearNew &&
-            (fData.submitted || asseYear1.touched || asseYear1.dirty)
-          "
-        >
-          This is a mandatory field
-        </p>
-            </div>
-          </div>
-  </div>
-  <div class="row p-2 ">
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-calendar
+            [(ngModel)]="asseYearNew"
+            name="baseYear"
+            view="year"
+            dateFormat="yy"
+            (ngModelChange)="formatYear()"
+            #asseYear1="ngModel"
+          ></p-calendar>
+          <p
+            class="info-message text-danger"
+            *ngIf="
+              !asseYearNew &&
+              (fData.submitted || asseYear1.touched || asseYear1.dirty)
+            "
+          >
+            This is a mandatory field
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
       <div class="col-12 col-md-3">
-          <div>
-            <label for="projectownership">Objective of The Assessment*</label>
-          </div>
+        <div>
+          <label for="projectownership">Objective of The Assessment*</label>
         </div>
-        <div class="col-12 col-md-7">
-          <div>
-            <textarea
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <textarea
             name="ObjectiveofAssessmento"
             #projectOutcome="ngModel"
-            [(ngModel)] ="objectiveOfAsse"
-            (click) ="filterYear()"
+            [(ngModel)]="objectiveOfAsse"
+            (click)="filterYear()"
             rows="5"
             cols="62"
             pInputTextarea
@@ -154,57 +146,58 @@
             class="p-inputtext"
           ></textarea>
           <p
-          class="info-message text-danger"
-          *ngIf="
-            !objectiveOfAsse &&
-            (fData.submitted || projectOutcome.touched || projectOutcome.dirty)
-          "
-        >
-          This is a mandatory field
-        </p>
-
-          </div>
+            class="info-message text-danger"
+            *ngIf="
+              !objectiveOfAsse &&
+              (fData.submitted ||
+                projectOutcome.touched ||
+                projectOutcome.dirty)
+            "
+          >
+            This is a mandatory field
+          </p>
         </div>
-  </div>
-
-
-
-  <div class="row p-2 ">
-      <div class="col-12 col-md-5">
-          <h6 class="mt-4">Annual Emissions Reduction</h6>
       </div>
-  </div> 
-  <div class="row p-2 ">
+    </div>
+
+    <div class="row p-2">
+      <div class="col-12 col-md-5">
+        <h6 class="mt-4">Annual Emissions Reduction</h6>
+      </div>
+    </div>
+    <div class="row p-2">
       <div class="col-12 col-md-3">
-          <label for="anualEmissionReduction">Year*</label>
+        <label for="anualEmissionReduction">Year*</label>
       </div>
       <div class="col-12 col-md-5">
-          <label for="anualEmissionReductionDropDownList">Available Assessments</label>
+        <label for="anualEmissionReductionDropDownList"
+          >Available Assessments</label
+        >
       </div>
       <div class="col-12 col-md-2">
         <label for="reduction">tCO<sub>2</sub>e</label>
+      </div>
     </div>
-  </div>
-  <div class="row p-2 ">
+    <div class="row p-2">
       <div class="col-12 col-md-3">
-          <div>
-            <p>{{asseYear}}</p>
-          </div>
+        <div>
+          <p>{{ asseYear }}</p>
+        </div>
       </div>
       <div class="col-12 col-md-5">
-          <div>
-            <p-dropdown
+        <div>
+          <p-dropdown
             [disabled]="isDisabled"
-              placeholder="Select Reduction"
-              name="Proposal Assessment Details"
-              [options]="details"
-              [(ngModel)] ="choosenValMethod"
-              [autoDisplayFirst]="false"
-              (ngModelChange)="viewChoosenVal($event)"
-              optionLabel="projData"
-              (mouseenter) ="mouseEnter()"
-            ></p-dropdown>
-          </div>
+            placeholder="Select Reduction"
+            name="Proposal Assessment Details"
+            [options]="details"
+            [(ngModel)]="choosenValMethod"
+            [autoDisplayFirst]="false"
+            (ngModelChange)="viewChoosenVal($event)"
+            optionLabel="projData"
+            (mouseenter)="mouseEnter()"
+          ></p-dropdown>
+        </div>
       </div>
       <div class="col-12 col-md-2">
         <div>
@@ -212,399 +205,102 @@
             type="text"
             name="detailsofer"
             class="p-inputtext"
-            [(ngModel)] ="reduction"
+            [(ngModel)]="reduction"
             (click)="removeDroplistVal()"
             #reduct="ngModel"
             pInputText
           />
           <p
-          class="info-message text-danger"
-          *ngIf="
-            !reduction &&
-            (fData.submitted || reduct.touched || reduct.dirty)
-          "
-        >
-          This is a mandatory field
-        </p>
-        <p
-        class="info-message text-danger"
-        *ngIf="
-            reduction < 0
-          ">
-          MAC calculation is not possible as there is no emission reduction
-        </p>
-      </div>
-      </div>
-      
-
-  </div>  
-  <div class="row p-2 ">
-      <div class="col-12 col-md-3">
-          <label for="anualEmissionReduction">Discount Rate* (%)</label>
-      </div>
-      <ng-container *ngIf="checkedDiscountRate == false; else  elseBlockxxdisrate">
-        <div class="col-12 col-md-4">
-          <div>
-              <input
-              [disabled]="reduction <0"
-               (ngModelChange)="onDiscountChange($event)"
-                type="number"
-                
-                maxlength="50"
-                
-                name="DiscountRate"
-                #discountrates="ngModel"
-                
-                class="p-inputtext"
-                [(ngModel)] ="discountrate"
-                
-                required
-              />
-              <p
-          class="info-message text-danger"
-          *ngIf=" discountrate == null &&
-            (fData.submitted || discountrates.touched || discountrates.dirty)
-          "
-        >
-          This is a mandatory field
-        </p>
-            </div>
-      </div>
-      </ng-container>
-      <ng-template #elseBlockxxdisrate>
-        <div class="col-12 col-md-4">
-          <div>
-            <p-dropdown   
-            [disabled]="reduction <0"
-            name="disratexx" 
-            [options]="discountRateList"
-            [(ngModel)]= "bsAnnualFuelObject"
-            optionLabel="administrationLevel"
-           
-            [filter]="true" 
-            placeholder="{{discountRateDisplay}}" 
-            (ngModelChange)="onStatusChangexxDiscountRate($event)"
-            >
-          </p-dropdown>
-        </div>
-        </div>
-      </ng-template>
-      <div class="col-12 col-md-3">
-        <div class="p-field-checkbox">
-          <p-checkbox
-          [disabled]="reduction <0"
-            [(ngModel)]="checkedDiscountRate"
-            [binary]="true"
-            inputId="binary"
-            [ngModelOptions]="{standalone: true}"
-            label="Default Values"
-           
-          ></p-checkbox>
-          <!-- <label for="binary">Default Values</label> -->
-        </div>
-      </div>
-     
-  </div>  
-  
-  <div class="row p-2 ">
-    <div class="col-12 col-md-3">
-        <h6 class="mt-4">Annual Cost</h6>
-    </div>
-</div> 
-
-
-  <div class="row p-2 ">
-      <div class="col-12 col-md-3">
-          <h6 class="mt-4">Baseline Scenario</h6>
-      </div>
-  </div> 
-  <div class="row p-2 ">
-    <div class="col-12 col-md-3">
-      <div>
-        <label for="projectownership">Total Investment* ($)</label>
-      </div>
-    </div>
-    <div class="col-12 col-md-7">
-      <div>
-        <!-- <p-inputNumber
-         
-          name="bsTotalInvestment"   
-          [(ngModel)] ="bsTotalInvestment"
-          #TotalInvestment_bs="ngModel"
-          
-        >
-        </p-inputNumber> -->
-        <input
-        [disabled]="reduction <0"
-        name="bsTotalInvestment"   
-        [(ngModel)] ="bsTotalInvestment"
-        #TotalInvestment_bs="ngModel"
-        type="number"
-         maxlength="50"
-         class="p-inputtext"
-         required
-       />
-        <p
-        class="info-message text-danger"
-        *ngIf=" (bsTotalInvestment == null) &&
-         
-          (fData.submitted || TotalInvestment_bs.touched || TotalInvestment_bs.dirty)
-        "
-      >
-        This is a mandatory field
-      </p>
-
-       
-      </div>
-    </div>
-
-    
-
-  </div>
-  <div class="row p-2 ">
-    <div class="col-12 col-md-3">
-      <div>
-        <label for="projectownership">Project Life* (Year)</label>
-      </div>
-    </div>
-    <ng-container *ngIf="checkedbsProjectLife == false; else  elseBlockbsProjectLife">
-      <div class="col-12 col-md-4">
-        <div>
-          <input
-          [disabled]="reduction <0"
-          name="bsProjectLife"
-            [(ngModel)]= "bsProjectLife"
-            #projectlife_bs="ngModel"
-          type="number"
-           maxlength="50"
-           class="p-inputtext"
-           required
-         />
-          <p
-          class="info-message text-danger"
-          *ngIf=" bsProjectLife == null &&
-           
-            (fData.submitted || projectlife_bs.touched || projectlife_bs.dirty)
-          "
-        >
-          This is a mandatory field
-        </p>
-        </div>
-      </div>
-    </ng-container>
-    <ng-template #elseBlockbsProjectLife>
-      <div class="col-12 col-md-4">
-        <div>
-          <p-dropdown   
-          [disabled]="reduction <0"
-          name="def1" 
-          [options]="bsProjectLifeList"
-          [(ngModel)]= "bsAnnualFuelObject"
-          optionLabel="administrationLevel"
-        
-          [filter]="true" 
-          placeholder="{{bsProjectLifeDisplay}}" 
-          (ngModelChange)="onStatusChangebsProjectLife($event)"
-          >
-        </p-dropdown>
-      </div>
-      </div>
-    </ng-template>
-    <div class="col-12 col-md-3">
-      <div class="p-field-checkbox">
-        <p-checkbox
-        [disabled]="reduction <0"
-          [(ngModel)]="checkedbsProjectLife"
-          [binary]="true"
-          inputId="binary"
-          [ngModelOptions]="{standalone: true}"
-          label="Default Values"
-          
-        ></p-checkbox>
-        <!-- <label for="binary">Default Values</label> -->
-      </div>
-    </div>
-    
-</div>
-  <div class="row p-2 ">
-      <div class="col-12 col-md-3">
-        <div>
-          <label for="projectownership">Annual O&M* ($)</label>
-        </div>
-      </div>
-      <ng-container *ngIf="checkedbsOM == false; else  elseBlockbsxannulom">
-        <div class="col-12 col-md-4">
-          <div>
-           
-            <input
-            [disabled]="reduction <0"
-            name="bsAnnualORM"
-            [(ngModel)] ="bsAnnualOM"
-            #annualOrm_bs="ngModel"
-          type="number"
-           maxlength="50"
-           class="p-inputtext"
-           required
-         />
-            <p
-          class="info-message text-danger"
-          *ngIf=" bsAnnualOM  == null &&
-            
-            (fData.submitted || annualOrm_bs.touched || annualOrm_bs.dirty)
-          "
-        >
-          This is a mandatory field
-        </p>
-          </div>
-        </div>
-      </ng-container>
-      <ng-template #elseBlockbsxannulom>
-        <div class="col-12 col-md-4">
-          <div>
-            <p-dropdown   
-            [disabled]="reduction <0"
-            name="bsannuabsxlom1" 
-            [options]="bsAnnualOMlist"
-            [(ngModel)]= "bsAnnualFuelObject"
-            optionLabel="administrationLevel"
-           
-            [filter]="true" 
-            placeholder="{{bsOM}}" 
-            (ngModelChange)="onStatusChangebsAnnualOM($event)"
-            >
-          </p-dropdown>
-        </div>
-        </div>
-      </ng-template>
-      <div class="col-12 col-md-3">
-        <div class="p-field-checkbox">
-          <p-checkbox
-          [disabled]="reduction <0"
-            [(ngModel)]="checkedbsOM"
-            [binary]="true"
-            inputId="binary"
-            [ngModelOptions]="{standalone: true}"
-            label="Default Values"
-            
-          ></p-checkbox>
-          <!-- <label for="binary">Default Values</label> -->
-        </div>
-      </div>
-    
-  </div>
-  <div class="row p-2 ">
-      <div class="col-12 col-md-3">
-        <div>
-          <label for="projectownership">Annual Fuel Cost* ($)</label>
-        </div>
-      </div>
-      <ng-container *ngIf="checkedbsAnnualfuelCost == false; else  elseBlock">
-        <div class="col-12 col-md-4">
-          <div>
-            <input
-            [disabled]="reduction <0"
-            name="bsAnnualFuelCost"
-            [(ngModel)]= "bsAnnualFuel"
-            #annualFule_bs="ngModel"
-          type="number"
-           maxlength="50"
-           class="p-inputtext"
-           required
-         />
-            <p
             class="info-message text-danger"
-            *ngIf=" bsAnnualFuel == null &&
-             
-              (fData.submitted || annualFule_bs.touched || annualFule_bs.dirty)
+            *ngIf="
+              !reduction && (fData.submitted || reduct.touched || reduct.dirty)
             "
           >
             This is a mandatory field
           </p>
-          </div>
-          
+          <p class="info-message text-danger" *ngIf="reduction < 0">
+            MAC calculation is not possible as there is no emission reduction
+          </p>
         </div>
-      </ng-container>
-      <ng-template #elseBlock>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <label for="anualEmissionReduction">Discount Rate* (%)</label>
+      </div>
+      <ng-container
+        *ngIf="checkedDiscountRate == false; else elseBlockxxdisrate"
+      >
         <div class="col-12 col-md-4">
           <div>
-            <p-dropdown   
-            [disabled]="reduction <0"
-            name="def1" 
-            [options]="bsAnnualFuelCostList"
-            [(ngModel)]= "bsAnnualFuelObject"
-            optionLabel="administrationLevel"
-           
-            [filter]="true" 
-            placeholder="{{bsfuelCost}}" 
-            (ngModelChange)="onStatusChangebsAnnualFuel($event)"
+            <input
+              [disabled]="reduction < 0"
+              (ngModelChange)="onDiscountChange($event)"
+              type="number"
+              maxlength="50"
+              name="DiscountRate"
+              #discountrates="ngModel"
+              class="p-inputtext"
+              [(ngModel)]="discountrate"
+              required
+            />
+            <p
+              class="info-message text-danger"
+              *ngIf="
+                discountrate == null &&
+                (fData.submitted ||
+                  discountrates.touched ||
+                  discountrates.dirty)
+              "
             >
-          </p-dropdown>
+              This is a mandatory field
+            </p>
+          </div>
         </div>
+      </ng-container>
+      <ng-template #elseBlockxxdisrate>
+        <div class="col-12 col-md-4">
+          <div>
+            <p-dropdown
+              [disabled]="reduction < 0"
+              name="disratexx"
+              [options]="discountRateList"
+              [(ngModel)]="bsAnnualFuelObject"
+              optionLabel="administrationLevel"
+              [filter]="true"
+              placeholder="{{ discountRateDisplay }}"
+              (ngModelChange)="onStatusChangexxDiscountRate($event)"
+            >
+            </p-dropdown>
+          </div>
         </div>
       </ng-template>
-     
       <div class="col-12 col-md-3">
         <div class="p-field-checkbox">
           <p-checkbox
-          [disabled]="reduction <0"
-            [(ngModel)]="checkedbsAnnualfuelCost"
+            [disabled]="reduction < 0"
+            [(ngModel)]="checkedDiscountRate"
             [binary]="true"
             inputId="binary"
-            [ngModelOptions]="{standalone: true}"
+            [ngModelOptions]="{ standalone: true }"
             label="Default Values"
-            
           ></p-checkbox>
-          <!-- <label for="binary">Default Values</label> -->
         </div>
       </div>
-  </div>
-  <div class="row p-2 ">
+    </div>
+
+    <div class="row p-2">
       <div class="col-12 col-md-3">
-        <div>
-          <label for="projectownership">Other Annual Costs* ($)</label>
-        </div>
+        <h6 class="mt-4">Annual Cost</h6>
       </div>
-      <div class="col-12 col-md-7">
-        <div>
-          <!-- <p-inputNumber
-           
-            name="bsOtherAnnualCost"
-            [(ngModel)]= "bsOtherAnnualCost"
-            #otherAnnual_bs="ngModel"
-           
-          >
-          </p-inputNumber> -->
-          <input
-          [disabled]="reduction <0"
-          name="bsOtherAnnualCost"
-          [(ngModel)]= "bsOtherAnnualCost"
-          #otherAnnual_bs="ngModel"
-        type="number"
-         maxlength="50"
-         class="p-inputtext"
-         required
-       />
-          <p
-          class="info-message text-danger"
-          *ngIf=" bsOtherAnnualCost == null &&
-           
-            (fData.submitted || otherAnnual_bs.touched || otherAnnual_bs.dirty)
-          "
-        >
-          This is a mandatory field
-        </p>
-        </div>
+    </div>
+
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <h6 class="mt-4">Baseline Scenario</h6>
       </div>
-  </div>
-  
-
-
-  <div class="row p-2 ">
-  <div class="col-12 col-md-3">
-      <h6 class="mt-4">Project Scenario</h6>
-  </div>
-  </div>
-  <div class="row p-2 ">
+    </div>
+    <div class="row p-2">
       <div class="col-12 col-md-3">
         <div>
           <label for="projectownership">Total Investment* ($)</label>
@@ -612,235 +308,221 @@
       </div>
       <div class="col-12 col-md-7">
         <div>
-          <!-- <p-inputNumber
-           
-            name="psProjectLife"
-            [(ngModel)] ="psTotalInvestment"
-            #totalInvestment_ps="ngModel"
-           
-          >
-          </p-inputNumber> -->
           <input
-          [disabled]="reduction <0"
-          name="psProjectLife"
-          [(ngModel)] ="psTotalInvestment"
-          #totalInvestment_ps="ngModel"
-        type="number"
-         maxlength="50"
-         class="p-inputtext"
-         required
-       />
+            [disabled]="reduction < 0"
+            name="bsTotalInvestment"
+            [(ngModel)]="bsTotalInvestment"
+            #TotalInvestment_bs="ngModel"
+            type="number"
+            maxlength="50"
+            class="p-inputtext"
+            required
+          />
           <p
-          class="info-message text-danger"
-          *ngIf=" psTotalInvestment == null &&
-           
-            (fData.submitted || totalInvestment_ps.touched || totalInvestment_ps.dirty)
-          "
-        >
-          This is a mandatory field
-        </p>
+            class="info-message text-danger"
+            *ngIf="
+              bsTotalInvestment == null &&
+              (fData.submitted ||
+                TotalInvestment_bs.touched ||
+                TotalInvestment_bs.dirty)
+            "
+          >
+            This is a mandatory field
+          </p>
         </div>
       </div>
     </div>
-    <div class="row p-2 ">
+    <div class="row p-2">
       <div class="col-12 col-md-3">
         <div>
           <label for="projectownership">Project Life* (Year)</label>
         </div>
       </div>
-      <ng-container *ngIf="checkedpsProjectLife == false; else  elseBlockpsProjectLife">
+      <ng-container
+        *ngIf="checkedbsProjectLife == false; else elseBlockbsProjectLife"
+      >
         <div class="col-12 col-md-4">
           <div>
             <input
-            [disabled]="reduction <0"
-            name="psProject Life"
-              [(ngModel)]="psProjectLife"
-              #projectlife_ps="ngModel"
-          type="number"
-           maxlength="50"
-           class="p-inputtext"
-           required
-         />
+              [disabled]="reduction < 0"
+              name="bsProjectLife"
+              [(ngModel)]="bsProjectLife"
+              #projectlife_bs="ngModel"
+              type="number"
+              maxlength="50"
+              class="p-inputtext"
+              required
+            />
             <p
-            class="info-message text-danger"
-            *ngIf=" psProjectLife == null &&
-             
-              (fData.submitted || projectlife_ps.touched || projectlife_ps.dirty)
-            "
-          >
-            This is a mandatory field
-          </p>
+              class="info-message text-danger"
+              *ngIf="
+                bsProjectLife == null &&
+                (fData.submitted ||
+                  projectlife_bs.touched ||
+                  projectlife_bs.dirty)
+              "
+            >
+              This is a mandatory field
+            </p>
           </div>
         </div>
       </ng-container>
-      <ng-template #elseBlockpsProjectLife>
+      <ng-template #elseBlockbsProjectLife>
         <div class="col-12 col-md-4">
           <div>
-            <p-dropdown   
-            [disabled]="reduction <0"
-            name="psdefpsprojetclife" 
-            [options]="psProjectLifeList"
-            [(ngModel)]= "bsAnnualFuelObject"
-            optionLabel="administrationLevel"
-            
-            [filter]="true" 
-            placeholder="{{psProjectLifeDisplay}}" 
-            (ngModelChange)="onStatusChangepsProjectLife($event)"
+            <p-dropdown
+              [disabled]="reduction < 0"
+              name="def1"
+              [options]="bsProjectLifeList"
+              [(ngModel)]="bsAnnualFuelObject"
+              optionLabel="administrationLevel"
+              [filter]="true"
+              placeholder="{{ bsProjectLifeDisplay }}"
+              (ngModelChange)="onStatusChangebsProjectLife($event)"
             >
-          </p-dropdown>
-        </div>
+            </p-dropdown>
+          </div>
         </div>
       </ng-template>
       <div class="col-12 col-md-3">
         <div class="p-field-checkbox">
           <p-checkbox
-          [disabled]="reduction <0"
-            [(ngModel)]="checkedpsProjectLife"
+            [disabled]="reduction < 0"
+            [(ngModel)]="checkedbsProjectLife"
             [binary]="true"
             inputId="binary"
-            [ngModelOptions]="{standalone: true}"
+            [ngModelOptions]="{ standalone: true }"
             label="Default Values"
-            
           ></p-checkbox>
-          <!-- <label for="binary">Default Values</label> -->
         </div>
       </div>
-     
     </div>
-    
-    <div class="row p-2 ">
+    <div class="row p-2">
       <div class="col-12 col-md-3">
         <div>
           <label for="projectownership">Annual O&M* ($)</label>
         </div>
       </div>
-      <ng-container *ngIf="checkedpsOM == false; else  pselseBlockpsannulom">
+      <ng-container *ngIf="checkedbsOM == false; else elseBlockbsxannulom">
         <div class="col-12 col-md-4">
           <div>
             <input
-            [disabled]="reduction <0"
-            name="psAnnualOM"
-              [(ngModel)]='psAnnualOM'
-              #annualOrm_ps="ngModel"
-          type="number"
-           maxlength="50"
-           class="p-inputtext"
-           required
-         />
+              [disabled]="reduction < 0"
+              name="bsAnnualORM"
+              [(ngModel)]="bsAnnualOM"
+              #annualOrm_bs="ngModel"
+              type="number"
+              maxlength="50"
+              class="p-inputtext"
+              required
+            />
             <p
-            class="info-message text-danger"
-            *ngIf=" psAnnualOM == null &&
-             
-              (fData.submitted || annualOrm_ps.touched || annualOrm_ps.dirty)
-            "
-          >
-            This is a mandatory field
-          </p>
+              class="info-message text-danger"
+              *ngIf="
+                bsAnnualOM == null &&
+                (fData.submitted || annualOrm_bs.touched || annualOrm_bs.dirty)
+              "
+            >
+              This is a mandatory field
+            </p>
           </div>
         </div>
       </ng-container>
-      <ng-template #pselseBlockpsannulom>
+      <ng-template #elseBlockbsxannulom>
         <div class="col-12 col-md-4">
           <div>
-            <p-dropdown   
-            [disabled]="reduction <0"
-            name="psannualom1" 
-            [options]="psAnnualOMlist"
-            [(ngModel)]= "bsAnnualFuelObject"
-            optionLabel="administrationLevel"
-           
-            [filter]="true" 
-            placeholder="{{psOM}}" 
-            (ngModelChange)="onStatusChangepsAnnualOM($event)"
+            <p-dropdown
+              [disabled]="reduction < 0"
+              name="bsannuabsxlom1"
+              [options]="bsAnnualOMlist"
+              [(ngModel)]="bsAnnualFuelObject"
+              optionLabel="administrationLevel"
+              [filter]="true"
+              placeholder="{{ bsOM }}"
+              (ngModelChange)="onStatusChangebsAnnualOM($event)"
             >
-          </p-dropdown>
-        </div>
+            </p-dropdown>
+          </div>
         </div>
       </ng-template>
       <div class="col-12 col-md-3">
         <div class="p-field-checkbox">
           <p-checkbox
-          [disabled]="reduction <0"
-            [(ngModel)]="checkedpsOM"
+            [disabled]="reduction < 0"
+            [(ngModel)]="checkedbsOM"
             [binary]="true"
             inputId="binary"
-            [ngModelOptions]="{standalone: true}"
+            [ngModelOptions]="{ standalone: true }"
             label="Default Values"
-            
           ></p-checkbox>
-          <!-- <label for="binary">Default Values</label> -->
         </div>
       </div>
-      
     </div>
-    <div class="row p-2 ">
+    <div class="row p-2">
       <div class="col-12 col-md-3">
         <div>
           <label for="projectownership">Annual Fuel Cost* ($)</label>
         </div>
       </div>
-      <ng-container *ngIf="checkedpsAnnualfuelCost == false; else  elseBlockpsAnnualfule">
+      <ng-container *ngIf="checkedbsAnnualfuelCost == false; else elseBlock">
         <div class="col-12 col-md-4">
           <div>
-           
             <input
-            [disabled]="reduction <0"
-            name="psAnnualFuel"
-            [(ngModel)] ="psAnnualFuel"
-            #annualFuel_ps="ngModel"
-          type="number"
-           maxlength="50"
-           class="p-inputtext"
-           required
-         />
+              [disabled]="reduction < 0"
+              name="bsAnnualFuelCost"
+              [(ngModel)]="bsAnnualFuel"
+              #annualFule_bs="ngModel"
+              type="number"
+              maxlength="50"
+              class="p-inputtext"
+              required
+            />
             <p
-            class="info-message text-danger"
-            *ngIf=" psAnnualFuel  == null &&
-              
-              (fData.submitted || annualFuel_ps.touched || annualFuel_ps.dirty)
-            "
-          >
-            This is a mandatory field
-          </p>
+              class="info-message text-danger"
+              *ngIf="
+                bsAnnualFuel == null &&
+                (fData.submitted ||
+                  annualFule_bs.touched ||
+                  annualFule_bs.dirty)
+              "
+            >
+              This is a mandatory field
+            </p>
           </div>
         </div>
       </ng-container>
-      <ng-template #elseBlockpsAnnualfule>
+      <ng-template #elseBlock>
         <div class="col-12 col-md-4">
           <div>
-            <p-dropdown 
-            [disabled]="reduction <0"  
-            name="psannufulecos" 
-            [options]="psAnnualFuelCostList"
-            [(ngModel)]= "bsAnnualFuelObject"
-            optionLabel="administrationLevel"
-            
-            [filter]="true" 
-            placeholder="{{psfuelCost}}" 
-            (ngModelChange)="onStatusChangepsAnnualFuel($event)"
+            <p-dropdown
+              [disabled]="reduction < 0"
+              name="def1"
+              [options]="bsAnnualFuelCostList"
+              [(ngModel)]="bsAnnualFuelObject"
+              optionLabel="administrationLevel"
+              [filter]="true"
+              placeholder="{{ bsfuelCost }}"
+              (ngModelChange)="onStatusChangebsAnnualFuel($event)"
             >
-          </p-dropdown>
-        </div>
+            </p-dropdown>
+          </div>
         </div>
       </ng-template>
+
       <div class="col-12 col-md-3">
         <div class="p-field-checkbox">
           <p-checkbox
-          [disabled]="reduction <0"
-            [(ngModel)]="checkedpsAnnualfuelCost"
+            [disabled]="reduction < 0"
+            [(ngModel)]="checkedbsAnnualfuelCost"
             [binary]="true"
             inputId="binary"
-            [ngModelOptions]="{standalone: true}"
+            [ngModelOptions]="{ standalone: true }"
             label="Default Values"
-            
           ></p-checkbox>
-          <!-- <label for="binary">Default Values</label> -->
         </div>
       </div>
-     
     </div>
-    
-    <div class="row p-2 ">
+    <div class="row p-2">
       <div class="col-12 col-md-3">
         <div>
           <label for="projectownership">Other Annual Costs* ($)</label>
@@ -848,61 +530,311 @@
       </div>
       <div class="col-12 col-md-7">
         <div>
-          <!-- <p-inputNumber
-            
-            name="psOtherAnnualCosts"
-            [(ngModel)] ="psOtherAnnualCost"
-            #otherAnnual_ps="ngModel"
-           
-          >
-          </p-inputNumber> -->
           <input
-          [disabled]="reduction <0"
-          name="psOtherAnnualCosts"
-            [(ngModel)] ="psOtherAnnualCost"
-            #otherAnnual_ps="ngModel"
-        type="number"
-         maxlength="50"
-         class="p-inputtext"
-         required
-       />
+            [disabled]="reduction < 0"
+            name="bsOtherAnnualCost"
+            [(ngModel)]="bsOtherAnnualCost"
+            #otherAnnual_bs="ngModel"
+            type="number"
+            maxlength="50"
+            class="p-inputtext"
+            required
+          />
           <p
-          class="info-message text-danger"
-          *ngIf=" psOtherAnnualCost == null &&
-          
-            (fData.submitted || otherAnnual_ps.touched || otherAnnual_ps.dirty)
-          "
-        >
-          This is a mandatory field
-        </p>
+            class="info-message text-danger"
+            *ngIf="
+              bsOtherAnnualCost == null &&
+              (fData.submitted ||
+                otherAnnual_bs.touched ||
+                otherAnnual_bs.dirty)
+            "
+          >
+            This is a mandatory field
+          </p>
         </div>
       </div>
     </div>
-    
-    <div class="row p-2 ">
+
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <h6 class="mt-4">Project Scenario</h6>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Total Investment* ($)</label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <input
+            [disabled]="reduction < 0"
+            name="psProjectLife"
+            [(ngModel)]="psTotalInvestment"
+            #totalInvestment_ps="ngModel"
+            type="number"
+            maxlength="50"
+            class="p-inputtext"
+            required
+          />
+          <p
+            class="info-message text-danger"
+            *ngIf="
+              psTotalInvestment == null &&
+              (fData.submitted ||
+                totalInvestment_ps.touched ||
+                totalInvestment_ps.dirty)
+            "
+          >
+            This is a mandatory field
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Project Life* (Year)</label>
+        </div>
+      </div>
+      <ng-container
+        *ngIf="checkedpsProjectLife == false; else elseBlockpsProjectLife"
+      >
+        <div class="col-12 col-md-4">
+          <div>
+            <input
+              [disabled]="reduction < 0"
+              name="psProject Life"
+              [(ngModel)]="psProjectLife"
+              #projectlife_ps="ngModel"
+              type="number"
+              maxlength="50"
+              class="p-inputtext"
+              required
+            />
+            <p
+              class="info-message text-danger"
+              *ngIf="
+                psProjectLife == null &&
+                (fData.submitted ||
+                  projectlife_ps.touched ||
+                  projectlife_ps.dirty)
+              "
+            >
+              This is a mandatory field
+            </p>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #elseBlockpsProjectLife>
+        <div class="col-12 col-md-4">
+          <div>
+            <p-dropdown
+              [disabled]="reduction < 0"
+              name="psdefpsprojetclife"
+              [options]="psProjectLifeList"
+              [(ngModel)]="bsAnnualFuelObject"
+              optionLabel="administrationLevel"
+              [filter]="true"
+              placeholder="{{ psProjectLifeDisplay }}"
+              (ngModelChange)="onStatusChangepsProjectLife($event)"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </ng-template>
+      <div class="col-12 col-md-3">
+        <div class="p-field-checkbox">
+          <p-checkbox
+            [disabled]="reduction < 0"
+            [(ngModel)]="checkedpsProjectLife"
+            [binary]="true"
+            inputId="binary"
+            [ngModelOptions]="{ standalone: true }"
+            label="Default Values"
+          ></p-checkbox>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Annual O&M* ($)</label>
+        </div>
+      </div>
+      <ng-container *ngIf="checkedpsOM == false; else pselseBlockpsannulom">
+        <div class="col-12 col-md-4">
+          <div>
+            <input
+              [disabled]="reduction < 0"
+              name="psAnnualOM"
+              [(ngModel)]="psAnnualOM"
+              #annualOrm_ps="ngModel"
+              type="number"
+              maxlength="50"
+              class="p-inputtext"
+              required
+            />
+            <p
+              class="info-message text-danger"
+              *ngIf="
+                psAnnualOM == null &&
+                (fData.submitted || annualOrm_ps.touched || annualOrm_ps.dirty)
+              "
+            >
+              This is a mandatory field
+            </p>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #pselseBlockpsannulom>
+        <div class="col-12 col-md-4">
+          <div>
+            <p-dropdown
+              [disabled]="reduction < 0"
+              name="psannualom1"
+              [options]="psAnnualOMlist"
+              [(ngModel)]="bsAnnualFuelObject"
+              optionLabel="administrationLevel"
+              [filter]="true"
+              placeholder="{{ psOM }}"
+              (ngModelChange)="onStatusChangepsAnnualOM($event)"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </ng-template>
+      <div class="col-12 col-md-3">
+        <div class="p-field-checkbox">
+          <p-checkbox
+            [disabled]="reduction < 0"
+            [(ngModel)]="checkedpsOM"
+            [binary]="true"
+            inputId="binary"
+            [ngModelOptions]="{ standalone: true }"
+            label="Default Values"
+          ></p-checkbox>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Annual Fuel Cost* ($)</label>
+        </div>
+      </div>
+      <ng-container
+        *ngIf="checkedpsAnnualfuelCost == false; else elseBlockpsAnnualfule"
+      >
+        <div class="col-12 col-md-4">
+          <div>
+            <input
+              [disabled]="reduction < 0"
+              name="psAnnualFuel"
+              [(ngModel)]="psAnnualFuel"
+              #annualFuel_ps="ngModel"
+              type="number"
+              maxlength="50"
+              class="p-inputtext"
+              required
+            />
+            <p
+              class="info-message text-danger"
+              *ngIf="
+                psAnnualFuel == null &&
+                (fData.submitted ||
+                  annualFuel_ps.touched ||
+                  annualFuel_ps.dirty)
+              "
+            >
+              This is a mandatory field
+            </p>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #elseBlockpsAnnualfule>
+        <div class="col-12 col-md-4">
+          <div>
+            <p-dropdown
+              [disabled]="reduction < 0"
+              name="psannufulecos"
+              [options]="psAnnualFuelCostList"
+              [(ngModel)]="bsAnnualFuelObject"
+              optionLabel="administrationLevel"
+              [filter]="true"
+              placeholder="{{ psfuelCost }}"
+              (ngModelChange)="onStatusChangepsAnnualFuel($event)"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </ng-template>
+      <div class="col-12 col-md-3">
+        <div class="p-field-checkbox">
+          <p-checkbox
+            [disabled]="reduction < 0"
+            [(ngModel)]="checkedpsAnnualfuelCost"
+            [binary]="true"
+            inputId="binary"
+            [ngModelOptions]="{ standalone: true }"
+            label="Default Values"
+          ></p-checkbox>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Other Annual Costs* ($)</label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <input
+            [disabled]="reduction < 0"
+            name="psOtherAnnualCosts"
+            [(ngModel)]="psOtherAnnualCost"
+            #otherAnnual_ps="ngModel"
+            type="number"
+            maxlength="50"
+            class="p-inputtext"
+            required
+          />
+          <p
+            class="info-message text-danger"
+            *ngIf="
+              psOtherAnnualCost == null &&
+              (fData.submitted ||
+                otherAnnual_ps.touched ||
+                otherAnnual_ps.dirty)
+            "
+          >
+            This is a mandatory field
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2">
       <div class="col-12 col-md-3"></div>
       <div class="col-12 col-md-5"></div>
       <div class="col-12 col-md-2">
-        <button pButton 
-        pRipple type="button" 
-        label="View Results" 
-        class="p-button-info" 
-        type="submit" 
-        [disabled]="isDisableSaveButton || reduction <0"
-       
+        <button
+          pButton
+          pRipple
+          type="button"
+          label="View Results"
+          class="p-button-info"
+          type="submit"
+          [disabled]="isDisableSaveButton || reduction < 0"
         ></button>
       </div>
-      <div class="col-12 col-md-2"> 
-        
-      </div>
-       
-      
+      <div class="col-12 col-md-2"></div>
     </div>
-
-
-
-
-</div>
+  </div>
 </form>
 
 <p-toast position="bottom-right"></p-toast>

@@ -58,7 +58,6 @@
         </div>
       </div>
     </div>
-    <!-- <div>{{ this.selectedParameters | json }}</div> -->
     <div class="row p-2">
       <p-table
         #table
@@ -70,32 +69,13 @@
         [showCurrentPageReport]="true"
         paginatorDropdownAppendTo="body"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [rowsPerPageOptions]="[ 10, 25, 50]"
+        [rowsPerPageOptions]="[10, 25, 50]"
         [totalRecords]="totalRecords"
         [loading]="loading"
         [responsive]="true"
         [(selection)]="selectedParameters"
       >
-        <!-- Table header start search -->
-
-        <!-- <p-table #tt [value]="climateactions" [columns]="cols" placeholder="Global Filter" [filter]="true" filterMatchMode="contains" >                                                          
-      <ng-template pTemplate="caption">
-          <div style="text-align: right">        
-              <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-              <input type="text" pInputText size="50" style="width:auto">
-          </div>
-      </ng-template> -->
-
-        <!-- Table header END Search -->
-
         <ng-template pTemplate="header">
-          <!-- <tr> 
-          <th *ngFor="let col of columns" [ngSwitch]="col.field">
-            <input *ngSwitchCase="'climateActionName'" pInputText type="text"
-              (input)="dt.filter($event.target.value, col.field, 'contains')" />
-          </th>
-        </tr> -->
-
           <tr>
             <th style="width: 3rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
@@ -149,11 +129,8 @@
                 }}
               </td>
               <td *ngIf="!parameterList?.parameterId?.Assessment">
-                {{
-                  parameterList.parameterId.AssessmentYear
-                }}
+                {{ parameterList.parameterId.AssessmentYear }}
               </td>
-
             </ng-container>
             <ng-template #elseBlockYear>
               <td>
@@ -162,11 +139,11 @@
             </ng-template>
 
             <td>
-              {{ parameterList.parameterId.isAlternative ? "Alternative" : "" }}
-              {{ parameterList.parameterId.isBaseline ? "Baseline" : "" }}
-              {{ parameterList.parameterId.isProject ? "Project" : "" }}
-              {{ parameterList.parameterId.isLekage ? "Lekage" : "" }}
-              {{ parameterList.parameterId.isProjection ? "Projection" : "" }}
+              {{ parameterList.parameterId.isAlternative ? 'Alternative' : '' }}
+              {{ parameterList.parameterId.isBaseline ? 'Baseline' : '' }}
+              {{ parameterList.parameterId.isProject ? 'Project' : '' }}
+              {{ parameterList.parameterId.isLekage ? 'Lekage' : '' }}
+              {{ parameterList.parameterId.isProjection ? 'Projection' : '' }}
             </td>
             <td>
               <div
@@ -222,7 +199,7 @@
             </td>
 
             <td>
-              {{ parameterList.deadline | date: "yyyy-MM-dd " }}
+              {{ parameterList.deadline | date : 'yyyy-MM-dd ' }}
             </td>
             <td>
               <i
@@ -236,36 +213,41 @@
       </p-table>
     </div>
     <div class="row mb-3">
-      <!-- <div class="col-sm-1  col-md-3"></div> -->
-      <div class="col-sm-4 col-md-3 " >
-        
+      <div class="col-sm-4 col-md-3">
         <button
-        style="position:relative;width:85%"
+          style="position: relative; width: 85%"
           type="button"
           pButton
           pRipple
           (click)="download()"
           label="Export to Excel"
         ></button>
-        
-        <div style="font-size: 2em;"  type="button"  class="pi pi-info-circle mt-1 ml-10" pTooltip="Download above table to excel. Please make sure not to change the template" ></div>
 
+        <div
+          style="font-size: 2em"
+          type="button"
+          class="pi pi-info-circle mt-1 ml-10"
+          pTooltip="Download above table to excel. Please make sure not to change the template"
+        ></div>
       </div>
-      <div  class="col-sm-4 col-md-3 " *ngIf="country.hasExelTem" >
-        
+      <div class="col-sm-4 col-md-3" *ngIf="country.hasExelTem">
         <button
-        style="position:relative;width:85%"
+          style="position: relative; width: 85%"
           type="button"
           pButton
           pRipple
           (click)="handleExport()"
           label="Export to Excel country"
         ></button>
-        
-        <div style="font-size: 2em;"  type="button"  class="pi pi-info-circle mt-1 ml-10" pTooltip="Download above table to excel. Please make sure not to change the template" ></div>
 
+        <div
+          style="font-size: 2em"
+          type="button"
+          class="pi pi-info-circle mt-1 ml-10"
+          pTooltip="Download above table to excel. Please make sure not to change the template"
+        ></div>
       </div>
-      <div class=" col-sm-4 col-md-3">
+      <div class="col-sm-4 col-md-3">
         <button
           type="button"
           (click)="uploadDialog()"
@@ -274,7 +256,7 @@
           label="Upload Excel"
         ></button>
       </div>
-      <div class=" col-sm-3  col-md-3">
+      <div class="col-sm-3 col-md-3">
         <button
           type="button"
           (click)="onClickSendNowAll()"
@@ -289,14 +271,14 @@
 <p-dialog [(visible)]="confirm1" header="Add Data" (onHide)="onHideDialog()">
   <div
     class="container"
-    style="width: 800px; height: 225px; margin-left: 50px; margin-top: 0px"
+    style="width: 700px; height: 225px; margin-left: 50px; margin-top: 0px"
   >
     <table>
       <tr>
         <td style="width: 150px">
           <div class="p-field mb-2">Year</div>
         </td>
-        <td style="width: 100px">
+        <td style="width: 150px">
           <div class="p-field mb-2">Unit</div>
         </td>
         <td style="width: 100px">
@@ -309,8 +291,8 @@
             {{ selectedYear }}
           </div>
         </td>
-        <td style="width: 100px">
-          <div class="p-field mb-2" >
+        <td>
+          <div class="p-field mb-2" style="width: 150px">
             <p-dropdown
               name="unitType"
               [options]="unitTypeList"
@@ -321,7 +303,9 @@
               placeholder="Select .."
               optionLabel="ur_fromUnit"
               width="100px"
-              (onChange)="changeUnit($event, selectedPara, selectedPara.parameterId)"
+              (onChange)="
+                changeUnit($event, selectedPara, selectedPara.parameterId)
+              "
             >
             </p-dropdown>
           </div>
@@ -358,11 +342,11 @@
         </td>
         <td>
           <p-checkbox
-              [(ngModel)]="isHistorical"
-              [binary]="true"
-              inputId="binary"
-              label="Historical Values"
-            >
+            [(ngModel)]="isHistorical"
+            [binary]="true"
+            inputId="binary"
+            label="Historical Values"
+          >
           </p-checkbox>
         </td>
       </tr>
@@ -387,7 +371,7 @@
         <td>
           <div class="p-field">
             <button
-            [disabled]="!selectedValue && !selectedHistoricalValue"
+              [disabled]="!selectedValue && !selectedHistoricalValue"
               type="button"
               pButton
               pRipple
@@ -399,7 +383,7 @@
         <td>
           <div class="p-field">
             <button
-            [disabled]="!selectedValue && !selectedHistoricalValue"
+              [disabled]="!selectedValue && !selectedHistoricalValue"
               type="button"
               pButton
               pRipple
@@ -528,7 +512,6 @@
 >
   <div class="container" style="width: 300px; height: 100px">
     <p>Eg - Data is not available</p>
-    <!-- <p>Data is not accurate</p> -->
   </div>
 </p-dialog>
 <p-toast position="top-right"></p-toast>

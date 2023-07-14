@@ -7,10 +7,6 @@ import decode from 'jwt-decode';
 import {
   AssessmentYear,
   Ndc,
-  Parameter,
-  ParameterRequest,
-  ParameterRequestQaStatus,
-  Project,
   QualityCheckControllerServiceProxy,
   ServiceProxy,
 } from 'shared/service-proxies/service-proxies';
@@ -36,47 +32,36 @@ export class QualityCheckComponent implements OnInit {
     subNdc: null,
   };
   parameteters: AssessmentYear[] = [];
-  climateAction: any[]=[];
+  climateAction: any[] = [];
   loading: boolean;
-  totalRecords: number = 0;
-  itemsPerPage: number = 0
-  isActive: boolean = false;
-  rows: number = 10;
+  totalRecords = 0;
+  itemsPerPage = 0;
+  isActive = false;
+  rows = 10;
   last: number;
   event: any;
   userCountryId: any;
   userSectorId: any;
   usrRole: any;
-  qcDisable: boolean = false;
+  qcDisable = false;
   constructor(
     private serviceProxy: ServiceProxy,
     private qaServiceProxy: QualityCheckControllerServiceProxy,
-    private router: Router
-  ) { }
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
-
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
     this.userCountryId = tokenPayload.countryId;
     this.userSectorId = tokenPayload.sectorId;
-    this.usrRole = tokenPayload.roles[0]
+    this.usrRole = tokenPayload.roles[0];
 
-    console.log("usrRole", this.usrRole)
-
-    if (this.usrRole == "QC Team" || this.usrRole == "MRV Admin") {
+    if (this.usrRole == 'QC Team' || this.usrRole == 'MRV Admin') {
       this.qcDisable = true;
-    }
-    else {
+    } else {
       this.qcDisable = false;
-
     }
-
-    console.log("userCountryId", this.userCountryId)
-    console.log("userSectorId", this.userSectorId)
-
-
-
 
     this.serviceProxy
       .getManyBaseNdcControllerNdc(
@@ -89,85 +74,71 @@ export class QualityCheckComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.ndcList = res.data;
       });
 
+    let filtertext = this.searchBy.text ? this.searchBy.text : '';
+    let ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
+    let subNDC = this.searchBy.subNdc ? this.searchBy.subNdc.id : 0;
 
-      let statusId = this.searchBy.status
-      let filtertext = this.searchBy.text ? this.searchBy.text : '';
-      let ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
-      let subNDC = this.searchBy.subNdc ? this.searchBy.subNdc.id : 0;
+    this.qaServiceProxy.getQCParameters(
+      1,
+      10000,
+      0,
+      filtertext,
+      ndcId,
+      subNDC,
+      '',
+    )
+      .subscribe((a) => {
 
-      this.qaServiceProxy.getQCParameters(
-          1,
-          10000,
-          0,
-          filtertext,
-          ndcId,
-          subNDC,
-          '',
-        )
-        .subscribe((a) => {
-
-          // this.parameteters = a.items;
-          a.items.forEach((b:any)=>{
-            this.climateAction.push(b.assessment.project)
-            
-            // if( !this.climateAction.includes(b.assessment.project)){
-            //   this.climateAction.push(b.assessment.project)
-            // }
-            
-          })
-          console.log(this.climateAction)
-        });
+        a.items.forEach((b: any) => {
+          this.climateAction.push(b.assessment.project)
+        })
+      });
 
     this.onSearch();
-    
+
   }
 
   onStatusChange($event: any) {
     this.onSearch();
   }
 
-  onNDChange($event: any) { }
+  onNDChange($event: any) {}
 
-  onSubNdCChange($event: any) { }
+  onSubNdCChange($event: any) {}
 
   onSearch() {
-    
-    let event: any = {};
+    const event: any = {};
     event.rows = this.rows;
     event.first = 0;
 
     this.loadgridData(event);
   }
 
-  // /////////////////////////////////////////////
-
   loadgridData = (event: LazyLoadEvent) => {
     this.loading = true;
     this.totalRecords = 0;
 
-    console.log(this.searchBy);
-    let statusId = this.searchBy.status
+    const statusId = this.searchBy.status
       ? Number(QuAlityCheckStatus[this.searchBy.status])
       : 0;
-    let filtertext = this.searchBy.text ? this.searchBy.text : '';
-    let ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
-    let subNDC = this.searchBy.subNdc ? this.searchBy.subNdc.id : 0;
-    let ctAction = this.searchBy.climateaction?.climateActionName
-    ? this.searchBy.climateaction?.climateActionName
-    : '';
-    console.log("===========",ctAction)
-    let pageNumber =
+    const filtertext = this.searchBy.text ? this.searchBy.text : '';
+    const ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
+    const subNDC = this.searchBy.subNdc ? this.searchBy.subNdc.id : 0;
+    const ctAction = this.searchBy.climateaction
+      ? this.searchBy.climateaction
+      : '';
+
+    const pageNumber =
       event.first === 0 || event.first === undefined
         ? 1
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
     this.rows = event.rows === undefined ? 10 : event.rows;
-    let Active = 0;
     setTimeout(() => {
       this.qaServiceProxy
         .getQCParameters(
@@ -177,13 +148,12 @@ export class QualityCheckComponent implements OnInit {
           filtertext,
           ndcId,
           subNDC,
-          ctAction
+          ctAction,
         )
         .subscribe((a) => {
-
           this.parameteters = a.items;
           this.totalRecords = a.meta.totalItems;
-          console.log('parameteters', this.parameteters)
+
           this.loading = false;
           this.itemsPerPage = a.meta.itemsPerPage;
         });
@@ -191,20 +161,10 @@ export class QualityCheckComponent implements OnInit {
   };
 
   onCAChange(event: any) {
-    console.log('searchby...', this.searchBy);
     this.onSearch();
   }
 
   statusClick(event: any, object: AssessmentYear) {
-    // if (
-    //   this.QuAlityCheckStatusEnum[object.qaStatus] !==
-    //   this.QuAlityCheckStatusEnum[this.QuAlityCheckStatusEnum.Pass]
-    // ) {
-    //   this.router.navigate(['/qc/detail'], {
-    //     queryParams: { id: object.id },
-    //   });
-    // }
-    console.log("button status..", object)
     this.router.navigate(['/qc/detail'], {
       queryParams: { id: object.id, flag: object.qaStatus },
     });

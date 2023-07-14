@@ -5,16 +5,13 @@
   <div id="content" #content>
     <div id="download-content">
     <div class="mb-12">
-      <h4 class="mt-4" #name>Assessment of {{title}} Specific Climate Action - {{assement.project.climateActionName}}
+      <h4 class="mt-4" #name>Assessment of {{title}} Specific Climate Action - {{assessment.project.climateActionName}}
       </h4>
     </div>
 
     <br>
     <div class="card">
       <div class="p-grid p-fluid col-sm-12">
-        <!-- <div class="p-2">
-            <h6>Contact Details</h6>
-          </div> -->
         <div class="row p-2">
           <div class="row p-2">
             <div class="col-12 col-md-3">
@@ -25,7 +22,7 @@
             </div>
             <div class="col-12 col-md-7">
               <div class="p-field">
-                <label for="ndc">{{assement.ndc.name}} </label>
+                <label for="ndc">{{assessment.ndc.name}} </label>
 
               </div>
             </div>
@@ -40,35 +37,22 @@
             </div>
             <div class="col-12 col-md-7">
               <div class="p-field">
-                <label for="subNdc">{{assement.subNdc.name}} </label>
-
+                <label for="subNdc">{{assessment.subNdc.name}} </label>
               </div>
             </div>
-
           </div>
-
-
-
-
           <div class="row p-2">
             <div class="col-12 col-md-3">
               <div class="p-field">
-                <!-- <label for="objective">The objective of assessment - {{objectiveName.join(", ")}} </label> -->
                 <label for="objective">The Objective of Assessment </label>
-
               </div>
             </div>
             <div class="col-12 col-md-7">
               <div class="p-field">
-                <!-- <label for="objective">The objective of assessment - {{objectiveName.join(", ")}} </label> -->
                 <label for="objective">{{objectiveName.join(",")}} </label>
-
               </div>
             </div>
-
           </div>
-
-
           <div class="row p-2">
             <div class="col-12 col-md-3">
               <div class="p-field">
@@ -78,35 +62,24 @@
             </div>
             <div class="col-12 col-md-7">
               <div class="p-field">
-                <label for="bscenarioyr">{{assement.baseYear}} </label>
+                <label for="bscenarioyr">{{assessment.baseYear}} </label>
 
               </div>
             </div>
 
           </div>
-
-
-          <!-- </div>
-
-          <div class="row p-2"> -->
-
           <div class="row p-2">
             <div class="col-12 col-md-3">
               <div class="p-field">
                 <label for="pscenarioyr">Project Year </label>
-
               </div>
             </div>
             <div class="col-12 col-md-7">
               <div class="p-field">
                 <label for="pscenarioyr">{{assessmentYr}} </label>
-
               </div>
             </div>
-
           </div>
-
-
 
           <div class="row p-2">
             <div class="col-12 col-md-3">
@@ -117,7 +90,7 @@
             </div>
             <div class="col-12 col-md-7">
               <div class="p-field">
-                <label for="approach">{{assement.assessmentType}} </label>
+                <label for="approach">{{assessment.assessmentType}} </label>
 
               </div>
             </div>
@@ -134,22 +107,14 @@
             </div>
             <div class="col-12 col-md-7">
               <div class="p-field">
-                <label for="methodology">{{assement.methodology.displayName}} </label>
+                <label for="methodology">{{assessment.methodology.displayName}} </label>
 
               </div>
             </div>
           </div>
-          <!-- </div>
-          <div class="row p-2"> -->
-
         </div>
       </div>
     </div>
-
-
-
-    <!-- baseline start-->
-
     <div class="card">
       <div class="p-grid p-fluid col-sm-12">
         <div class="p-2">
@@ -158,14 +123,11 @@
         <div class="row p-2">
           <div class="col-12 col-md-12">
             <div class="p-field">
-              <label for="bScenario">Baseline Scenario - {{assement.baselineScenario}} </label>
+              <label for="bScenario">Baseline Scenario - {{assessment.baselineScenario}} </label>
 
             </div>
           </div>
 
-
-
-          <!-- <div> {{baseParameter|json}} </div> -->
           <div class="row p-2">
             <p-table [value]="baseParameter">
               <ng-template pTemplate="header">
@@ -177,7 +139,6 @@
                   <th>Parameter</th>
                   <th>Value</th>
                   <th>Unit</th>
-                  <!-- unit from json to be added -->
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-bvalues>
@@ -188,7 +149,6 @@
                   <td>{{ bvalues.name }}</td>
                   <td>{{ bvalues.value | number: '1.0-5'}}</td>
                   <td>{{ bvalues.uomDataRequest }}</td>
-                  <!-- unit from json to be added -->
                 </tr>
               </ng-template>
             </p-table>
@@ -202,268 +162,224 @@
               </div>
             </div>
           </div>
-
         </div>
-
-
       </div>
-    </div>
 
-
-    <!-- baseline End-->
-
-
-    <!-- Project start-->
-
-    <div class="card">
-      <div class="p-grid p-fluid col-sm-12">
-        <div class="p-2">
-          <h6>Project</h6>
-        </div>
-        <div class="row p-2">
-          <div class="col-12 col-md-12">
-            <div class="p-field">
-              <label for="pScenario">Project Scenario -  {{assement.projectScenario}}</label>
-
-            </div>
+      <div class="card">
+        <div class="p-grid p-fluid col-sm-12">
+          <div class="p-2">
+            <h6>Project</h6>
           </div>
-
-
-
-          <!-- <div> {{proParameter|json}} </div> -->
           <div class="row p-2">
-            <p-table [value]="proParameter">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>
-                    <div class="col-sm-2">
-                    </div>
-                  </th>
-                  <th>Parameter</th>
-                  <th>Value</th>
-                  <th>Unit</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-presult>
-                <tr>
-                  <td style="text-align: center">
-
-                  </td>
-                  <td>{{ presult.name }}</td>
-                  <td>{{ presult.value | number: '1.0-5'}}</td>
-                  <td>{{ presult.uomDataRequest }}</td>
-                  <!-- unit from json to be added -->
-                </tr>
-              </ng-template>
-            </p-table>
-
-            <div *ngIf="projectEmission != null " class="row p-2">
-              <div class="col-12 col-md-6">
-                <div class="p-field">
-                  <label for="contatname"><b> Project Emission :  {{projectEmission | number: '1.0-5'}} tCO₂e</b></label>
-
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-
-      </div>
-    </div>
-    <!-- Project End -->
-
-    <!-- leakage start-->
-    <!-- <div> {{leakageParameter|json}} </div> -->
-    <div *ngIf="leakageEmission != null" class="card">
-      <div class="p-grid p-fluid col-sm-12">
-        <div class="p-2">
-          <h6>Leakage</h6>
-        </div>
-        <div class="row p-2">
-          <div class="col-12 col-md-12">
-            <div class="p-field">
-              <label for="lScenario">Leakage Scenario - {{assement.lekageScenario}} </label>
-
-            </div>
-          </div>
-
-          <!-- <div class="col-12 col-md-12">
+            <div class="col-12 col-md-12">
               <div class="p-field">
-                <label for="lscenarioyr">Leakage year - {{assement.assessmentYear}} </label>
-               
+                <label for="pScenario"
+                  >Project Scenario - {{ assessment.projectScenario }}</label
+                >
               </div>
-            </div> -->
-
-
-          <div class="row p-2">
-            <p-table [value]="leakageParameter">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>
-                    <div class="col-sm-2">
-                    </div>
-                  </th>
-                  <th>Parameter</th>
-                  <th>Value</th>
-                  <th>Unit</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-lresult>
-                <tr>
-                  <td style="text-align: center">
-                    <!-- <i
-                          class="pi pi-eye"
-                          style="font-size: 1.5rem; color: #000; margin-left: 17%"
-                        ></i> -->
-                  </td>
-                  <td>{{ lresult.name }}</td>
-                  <td>{{ lresult.value | number: '1.0-5'}}</td>
-                  <td>{{ lresult.uomDataRequest }}</td>
-                </tr>
-              </ng-template>
-            </p-table>
+            </div>
 
             <div class="row p-2">
-              <div class="col-12 col-md-6">
-                <div class="p-field">
-                  <label for="lekageResult"><b> Leakage Emission : {{leakageEmission | number: '1.0-5'}} tCO₂e</b></label>
+              <p-table [value]="proParameter">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>
+                      <div class="col-sm-2"></div>
+                    </th>
+                    <th>Parameter</th>
+                    <th>Value</th>
+                    <th>Unit</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-presult>
+                  <tr>
+                    <td style="text-align: center"></td>
+                    <td>{{ presult.name }}</td>
+                    <td>{{ presult.value }}</td>
+                    <td>{{ presult.uomDataRequest }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
 
+              <div *ngIf="projectEmission != null" class="row p-2">
+                <div class="col-12 col-md-6">
+                  <div class="p-field">
+                    <label for="contatname"
+                      ><b>
+                        Project Emission : {{ projectEmission }} tCO₂e</b
+                      ></label
+                    >
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-
-
       </div>
-    </div>
-    <!-- Project End -->
 
-    <div *ngIf="totalEmission != null" class="card">
-      <div class="p-grid p-fluid col-sm-12">
-        <div class="row p-2">
-          <div class="col-12 col-md-6">
-            <div class="p-field">
-              <label for="reduction"><b>Emission Reduction : {{totalEmission | number: '1.0-5'}} tCO₂e</b> </label>
-
-            </div>
+      <div *ngIf="leakageEmission != null" class="card">
+        <div class="p-grid p-fluid col-sm-12">
+          <div class="p-2">
+            <h6>Leakage</h6>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="card" *ngIf="projectionParameter.length>0">
-      <div class="p-grid p-fluid col-sm-12">
-        <div class="p-2">
-          <h6>Projection</h6>
-        </div>
-        <div class="row p-2">
-          <!-- <div> {{proParameter|json}} </div> -->
           <div class="row p-2">
-            <p-table [value]="projectionParameter">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>
-                    <div class="col-sm-2">
-                    </div>
-                  </th>
-                  <th>Parameter</th>
-                  <th>Value</th>
-                  <th>Unit</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-proresult>
-                <tr>
-                  <td style="text-align: center">
-
-                  </td>
-                  <td>{{ proresult.name }}</td>
-                  <td>{{ proresult.value | number: '1.0-5'}}</td>
-                  <td>{{ proresult.uomDataRequest }}</td>
-                  <!-- unit from json to be added -->
-                </tr>
-              </ng-template>
-            </p-table>
-
-
-          </div>
-          <div>
-
-          </div>
-          <div class="row p-2 " style="margin: 1%">
-            <!-- <div class="col-12 col-md-6"> -->
-            <div class="p-field">
-              <label for="contatname"><b> Projection Result</b></label>
-
-            </div>
-            <div class="row mb-3">
-              <div class="col-md-12">
-                <p-table #table [value]="projectionData" [responsive]="true" selectionMode="single">
-                  <ng-template pTemplate="header">
-                    <tr>
-                      <th>Year</th>
-                      <th>Baseline Result</th>
-                      <th>Project Result</th>
-                      <th>Leakage Result</th>
-                      <th>Emission Reduction</th>
-                    </tr>
-                  </ng-template>
-                  <ng-template pTemplate="body" let-param>
-                    <tr>
-                      <td>{{ param.projectionYear}}</td>
-                      <td>{{ param.baselineResult | number: '1.0-5'}} tCO₂e</td>
-                      <td>{{ param.projectResult | number: '1.0-5'}} tCO₂e</td>
-                      <td *ngIf="param.leakageResult > 0">{{ param.leakageResult | number: '1.0-5'}} tCO₂e</td>
-                      <td *ngIf="param.leakageResult <= 0">0 tCO₂e</td>
-                      <td>{{ param.emissionReduction | number: '1.0-5'}} tCO₂e</td>
-
-                    </tr>
-                  </ng-template>
-                </p-table>
+            <div class="col-12 col-md-12">
+              <div class="p-field">
+                <label for="lScenario"
+                  >Leakage Scenario - {{ assessment.lekageScenario }}
+                </label>
               </div>
             </div>
-            <!-- </div> -->
+
+            <div class="row p-2">
+              <p-table [value]="leakageParameter">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>
+                      <div class="col-sm-2"></div>
+                    </th>
+                    <th>Parameter</th>
+                    <th>Value</th>
+                    <th>Unit</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-lresult>
+                  <tr>
+                    <td style="text-align: center"></td>
+                    <td>{{ lresult.name }}</td>
+                    <td>{{ lresult.value }}</td>
+                    <td>{{ lresult.uomDataRequest }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+
+              <div class="row p-2">
+                <div class="col-12 col-md-6">
+                  <div class="p-field">
+                    <label for="lekageResult"
+                      ><b>
+                        Leakage Emission : {{ leakageEmission }} tCO₂e</b
+                      ></label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
         </div>
-
-
       </div>
-    </div>
+
+      <div *ngIf="totalEmission != null" class="card">
+        <div class="p-grid p-fluid col-sm-12">
+          <div class="row p-2">
+            <div class="col-12 col-md-6">
+              <div class="p-field">
+                <label for="reduction"
+                  ><b>Emission Reduction : {{ totalEmission }} tCO₂e</b>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" *ngIf="projectionParameter.length > 0">
+        <div class="p-grid p-fluid col-sm-12">
+          <div class="p-2">
+            <h6>Projection</h6>
+          </div>
+          <div class="row p-2">
+            <div class="row p-2">
+              <p-table [value]="projectionParameter">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>
+                      <div class="col-sm-2"></div>
+                    </th>
+                    <th>Parameter</th>
+                    <th>Value</th>
+                    <th>Unit</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-proresult>
+                  <tr>
+                    <td style="text-align: center"></td>
+                    <td>{{ proresult.name }}</td>
+                    <td>{{ proresult.value }}</td>
+                    <td>{{ proresult.uomDataRequest }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <div></div>
+            <div class="row p-2" style="margin: 1%">
+              <div class="p-field">
+                <label for="contatname"><b> Projection Result</b></label>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <p-table
+                    #table
+                    [value]="projectionData"
+                    [responsive]="true"
+                    selectionMode="single"
+                  >
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th>Year</th>
+                        <th>Baseline Result</th>
+                        <th>Project Result</th>
+                        <th>Leakage Result</th>
+                        <th>Emission Reduction</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-param>
+                      <tr>
+                        <td>{{ param.projectionYear }}</td>
+                        <td>{{ param.baselineResult }} tCO₂e</td>
+                        <td>{{ param.projectResult }} tCO₂e</td>
+                        <td *ngIf="param.leakageResult > 0">
+                          {{ param.leakageResult }} tCO₂e
+                        </td>
+                        <td *ngIf="param.leakageResult <= 0">0 tCO₂e</td>
+                        <td>{{ param.emissionReduction }} tCO₂e</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row p-2">
-      <div class="col-12 col-md-6">
-
-      </div>
+      <div class="col-12 col-md-6"></div>
+      <div class="col-12 col-md-2"></div>
       <div class="col-12 col-md-2">
-        <!-- <button pRipple pButton type="button" (click)="backtoPAge()"
-          class="btn btn-primary btn-block text-uppercase btn-lg" style="margin-left: 1%">
-            Back
-        </button> -->
-      </div>
-      <div class="col-12 col-md-2">
-
-        <button pRipple pButton type="button" (click)="download()"
-          class="btn btn-primary btn-block text-uppercase btn-lg" style="margin-left: 1%">
+        <button
+          pRipple
+          pButton
+          type="button"
+          (click)="download()"
+          class="btn btn-primary btn-block text-uppercase btn-lg"
+          style="margin-left: 1%"
+        >
             Download PDF
         </button>
       </div>
 
       <div class="col-12 col-md-2">
-
-        <button pRipple pButton type="button" (click)="downloadExcel()"
-          class="btn btn-primary btn-block text-uppercase btn-lg" style="margin-left: 1%">
+        <button
+          pRipple
+          pButton
+          type="button"
+          (click)="downloadExcel()"
+          class="btn btn-primary btn-block text-uppercase btn-lg"
+          style="margin-left: 1%"
+        >
             Download EXcel
         </button>
-
-
       </div>
-
-
     </div>
-
-
-
   </div>
+</div>

@@ -8,9 +8,8 @@ describe('StratumParameterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StratumParameterComponent ]
-    })
-    .compileComponents();
+      declarations: [StratumParameterComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

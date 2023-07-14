@@ -8,9 +8,8 @@ describe('RouteParameterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RouteParameterComponent ]
-    })
-    .compileComponents();
+      declarations: [RouteParameterComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

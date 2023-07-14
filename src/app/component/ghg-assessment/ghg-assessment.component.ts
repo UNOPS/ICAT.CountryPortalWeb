@@ -1,5 +1,4 @@
-import { Component, Input, OnInit,ViewChild  } from '@angular/core';
-// import {Headers} from 'angular2/http';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import ParameterSection from 'app/Model/parameter-section';
 import ParameterDimensionSelection from 'app/Model/parameter-dimension-selection';
@@ -21,11 +20,11 @@ import {
   DefaultValue,
   ApplicabilityEntity,
   ParameterControllerServiceProxy,
-  AssesmentResaultControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
   AssessmentYearControllerServiceProxy,
   InstitutionControllerServiceProxy,
   ProjectApprovalStatus,
-  AssesmentControllerServiceProxy,
+  AssessmentControllerServiceProxy,
   ApplicabilityControllerServiceProxy,
   DefaultValueControllerServiceProxy,
   User,
@@ -60,10 +59,9 @@ declare type ParaInfoType = keyof typeof ParameterInfo;
   styleUrls: ['./ghg-assessment.component.css'],
 })
 export class GhgAssessmentComponent implements OnInit {
-
-  @ViewChild(FuelParameterComponent) child1Component: FuelParameterComponent; 
-  @ViewChild(VehicalParameterComponent) child2Component: VehicalParameterComponent;
-  // @ViewChild(Child3Component) child3Component: Child3Component;
+  @ViewChild(FuelParameterComponent) child1Component: FuelParameterComponent;
+  @ViewChild(VehicalParameterComponent)
+  child2Component: VehicalParameterComponent;
 
   @Input()
   IsProposal: boolean;
@@ -79,11 +77,11 @@ export class GhgAssessmentComponent implements OnInit {
   selectedObjective: AssessmentObjective[] = [];
   approachList: string[] = ['Ex-ante', 'Ex-post'];
   selectedApproch: string;
-  isGuidedSelection: boolean = false;
+  isGuidedSelection = false;
 
-  hasCommonBaseline: boolean = false;
-  hasCommonProject: boolean = false;
-  hasCommonLeakage: boolean = false;
+  hasCommonBaseline = false;
+  hasCommonProject = false;
+  hasCommonLeakage = false;
 
   routes: any[] = [];
   powerPlants: any[] = [];
@@ -170,7 +168,6 @@ export class GhgAssessmentComponent implements OnInit {
   blResidueValue: any = [];
   blLandClearanceValue: any = [];
 
-
   prVehicalValue: any = [];
   prFuelValue: any = [];
   prFeedstockValue: any = [];
@@ -184,8 +181,6 @@ export class GhgAssessmentComponent implements OnInit {
   lkSoilValue: any = [];
   lkResidueValue: any = [];
   lkLandClearanceValue: any = [];
-
-
 
   basllineSelection: ParameterDimensionSelection[] = [];
   projectSelection: ParameterDimensionSelection[] = [];
@@ -231,7 +226,7 @@ export class GhgAssessmentComponent implements OnInit {
   defaultValues: DefaultValue[] = [];
 
   uniqdefaultValues: DefaultValue[] = [];
-  uniqdeParaName:any[] = [];
+  uniqdeParaName: any[] = [];
   ndcList: Ndc[];
   selectedNdc: Ndc;
   selctedSubNdc: SubNdc;
@@ -239,23 +234,20 @@ export class GhgAssessmentComponent implements OnInit {
   projectDuration: number;
 
   mitigationActionType: MitigationActionType[] = [];
-  assesmentObjective: AssessmentObjective[] = [];
+  assessmentObjectiveList: AssessmentObjective[] = [];
   selectedMitigationActionType: MitigationActionType | undefined;
 
-  applicability: ApplicabilityEntity[] =[];
-  arrEsy:any[] = [];
+  applicability: ApplicabilityEntity[] = [];
+  arrEsy: any[] = [];
   selectedApplicability: ApplicabilityEntity[];
 
   ProjectIndicaterEnum = ProjectIndicaters;
-  hasPrevActiveCA:boolean= false;
+  hasPrevActiveCA = false;
 
   projectIndicaters: string[] = [
     ProjectIndicaters[ProjectIndicaters['Population Growth (POP)']],
     ProjectIndicaters[ProjectIndicaters['Gross Domestic Production (GDP)']],
   ];
-
-  // projectionBaseMaxDate: Date = new Date();
-  // projectionBaseMinDate: Date = new Date();
 
   projectionBaseyears: number[] = [];
 
@@ -311,31 +303,31 @@ export class GhgAssessmentComponent implements OnInit {
   newObjective: string;
   isSave: boolean;
   savedAsessment: Assessment;
-  isDiasbaleEye:boolean = true;
+  isDiasbaleEye = true;
   projectApprovalStatus: ProjectApprovalStatus[];
 
-  selectedAssessementByCA:Assessment[] = [];
-  assementYearAndTypeObjectList:any[] =[];
-  warningMessage:any='';
-  isDisableforSubmitButton:boolean = false;
-  isSubmitted:boolean = false;
-  isClimateActionListDisabled:boolean = false;
-  isMethodologyDisabled:boolean =false;
-  isMitigationListDisabled:boolean =false;
-  isApplicabilityListDisabled:boolean =false;
-  countOfMitigationActionDropDownList:number = 0;
+  selectedAssessementByCA: Assessment[] = [];
+  assessmentYearAndTypeObjectList: any[] = [];
+  warningMessage: any = '';
+  isDisableforSubmitButton = false;
+  isSubmitted = false;
+  isClimateActionListDisabled = false;
+  isMethodologyDisabled = false;
+  isMitigationListDisabled = false;
+  isApplicabilityListDisabled = false;
+  countOfMitigationActionDropDownList = 0;
   methodologysForApplicability: Methodology[] = [];
-  countryCode:string='';
-  userName:string='';
-  loggedUser:User;
-  userCountryId:number = 0;
-  userSectorId:number = 0;
-  mitigationIdList:any[]= [];
-  selectBaselineVeicle:boolean=true;
-  selectBaseLineFuel:boolean=true;
-  selectProjectVeicle:boolean=true;
-  selectProjectFuel:boolean=true;
-  isDisableAfterSubmit:boolean = false;
+  countryCode = '';
+  userName = '';
+  loggedUser: User;
+  userCountryId = 0;
+  userSectorId = 0;
+  mitigationIdList: any[] = [];
+  selectBaselineVeicle = true;
+  selectBaseLineFuel = true;
+  selectProjectVeicle = true;
+  selectProjectFuel = true;
+  isDisableAfterSubmit = false;
 
   methodAssessments: any[];
   methodParaCodes: any[];
@@ -356,10 +348,10 @@ export class GhgAssessmentComponent implements OnInit {
     private http: HttpClient,
     private defaultValueControllerServiceProxy: DefaultValueControllerServiceProxy,
     private messageService: MessageService,
-    private assesmentResaultProxy: AssesmentResaultControllerServiceProxy,
+    private assesmentResaultProxy: AssessmentResultControllerServiceProxy,
     private assesmentYearProxy: AssessmentYearControllerServiceProxy,
     private instituationProxy: InstitutionControllerServiceProxy,
-    private assessmentProxy: AssesmentControllerServiceProxy,
+    private assessmentProxy: AssessmentControllerServiceProxy,
     private applicabilityControllerServiceProxy:ApplicabilityControllerServiceProxy,
     private parameterRequestControllerServiceProxy:ParameterRequestControllerServiceProxy,
     private projectControllerServiceProxy:ProjectControllerServiceProxy,
@@ -372,8 +364,6 @@ export class GhgAssessmentComponent implements OnInit {
     this.userCountryId  = tokenPayload.countryId;
     this.userSectorId = tokenPayload.sectorId;
 
-    
-
     this.userName = localStorage.getItem('user_name')!;
     let filterUser: string[] = [];
     filterUser.push('username||$eq||' + this.userName);
@@ -381,7 +371,6 @@ export class GhgAssessmentComponent implements OnInit {
     this.route1.queryParams.subscribe((params) => {
       this.projectId = 0;
       this.projectId = params['id'];
-      console.log("projectId",this.projectId)
     });
     this.serviceProxy
     .getManyBaseNdcControllerNdc(
@@ -399,7 +388,6 @@ export class GhgAssessmentComponent implements OnInit {
     .subscribe((res: any) => {
       this.ndcList = res.data;
       this.ndcList = this.ndcList.filter((o)=>o.country.id == this.userCountryId && o.sector.id == this.userSectorId);
-      console.log("+++++++++",this.ndcList)
     });
 
     this.serviceProxy
@@ -415,54 +403,46 @@ export class GhgAssessmentComponent implements OnInit {
         0,
         0
       )
-      .subscribe((res: any) => {   
-
-
-      this.loggedUser = res.data[0];
-     // this.fullname = this.loggedUser.firstName+" "+this.loggedUser.lastName;
-      this.countryCode = this.loggedUser.country.code_extended;
-      console.log("this.loggedUser...",this.countryCode);
-     
+      .subscribe((res: any) => {
+        this.loggedUser = res.data[0];
+        this.countryCode = this.loggedUser.country.code_extended;
       });
 
-    this.years = this.years.sort(function(a,b) {return a.value - b.value});
+    this.years = this.years.sort(function (a, b) { return a.value - b.value });
     this.addRoute();
     this.addPowerPlant();
-    this.addStratum ();
-   
+    this.addStratum();
+
 
     this.serviceProxy
       .getManyBaseDefaultValueControllerDefaultValue(
         undefined,
         undefined,
-        ['country.id||$eq||'+this.userCountryId],
+        ['country.id||$eq||' + this.userCountryId],
         undefined,
         undefined,
         undefined,
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
-       // this.methodologys = this.methodologys.filter((o)=>o.country.id == this.userCountryId);
         this.defaultValues = res.data;
-        this.defaultValues.forEach((a)=>{
-          let name= a.parameterName+" " +a.administrationLevel +" "+a.country.id;
-          if(!this.uniqdeParaName.includes(name)){
-            this.uniqdeParaName.push(name)
+        this.defaultValues.forEach((a) => {
+          const name =
+            a.parameterName + ' ' + a.administrationLevel + ' ' + a.country.id;
+          if (!this.uniqdeParaName.includes(name)) {
+            this.uniqdeParaName.push(name);
           }
-        })
+        });
 
-        //this.defaultValues = this.defaultValues.filter((o)=>o.country.id == this.userCountryId || o.country.id == null);
-        console.log("my default values..",this.defaultValues);
         this.defaultValues.map(
           (a) =>
-            (a.name = `${a.value} - ${a.unit} - ${a.administrationLevel} - ${a.source}  - ${a.year}`)
+            (a.name = `${a.value} - ${a.unit} - ${a.administrationLevel} - ${a.source}  - ${a.year}`),
         );
       });
-      var filterMeth: any = ['isActive||$eq||' + 1];
-    
+    const filterMeth: any = ['isActive||$eq||' + 1];
     this.serviceProxy
       .getManyBaseMethodologyControllerMethodology(
         undefined,
@@ -477,30 +457,21 @@ export class GhgAssessmentComponent implements OnInit {
         0
       )
       .subscribe((res: any) => {
-       // this.climateActions = this.climateActions.filter((o)=>o.country.id == this.userCountryId && o.sector.id == this.userSectorId)
-        
         this.methodologys = res.data;
         this.methodologys = this.methodologys.filter((o)=>o.country.id == this.userCountryId);
         this.methodologysCopy = this.methodologys;
         this.methodologyList = this.methodologys;
 
         this.methodologyList.map((a)=>{
-
-          if(a.displayName.length>110)
-          {
+          if(a.displayName.length>110) {
             a.displayName = a.displayName.substring(0,105)+".....";
           }
-         
-
         });
 
-        for(let meth of this.methodologyList)
-        {
-
+        for(let meth of this.methodologyList) {
            this.mitigationIdList.push(meth.mitigationActionType.id);
         }
         this.mitigationIdList = [...new Set(this.mitigationIdList)];
-        console.log("this.mitigationIdList....", this.mitigationIdList);
         var mitifilter: any = ['id||$in||' +this.mitigationIdList];
         this.serviceProxy
           .getManyBaseMitigationActionControllerMitigationActionType(
@@ -517,26 +488,12 @@ export class GhgAssessmentComponent implements OnInit {
           )
           .subscribe((res: any) => {
             this.mitigationActionType = res.data;
-            
-    
-            // filter mitigation actions which are belong to isactive methodologies..
             this.mitigationActionType = this.mitigationActionType.filter((a)=>a.methodology.find((b)=>b.isActive == 1));
-            console.log('this.mitigationActionType..',this.mitigationActionType);
           });
       });
-      // this.methodologyProxy.getMethoDetails(1,50,'').subscribe((a) => {
-        
-      //   this.methodologys = a.items;
-      //   this.methodologyList = a.meta.totalItems;
-      // console.log('kkkk',this.methodologys)
-       
-      
-      // })
-
     var filter: any = ['projectApprovalStatus.id||$in||' + [1, 5]];
     if (this.IsProposal) {
       filter = undefined;
-      // projfilter.push('projectApprovalStatus.id||$in||' +[1,5])
     }
 
    
@@ -551,7 +508,6 @@ if(this.projectId && this.projectId>0){
     0
   )
   .subscribe(async (res) => {
-    console.log(res)
     this.years=[];
     let year = res.proposeDateofCommence.year();
     this.years.push({label: year.toString(),value: year });
@@ -596,27 +552,11 @@ else{
     0
   )
   .subscribe((res: any) => {
-
-    // console.log('this.userCountryId',this.userCountryId,this.userSectorId)
     this.climateActions = res.data;
-    // console.log(this.climateActions)
     this.spin=false;
-    // console.log('this.userCountryId',  this.climateActions)
     this.climateActions = this.climateActions.filter(o=>o.country?o.country.id == this.userCountryId:false && o.sector?o.sector.id == this.userSectorId:false)
-    // console.log('this.userCountryId',  this.climateActions)
-
-
   });
-
- 
 }
-    
-
-   
-
-
- 
-
     this.serviceProxy
       .getManyBaseAssessmentObjectiveControllerAssessmentObjective(
         undefined,
@@ -628,37 +568,13 @@ else{
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
-        this.assesmentObjective = res.data;
+        this.assessmentObjectiveList = res.data;
       });
 
-    // this.serviceProxy
-    //   .getManyBaseApplicabilityControllerApplicabilityEntity(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['name,ASC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    //   .subscribe((res: any) => {
-    //     this.applicability = res.data;
-    //   });
-
-    // this.instituationProxy
-    //   .getInstitutionforAssesment()
-    //   .subscribe((res: any) => {
-    //     this.instiTutionList = res;
-    //     console.log(this.instiTutionList);
-    //   });
-
-    let intTypeFilter: string[] = new Array();
+    const intTypeFilter: string[] = [];
 
     intTypeFilter.push('type.id||$eq||' + 3);
 
@@ -673,11 +589,13 @@ else{
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.instiTutionList = res.data;
-        this.instiTutionList = this.instiTutionList.filter((o)=>o.country.id == this.userCountryId);
+        this.instiTutionList = this.instiTutionList.filter(
+          (o) => o.country.id == this.userCountryId,
+        );
       });
 
     this.basllineSelection.push(new ParameterDimensionSelection().createNew());
@@ -695,7 +613,6 @@ else{
         this.ProjectParam = this.getParam('project', methParam.methodology);
         this.lekageParam = this.getParam('leakage', methParam.methodology);
 
-        console.log("+++++++++++++++",this.baslineParam);
        [ this.blHasVehicale,this.blHasVehicaleMulti] = this.isHaveDiminsionType(
           this.vehicle,
           this.baslineParam
@@ -704,7 +621,6 @@ else{
           this.vehicle,
           this.baslineParam
         );
-        console.log("+++++++++++++++",this.blVehicalValue);
         [this.blHasFuel,this.blHasFuelMulti] = this.isHaveDiminsionType(this.fuel, this.baslineParam);
         this.blFuelValue = this.getDiminsionTypeValue(
           this.fuel,
@@ -725,8 +641,6 @@ else{
           this.baslineParam
         );
 
-
-        
         [this.blHasSoil,this.blHasSoilMulti] = this.isHaveDiminsionType(
           this.soil,
           this.baslineParam
@@ -764,10 +678,6 @@ else{
           this.baslineParam
         );
 
-
-
-
-
         [this.prHasVehicale,this.prHasVehicaleMulti] = this.isHaveDiminsionType(
           this.vehicle,
           this.ProjectParam
@@ -795,8 +705,6 @@ else{
           this.stratum,
           this.ProjectParam
         );
-
-
 
         [this.prHasSoil,this.prHasSoilMulti] = this.isHaveDiminsionType(
           this.soil,
@@ -834,7 +742,6 @@ else{
           this.ProjectParam
         );
 
-
         [this.lkHasVehicale,this.lkHasVehicaleMulti] = this.isHaveDiminsionType(
           this.vehicle,
           this.lekageParam
@@ -862,9 +769,6 @@ else{
           this.lekageParam
         );
 
-
-
-
         [this.lkHasSoil,this.lkHasSoilMulti] = this.isHaveDiminsionType(
           this.soil,
           this.lekageParam
@@ -883,8 +787,6 @@ else{
           this.lekageParam
         );
         
-        
-
        [ this.lkHasFeedstock,this.lkHasFeedstockMulti] = this.isHaveDiminsionType(
           this.feedstock,
           this.lekageParam
@@ -903,9 +805,6 @@ else{
           this.lekageParam
         );
 
-
-
-
         this.useRoute =
           this.isHaveDiminsionType(this.route, this.baslineParam)[0] ||
           this.isHaveDiminsionType(this.route, this.ProjectParam)[0];
@@ -914,13 +813,9 @@ else{
           this.isHaveDiminsionType(this.power, this.baslineParam)[0] ||
           this.isHaveDiminsionType(this.power, this.ProjectParam)[0];
 
-          //have to check this logic
         this.useStratum =
           this.isHaveDiminsionType(this.stratum, this.baslineParam)[0] ||
           this.isHaveDiminsionType(this.stratum, this.ProjectParam)[0];
-          console.log("+++++++++++++++",this.useRoute);
-
-
       } else {
         this.baslineParam = [];
         this.ProjectParam = [];
@@ -946,37 +841,32 @@ else{
 
   isHaveDiminsionType(type: string, param: any) {
     let hasvalue = false;
-    let multi=false;
+    let multi = false;
     if (param !== undefined && param !== null) {
       param.map((p: any) => {
-        let dimnsions = p.dimensions;
+        const dimnsions = p.dimensions;
         if (dimnsions !== undefined) {
-          let route = dimnsions.find((a: any) => a.type === type);
-          if (route !== undefined && route !== null) {hasvalue = true;
-          route.multyselect=='true'?multi=true:multi=false
-          
+          const route = dimnsions.find((a: any) => a.type === type);
+          if (route !== undefined && route !== null) {
+            hasvalue = true;
+            route.multyselect == 'true' ? (multi = true) : (multi = false);
           }
-          
         }
       });
     }
 
-    return [hasvalue,multi];
+    return [hasvalue, multi];
   }
 
   getDiminsionTypeValue(type: string, param: any) {
     let Values: any = [];
     if (param !== undefined && param !== null) {
       param.map((p: any) => {
-        let dimnsions = p.dimensions;
-        
+        const dimnsions = p.dimensions;
         if (dimnsions !== undefined) {
-         
-          let route = dimnsions.find((a: any) => a.type === type);
+          const route = dimnsions.find((a: any) => a.type === type);
           {
-          
             if (route !== undefined && route !== null) Values = route.values;
-          
             return;
           }
         }
@@ -990,9 +880,9 @@ else{
     let diminsion: any;
     if (param !== undefined && param !== null) {
       param.map((p: any) => {
-        let dimnsions = p.dimensions;
+        const dimnsions = p.dimensions;
         if (dimnsions !== undefined) {
-          var param = dimnsions.find((a: any) => a.type === type);
+          const param = dimnsions.find((a: any) => a.type === type);
           if (param !== undefined) {
             diminsion = param;
           }
@@ -1055,41 +945,35 @@ else{
   }
 
   getMethodologyParam(): Observable<any> {
-    console.log(this.selectedMethodology)
-    let Url = environment.baseUrlJsonFile + '/' + this.selectedMethodology.name;
-    var headers = new HttpHeaders().set('api-key','1234');
-    let file = undefined;
-    // this.http.get(Url).subscribe((data: any) => {
-    //   return data;
-    // });
-    return this.http.get(Url,{'headers':headers});
+    const Url =
+      environment.baseUrlJsonFile + '/' + this.selectedMethodology.name;
+    const headers = new HttpHeaders().set('api-key', environment.apiKey1);
+    const file = undefined;
+    return this.http.get(Url, { headers: headers });
   }
 
   postParamToCalculation(parameters: any): Observable<any> {
-    let Url = environment.baseUrlJsonFile + '/methodology';
-    let headers = new HttpHeaders().set('api-key','1234');
-    let file = undefined;
-    // this.http.get(Url).subscribe((data: any) => {
-    //   return data;
-    // });
+    const Url = environment.baseUrlJsonFile + '/methodology';
+    const headers = new HttpHeaders().set('api-key', environment.apiKey1);
+    const file = undefined;
 
-    return this.http.post(Url, parameters,{'headers':headers});
+    return this.http.post(Url, parameters, { headers: headers });
   }
 
-
-  changeProjectVehicle()
-  {
+  changeProjectVehicle() {
     this.selectProjectVeicle = false;
   }
 
   ChangeDimensionVehicalType(
     event: any,
     dimensionTypeValue: any,
-    item: ParameterDimensionSelection
+    item: ParameterDimensionSelection,
   ) {
     this.selectBaselineVeicle = false;
     if (event.value.length >= 3) {
-      let vValue = dimensionTypeValue.find((a: any) => a.name === event.value);
+      const vValue = dimensionTypeValue.find(
+        (a: any) => a.name === event.value,
+      );
       if (vValue === undefined || vValue === null) {
         item.newVehical = event.value;
         item.canAddVehical = true;
@@ -1102,7 +986,7 @@ else{
 
   addDimensionVehicalValue(
     item: ParameterDimensionSelection,
-    dimensionTypeValue: any
+    dimensionTypeValue: any,
   ) {
     dimensionTypeValue.push({
       name: item.newVehical,
@@ -1110,28 +994,27 @@ else{
     });
 
     item.vehical = dimensionTypeValue.find(
-      (a: any) => a.name === item.newVehical
+      (a: any) => a.name === item.newVehical,
     );
     item.newVehical = '';
     item.canAddVehical = false;
   }
 
-  onbaseFuelChange()
-  {
-    this.selectBaseLineFuel= false;
+  onbaseFuelChange() {
+    this.selectBaseLineFuel = false;
   }
-  changeProjectFuel()
-  {
-    this.selectProjectFuel= false;
+  changeProjectFuel() {
+    this.selectProjectFuel = false;
   }
   ChangeDimensionVehicalTypeMulti(
     event: any,
     dimensionTypeValue: any,
-    item: ParameterDimensionSelection
+    item: ParameterDimensionSelection,
   ) {
-   
     if (event.filter.length >= 3) {
-      let vValue = dimensionTypeValue.find((a: any) => a.name === event.filter);
+      const vValue = dimensionTypeValue.find(
+        (a: any) => a.name === event.filter,
+      );
       if (vValue === undefined || vValue === null) {
         item.newVehical = event.filter;
         item.canAddVehical = true;
@@ -1144,11 +1027,12 @@ else{
   ChangeDimensionFuelType(
     event: any,
     dimensionTypeValue: any,
-    item: ParameterDimensionSelection
+    item: ParameterDimensionSelection,
   ) {
-   
     if (event.filter.length >= 3) {
-      let vValue = dimensionTypeValue.find((a: any) => a.name === event.filter);
+      const vValue = dimensionTypeValue.find(
+        (a: any) => a.name === event.filter,
+      );
       if (vValue === undefined || vValue === null) {
         item.newFuel = event.filter;
         item.canAddFuel = true;
@@ -1161,14 +1045,14 @@ else{
 
   addDimensionFuelValue(
     item: ParameterDimensionSelection,
-    dimensionTypeValue: any
+    dimensionTypeValue: any,
   ) {
-    let newId =
+    const newId =
       Math.max.apply(
         Math,
         dimensionTypeValue.map(function (o: any) {
           return o.Id;
-        })
+        }),
       ) + 1;
     dimensionTypeValue.push({
       Id: newId,
@@ -1177,22 +1061,21 @@ else{
     });
 
     item.fuel.push(
-      dimensionTypeValue.find((a: any) => a.name === item.newFuel)
+      dimensionTypeValue.find((a: any) => a.name === item.newFuel),
     );
     item.newFuel = '';
     item.canAddFuel = false;
   }
 
-
-
   ChangeDimensionLandClearanceType(
     event: any,
     dimensionTypeValue: any,
-    item: ParameterDimensionSelection
+    item: ParameterDimensionSelection,
   ) {
-   
     if (event.filter.length >= 3) {
-      let vValue = dimensionTypeValue.find((a: any) => a.name === event.filter);
+      const vValue = dimensionTypeValue.find(
+        (a: any) => a.name === event.filter,
+      );
       if (vValue === undefined || vValue === null) {
         item.newLandClearance = event.filter;
         item.canAddLandClearance = true;
@@ -1205,14 +1088,14 @@ else{
 
   addDimensionLandClearanceValue(
     item: ParameterDimensionSelection,
-    dimensionTypeValue: any
+    dimensionTypeValue: any,
   ) {
-    let newId =
+    const newId =
       Math.max.apply(
         Math,
         dimensionTypeValue.map(function (o: any) {
           return o.Id;
-        })
+        }),
       ) + 1;
     dimensionTypeValue.push({
       Id: newId,
@@ -1221,7 +1104,7 @@ else{
     });
 
     item.landClearance.push(
-      dimensionTypeValue.find((a: any) => a.name === item.newLandClearance)
+      dimensionTypeValue.find((a: any) => a.name === item.newLandClearance),
     );
     item.newLandClearance = '';
     item.canAddLandClearance = false;
@@ -1229,11 +1112,12 @@ else{
   ChangeDimensionResidueType(
     event: any,
     dimensionTypeValue: any,
-    item: ParameterDimensionSelection
+    item: ParameterDimensionSelection,
   ) {
-   
     if (event.filter.length >= 3) {
-      let vValue = dimensionTypeValue.find((a: any) => a.name === event.filter);
+      const vValue = dimensionTypeValue.find(
+        (a: any) => a.name === event.filter,
+      );
       if (vValue === undefined || vValue === null) {
         item.newResidue = event.filter;
         item.canAddResidue = true;
@@ -1246,23 +1130,25 @@ else{
 
   addDimensionResidueValue(
     item: ParameterDimensionSelection,
-    dimensionTypeValue: any
+    dimensionTypeValue: any,
   ) {
-    let newId =dimensionTypeValue.length>0?
-      Math.max.apply(
-        Math,
-        dimensionTypeValue.map(function (o: any) {
-          return o.Id;
-        })
-      ) + 1:1;
+    const newId =
+      dimensionTypeValue.length > 0
+        ? Math.max.apply(
+            Math,
+            dimensionTypeValue.map(function (o: any) {
+              return o.Id;
+            }),
+          ) + 1
+        : 1;
     dimensionTypeValue.push({
       Id: newId,
       name: item.newResidue,
       DefaultValue: 'false',
     });
-   
+
     item.residue.push(
-      dimensionTypeValue.find((a: any) => a.name === item.newResidue)
+      dimensionTypeValue.find((a: any) => a.name === item.newResidue),
     );
     item.newResidue = '';
     item.canAddResidue = false;
@@ -1270,11 +1156,12 @@ else{
   ChangeDimensionSoilType(
     event: any,
     dimensionTypeValue: any,
-    item: ParameterDimensionSelection
+    item: ParameterDimensionSelection,
   ) {
-   
     if (event.filter.length >= 3) {
-      let vValue = dimensionTypeValue.find((a: any) => a.name === event.filter);
+      const vValue = dimensionTypeValue.find(
+        (a: any) => a.name === event.filter,
+      );
       if (vValue === undefined || vValue === null) {
         item.newSoil = event.filter;
         item.canAddSoil = true;
@@ -1287,14 +1174,14 @@ else{
 
   addDimensionSoilValue(
     item: ParameterDimensionSelection,
-    dimensionTypeValue: any
+    dimensionTypeValue: any,
   ) {
-    let newId =
+    const newId =
       Math.max.apply(
         Math,
         dimensionTypeValue.map(function (o: any) {
           return o.Id;
-        })
+        }),
       ) + 1;
     dimensionTypeValue.push({
       Id: newId,
@@ -1303,7 +1190,7 @@ else{
     });
 
     item.soil.push(
-      dimensionTypeValue.find((a: any) => a.name === item.newSoil)
+      dimensionTypeValue.find((a: any) => a.name === item.newSoil),
     );
     item.newSoil = '';
     item.canAddSoil = false;
@@ -1311,12 +1198,13 @@ else{
   ChangeDimensionFeedstockType(
     event: any,
     dimensionTypeValue: any,
-    item: ParameterDimensionSelection
+    item: ParameterDimensionSelection,
   ) {
-   
     this.selectBaselineVeicle = false;
     if (event.value.length >= 3) {
-      let vValue = dimensionTypeValue.find((a: any) => a.name === event.value);
+      const vValue = dimensionTypeValue.find(
+        (a: any) => a.name === event.value,
+      );
       if (vValue === undefined || vValue === null) {
         item.newFeedstock = event.value;
         item.canAddFeedstock = true;
@@ -1329,14 +1217,14 @@ else{
 
   addDimensionFeedstockValue(
     item: ParameterDimensionSelection,
-    dimensionTypeValue: any
+    dimensionTypeValue: any,
   ) {
-    let newId =
+    const newId =
       Math.max.apply(
         Math,
         dimensionTypeValue.map(function (o: any) {
           return o.Id;
-        })
+        }),
       ) + 1;
     dimensionTypeValue.push({
       Id: newId,
@@ -1345,7 +1233,7 @@ else{
     });
 
     item.feedstock.push(
-      dimensionTypeValue.find((a: any) => a.name === item.newFeedstock)
+      dimensionTypeValue.find((a: any) => a.name === item.newFeedstock),
     );
     item.newFeedstock = '';
     item.canAddFeedstock = false;
@@ -1357,11 +1245,11 @@ else{
   }
 
   getParameterInfo(parameterSection: any) {
-    for (let section of Object.keys(parameterSection)){
-      for (let sp of parameterSection[section].sectionparameters){
-        for (let para of sp.parameters){
-          let str = this.selectedMethodology.name + "_" + para.Code;
-          if (ParameterInfo[str as ParaInfoType]){
+    for (const section of Object.keys(parameterSection)) {
+      for (const sp of parameterSection[section].sectionparameters) {
+        for (const para of sp.parameters) {
+          const str = this.selectedMethodology.name + '_' + para.Code;
+          if (ParameterInfo[str as ParaInfoType]) {
             this.infos[para.Code] = ParameterInfo[str as ParaInfoType];
           }
         }
@@ -1389,17 +1277,12 @@ else{
             routeParam,
             'Route Info'
           );
-          console.log("+++++++",routeSection)
           this.blParameters.routeSection = routeSection;
         }
         if (this.blHasVehicale){
-          
-          
           if( !this.blHasFeedstock) {
-          console.log("dimention1",this.blHasFeedstock)
           let vehicalParam = this.getDiminsion(this.vehicle, this.baslineParam);
           let vehicalCommon = this.getCommon(this.blVehicalValue);
-          console.log("fuelCommon",vehicalCommon)
           if (vehicalCommon) {
             let commonEntered = this.basllineSelection.filter(b => b.vehical.id === vehicalCommon.id )
             if (commonEntered.length === 0){
@@ -1409,7 +1292,6 @@ else{
               this.hasCommonBaseline = true;
             }
           }
-          console.log("fuelCommon",this.basllineSelection)
           let vehicalSection = this.genrateVehicalParameterSection(
             this.basllineSelection,
             vehicalParam,
@@ -1418,25 +1300,17 @@ else{
 
           this.blParameters.vehicalSection = vehicalSection;
         }else{
-          console.log("dimention2",this.blHasFeedstock)
           let vehicalParam = this.getDiminsion(this.vehicle, this.baslineParam);
           let fuelCommon = this.getCommon(this.blVehicalValue);
-          console.log("fuelCommon",fuelCommon)
           if (fuelCommon) {
             this.basllineSelection[0].vehicals.unshift(fuelCommon);
           }
-          console.log("fuelCommon",this.basllineSelection)
-
-        //assume vehical dimention is multiselect every time feedstock is available in dimention
           let vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
             this.basllineSelection,
             vehicalParam,
             'Vehicle Info'
           );
-
           this.blParameters.vehicalSection = vehicalSection;
-
-
           }
         }
         if (this.blHasFuel) {
@@ -1459,25 +1333,16 @@ else{
             if (fuelCommon) {
               this.basllineSelection[0].fuel.unshift(fuelCommon);
             }
-           
-           
               let fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
                 this.basllineSelection,
                 fuelParam,
                 'Fuel Info'
               );
               this.blParameters.fuelSection = fuelSection;
-  
-  
-  
           }
-
         }
-     // newly added dimentions
-
         if (this.blHasFeedstock) {
           let feedstockParam = this.getDiminsion(this.feedstock, this.baslineParam);
-
           let feedstockCommon = this.getCommon(this.blFeedstockValue);
           if (feedstockCommon) {
             let commonEntered = this.basllineSelection.filter(b => b.feedstock.id === feedstockCommon.id)
@@ -1489,78 +1354,88 @@ else{
             }
           }
 
-          let feedstockSection = this.genrateFeedstockParameterSection(
+          const feedstockSection = this.genrateFeedstockParameterSection(
             this.basllineSelection,
             feedstockParam,
-            'Feedstock Info'
+            'Feedstock Info',
           );
           this.blParameters.feedstockSection = feedstockSection;
         }
         if (this.blHasSoil) {
-          let soilParam = this.getDiminsion(this.soil, this.baslineParam);
+          const soilParam = this.getDiminsion(this.soil, this.baslineParam);
 
-          let soilCommon = this.getCommon(this.blSoilValue);
+          const soilCommon = this.getCommon(this.blSoilValue);
           if (soilCommon) {
             this.basllineSelection[0].soil.unshift(soilCommon);
           }
 
-          let soilSection = this.genrateSoilParameterSection(
+          const soilSection = this.genrateSoilParameterSection(
             this.basllineSelection,
             soilParam,
-            'Soil Info'
+            'Soil Info',
           );
           this.blParameters.soilSection = soilSection;
         }
         if (this.blHasResidue) {
-          let residueParam = this.getDiminsion(this.residue, this.baslineParam);
+          const residueParam = this.getDiminsion(
+            this.residue,
+            this.baslineParam,
+          );
 
-          let residueCommon = this.getCommon(this.blResidueValue);
+          const residueCommon = this.getCommon(this.blResidueValue);
           if (residueCommon) {
             this.basllineSelection[0].residue.unshift(residueCommon);
           }
 
-          let residueSection = this.genrateResidueParameterSection(
+          const residueSection = this.genrateResidueParameterSection(
             this.basllineSelection,
             residueParam,
-            'Residue Info'
+            'Residue Info',
           );
           this.blParameters.residueSection = residueSection;
         }
         if (this.blHasLandClearance) {
-          let landClearanceParam = this.getDiminsion(this.landclearance, this.baslineParam);
+          const landClearanceParam = this.getDiminsion(
+            this.landclearance,
+            this.baslineParam,
+          );
 
-          let landClearanceCommon = this.getCommon(this.blLandClearanceValue);
+          const landClearanceCommon = this.getCommon(this.blLandClearanceValue);
           if (landClearanceCommon) {
-            this.basllineSelection[0].landClearance.unshift(landClearanceCommon);
+            this.basllineSelection[0].landClearance.unshift(
+              landClearanceCommon,
+            );
           }
 
-          let landClearanceSection = this.genrateLandClearanceParameterSection(
+          const landClearanceSection = this.genrateLandClearanceParameterSection(
             this.basllineSelection,
             landClearanceParam,
-            'Land Clearance Info'
+            'Land Clearance Info',
           );
           this.blParameters.landClearanceSection = landClearanceSection;
         }
 
         if (this.blHasStratum) {
-          let stratumParam = this.getDiminsion(this.stratum, this.baslineParam);
-          let stratumSection = this.genrateStratumParameterSection(
+          const stratumParam = this.getDiminsion(
+            this.stratum,
+            this.baslineParam,
+          );
+          const stratumSection = this.genrateStratumParameterSection(
             this.basllineSelection,
             stratumParam,
-            'Stratum Info'
+            'Stratum Info',
           );
 
           this.blParameters.stratumSection = stratumSection;
         }
 
-
         if (this.blHasPowerPlant) {
-          let powerPlant = this.getDiminsion(this.power, this.baslineParam);
+          const powerPlant = this.getDiminsion(this.power, this.baslineParam);
 
-          let powerSection = this.genratePowerPlantParameterSection(
+          const powerSection = this.genratePowerPlantParameterSection(
             this.basllineSelection,
             powerPlant,
-            'Power Plant Info'
+            'Power Plant Info',
           );
           this.blParameters.powerPlantSection = powerSection;
         }
@@ -1568,7 +1443,7 @@ else{
     } else {
       this.blParameters = new ParameterSections();
     }
-    this.getParameterInfo(this.blParameters)
+    this.getParameterInfo(this.blParameters);
   }
 
   projectGenrate() {
@@ -1584,18 +1459,16 @@ else{
       this.ProjectParam.length > 0
     ) {
       if (this.prHasRoute) {
-        let routeParam = this.getDiminsion(this.route, this.ProjectParam);
-        let routeSection = this.genrateRouteParameterSection(
+        const routeParam = this.getDiminsion(this.route, this.ProjectParam);
+        const routeSection = this.genrateRouteParameterSection(
           this.projectSelection,
           routeParam,
-          'Route Info'
+          'Route Info',
         );
 
         this.prParameters.routeSection = routeSection;
       }
       if (this.prHasVehicale){
-          
-          
         if( !this.prHasFeedstock) {
         let vehicalParam = this.getDiminsion(this.vehicle, this.ProjectParam);
         let vehicleCommon = this.getCommon(this.prVehicalValue);
@@ -1625,18 +1498,12 @@ else{
           this.projectSelection[0].vehicals.unshift(vehicalCommon);
         }
        
-
-      //assume vehical dimention is multiselect every time feedstock is available in dimention
         let vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
           this.projectSelection,
           vehicalParam,
           'Vehicle Info'
         );
-
         this.prParameters.vehicalSection = vehicalSection;
-
-
-
       }}
 
       if (this.prHasFuel) {
@@ -1648,123 +1515,126 @@ else{
             this.projectSelection[0].fuel.unshift(fuelCommon);
           }
 
-          let fuelSection = this.genrateFuelParameterSection(
+          const fuelSection = this.genrateFuelParameterSection(
             this.projectSelection,
             fuelParam,
-            'Fuel Info'
+            'Fuel Info',
           );
           this.prParameters.fuelSection = fuelSection;
-        }
-        else {
-          let fuelParam = this.getDiminsion(this.fuel, this.ProjectParam);
-          let fuelCommon = this.getCommon(this.prFuelValue);
+        } else {
+          const fuelParam = this.getDiminsion(this.fuel, this.ProjectParam);
+          const fuelCommon = this.getCommon(this.prFuelValue);
           if (fuelCommon) {
             this.projectSelection[0].fuel.unshift(fuelCommon);
           }
 
-
-          let fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
+          const fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
             this.projectSelection,
             fuelParam,
-            'Fuel Info'
+            'Fuel Info',
           );
           this.prParameters.fuelSection = fuelSection;
-
-
-
         }
       }
 
       if (this.prHasFeedstock) {
-        let feedstockParam = this.getDiminsion(this.feedstock, this.ProjectParam);
+        const feedstockParam = this.getDiminsion(
+          this.feedstock,
+          this.ProjectParam,
+        );
 
-        let feedstockCommon = this.getCommon(this.prFeedstockValue);
+        const feedstockCommon = this.getCommon(this.prFeedstockValue);
         if (feedstockCommon) {
-          let commonEntered = this.projectSelection.filter(p => p.feedstock.id === feedstockCommon.id)
+          const commonEntered = this.projectSelection.filter(
+            (p) => p.feedstock.id === feedstockCommon.id,
+          );
           if (commonEntered.length === 0) {
-            var tempCommon = new ParameterDimensionSelection().createNew();
+            const tempCommon = new ParameterDimensionSelection().createNew();
             tempCommon.feedstock = feedstockCommon;
             this.hasCommonProject = true;
             this.projectSelection.push(tempCommon);
           }
         }
 
-        let feedstockSection = this.genrateFeedstockParameterSection(
+        const feedstockSection = this.genrateFeedstockParameterSection(
           this.projectSelection,
           feedstockParam,
-          'Feedstock Info'
+          'Feedstock Info',
         );
         this.prParameters.feedstockSection = feedstockSection;
       }
       if (this.prHasSoil) {
-        let soilParam = this.getDiminsion(this.soil, this.ProjectParam);
+        const soilParam = this.getDiminsion(this.soil, this.ProjectParam);
 
-        let soilCommon = this.getCommon(this.prSoilValue);
+        const soilCommon = this.getCommon(this.prSoilValue);
         if (soilCommon) {
           this.projectSelection[0].soil.unshift(soilCommon);
         }
 
-        let soilSection = this.genrateSoilParameterSection(
+        const soilSection = this.genrateSoilParameterSection(
           this.projectSelection,
           soilParam,
-          'Soil Info'
+          'Soil Info',
         );
         this.prParameters.soilSection = soilSection;
       }
       if (this.prHasResidue) {
-        let residueParam = this.getDiminsion(this.residue, this.ProjectParam);
+        const residueParam = this.getDiminsion(this.residue, this.ProjectParam);
 
-        let residueCommon = this.getCommon(this.prResidueValue);
+        const residueCommon = this.getCommon(this.prResidueValue);
         if (residueCommon) {
           this.projectSelection[0].residue.unshift(residueCommon);
         }
 
-        let residueSection = this.genrateResidueParameterSection(
+        const residueSection = this.genrateResidueParameterSection(
           this.projectSelection,
           residueParam,
-          'Residue Info'
+          'Residue Info',
         );
         this.prParameters.residueSection = residueSection;
       }
       if (this.prHasLandClearance) {
-        let landClearanceParam = this.getDiminsion(this.landclearance, this.ProjectParam);
+        const landClearanceParam = this.getDiminsion(
+          this.landclearance,
+          this.ProjectParam,
+        );
 
-        let landClearanceCommon = this.getCommon(this.blLandClearanceValue);
+        const landClearanceCommon = this.getCommon(this.blLandClearanceValue);
         if (landClearanceCommon) {
           this.projectSelection[0].landClearance.unshift(landClearanceCommon);
         }
 
-        let landClearanceSection = this.genrateLandClearanceParameterSection(
+        const landClearanceSection = this.genrateLandClearanceParameterSection(
           this.projectSelection,
           landClearanceParam,
-          'Land Clearance Info'
+          'Land Clearance Info',
         );
         this.prParameters.landClearanceSection = landClearanceSection;
       }
 
       if (this.prHasStratum) {
-        let stratumParam = this.getDiminsion(this.stratum, this.ProjectParam);
-        let stratumSection = this.genrateStratumParameterSection(
+        const stratumParam = this.getDiminsion(this.stratum, this.ProjectParam);
+        const stratumSection = this.genrateStratumParameterSection(
           this.projectSelection,
           stratumParam,
-          'Stratum Info'
+          'Stratum Info',
         );
 
         this.prParameters.stratumSection = stratumSection;
       }
 
       if (this.prHasPowerPlant) {
-        let powerPlant = this.getDiminsion(this.power, this.ProjectParam);
+        const powerPlant = this.getDiminsion(this.power, this.ProjectParam);
 
-        let powerSection = this.genratePowerPlantParameterSection(
+        const powerSection = this.genratePowerPlantParameterSection(
           this.projectSelection,
           powerPlant,
-          'Power Plant Info'
+          'Power Plant Info',
         );
         this.prParameters.powerPlantSection = powerSection;
       }
     }
-    this.getParameterInfo(this.prParameters)
+    this.getParameterInfo(this.prParameters);
   }
 
   lekageGenrate() {
@@ -1779,18 +1649,16 @@ else{
         this.lekageParam.length > 0
       ) {
         if (this.lkHasRoute) {
-          let routeParam = this.getDiminsion(this.route, this.lekageParam);
-          let routeSection = this.genrateRouteParameterSection(
+          const routeParam = this.getDiminsion(this.route, this.lekageParam);
+          const routeSection = this.genrateRouteParameterSection(
             this.lekageSelection,
             routeParam,
-            'Route Info'
+            'Route Info',
           );
 
           this.lkParameters.routeSection = routeSection;
         }
         if (this.lkHasVehicale){
-          
-          
           if( !this.lkHasFeedstock) {
           let vehicalParam = this.getDiminsion(this.vehicle, this.lekageParam);
           let vehicalCommon = this.getCommon(this.lkVehicalValue);
@@ -1818,24 +1686,15 @@ else{
           if (vehicalCommon) {
             this.lekageSelection[0].vehicals.unshift(vehicalCommon);
           }
-         
-  
-        //assume vehical dimention is multiselect every time feedstock is available in dimention
           let vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
             this.lekageSelection,
             vehicalParam,
             'Vehicle Info'
           );
-  
           this.lkParameters.vehicalSection = vehicalSection;
-  
-  
-  
         }}
 
-
         if (this.lkHasFuel) {
-         
         if (!this.lkHasFeedstock){ 
           let fuelParam = this.getDiminsion(this.fuel, this.lekageParam);
           let fuelCommon = this.getCommon(this.lkFuelValue);
@@ -1854,17 +1713,12 @@ else{
             if (fuelCommon) {
               this.lekageSelection[0].fuel.unshift(fuelCommon);
             }
-           
-           
               let fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
                 this.lekageSelection,
                 fuelParam,
                 'Fuel Info'
               );
               this.lkParameters.fuelSection = fuelSection;
-
-
-
           }
         }
         if (this.lkHasFeedstock) {
@@ -1880,47 +1734,49 @@ else{
               this.lekageSelection.push(tempCommon);
             }
           }
-  
-          let feedstockSection = this.genrateFeedstockParameterSection(
+
+          const feedstockSection = this.genrateFeedstockParameterSection(
             this.lekageSelection,
             feedstockParam,
-            'Feedstock Info'
+            'Feedstock Info',
           );
           this.lkParameters.feedstockSection = feedstockSection;
         }
         if (this.lkHasSoil) {
-          let soilParam = this.getDiminsion(this.soil, this.lekageParam);
-  
-          let soilCommon = this.getCommon(this.lkSoilValue);
+          const soilParam = this.getDiminsion(this.soil, this.lekageParam);
+
+          const soilCommon = this.getCommon(this.lkSoilValue);
           if (soilCommon) {
             this.lekageSelection[0].soil.unshift(soilCommon);
           }
-  
-          let soilSection = this.genrateSoilParameterSection(
+
+          const soilSection = this.genrateSoilParameterSection(
             this.lekageSelection,
             soilParam,
-            'Soil Info'
+            'Soil Info',
           );
           this.lkParameters.soilSection = soilSection;
         }
         if (this.lkHasResidue) {
-          let residueParam = this.getDiminsion(this.residue, this.lekageParam);
-  
-          let residueCommon = this.getCommon(this.lkResidueValue);
+          const residueParam = this.getDiminsion(
+            this.residue,
+            this.lekageParam,
+          );
+
+          const residueCommon = this.getCommon(this.lkResidueValue);
           if (residueCommon) {
             this.lekageSelection[0].residue.unshift(residueCommon);
           }
-  
-          let residueSection = this.genrateResidueParameterSection(
+
+          const residueSection = this.genrateResidueParameterSection(
             this.lekageSelection,
             residueParam,
-            'Residue Info'
+            'Residue Info',
           );
           this.lkParameters.residueSection = residueSection;
         }
         if (this.lkHasLandClearance) {
           let landClearanceParam = this.getDiminsion(this.landclearance, this.lekageParam);
-  
           let landClearanceCommon = this.getCommon(this.lkLandClearanceValue);
           if (landClearanceCommon) {
             this.lekageSelection[0].landClearance.unshift(landClearanceCommon);
@@ -1941,16 +1797,11 @@ else{
             stratumParam,
             'Stratum Info'
           );
-  
           this.lkParameters.stratumSection = stratumSection;
         }
 
-
-
-
         if (this.lkHasPowerPlant) {
           let powerPlant = this.getDiminsion(this.power, this.lekageParam);
-
           let powerSection = this.genratePowerPlantParameterSection(
             this.lekageSelection,
             powerPlant,
@@ -1962,63 +1813,55 @@ else{
     } else {
       this.lkParameters = new ParameterSections();
     }
-    this.getParameterInfo(this.lkParameters)
+    this.getParameterInfo(this.lkParameters);
   }
 
   genrateVehicalParameterSection(
     parameterSelection: ParameterDimensionSelection[],
     vehicalParam: any,
-    sectionHeader: string
+    sectionHeader: string,
   ) {
-    let vehicalSection = new ParameterSection();
+    const vehicalSection = new ParameterSection();
     vehicalSection.sectionHeader = sectionHeader;
 
     parameterSelection.map((v) => {
-      console.log("dimention11",v.vehical)
       if (v.vehical.name === this.common) {
-        let sectionparam = new SectionParameter();
+        const sectionparam = new SectionParameter();
         sectionparam.fuel = '';
         sectionparam.vehical = v.vehical.name;
         sectionparam.parameterHeader = `${v.vehical.name}`;
-        // console.log("+++++++++++++++++",sectionparam)
         this.getAllParameters(vehicalParam, sectionparam, v.vehical);
         vehicalSection.sectionparameters.push(sectionparam);
       }
-      if(v.fuel.length ==0 && v.vehical.name != this.common){
-        let sectionparam = new SectionParameter();
+      if (v.fuel.length == 0 && v.vehical.name != this.common) {
+        const sectionparam = new SectionParameter();
         sectionparam.fuel = '';
-            sectionparam.vehical = v.vehical.name;
-            sectionparam.route = '';
-            sectionparam.parameterHeader = `${v.vehical.name}`;
-            // console.log("+++++++++++++++++",sectionparam)
-            this.getAllParameters(vehicalParam, sectionparam, v.vehical);
-            vehicalSection.sectionparameters.push(sectionparam);
+        sectionparam.vehical = v.vehical.name;
+        sectionparam.route = '';
+        sectionparam.parameterHeader = `${v.vehical.name}`;
+        this.getAllParameters(vehicalParam, sectionparam, v.vehical);
+        vehicalSection.sectionparameters.push(sectionparam);
       }
       v.fuel.map((f: any) => {
-        let sectionparam = new SectionParameter();
+        const sectionparam = new SectionParameter();
 
         if (v.route.length === 0) {
           sectionparam.fuel = f.name;
           sectionparam.vehical = v.vehical.name;
-          // console.log("+++++++++++++++++",sectionparam)
           sectionparam.parameterHeader = `${f.name}-${v.vehical.name}`;
           this.getAllParameters(vehicalParam, sectionparam, v.vehical);
         } else {
           v.route.map((r: any) => {
-           
             sectionparam.fuel = f.name;
             sectionparam.vehical = v.vehical.name;
             sectionparam.route = r.name;
             sectionparam.parameterHeader = `${f.name}-${v.vehical.name} - ${r.name}`;
             this.getAllParameters(vehicalParam, sectionparam, v.vehical);
-
-
           });
         }
         vehicalSection.sectionparameters.push(sectionparam);
       });
     });
-    console.log("++++++++++++vehical",vehicalSection)
     this.checkDefaultValue(vehicalSection,"vehical");
     vehicalSection.sectionparameters.forEach(sp => {
       sp.parameters.map(para => {
@@ -2103,40 +1946,32 @@ else{
   genrateVehicalParameterSectionWhenHasFeedstock(
     parameterSelection: ParameterDimensionSelection[],
     vehicalParam: any,
-    sectionHeader: string
+    sectionHeader: string,
   ) {
-    let vehicalSection = new ParameterSection();
+    const vehicalSection = new ParameterSection();
     vehicalSection.sectionHeader = sectionHeader;
-    // sectionparam.parameterHeader = `${f.name}-${v.vehical.name}`;
-  
 
     parameterSelection.map((v) => {
-      v.vehicals.map((f:any)=>{
-        console.log("dimention22",f)
+      v.vehicals.map((f: any) => {
         if (f.name === this.common) {
-          let sectionparam = new SectionParameter();
-          // sectionparam.fuel = '';
+          const sectionparam = new SectionParameter();
           sectionparam.vehical = f.name;
           sectionparam.parameterHeader = `${f.name}`;
           this.getAllParameters(vehicalParam, sectionparam, f);
           vehicalSection.sectionparameters.push(sectionparam);
         }
-        if(f.name !== this.common){
+        if (f.name !== this.common) {
           let sectionparam = new SectionParameter();
-              sectionparam.vehical = f.name;
-              sectionparam.feedstock = v.oneFeedstock.name;
-              sectionparam.route = '';
-              sectionparam.parameterHeader =v.oneFeedstock.name? `${v.oneFeedstock.name} - ${f.name}`:`${f.name}`;
-              this.getAllParameters(vehicalParam, sectionparam, f);
-              vehicalSection.sectionparameters.push(sectionparam);
-  
-  
+          sectionparam.vehical = f.name;
+          sectionparam.feedstock = v.oneFeedstock.name;
+          sectionparam.route = '';
+          sectionparam.parameterHeader = v.oneFeedstock.name ? `${v.oneFeedstock.name} - ${f.name}` : `${f.name}`;
+          this.getAllParameters(vehicalParam, sectionparam, f);
+          vehicalSection.sectionparameters.push(sectionparam);
         }
-
       })
     
     });
-    console.log("++++++++++++genrateVehicalParameterSectionWhenHasFeedstock",vehicalSection)
     this.checkDefaultValue(vehicalSection,"vehical");
     vehicalSection.sectionparameters.forEach(sp => {
       sp.parameters.map(para => {
@@ -2153,7 +1988,6 @@ else{
   ) {
     let fuelSection = new ParameterSection();
     fuelSection.sectionHeader = sectionHeader;
-    // sectionparam.parameterHeader = `${f.name}-${v.vehical.name}`;
     let fuelList: any = [];
     let unuiqeFuel: any = [];
 
@@ -2166,162 +2000,144 @@ else{
     ];
 
     unuiqeFuel.map((f: any) => {
-      let fuelsectionparam = new SectionParameter();
+      const fuelsectionparam = new SectionParameter();
       fuelsectionparam.fuel = f.name;
       fuelsectionparam.parameterHeader = f.name;
 
       this.getAllParameters(fuelParam, fuelsectionparam, f);
       fuelSection.sectionparameters.push(fuelsectionparam);
     });
-    console.log("++++++++++++fuel",fuelSection)
-    this.checkDefaultValue(fuelSection,"fuel");
-    fuelSection.sectionparameters.forEach(sp => {
-      sp.parameters.map(para => {
-        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
-      })
-    })
+
+    this.checkDefaultValue(fuelSection, 'fuel');
+    fuelSection.sectionparameters.forEach((sp) => {
+      sp.parameters.map((para) => {
+        para.defaultValues.sort((a: any, b: any) => b.year - a.year);
+      });
+    });
     return fuelSection;
   }
   genrateFuelParameterSectionWhenHasFeedstock(
     parameterSelection: ParameterDimensionSelection[],
     fuelParam: any,
-    sectionHeader: string
+    sectionHeader: string,
   ) {
-    let fuelSection = new ParameterSection();
+    const fuelSection = new ParameterSection();
     fuelSection.sectionHeader = sectionHeader;
-  
-    
+
     parameterSelection.map((v) => {
-      v.fuel.map((f:any)=>{
-        
+      v.fuel.map((f: any) => {
         if (f.name === this.common) {
-          let sectionparam = new SectionParameter();
-        
+          const sectionparam = new SectionParameter();
+
           sectionparam.fuel = f.name;
           sectionparam.parameterHeader = `${f.name}`;
           this.getAllParameters(fuelParam, sectionparam, f);
           fuelSection.sectionparameters.push(sectionparam);
         }
-        if(f.name !== this.common){
-          let sectionparam = new SectionParameter();
-              sectionparam.fuel = f.name;
-              sectionparam.feedstock = v.oneFeedstock.name;
-             
-              sectionparam.parameterHeader =v.oneFeedstock.name? `${v.oneFeedstock.name} - ${f.name}`:`${f.name}`;
-              this.getAllParameters(fuelParam, sectionparam, f);
-              fuelSection.sectionparameters.push(sectionparam);
-  
-  
-        }
+        if (f.name !== this.common) {
+          const sectionparam = new SectionParameter();
+          sectionparam.fuel = f.name;
+          sectionparam.feedstock = v.oneFeedstock.name;
 
-      })
-    
+          sectionparam.parameterHeader = v.oneFeedstock.name
+            ? `${v.oneFeedstock.name} - ${f.name}`
+            : `${f.name}`;
+          this.getAllParameters(fuelParam, sectionparam, f);
+          fuelSection.sectionparameters.push(sectionparam);
+        }
+      });
     });
-    console.log("++++++++++++ genrateFuelParameterSectionWhenHasFeedstock",fuelSection)
-    this.checkDefaultValue(fuelSection,"fuel");
-    fuelSection.sectionparameters.forEach(sp => {
-      sp.parameters.map(para => {
-        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
-      })
-    })
+    this.checkDefaultValue(fuelSection, 'fuel');
+    fuelSection.sectionparameters.forEach((sp) => {
+      sp.parameters.map((para) => {
+        para.defaultValues.sort((a: any, b: any) => b.year - a.year);
+      });
+    });
     return fuelSection;
   }
   genrateFeedstockParameterSection(
     parameterSelection: ParameterDimensionSelection[],
     feedstockParam: any,
-    sectionHeader: string
+    sectionHeader: string,
   ) {
-    let feedstockSection = new ParameterSection();
+    const feedstockSection = new ParameterSection();
     feedstockSection.sectionHeader = sectionHeader;
-   
-    
 
     parameterSelection.map((v) => {
       if (v.oneFeedstock.name === this.common) {
-        let sectionparam = new SectionParameter();
+        const sectionparam = new SectionParameter();
         sectionparam.fuel = '';
         sectionparam.feedstock = v.oneFeedstock.name;
         sectionparam.parameterHeader = `${v.oneFeedstock.name}`;
         this.getAllParameters(feedstockParam, sectionparam, v.oneFeedstock);
         feedstockSection.sectionparameters.push(sectionparam);
       }
-      if( v.oneFeedstock.name != this.common){
-        let sectionparam = new SectionParameter();
+      if (v.oneFeedstock.name != this.common) {
+        const sectionparam = new SectionParameter();
         sectionparam.fuel = '';
-            sectionparam.feedstock = v.oneFeedstock.name;
-            sectionparam.route = '';
-            sectionparam.parameterHeader = `${v.oneFeedstock.name}`;
-            this.getAllParameters(feedstockParam, sectionparam, v.oneFeedstock);
-            feedstockSection.sectionparameters.push(sectionparam);
+        sectionparam.feedstock = v.oneFeedstock.name;
+        sectionparam.route = '';
+        sectionparam.parameterHeader = `${v.oneFeedstock.name}`;
+        this.getAllParameters(feedstockParam, sectionparam, v.oneFeedstock);
+        feedstockSection.sectionparameters.push(sectionparam);
       }
     });
 
-   
-
-
-
-
-    console.log("++++++++++++feedstock",feedstockSection)
-    this.checkDefaultValue(feedstockSection,"feedstock");
-    feedstockSection.sectionparameters.forEach(sp => {
-      sp.parameters.map(para => {
-        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
-      })
-    })
+    this.checkDefaultValue(feedstockSection, 'feedstock');
+    feedstockSection.sectionparameters.forEach((sp) => {
+      sp.parameters.map((para) => {
+        para.defaultValues.sort((a: any, b: any) => b.year - a.year);
+      });
+    });
     return feedstockSection;
   }
   genrateSoilParameterSection(
     parameterSelection: ParameterDimensionSelection[],
     soilParam: any,
-    sectionHeader: string
+    sectionHeader: string,
   ) {
-    let soilSection = new ParameterSection();
+    const soilSection = new ParameterSection();
     soilSection.sectionHeader = sectionHeader;
-    // sectionparam.parameterHeader = `${f.name}-${v.vehical.name}`;
     parameterSelection.map((v) => {
-      v.soil.map((f:any)=>{
+      v.soil.map((f: any) => {
         if (f.name === this.common) {
-          let sectionparam = new SectionParameter();
-          // sectionparam.fuel = '';
+          const sectionparam = new SectionParameter();
           sectionparam.soil = f.name;
           sectionparam.parameterHeader = `${f.name}`;
           this.getAllParameters(soilParam, sectionparam, f);
           soilSection.sectionparameters.push(sectionparam);
         }
-        if(f.name !== this.common){
-          let sectionparam = new SectionParameter();
-              sectionparam.soil = f.name;
-              sectionparam.feedstock = v.oneFeedstock.name;
-              sectionparam.route = '';
-              sectionparam.parameterHeader =v.oneFeedstock.name? `${v.oneFeedstock.name} - ${f.name}`: `${f.name}`;
-              this.getAllParameters(soilParam, sectionparam, f);
-              soilSection.sectionparameters.push(sectionparam);
-  
-  
+        if (f.name !== this.common) {
+          const sectionparam = new SectionParameter();
+          sectionparam.soil = f.name;
+          sectionparam.feedstock = v.oneFeedstock.name;
+          sectionparam.route = '';
+          sectionparam.parameterHeader = v.oneFeedstock.name
+            ? `${v.oneFeedstock.name} - ${f.name}`
+            : `${f.name}`;
+          this.getAllParameters(soilParam, sectionparam, f);
+          soilSection.sectionparameters.push(sectionparam);
         }
-
-      })
-    
+      });
     });
-    console.log("++++++++++++soil",soilSection)
-    this.checkDefaultValue(soilSection,"soil");
-    soilSection.sectionparameters.forEach(sp => {
-      sp.parameters.map(para => {
-        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
-      })
-    })
+
+    this.checkDefaultValue(soilSection, 'soil');
+    soilSection.sectionparameters.forEach((sp) => {
+      sp.parameters.map((para) => {
+        para.defaultValues.sort((a: any, b: any) => b.year - a.year);
+      });
+    });
     return soilSection;
   }
 
   genrateResidueParameterSection(
     parameterSelection: ParameterDimensionSelection[],
     residueParam: any,
-    sectionHeader: string
+    sectionHeader: string,
   ) {
-    let residueSection = new ParameterSection();
+    const residueSection = new ParameterSection();
     residueSection.sectionHeader = sectionHeader;
-    // sectionparam.parameterHeader = `${f.name}-${v.vehical.name}`;
-    let residueList: any = [];
+    const residueList: any = [];
     let unuiqeResidue: any = [];
 
     parameterSelection.map((v) => {
@@ -2333,31 +2149,30 @@ else{
     ];
 
     unuiqeResidue.map((f: any) => {
-      let residueSectionparam = new SectionParameter();
+      const residueSectionparam = new SectionParameter();
       residueSectionparam.residue = f.name;
       residueSectionparam.parameterHeader = f.name;
 
       this.getAllParameters(residueParam, residueSectionparam, f);
       residueSection.sectionparameters.push(residueSectionparam);
     });
-    console.log("++++++++++++residue",residueSection)
-    this.checkDefaultValue(residueSection,"residue");
-    residueSection.sectionparameters.forEach(sp => {
-      sp.parameters.map(para => {
-        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
-      })
-    })
+
+    this.checkDefaultValue(residueSection, 'residue');
+    residueSection.sectionparameters.forEach((sp) => {
+      sp.parameters.map((para) => {
+        para.defaultValues.sort((a: any, b: any) => b.year - a.year);
+      });
+    });
     return residueSection;
   }
   genrateLandClearanceParameterSection(
     parameterSelection: ParameterDimensionSelection[],
     landClearanceParam: any,
-    sectionHeader: string
+    sectionHeader: string,
   ) {
-    let landClearanceSection = new ParameterSection();
+    const landClearanceSection = new ParameterSection();
     landClearanceSection.sectionHeader = sectionHeader;
-    // sectionparam.parameterHeader = `${f.name}-${v.vehical.name}`;
-    let landClearanceList: any = [];
+    const landClearanceList: any = [];
     let unuiqeLandClearance: any = [];
 
     parameterSelection.map((v) => {
@@ -2369,41 +2184,41 @@ else{
     ];
 
     unuiqeLandClearance.map((f: any) => {
-      let landClearancesectionparam = new SectionParameter();
+      const landClearancesectionparam = new SectionParameter();
       landClearancesectionparam.fuel = f.name;
       landClearancesectionparam.parameterHeader = f.name;
 
       this.getAllParameters(landClearanceParam, landClearancesectionparam, f);
       landClearanceSection.sectionparameters.push(landClearancesectionparam);
     });
-    console.log("++++++++++++landClearance",landClearanceSection)
-    this.checkDefaultValue(landClearanceSection,"landClearance");
-    landClearanceSection.sectionparameters.forEach(sp => {
-      sp.parameters.map(para => {
-        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
-      })
-    })
+
+    this.checkDefaultValue(landClearanceSection, 'landClearance');
+    landClearanceSection.sectionparameters.forEach((sp) => {
+      sp.parameters.map((para) => {
+        para.defaultValues.sort((a: any, b: any) => b.year - a.year);
+      });
+    });
     return landClearanceSection;
   }
 
   genrateRouteParameterSection(
-    parameterSelection: ParameterDimensionSelection[], //selcted all basline vlues (vehucal,fuel,....)
-    routParam: any,  // fuel dimention data in basline paramiter
-    sectionHeader: string
+    parameterSelection: ParameterDimensionSelection[],
+    routParam: any,
+    sectionHeader: string,
   ) {
-    let routSection = new ParameterSection();
+    const routSection = new ParameterSection();
     routSection.sectionHeader = sectionHeader;
-   
-    let routeList: any[] = [];
+
+    const routeList: any[] = [];
     parameterSelection.map((v: any) => routeList.push(...v.route));
-   
+
     const uniqueItem = [
       ...new Map(routeList.map((v: any) => [v.name, v])).values(),
     ];
-    
+
     uniqueItem.map((v) => {
       if (v.name !== '' && v.name !== undefined && v.name !== null) {
-        let routsectionparam = new SectionParameter();
+        const routsectionparam = new SectionParameter();
         routsectionparam.route = v.name;
         routsectionparam.parameterHeader = v.name;
         this.getAllParameters(routParam, routsectionparam, v);
@@ -2412,67 +2227,63 @@ else{
         }
       }
     });
-    this.checkDefaultValue(routSection,"route");
-    routSection.sectionparameters.forEach(sp => {
-      sp.parameters.map(para => {
-        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
-      })
-    })
+    this.checkDefaultValue(routSection, 'route');
+    routSection.sectionparameters.forEach((sp) => {
+      sp.parameters.map((para) => {
+        para.defaultValues.sort((a: any, b: any) => b.year - a.year);
+      });
+    });
     return routSection;
   }
   genrateStratumParameterSection(
-    parameterSelection: ParameterDimensionSelection[], //selcted all basline vlues (vehucal,fuel,....)
-    stratumParam: any,  // fuel dimention data in basline paramiter
-    sectionHeader: string
+    parameterSelection: ParameterDimensionSelection[],
+    stratumParam: any,
+    sectionHeader: string,
   ) {
-    let stratumSection = new ParameterSection();
+    const stratumSection = new ParameterSection();
     stratumSection.sectionHeader = sectionHeader;
 
-
     parameterSelection.map((v) => {
-      v.stratum.map((f:any)=>{
+      v.stratum.map((f: any) => {
         if (f.name === this.common) {
-          let sectionparam = new SectionParameter();
-          // sectionparam.fuel = '';
+          const sectionparam = new SectionParameter();
           sectionparam.stratum = f.name;
           sectionparam.parameterHeader = `${f.name}`;
           this.getAllParameters(stratumParam, sectionparam, f);
           stratumSection.sectionparameters.push(sectionparam);
         }
-        if(f.name !== this.common){
-          let sectionparam = new SectionParameter();
-              sectionparam.stratum = f.name;
-              sectionparam.feedstock = v.oneFeedstock.name;
-              sectionparam.route = '';
-              sectionparam.parameterHeader =v.oneFeedstock.name? `${v.oneFeedstock.name} - ${f.name}`: `${f.name}`;
-              this.getAllParameters(stratumParam, sectionparam, f);
-              stratumSection.sectionparameters.push(sectionparam);
-  
-  
+        if (f.name !== this.common) {
+          const sectionparam = new SectionParameter();
+          sectionparam.stratum = f.name;
+          sectionparam.feedstock = v.oneFeedstock.name;
+          sectionparam.route = '';
+          sectionparam.parameterHeader = v.oneFeedstock.name
+            ? `${v.oneFeedstock.name} - ${f.name}`
+            : `${f.name}`;
+          this.getAllParameters(stratumParam, sectionparam, f);
+          stratumSection.sectionparameters.push(sectionparam);
         }
-
-      })
-    
+      });
     });
-    console.log("++++++++++++stratum",stratumSection)
-    this.checkDefaultValue(stratumSection,"stratum");
-    stratumSection.sectionparameters.forEach(sp => {
-      sp.parameters.map(para => {
-        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
-      })
-    })
+
+    this.checkDefaultValue(stratumSection, 'stratum');
+    stratumSection.sectionparameters.forEach((sp) => {
+      sp.parameters.map((para) => {
+        para.defaultValues.sort((a: any, b: any) => b.year - a.year);
+      });
+    });
     return stratumSection;
   }
 
   genratePowerPlantParameterSection(
     parameterSelection: ParameterDimensionSelection[],
     fuelParam: any,
-    sectionHeader: string
+    sectionHeader: string,
   ) {
-    let fuelSection = new ParameterSection();
+    const fuelSection = new ParameterSection();
     fuelSection.sectionHeader = sectionHeader;
 
-    let routeList: any[] = [];
+    const routeList: any[] = [];
 
     parameterSelection.map((v: any) => routeList.push(v.powerPlan));
 
@@ -2482,7 +2293,7 @@ else{
 
     uniqueItem.map((v) => {
       if (v.name !== '' && v.name !== undefined && v.name !== null) {
-        let fuelsectionparam = new SectionParameter();
+        const fuelsectionparam = new SectionParameter();
         fuelsectionparam.powerPlant = v.name;
         fuelsectionparam.parameterHeader = v.name;
         this.getAllParameters(fuelParam, fuelsectionparam, v.name);
@@ -2491,119 +2302,103 @@ else{
         }
       }
     });
-    console.log("++++++++++++powerPlant",fuelSection)
-    this.checkDefaultValue(fuelSection,"powerPlant");
-    fuelSection.sectionparameters.forEach(sp => {
-      sp.parameters.map(para => {
-        para.defaultValues.sort((a: any, b: any) => b.year  - a.year)
-      })
-    })
+
+    this.checkDefaultValue(fuelSection, 'powerPlant');
+    fuelSection.sectionparameters.forEach((sp) => {
+      sp.parameters.map((para) => {
+        para.defaultValues.sort((a: any, b: any) => b.year - a.year);
+      });
+    });
     return fuelSection;
   }
 
   getAllParameters(jsonParam: any, sectionparam: SectionParameter, value: any) {
-    
-
     if (value !== undefined) {
-      if (value.name !="Common"){
-        let params = this.createParameter(jsonParam);
+      if (value.name != 'Common') {
+        const params = this.createParameter(jsonParam);
         sectionparam.parameters = params;
-  
-        let valueParams = this.createParameter(value);
+
+        const valueParams = this.createParameter(value);
         sectionparam.parameters.push(...valueParams);
-      }
-      else if(value.name =="Common"){
-        let valueParams = this.createParameter(value);
+      } else if (value.name == 'Common') {
+        const valueParams = this.createParameter(value);
         sectionparam.parameters = [];
         sectionparam.parameters.push(...valueParams);
       }
     }
 
     this.suggestValues(sectionparam)
-    
-    console.log(sectionparam);
   }
 
-  async suggestValues(sectionparam:SectionParameter) {
+  async suggestValues(sectionparam: SectionParameter) {
     let assessments = await this.assessmentProxy.getAssessmentsByCountryMethodology(this.selectedMethodology.id, this.userCountryId).toPromise()
-     console.log(assessments)
-    this.methodParaCodes = sectionparam.parameters.map(para => {return para.Code});
-    let assessmentIds = assessments.map(ass => {return ass.id});
+    this.methodParaCodes = sectionparam.parameters.map(para => { return para.Code });
+    let assessmentIds = assessments.map(ass => { return ass.id });
     let filter: string[] | undefined = []
-    if (this.methodParaCodes && this.methodParaCodes.length > 0 && 
-        assessmentIds && assessmentIds.length > 0){
-          filter.push('assessment.id||$in||' + assessmentIds) &
-          filter.push('code||$in||'+ this.methodParaCodes)
-          if (sectionparam.vehical) filter.push('vehical||$eq||'+ sectionparam.vehical)
-          if (sectionparam.fuel) filter.push('fuelType||$eq||'+ sectionparam.fuel)
-          // if (sectionparam.powerPlant) filter.push('powerPlant||$eq||'+ sectionparam.powerPlant) // removed as this is not pre defined
-          // if (sectionparam.route) filter.push('route||$eq||'+ sectionparam.route) // removed as this is not pre defined
-          if (sectionparam.feedstock) filter.push('feedstock||$eq||'+ sectionparam.feedstock)
-          if (sectionparam.residue) filter.push('residue||$eq||'+ sectionparam.residue)
-          if (sectionparam.soil) filter.push('soil||$eq||'+ sectionparam.soil)
-          // if (sectionparam.stratum) filter.push('stratum||$eq||'+ sectionparam.stratum) // removed as this is not pre defined
-          if (sectionparam.landClearance) filter.push('landClearance||$eq||'+ sectionparam.landClearance)
+    if (this.methodParaCodes && this.methodParaCodes.length > 0 &&
+      assessmentIds && assessmentIds.length > 0) {
+      filter.push('assessment.id||$in||' + assessmentIds) &
+        filter.push('code||$in||' + this.methodParaCodes)
+      if (sectionparam.vehical) filter.push('vehical||$eq||' + sectionparam.vehical)
+      if (sectionparam.fuel) filter.push('fuelType||$eq||' + sectionparam.fuel)
+      if (sectionparam.feedstock) filter.push('feedstock||$eq||' + sectionparam.feedstock)
+      if (sectionparam.residue) filter.push('residue||$eq||' + sectionparam.residue)
+      if (sectionparam.soil) filter.push('soil||$eq||' + sectionparam.soil)
+      if (sectionparam.landClearance) filter.push('landClearance||$eq||' + sectionparam.landClearance)
 
-          
-          this.serviceProxy
-              .getManyBaseParameterControllerParameter(
-                undefined,
-                undefined,
-                filter,
-                undefined,
-                undefined,
-                undefined,
-                1000,
-                0,
-                0,
-                0
-              ).subscribe(async (res: any) => {
+      this.serviceProxy
+        .getManyBaseParameterControllerParameter(
+          undefined,
+          undefined,
+          filter,
+          undefined,
+          undefined,
+          undefined,
+          1000,
+          0,
+          0,
+          0
+        ).subscribe(async (res: any) => {
 
-                let parametersIds: string[] = res.data.map((p: any) => p.id);
-                // console.log('sectionparam.parametersidsall',res)
-                // console.log('sectionparam.parametersids',parametersIds)
-                let qcPassParameterRequest = await this.parameterRequestControllerServiceProxy.getQCpassParameterRequest(parametersIds).toPromise();
+          let parametersIds: string[] = res.data.map((p: any) => p.id);
+          let qcPassParameterRequest = await this.parameterRequestControllerServiceProxy.getQCpassParameterRequest(parametersIds).toPromise();
 
-                console.log('sectionparam.parameters', qcPassParameterRequest)
-                sectionparam.parameters = sectionparam.parameters.map(para => {
-                  // let parameters = res.data.filter((p:any) => (p.code == para.Code) && p.value )
-                  let parameters = qcPassParameterRequest.filter((p: any) => (p.parameter.code == para.Code) && p.parameter.value)
+          sectionparam.parameters = sectionparam.parameters.map(para => {
+            let parameters = qcPassParameterRequest.filter((p: any) => (p.parameter.code == para.Code) && p.parameter.value)
 
+            para.historicalValues = parameters.map((dr: any) => {
+              let p = dr.parameter;
+              return {
+                label: p.AssessmentYear + ' - ' + p.value + ' ' + p.uomDataEntry,
+                value: p.value,
+                unit: p.uomDataEntry,
+                year: p.assessmentYear,
+                id: p.id
+              }
+            })
+            let answer: any[] = [];
+            para.historicalValues.forEach((x: any) => {
+              if (!answer.some(y => JSON.stringify(y) === JSON.stringify(x))) {
+                answer.push(x)
+              }
+            })
 
-                  para.historicalValues = parameters.map((dr: any) => {
-                    let p =dr.parameter;
-                    return {
-                      label: p.AssessmentYear  + ' - ' + p.value + ' ' + p.uomDataEntry , 
-                      value: p.value,
-                      unit: p.uomDataEntry,
-                      year: p.assessmentYear,
-                      id:p.id
-                    }
-                  })
-                  let answer: any[] = [];
-                  para.historicalValues.forEach((x: any) => {
-                    if (!answer.some(y => JSON.stringify(y) === JSON.stringify(x))) {
-                      answer.push(x)
-                    }
-                  })
-                  
-                  para.historicalValues = answer
-                  para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
-                  if (para.displayhisValues.length === 0){
-                    let unit = this.convertSubscriptsToNormal(para.UOM)
-                    para.displayhisValues = para.historicalValues.filter(val => val.unit === unit)
-                  }
-                  para.displayhisValues.sort((a: any,b: any) => b.year - a.year);
-                  return para
-                })
-              })
-        }
+            para.historicalValues = answer
+            para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
+            if (para.displayhisValues.length === 0) {
+              let unit = this.convertSubscriptsToNormal(para.UOM)
+              para.displayhisValues = para.historicalValues.filter(val => val.unit === unit)
+            }
+            para.displayhisValues.sort((a: any, b: any) => b.year - a.year);
+            return para
+          })
+        })
+    }
 
   }
 
   convertSubscriptsToNormal(str: string) {
     var result = '';
-
     result = str.replace(/[₀-₉ₐ-ₙₚₛₜ]/g, function (match) {
       var charCode = match.charCodeAt(0);
       var normalCharCode = charCode - 8272;
@@ -2635,14 +2430,11 @@ else{
               ? false
               : p.usedefaultvalue
             : p.useDefaultValue;
-        //param.defaultValues = this.defaultValues.filter((a) => a.parameterName === p.name);
-        let val = this.getDefaultValues(p.name)
-       // console.log('val..',val)
+        const val = this.getDefaultValues(p.name);
         param.defaultValues = val;
-        //console.log("param.....",param.defaultValues)
         if (p.alternativeparameters != undefined) {
           p.alternativeparameters.map((ap: any) => {
-            let alterparam = new Parameter();
+            const alterparam = new Parameter();
             alterparam.parameterName = ap.name;
             alterparam.isAlternativeParameter = true;
             alterparam.UOMList = [...ap.unit];
@@ -2651,39 +2443,37 @@ else{
             alterparam.useDefaultValue =
               ap.useDefaultValue === undefined ? false : ap.useDefaultValue;
             alterparam.defaultValues = this.defaultValues.filter(
-              (a) => a.parameterName === ap.name
+              (a) => a.parameterName === ap.name,
             );
 
             param.alternativeParameters.push(alterparam);
           });
         }
-        
+
         params.push(param);
       });
     }
-    
+
     return params;
   }
 
   onCAChange(event: any) {
     this.isDiasbaleEye = false;
-   console.log("my event....gggg.",this.selectedClimateAction)
-   console.log("my event....gg.",event)
-   this.toolTop= 'You can only select the methodology that was used for previous assessment <Br> That methodology are';
-   this.projectControllerServiceProxy.getmeth(this.selectedClimateAction.id).subscribe((res: any) => {
-    // console.log("my event....gg.",res)
-    this.methcode=res;
-    for(let meth of this.methcode){
-      this.toolTop =this.toolTop + ' <br> <p style="color: yellow">'+meth
+    this.toolTop = 'You can only select the methodology that was used for previous assessment <Br> That methodology are';
+    this.projectControllerServiceProxy.getmeth(this.selectedClimateAction.id).subscribe((res: any) => {
+
+      this.methcode = res;
+      for (let meth of this.methcode) {
+        this.toolTop = this.toolTop + ' <br> <p style="color: yellow">' + meth
+      }
+    })
+
+    if (this.selectedClimateAction.projectApprovalStatus?.id == 5) {
+      this.hasPrevActiveCA = true
     }
-   })
-  
-   if(this.selectedClimateAction.projectApprovalStatus?.id==5){
-     this.hasPrevActiveCA = true
-   }
-   else{
-    this.hasPrevActiveCA = false;
-   }
+    else {
+      this.hasPrevActiveCA = false;
+    }
     this.selectedNdc = this.ndcList.find(
       (a) => a.id === this.selectedClimateAction.ndc?.id
     )!;
@@ -2691,16 +2481,16 @@ else{
     this.selectDefaultMethodForNDc();
 
     this.selctedSubNdc = this.selectedNdc?.subNdc.find(
-      (a) => a.id === this.selectedClimateAction.subNdc?.id
+      (a) => a.id === this.selectedClimateAction.subNdc?.id,
     )!;
 
     this.selectDefaultMethodForSUBNDc();
 
     let year = this.selectedClimateAction.proposeDateofCommence.year();
-    this.years=[];
-    this.years.push({label: year.toString(),value: year });
+    this.years = [];
+    this.years.push({ label: year.toString(), value: year });
     for (let i = 1; i < 30; i++) {
-      this.years.push({label: (year + i).toString(),value: year + i });
+      this.years.push({ label: (year + i).toString(), value: year + i });
     }
 
     this.proposeDateofCommence = new Date(
@@ -2711,127 +2501,81 @@ else{
 
     this.projectDuration = this.selectedClimateAction.duration;
 
-    if(this.IsProposal== false) 
-    {
- 
+    if (this.IsProposal == false) {
       let filterProject: string[] = new Array();
-      filterProject.push('project.id||$eq||' +event.id)&
-      filterProject.push('Assessment.isProposal||$eq||' +0)&
-      filterProject.push('Assessment.assessmentType||$in||' +this.approachList);
-      this.serviceProxy.getManyBaseAssesmentControllerAssessment
-      (
-        undefined,
-        undefined,
-        filterProject,
-        undefined,
-        undefined,
-        undefined,
-        1000,
-        0,
-        0,
-        0
-      )
-      .subscribe((res: any) => {
-        this.selectedAssessementByCA = res.data;
-        console.log('selectedAssessementByCA...', res.data);
-  
-         let yearList:any[] = [];
-         let uniqueYearList:any[] = [];
-        for(let assement of this.selectedAssessementByCA )
-        {
-          this.methcode.push(assement.methodologyCode);
-          for(let asyears of assement.assessmentYear)
-          {
-            
-            yearList.push(asyears.assessmentYear)
+      filterProject.push('project.id||$eq||' + event.id) &
+        filterProject.push('Assessment.isProposal||$eq||' + 0) &
+        filterProject.push('Assessment.assessmentType||$in||' + this.approachList);
+      this.serviceProxy.getManyBaseAssessmentControllerAssessment
+        (
+          undefined,
+          undefined,
+          filterProject,
+          undefined,
+          undefined,
+          undefined,
+          1000,
+          0,
+          0,
+          0
+        )
+        .subscribe((res: any) => {
+          this.selectedAssessementByCA = res.data;
+          let yearList: any[] = [];
+          let uniqueYearList: any[] = [];
+          for (let assement of this.selectedAssessementByCA) {
+            this.methcode.push(assement.methodologyCode);
+            for (let asyears of assement.assessmentYear) {
+
+              yearList.push(asyears.assessmentYear)
+            }
           }
-        }
-        uniqueYearList = [...new Set( yearList)];
+          uniqueYearList = [...new Set(yearList)];
+          const result: any[] = [];
+          [...new Set(yearList)].forEach(item => result.push({
+            key: item,
+            count:
+              yearList.filter(i => i == item).length
+          }));
+          let duplicateYears = result.filter((obj) => obj.count > 1);
+          for (let x of duplicateYears) {
+            this.years = this.years.filter((obj) => obj != x['key'])
+          }
 
-      //  this.methcode.filter((code)=> return this.)
-        
-      console.log('asyears...', yearList);
-        console.log('uniqueYearList..', uniqueYearList);
-  
-        const result:any[] = [];
-        // Create a unique list of items to loop over
-        // Add each item to the result list
-        [...new Set(yearList)].forEach(item => result.push({
-          key: item,
-          // Get the count of items of the current type {key: '2020', count: 4}
-          count: 
-          yearList.filter(i => i == item).length
-        }));
-        let duplicateYears = result.filter((obj)=>obj.count>1);
-        console.log('result..', result);
-        console.log('duplicateYears..', duplicateYears);
-  
-        for(let x of duplicateYears)
-        {
-          
-          this.years = this.years.filter((obj)=>obj != x['key'] )
-        }
-        console.log("this.years..",this.years)
-  
-        if(this.selectedAssessementByCA.length>0)
-        {
-           this.methodologys = [];
-           this.methodologys[0] = this.selectedAssessementByCA[0].methodology;
-           //this.selectedMethodology = this.selectedAssessementByCA[0].methodology;
-          // this.selectedMethodology = this.methodologys[0];
-          console.log("this.selectedAssessementByCA..",this.methodologys[0])
-        }
-        else{
-          this.methodologys = this.methodologysCopy;
-        }
-      });
-
+          if (this.selectedAssessementByCA.length > 0) {
+            this.methodologys = [];
+            this.methodologys[0] = this.selectedAssessementByCA[0].methodology;
+          }
+          else {
+            this.methodologys = this.methodologysCopy;
+          }
+        });
     }
-
-    
-
-
-
   }
 
 
   getDefaultValues(name:any)
   {
-   // param.defaultValues = this.defaultValues.filter((a) => a.parameterName === name);
    let idArray:any[] = [];
    let arr:any[] = [];
    
    arr = this.defaultValues.filter((a) => a.parameterName === name && a.value !== null);
-  //  arr = this.defaultValues.filter((a) => a.parameterName === name && a.parentId === null);
-  // console.log('arrname...',arr)
    for(let item of arr)
    {
-     
      idArray.push(item.id)
-    // console.log("item",idArray);
    }
-  // console.log('inside loop ',idArray)
-  // console.log('end of foor loop')
-
    let arr2:any[] = [];
-   //arr2 =   this.defaultValues.filter((a) =>a.parentId in idArray);
    for(let pId of idArray)
    {
-    // let child:any[] = [];
     let child = this.defaultValues.filter((a) =>a.parentId === pId && a.value != null);
      
      if(child.length != 0)
      {
       Array.prototype.push.apply(arr2,child); 
-      //arr2.push(child)
      }
      
    }
-  // console.log("child array",arr2)
-   //console.log("arr.....2",arr2)
    Array.prototype.push.apply(arr,arr2); 
-   //arr.concat(arr2);
-  // console.log("arr.....3",arr)
    return arr;
   }
 
@@ -2840,10 +2584,8 @@ else{
   }
 
   selectDefaultMethodForNDc() {
-    console.log(this.selectedNdc);
-
-    var metho = this.methodologyList.filter(
-      (a) => a.ndc.find((n: Ndc) => n.id === this.selectedNdc.id) !== undefined
+    const metho = this.methodologyList.filter(
+      (a) => a.ndc.find((n: Ndc) => n.id === this.selectedNdc.id) !== undefined,
     );
 
     if (metho !== null && metho.length > 0) {
@@ -2852,7 +2594,6 @@ else{
   }
 
   onSubNdcChange(event: any) {
-    console.log('DDDDDDD');
     this.selectDefaultMethodForSUBNDc();
   }
 
@@ -2862,37 +2603,34 @@ else{
     }
   }
 
-  onChangeAssessmentType()
-  {
-    if(this.IsProposal==false)
-    {
- 
-      let result = this.assementYearAndTypeObjectList.find((o)=>o.assessmentType == this.selectedApproch)
-      console.log("my result..",result)
-  
-      if(result != undefined)
-      {
+  onChangeAssessmentType() {
+    if (this.IsProposal == false) {
+      const result = this.assessmentYearAndTypeObjectList.find(
+        (o) => o.assessmentType == this.selectedApproch,
+      );
+
+      if (result != undefined) {
         this.isDisableforSubmitButton = true;
         this.isSubmitted = true;
-        this.warningMessage = "You have done an "+result['assessmentType']+" assessment before in "+result['year']+" please select assessment years again!"
+        this.warningMessage =
+          'You have done an ' +
+          result['assessmentType'] +
+          ' assessment before in ' +
+          result['year'] +
+          ' please select assessment years again!';
+      } else {
+        this.isDisableforSubmitButton = false;
+        this.warningMessage = '';
       }
-      else
-      {
-        this.isDisableforSubmitButton = false
-        this.warningMessage ='';
-      }
-
     }
-    
-   
   }
 
   selectDefaultMethodForSUBNDc() {
     if (this.selectedNdc) {
-      var metho = this.methodologyList.filter(
+      const metho = this.methodologyList.filter(
         (a) =>
           a.subNdc.find((n: SubNdc) => n.id === this.selctedSubNdc.id) !==
-          undefined
+          undefined,
       );
 
       if (metho !== null && metho.length > 0) {
@@ -2901,79 +2639,27 @@ else{
     }
   }
 
-  // checkFormValidity():boolean{
-
-  //       if(this.selectedClimateAction== undefined || this.selectedClimateAction==null){
-
-  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Specific Climate Action before submit'});
-  //         return false;
-  //       }
-  //       if(this.baseYear== undefined || this.baseYear==null){
-
-  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select base year before submit'});
-  //         return false;
-  //       }
-  //       if(!this.IsProposal && (this.selectYears== undefined || this.selectYears.length==0)){
-
-  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Assessment Years before submit'});
-  //         return false;
-  //       }
-  //       if(this.IsProposal && (this.assesmentYear== undefined || this.assesmentYear==null)){
-
-  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Assessment Year before submit'});
-  //         return false;
-  //       }
-  //       if(this.projectDuration== undefined || this.projectDuration==null){
-
-  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Project Duration before submit'});
-  //         return false;
-  //       }
-  //       if(this.proposeDateofCommence== undefined || this.proposeDateofCommence==null){
-
-  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Date of Commence before submit'});
-  //         return false;
-  //       }
-  //       if(this.selectedApproch== undefined || this.selectedApproch==null){
-
-  //         this.messageService.add({severity:'error', summary:'Fill mandatory field', detail:'Please select Assessment Approach before submit'});
-  //         return false;
-  //       }
-  //       // if(this.proposeDateofCommence== undefined || this.proposeDateofCommence==null){
-
-  //       //   this.messageService.add({severity:'error', summary:'Fill Emplty Space', detail:'Please select Date of Commence before submit'});
-  //       //   return false;
-  //       // }
-  //       // if(this.proposeDateofCommence== undefined || this.proposeDateofCommence==null){
-
-  //       //   this.messageService.add({severity:'error', summary:'Fill Emplty Space', detail:'Please select Date of Commence before submit'});
-  //       //   return false;
-  //       // }
-
-  //   return true
-  // }
-
-  async createAssementCA(data: NgForm) {
-    console.log("proprose")
-    this.requiredParas = true
+  async createAssessmentCA(data: NgForm) {
+    this.requiredParas = true;
     if (this.IsProposal) {
       this.selectYears = [];
     }
 
-    if (data.form.valid && this.selectYears !== undefined && !this.isSave ) {
-      let country = new Country();
+    if (data.form.valid && this.selectYears !== undefined && !this.isSave) {
+      const country = new Country();
       country.id = this.userCountryId;
-      let assessment = new Assessment();
+      const assessment = new Assessment();
       assessment.country = country;
       assessment.baseYear = this.baseYear.getFullYear();
       if (this.selectedNdc) {
-        var ndc = new Ndc();
+        const ndc = new Ndc();
         ndc.id = this.selectedNdc.id;
         assessment.ndc = ndc;
       } else {
         assessment.ndc = undefined!;
       }
       if (this.selctedSubNdc) {
-        var subndc = new SubNdc();
+        const subndc = new SubNdc();
         subndc.id = this.selctedSubNdc.id;
         assessment.subNdc = subndc;
       } else {
@@ -3001,384 +2687,337 @@ else{
       assessment.methodologyCode = this.methodologyCode;
       assessment.methodologyVersion = this.methodologyVersion;
 
-      let assesmentYars: AssessmentYear[] = [];
-      let parameters: Parameter_Server[] = [];
+      const assessmentYars: AssessmentYear[] = [];
+      const parameters: Parameter_Server[] = [];
 
       if (this.IsProposal) {
         this.selectYears.push(this.assesmentYear.getFullYear());
       }
 
       this.selectYears.map((y: any) => {
-        let ae = new AssessmentYear();
+        const ae = new AssessmentYear();
         ae.assessmentYear = y;
-        assesmentYars.push(ae);
+        assessmentYars.push(ae);
 
         if (this.blParameters !== undefined && this.blParameters !== null) {
           if (
             this.blParameters.routeSection !== undefined &&
             this.blParameters.routeSection.sectionparameters.length > 0
           ) {
-            let routeParams = this.createParam(
+            const routeParams = this.createParam(
               this.blParameters.routeSection,
               true,
               false,
               false,
               false,
               y,
-              this.countryCode
+              this.countryCode,
             );
             parameters.push(...routeParams!);
           }
 
-          let vehicalParams = this.createParam(
+          const vehicalParams = this.createParam(
             this.blParameters.vehicalSection,
             true,
             false,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...vehicalParams!);
 
-          let fuelParams = this.createParam(
+          const fuelParams = this.createParam(
             this.blParameters.fuelSection,
             true,
             false,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...fuelParams!);
 
-          let powerPlant = this.createParam(
+          const powerPlant = this.createParam(
             this.blParameters.powerPlantSection,
             true,
             false,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...powerPlant!);
 
-          // let routePlant = this.createParam(
-          //   this.blParameters.routeSection,
-          //   true,
-          //   false,
-          //   false,
-          //   false,
-          //   y,
-          //   this.countryCode
-          // );
-          // parameters.push(...routePlant!);
+          const feedstock = this.createParam(
+            this.blParameters.feedstockSection,
+            true,
+            false,
+            false,
+            false,
+            y,
+            this.countryCode,
+          );
+          parameters.push(...feedstock!);
 
-         //newly added section
-         let feedstock = this.createParam(
-          this.blParameters.feedstockSection,
-          true,
-          false,
-          false,
-          false,
-          y,
-          this.countryCode
-        );
-        parameters.push(...feedstock!);
+          const residue = this.createParam(
+            this.blParameters.residueSection,
+            true,
+            false,
+            false,
+            false,
+            y,
+            this.countryCode,
+          );
+          parameters.push(...residue!);
 
-        let residue = this.createParam(
-          this.blParameters.residueSection,
-          true,
-          false,
-          false,
-          false,
-          y,
-          this.countryCode
-        );
-        parameters.push(...residue!);
+          const stratum = this.createParam(
+            this.blParameters.stratumSection,
+            true,
+            false,
+            false,
+            false,
+            y,
+            this.countryCode,
+          );
+          parameters.push(...stratum!);
 
-        let stratum = this.createParam(
-          this.blParameters.stratumSection,
-          true,
-          false,
-          false,
-          false,
-          y,
-          this.countryCode
-        );
-        parameters.push(...stratum!);
+          const soil = this.createParam(
+            this.blParameters.soilSection,
+            true,
+            false,
+            false,
+            false,
+            y,
+            this.countryCode,
+          );
+          parameters.push(...soil!);
 
-
-        let soil = this.createParam(
-          this.blParameters.soilSection,
-          true,
-          false,
-          false,
-          false,
-          y,
-          this.countryCode
-        );
-        parameters.push(...soil!);
-
-        let landClearance = this.createParam(
-          this.blParameters.landClearanceSection,
-          true,
-          false,
-          false,
-          false,
-          y,
-          this.countryCode
-        );
-        parameters.push(...landClearance!);
-
-
-
-
+          const landClearance = this.createParam(
+            this.blParameters.landClearanceSection,
+            true,
+            false,
+            false,
+            false,
+            y,
+            this.countryCode,
+          );
+          parameters.push(...landClearance!);
         }
 
         if (this.prParameters !== undefined && this.prParameters !== null) {
-          let routeParams = this.createParam(
+          const routeParams = this.createParam(
             this.prParameters.routeSection,
             false,
             true,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...routeParams!);
 
-          let vehicalParams = this.createParam(
+          const vehicalParams = this.createParam(
             this.prParameters.vehicalSection,
             false,
             true,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...vehicalParams!);
 
-          let fuelParams = this.createParam(
+          const fuelParams = this.createParam(
             this.prParameters.fuelSection,
             false,
             true,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...fuelParams!);
 
-          let powerPlant = this.createParam(
+          const powerPlant = this.createParam(
             this.prParameters.powerPlantSection,
             false,
             true,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...powerPlant!);
 
-          // let route = this.createParam(
-          //   this.prParameters.routeSection,
-          //   false,
-          //   true,
-          //   false,
-          //   false,
-          //   y,
-          //   this.countryCode
-          // );
-          // parameters.push(...route!);
-
-
-          //newly added  dimentions
-          let feedstock = this.createParam(
+          const feedstock = this.createParam(
             this.prParameters.feedstockSection,
             false,
             true,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...feedstock!);
-  
-          let residue = this.createParam(
+
+          const residue = this.createParam(
             this.prParameters.residueSection,
             false,
             true,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...residue!);
-  
-          let stratum = this.createParam(
+
+          const stratum = this.createParam(
             this.prParameters.stratumSection,
             false,
             true,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...stratum!);
-  
-  
-          let soil = this.createParam(
+
+          const soil = this.createParam(
             this.prParameters.soilSection,
             false,
             true,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...soil!);
-  
-          let landClearance = this.createParam(
+
+          const landClearance = this.createParam(
             this.prParameters.landClearanceSection,
             false,
             true,
             false,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...landClearance!);
         }
 
         if (this.lkParameters !== undefined && this.lkParameters !== null) {
-          let routeParams = this.createParam(
+          const routeParams = this.createParam(
             this.lkParameters.routeSection,
             false,
             false,
             true,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...routeParams!);
 
-          let vehicalParams = this.createParam(
+          const vehicalParams = this.createParam(
             this.lkParameters.vehicalSection,
             false,
             false,
             true,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...vehicalParams!);
 
-          let fuelParams = this.createParam(
+          const fuelParams = this.createParam(
             this.lkParameters.fuelSection,
             false,
             false,
             true,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...fuelParams!);
 
-          let powerPlant = this.createParam(
+          const powerPlant = this.createParam(
             this.lkParameters.powerPlantSection,
             false,
             false,
             true,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...powerPlant!);
 
-          // let route = this.createParam(
-          //   this.lkParameters.routeSection,
-          //   false,
-          //   false,
-          //   true,
-          //   false,
-          //   y,
-          //   this.countryCode
-          // );
-          // parameters.push(...route!);
-
- //newly added dimensions
-
-
-          let feedstock = this.createParam(
+          const feedstock = this.createParam(
             this.lkParameters.feedstockSection,
             false,
             false,
             true,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...feedstock!);
-  
-          let residue = this.createParam(
+
+          const residue = this.createParam(
             this.lkParameters.residueSection,
             false,
             false,
             true,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...residue!);
-  
-          let stratum = this.createParam(
+
+          const stratum = this.createParam(
             this.lkParameters.stratumSection,
             false,
             false,
             true,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...stratum!);
-  
-  
-          let soil = this.createParam(
+
+          const soil = this.createParam(
             this.lkParameters.soilSection,
             false,
             false,
             true,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...soil!);
-  
-          let landClearance = this.createParam(
+
+          const landClearance = this.createParam(
             this.lkParameters.landClearanceSection,
             false,
             false,
             true,
             false,
             y,
-            this.countryCode
+            this.countryCode,
           );
           parameters.push(...landClearance!);
         }
       });
 
-      assessment.assessmentYear = assesmentYars;
+      assessment.assessmentYear = assessmentYars;
       assessment.parameters = parameters;
 
-      let paramSuffix =
+      const paramSuffix =
         this.ProjectIndicaterEnum[
           this.ProjectIndicaterEnum['Population Growth (POP)']
         ] === this.selectedprojectIndicater
           ? 'POP'
           : 'GDP';
 
-      //-----------------Projection----------
       if (this.selectedApproch === 'Ex-ante') {
         assessment.projectionIndicator = this.selectedprojectIndicater;
         assessment.projectionBaseYear = this.ProjectionbaseYear;
@@ -3390,40 +3029,40 @@ else{
           this.pBYPDDefaultValue,
           assessment.projectionBaseYear,
           null!,
-          this.selectdProjectionBaseYeardefaultValue
+          this.selectdProjectionBaseYeardefaultValue,
         );
         assessment.parameters.push(projectBaseYearParm);
 
-        let projectionYears: ProjectionYear[] = [];
+        const projectionYears: ProjectionYear[] = [];
         if (this.IsProposal) {
-          let pyear = new ProjectionYear();
+          const pyear = new ProjectionYear();
           pyear.year = this.ProjectionYear.getFullYear();
           projectionYears.push(pyear);
 
-          let projectYearParm = this.createProjectionParam(
+          const projectYearParm = this.createProjectionParam(
             'Projection Year ' + paramSuffix + ' ' + pyear.year,
             this.selectdProjectionYearInstition,
             this.selectdProjectionYearValue,
             this.pBYPDDefaultValue,
             assessment.projectionBaseYear,
             this.ProjectionYear.getFullYear(),
-            null!
+            null!,
           );
           assessment.parameters.push(projectYearParm);
         } else {
           this.projectionYears.map((y) => {
-            let pyear = new ProjectionYear();
+            const pyear = new ProjectionYear();
             pyear.year = y;
             projectionYears.push(pyear);
 
-            let projectYearParm = this.createProjectionParam(
+            const projectYearParm = this.createProjectionParam(
               'Projection Year ' + paramSuffix + ' ' + y,
               this.selectdProjectionYearInstition,
               this.selectdProjectionYearValue,
               this.pBYPDDefaultValue,
               assessment.projectionBaseYear,
               y,
-              null!
+              null!,
             );
             assessment.parameters.push(projectYearParm);
           });
@@ -3436,65 +3075,17 @@ else{
         this.selectYears = [];
       }
 
-      // this.assessmentProxy.createAssesment(assessment) .subscribe((res: any) => {
-      //   console.log('Saved Assessment');
-      //   console.log(res);
-
-      //   if (this.IsProposal == false) {
-      //     this.serviceProxy
-      //       .getManyBaseProjectApprovalStatusControllerProjectApprovalStatus(
-      //         undefined,
-      //         undefined,
-      //         undefined,
-      //         undefined,
-      //         undefined,
-      //         undefined,
-      //         1000,
-      //         0,
-      //         0,
-      //         0
-      //       )
-      //       .subscribe((res: any) => {
-      //         this.projectApprovalStatus = res.data;
-
-      //         let status = this.projectApprovalStatus.find((a) => a.id === 5);
-      //         this.selectedClimateAction.projectApprovalStatus =
-      //           status === undefined ? (null as any) : status;
-
-      //         this.serviceProxy
-      //           .updateOneBaseProjectControllerProject(
-      //             this.selectedClimateAction.id,
-      //             this.selectedClimateAction
-      //           )
-      //           .subscribe((res) => {});
-      //       });
-      //   }
-
-      //   alert('Successfully Saved');
-      //   this.savedAsessment = res;
-      //   //this.updateAssesmentProject(res);
-      //   this.isSave = true;
-      // });
-      console.log("my asse..",assessment);
-
       if (!this.IsProposal&& !assessment.parameters.some(obj => (obj.institution&&obj.institution.id!=undefined&&obj.institution.id!=null)&&!obj.isDefault&&!obj.isHistorical)) {
         this.messageService.add({severity:'error', summary:'Can Not Save', detail:'This can not be proceed, you have to at least select one data providing institution'});
         return
       }
   
-     
-      console.log("pasing", this.requiredParas)
       if (this.requiredParas){
         this.isDisableforSubmitButton = true;
         this.serviceProxy
-          .createOneBaseAssesmentControllerAssessment(assessment)
+          .createOneBaseAssessmentControllerAssessment(assessment)
           .subscribe((res: any) => {
-            // this.isDisableforSubmitButton = true;
             this.isSubmitted = true
-            
-            // console.log('....Saved Assessment',assessment);
-            console.log("assess..",res);
-  
             if (this.IsProposal == false) {
               this.serviceProxy
                 .getManyBaseProjectApprovalStatusControllerProjectApprovalStatus(
@@ -3539,7 +3130,7 @@ else{
               
   
               this.savedAsessment = res;
-              this.getAssesmentResult(res.id);
+              this.getAssessmentResult(res.id);
               this.isSave = true;
             }
             else
@@ -3548,52 +3139,45 @@ else{
               
   
             this.savedAsessment = res;
-            this.getAssesmentResult(res.id);
+            this.getAssessmentResult(res.id);
             this.isSave = true;
             }
-           // alert('Successfully Saved');
            
           }, err => {
             this.isDisableforSubmitButton = false;
-            console.log("saving error", err);
             this.messageService.add({ severity: 'error', summary: 'Error Saving', detail: 'Error saving in assessment!' });
           });
       } else {
         this.isSubmitted = true;
       }
     }
-    
   }
 
-  updateAssesmentProject(assessment: Assessment) {
-    let proj = new Project();
+  updateAssessmentProject(assessment: Assessment) {
+    const proj = new Project();
     proj.id = assessment.project.id;
     assessment.project = proj;
 
     this.serviceProxy
-      .updateOneBaseAssesmentControllerAssessment(assessment.id, assessment)
-      .subscribe((res: any) => {
-        console.log('Updated Assesment Project');
-        console.log(res);
-      });
+      .updateOneBaseAssessmentControllerAssessment(assessment.id, assessment)
+      .subscribe((res: any) => {});
   }
 
-  getAssesmentResult(assesmentId: number) {
-    let filter: string[] = new Array();
-
+  getAssessmentResult(assessmentId: number) {
     this.assesmentYearProxy
-      .getAllByAssessmentId(assesmentId)
+      .getAllByAssessmentId(assessmentId)
       .subscribe((res) => {
-        let assesYear = res;
+        const assesYear = res;
 
         this.assesmentResaultProxy
-          .getAssesmentResult(assesmentId, assesYear[0].ay_id, true, '', "1234")
-          .subscribe((res) => {
-
-         
-            // this.assessmentResult = res;
-           // console.log('getAssesmentResult...',res);
-          });
+          .getAssessmentResult(
+            assessmentId,
+            assesYear[0].ay_id,
+            true,
+            '',
+            environment.apiKey1,
+          )
+          .subscribe((res) => {});
       });
   }
 
@@ -3603,45 +3187,44 @@ else{
     isProject: boolean,
     islekage: boolean,
     isProjection: boolean,
-    assesmentYear: number,
-    countryCode:string
+    assessmentYear: number,
+    countryCode: string,
   ) {
-    let parameters: Parameter_Server[] = [];
+    const parameters: Parameter_Server[] = [];
 
     if (
       section !== null &&
       section !== undefined &&
       section.sectionparameters.length > 0
     ) {
-      console.log("sectionparameters",section.sectionparameters)
       section.sectionparameters.map((sp: SectionParameter) => {
         sp.parameters.map((p: Parameter) => {
-          let param = this.createServerParam(
+          const param = this.createServerParam(
             p,
             sp,
-            assesmentYear,
+            assessmentYear,
             undefined,
             false,
             isBaseline,
             isProject,
             islekage,
             isProjection,
-            countryCode
+            countryCode,
           );
           parameters.push(param);
           if (p.alternativeParameters.length > 0) {
             p.alternativeParameters.map((p: Parameter) => {
-              let altParam = this.createServerParam(
+              const altParam = this.createServerParam(
                 p,
                 sp,
-                assesmentYear,
+                assessmentYear,
                 param,
                 true,
                 isBaseline,
                 isProject,
                 islekage,
                 isProjection,
-                countryCode
+                countryCode,
               );
               parameters.push(altParam);
             });
@@ -3655,62 +3238,48 @@ else{
   createServerParam(
     p: Parameter,
     sp: SectionParameter,
-    assesmentYear: number,
+    assessmentYear: number,
     pp: Parameter_Server | undefined,
     isAlternative: boolean,
     isBaseline: boolean,
     isProject: boolean,
     islekage: boolean,
     isProjection: boolean,
-    countryCode:string
+    countryCode: string,
   ) {
-
-    if (this.IsProposal){
-      if (p.alternativeParameters.length==0){
-        if (!p.isAlternativeParameter){
-          if (!p.value && !p.institution){
-            if((!p.defaultValue && p.isDefaultValue)){
-              this.requiredParas = false
-            }else if (!p.isDefaultValue && (!p.institution)){
-              this.requiredParas = false
-            } 
+    if (this.IsProposal) {
+      if (!p.isAlternativeParameter) {
+        if (!p.value && !p.institution) {
+          if (!p.defaultValue && p.isDefaultValue) {
+            this.requiredParas = false;
+          } else if (!p.isDefaultValue && !p.institution) {
+            this.requiredParas = false;
           }
         }
       }
-      else{
-        this.requiredParas = true
-      }
-      
     } else {
-      if (!p.value && !p.institution){
-        if((!p.defaultValue && p.isDefaultValue)){
-          this.requiredParas = false
-        }else if (!p.isDefaultValue && (!p.institution)){
-          this.requiredParas = false
-        } 
-      } 
+      if (!p.value && !p.institution) {
+        if (!p.defaultValue && p.isDefaultValue) {
+          this.requiredParas = false;
+        } else if (!p.isDefaultValue && !p.institution) {
+          this.requiredParas = false;
+        }
+      }
     }
 
-    console.log("#############", p, this.requiredParas)
-    // console.log()
-      
-    console.log(sp);
-    let param = new Parameter_Server();
+    const param = new Parameter_Server();
     param.name = `${p.parameterName} - ${sp.parameterHeader}`;
     param.originalName = p.parameterName;
-    let inst = new Institution();
+    const inst = new Institution();
     inst.id = p.institution?.id;
     param.institution = inst;
     param.isAlternative = isAlternative;
 
     if (param.isAlternative) {
-      if (pp !== undefined && pp.isHistorical){
-        pp.institution = null!
-      }
       param.parentParameter = pp!;
     }
     param.baseYear = this.baseYear.getFullYear();
-    param.assessmentYear = assesmentYear;
+    param.assessmentYear = assessmentYear;
     param.useDefaultValue = p.useDefaultValue;
     param.isBaseline = isBaseline;
     param.isProject = isProject;
@@ -3759,9 +3328,9 @@ else{
     useDefaultValue: boolean,
     projectionBaseYear: number,
     projectionYear: number,
-    defaulteVlue: DefaultValue
+    defaulteVlue: DefaultValue,
   ) {
-    let param = new Parameter_Server();
+    const param = new Parameter_Server();
     param.name = name;
     param.originalName = name;
     param.institution = institution;
@@ -3774,7 +3343,6 @@ else{
     param.projectionBaseYear = projectionBaseYear;
     param.projectionYear = projectionYear;
     param.value = value;
-    // param.defaultValueI = defaulteVlue;
     if (
       this.selectedprojectIndicater ===
       this.ProjectIndicaterEnum[
@@ -3793,18 +3361,17 @@ else{
     this.isClimateActionListDisabled = true;
     this.clear();
     this.loadJson();
-    this.methodAssessments = this.selectedMethodology.assessments
-    console.log("this.selectedMethodology",this.selectedMethodology)
+    this.methodAssessments = this.selectedMethodology.assessments;
   }
 
-  onBaselineScenarioChange(event: any){
+  onBaselineScenarioChange(event: any) {
     this.isMethodologyDisabled = true;
   }
 
   Changeobjective(event: any) {
     if (event.filter.length >= 3) {
-      let vValue = this.assesmentObjective.find(
-        (a: any) => a.name === event.filter
+      const vValue = this.assessmentObjectiveList.find(
+        (a: any) => a.name === event.filter,
       );
       if (vValue === undefined || vValue === null) {
         this.showAddObjective = true;
@@ -3817,10 +3384,9 @@ else{
   }
 
   addObjective() {
-    let assesmentObjective = new AssessmentObjective();
-    assesmentObjective.objective = this.newObjective;
-    this.assesmentObjective.push(assesmentObjective);
-    // this.selectedObjective.push(assesmentObjective);
+    const assessmentObjective = new AssessmentObjective();
+    assessmentObjective.objective = this.newObjective;
+    this.assessmentObjectiveList.push(assessmentObjective);
     this.showAddObjective = false;
     this.newObjective = '';
   }
@@ -3837,34 +3403,9 @@ else{
     this.blParameters = new ParameterSections();
     this.prParameters = new ParameterSections();
     this.lkParameters = new ParameterSections();
-    // this.routes = [];
-    // this.powerPlants = [];
-    // this.baslineParam = [];
-    // this.ProjectParam = [];
-    // this.lekageParam = [];
-    // this.methodologyCode = '';
-    // this.useRoute = false;
-    // this.usePowerPlant = false;
     this.baselineScenario = '';
     this.ProjectScenario = '';
     this.LeakageScenario = '';
-    // this.blHasVehicale = false;
-    // this.blHasFuel = false;
-    // this.blHasRoute = false;
-    // this.blHasPowerPlant = false;
-    // this.prHasVehicale = false;
-    // this.prHasFuel = false;
-    // this.prHasRoute = false;
-    // this.prHasPowerPlant = false;
-    // this.lkHasVehicale = false;
-    // this.lkHasRoute = false;
-    // this.lkHasPowerPlant = false;
-    // this.blVehicalValue = [];
-    // this.blFuelValue = [];
-    // this.prVehicalValue = [];
-    // this.prFuelValue = [];
-    // this.lkVehicalValue = [];
-    // this.lkFuelValue = [];
     this.basllineSelection = [];
     this.projectSelection = [];
     this.lekageSelection = [];
@@ -3878,180 +3419,129 @@ else{
   }
 
   filterMethodology() {
-
-    
-    if(this.countOfMitigationActionDropDownList>1)
-    {
-      console.log("inside countOfMitigationActionDropDownList if .. ")
+    if (this.countOfMitigationActionDropDownList > 1) {
       this.methodologys = this.methodologysCopy;
-      this.applicability = []
-      this.selectedApplicability  = [];
+      this.applicability = [];
+      this.selectedApplicability = [];
       this.selectedEasyofdataCollection = '';
-      this.arrEsy = []
+      this.arrEsy = [];
       this.countOfMitigationActionDropDownList = 0;
-      this.countOfMitigationActionDropDownList = this.countOfMitigationActionDropDownList+1;
+      this.countOfMitigationActionDropDownList =
+        this.countOfMitigationActionDropDownList + 1;
     }
 
     if (this.selectedMitigationActionType !== undefined) {
       this.methodologys = this.methodologys.filter(
         (a) =>
-          a.mitigationActionType?.id === this.selectedMitigationActionType?.id
+          a.mitigationActionType?.id === this.selectedMitigationActionType?.id,
       );
-
-      
     }
     if (
       this.selectedApplicability !== undefined &&
       this.selectedApplicability.length > 0
     ) {
+      const appliArr1: any[] = [];
+      for (const item of this.selectedApplicability) {
+        const vals = this.methodologys.filter(
+          (a) => a.applicability.id == item.id,
+        );
+        Array.prototype.push.apply(appliArr1, vals);
+      }
 
-
-
-     // this.methodologys = this.methodologys.filter((a) =>this.selectedApplicability.find((b) => b.id === a.applicability?.id) !== undefined);
-     let appliArr1:any[]=[];
-     let val: any[]=[];
-     for(let item of this.selectedApplicability)
-     {
-      let vals = this.methodologys.filter((a) =>a.applicability.id == item.id)
-      Array.prototype.push.apply(appliArr1,vals);
-   
-     }
-
-     setTimeout(() => {
-      this.methodologys = appliArr1;
-     
-    }, 1000);
-    
-
-
-
-     
+      setTimeout(() => {
+        this.methodologys = appliArr1;
+      }, 1000);
     }
-    if (this.selectedEasyofdataCollection !== undefined && this.selectedEasyofdataCollection !== '') 
-    {
-     this.methodologys = this.methodologys.filter((a) => a.easenessOfDataCollection == this.selectedEasyofdataCollection);
+    if (
+      this.selectedEasyofdataCollection !== undefined &&
+      this.selectedEasyofdataCollection !== ''
+    ) {
+      this.methodologys = this.methodologys.filter(
+        (a) => a.easenessOfDataCollection == this.selectedEasyofdataCollection,
+      );
     }
   }
 
   async onMitigationActionChange($event: any) {
-    
-    this.countOfMitigationActionDropDownList = this.countOfMitigationActionDropDownList +1;
+    this.countOfMitigationActionDropDownList =
+      this.countOfMitigationActionDropDownList + 1;
     this.filterMethodology();
-    let arr:any[]= []  
-    for(let item of this.methodologys)
-    {
-       arr.push(item.id)
-    } 
-    let res2:any;
-    let id = 1;
-    res2 = await this.applicabilityControllerServiceProxy.getApplicability().toPromise();
-   for(let item of res2)
-    {
+    const arr: any[] = [];
+    for (const item of this.methodologys) {
+      arr.push(item.id);
+    }
+    const res2 = await this.applicabilityControllerServiceProxy
+      .getApplicability()
+      .toPromise();
+    for (const item of res2) {
       let count = 0;
-       for (let x of item.methodologies)
-       {
-          
-          for(let y of arr)
-          {
-             if(x.id == y && count == 0)
-             {
-               count++;
-              this.applicability.push(item)
-             }
+      for (const x of item.methodologies) {
+        for (const y of arr) {
+          if (x.id == y && count == 0) {
+            count++;
+            this.applicability.push(item);
           }
-       }
-    } 
-  
-    
+        }
+      }
+    }
   }
 
-  onApplicationAssesmentChange($event: any) {
-
+  onApplicationAssessmentChange($event: any) {
     this.filterMethodology();
 
-   
-    for(let item of this.methodologys)
-    {
-     let x  = item.easenessOfDataCollection;
-    
-     this.arrEsy.push(x)
+    for (const item of this.methodologys) {
+      const x = item.easenessOfDataCollection;
 
+      this.arrEsy.push(x);
     }
     this.arrEsy = [...new Set(this.arrEsy)];
-
   }
 
-
-
-
   onEasyOFdataCollectionChange($event: any) {
-
     this.filterMethodology();
   }
 
   async ViewResultClick() {
-   console.log("++++++++++++++++++final",this.uniqdefaultValues);
-   for (let num of this.uniqdefaultValues){
-   let result= await this.defaultValueControllerServiceProxy.createValue(num) .subscribe((res) => {});;
-   
-   }
-   setTimeout(() => {
-     
-    this.router.navigate(['/result'], {
-      queryParams: {
-        id: this.savedAsessment.id,
-        yr: this.assesmentYear.getFullYear(),
-      },
-    });           
-    },2000);
-    
+    for (const num of this.uniqdefaultValues) {
+      const result = await this.defaultValueControllerServiceProxy
+        .createValue(num)
+        .subscribe((res) => {});
+    }
+    setTimeout(() => {
+      this.router.navigate(['/result'], {
+        queryParams: {
+          id: this.savedAsessment.id,
+          yr: this.assesmentYear.getFullYear(),
+        },
+      });
+    }, 2000);
   }
 
-  async onAssesmentYearChange(event: any) {
+  async onAssessmentYearChange(event: any) {
     this.projectionBaseyears = [];
     if (this.IsProposal) {
       this.projectionBaseyears.push(this.assesmentYear.getFullYear());
       this.ProjectionbaseYear = this.projectionBaseyears[0];
     } else {
-      // var min = Math.min(...this.selectYears);
-      // var max = Math.max(...this.selectYears);
-
-      // var maxDate = new Date();
-      // maxDate.setFullYear(max);
-
-      // var minDate = new Date();
-      // minDate.setFullYear(min);
-
-      // this.projectionBaseMaxDate = maxDate;
-      // this.projectionBaseMinDate = minDate;
       this.projectionBaseyears.push(...this.selectYears);
 
-     //console.log("selctYeras..",this.selectYears)
-    
-     this.warningMessage='';
-     this.selectedApproch = '';
-     this.assementYearAndTypeObjectList=[];
-     for(let year of this.selectYears)
-     {
- 
-      //
-      let res2:any;
-      res2 = await this.assesmentYearProxy.getAssessmentByYearAndProjectId(year.toString(),this.selectedClimateAction.id).toPromise();
-      //this.assessmentList = res2;
-      
- 
-      let objAsseType = {'year':0,'assessmentType':''}
-      objAsseType['year'] = year;
-      objAsseType['assessmentType'] = res2?.Assessment?.assessmentType;
-      this.assementYearAndTypeObjectList.push(objAsseType);
- 
-     }
- 
-     console.log("assessmentByYearListr..",this.assementYearAndTypeObjectList)
+      this.warningMessage = '';
+      this.selectedApproch = '';
+      this.assessmentYearAndTypeObjectList = [];
+      for (const year of this.selectYears) {
+        const res2 = await this.assesmentYearProxy
+          .getAssessmentByYearAndProjectId(
+            year.toString(),
+            this.selectedClimateAction.id,
+          )
+          .toPromise();
 
+        const objAsseType = { year: 0, assessmentType: '' };
+        objAsseType['year'] = year;
+        objAsseType['assessmentType'] = res2?.Assessment?.assessmentType;
+        this.assessmentYearAndTypeObjectList.push(objAsseType);
+      }
     }
-
-    
   }
 
   updateProjectApprovelState() {
@@ -4066,33 +3556,29 @@ else{
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.projectApprovalStatus = res.data;
 
-        let status = this.projectApprovalStatus.find((a) => a.id === 5);
+        const status = this.projectApprovalStatus.find((a) => a.id === 5);
         this.selectedClimateAction.projectApprovalStatus =
           status === undefined ? (null as any) : status;
 
         this.serviceProxy
           .updateOneBaseProjectControllerProject(
             this.selectedClimateAction.id,
-            this.selectedClimateAction
+            this.selectedClimateAction,
           )
           .subscribe((res) => {});
       });
   }
-//////
   isGuidedSelectionChange(event: any) {
     this.selectedMitigationActionType = undefined;
     this.selectedApplicability = [];
     this.selectedEasyofdataCollection = undefined;
     this.selectedMethodology = new Methodology();
     this.methodologys = this.methodologyList;
-
-    console.log(this.methodologyList);
-    console.log(this.methodologys);
   }
 
   isDirectSelectionChange(event: any) {
@@ -4101,13 +3587,9 @@ else{
     this.selectedEasyofdataCollection = undefined;
     this.selectedMethodology = new Methodology();
     this.methodologys = this.methodologyList;
-
-    console.log(this.methodologyList);
-    console.log(this.methodologys);
   }
 
   getOptions(blFuelValue: any) {
-    
     if (blFuelValue) {
       blFuelValue = blFuelValue.filter((a: any) => a.name !== this.common);
     }
@@ -4121,11 +3603,9 @@ else{
       common = value.find((a: any) => a.name === this.common);
     }
 
-    console.log("common",common)
     return common;
   }
 }
 function selectedClimateActionnt(arg0: string, selectedClimateActionnt: any) {
   throw new Error('Function not implemented.');
 }
-

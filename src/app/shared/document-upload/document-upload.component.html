@@ -9,7 +9,6 @@
       chooseLabel="Upload"
       (onUpload)="onUploadComplete($event)"
       [url]="uploadURL"
-       
     >
       <ng-template pTemplate="content">
         <ul *ngIf="uploadedFiles.length">
@@ -21,17 +20,10 @@
     </p-fileUpload>
   </div>
 
-  <!-- <p-confirmDialog
-    [style]="{ width: '50vw' }"
-    [baseZIndex]="10000"
-    rejectButtonStyleClass="p-button-text"
-  >
-  </p-confirmDialog> -->
-
-  <p-table *ngIf="doucmentList.length>0"
-  
-     p-table
-     #table
+  <p-table
+    *ngIf="doucmentList.length > 0"
+    p-table
+    #table
     [value]="doucmentList"
     [lazy]="true"
     (onLazyLoad)="loadDocments($event)"
@@ -40,9 +32,6 @@
     [autoLayout]="true"
     
     scrollHeight="200px"
-   
-    
-    
   >
     <ng-template pTemplate="header">
       <tr >
@@ -51,13 +40,11 @@
         <th *ngIf="viewDocument" class="col-md-1"></th>
         <th class="col-md-1"></th>
         <th class="col-md-1"></th>
-        
       </tr>
     </ng-template>
     <ng-template  pTemplate="body" let-doc>
       <tr class="row">
         <td class="col-md-9">
-          
           {{ doc.fileName }}
         </td>
           <td class="col-md-1">
@@ -96,19 +83,5 @@
         <td  class="col-md-1"></td>
       </tr>
     </ng-template>
-    <!-- <ng-template pTemplate="paginatorleft">
-      <p-button
-        type="button"
-        icon="pi pi-plus"
-        styleClass="p-button-text"
-      ></p-button>
-    </ng-template>
-    <ng-template pTemplate="paginatorright">
-      <p-button
-        type="button"
-        icon="pi pi-cloud"
-        styleClass="p-button-text"
-      ></p-button>
-    </ng-template> -->
   </p-table>
 </div>

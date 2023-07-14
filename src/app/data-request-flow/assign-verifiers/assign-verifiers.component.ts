@@ -4,19 +4,9 @@ import {
   UsersControllerServiceProxy,
 } from './../../../shared/service-proxies/service-proxies';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
-import {
-  AssessmentYear,
-  ParameterControllerServiceProxy,
-  ParameterRequestControllerServiceProxy,
-  ServiceProxy,
-  UpdateDeadlineDto,
-  UpdateValueEnterData,
-} from 'shared/service-proxies/service-proxies';
-import { retryWhen } from 'rxjs/operators';
+import { AssessmentYear } from 'shared/service-proxies/service-proxies';
 import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
 
 @Component({
@@ -26,18 +16,11 @@ import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
 })
 export class AssignVerifiersComponent implements OnInit {
   VerificationStatusEnum = VerificationStatus;
-  verificationStatus: string[] = [
-    // VerificationStatus[VerificationStatus.Fail],
-    // VerificationStatus[VerificationStatus.FinalAssessment],
-    // VerificationStatus[VerificationStatus.InitialAssessment],
-    // VerificationStatus[VerificationStatus.NCRecieved],
-    // VerificationStatus[VerificationStatus.Pass],
-    // VerificationStatus[VerificationStatus.PreAssessment],
-  ];
-  assesMentYearId: number = 0;
-  assementYear: AssessmentYear = new AssessmentYear();
+  verificationStatus: string[] = [];
+  assesMentYearId = 0;
+  assessmentYear: AssessmentYear = new AssessmentYear();
   parameters: any[] = [];
-  loading: boolean = false;
+  loading = false;
   confirm1: boolean;
   userList: any[] = [];
   selectedUser: any;
@@ -45,8 +28,8 @@ export class AssignVerifiersComponent implements OnInit {
   reasonForReject: string;
   minDate: Date;
   selectedParameters: any[] = [];
-  totalRecords: number = 0;
-  rows: number = 10;
+  totalRecords = 0;
+  rows = 10;
   last: number;
   searchBy: any = {
     text: null,
@@ -54,13 +37,13 @@ export class AssignVerifiersComponent implements OnInit {
   };
 
   constructor(
-    private assesmentProxy: AssessmentYearControllerServiceProxy,
+    private assessmentProxy: AssessmentYearControllerServiceProxy,
     private messageService: MessageService,
-    private usersControllerServiceProxy: UsersControllerServiceProxy
+    private usersControllerServiceProxy: UsersControllerServiceProxy,
   ) {}
 
   ngOnInit(): void {
-    let event: any = {};
+    const event: any = {};
     event.rows = this.rows;
     event.first = 0;
 
@@ -73,8 +56,6 @@ export class AssignVerifiersComponent implements OnInit {
           }
         });
         this.totalRecords = res.totalRecords;
-
-        console.log('this.userList', this.userList);
       });
   }
   onSearch() {
@@ -88,43 +69,41 @@ export class AssignVerifiersComponent implements OnInit {
     this.onSearch();
   }
   loadgridData = (event: LazyLoadEvent) => {
-    console.log('event Date', event);
     this.loading = true;
     this.totalRecords = 0;
 
-    let pageNumber =
+    const pageNumber =
       event.first === 0 || event.first === undefined
         ? 1
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
     this.rows = event.rows === undefined ? 10 : event.rows;
 
-    let statusId = this.searchBy.status
+    const statusId = this.searchBy.status
       ? Number(VerificationStatus[this.searchBy.status])
       : 0;
 
-    let filtertext = this.searchBy.text ? this.searchBy.text : '';
-    console.log('searchBy', statusId);
+    const filtertext = this.searchBy.text ? this.searchBy.text : '';
+
     setTimeout(() => {
-      this.assesmentProxy
+      this.assessmentProxy
         .getAssessmentForAssignVerifiers(
           pageNumber,
           this.rows,
           statusId,
-          filtertext
+          filtertext,
         )
         .subscribe((a) => {
-          console.log('aa', a);
           if (a) {
             this.parameters = a.items;
             this.totalRecords = a.meta.totalItems;
             const uniqueStatus = [
               ...new Set(a.items.map((obj: any) => obj.verificationStatus)),
             ];
-            console.log('uniqueStatus', uniqueStatus);
+
             this.verificationStatus = [];
             uniqueStatus.forEach((element) => {
               this.verificationStatus.push(
-                this.VerificationStatusEnum[Number(element)]
+                this.VerificationStatusEnum[Number(element)],
               );
             });
           }
@@ -140,19 +119,17 @@ export class AssignVerifiersComponent implements OnInit {
   }
 
   onAcceptConfirm() {
-    console.log('this.selectedUser', this.selectedUser);
-    let idList = new Array<number>();
+    const idList = new Array<number>();
     for (let index = 0; index < this.selectedParameters.length; index++) {
       const element = this.selectedParameters[index];
       idList.push(element.id);
     }
 
-    let inputParameters = new DataVerifierDto();
+    const inputParameters = new DataVerifierDto();
     inputParameters.ids = idList;
-    // inputParameters.status = 4;
     inputParameters.userId = this.selectedUser?.id;
     inputParameters.deadline = moment(this.selectedDeadline);
-    this.assesmentProxy.updateAssignVerifiers(inputParameters).subscribe(
+    this.assessmentProxy.updateAssignVerifiers(inputParameters).subscribe(
       (res) => {
         this.messageService.add({
           severity: 'success',
@@ -169,7 +146,7 @@ export class AssignVerifiersComponent implements OnInit {
           summary: 'Error.',
           detail: 'Can not Assign Data verifiers, please try again.',
         });
-      }
+      },
     );
     this.confirm1 = false;
   }

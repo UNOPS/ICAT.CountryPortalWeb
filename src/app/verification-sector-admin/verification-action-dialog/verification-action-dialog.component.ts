@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AssesmentControllerServiceProxy, AssessmentYear, ChangeParameterValue, Institution, InstitutionControllerServiceProxy, Ndc, Parameter, Project, ServiceProxy, SubNdc, UnitConversionControllerServiceProxy, User, VerificationControllerServiceProxy, VerificationDetail } from 'shared/service-proxies/service-proxies';
+import { AssessmentControllerServiceProxy, AssessmentYear, ChangeParameterValue, Institution, InstitutionControllerServiceProxy, Ndc, Parameter, Project, ServiceProxy, SubNdc, UnitConversionControllerServiceProxy, User, VerificationControllerServiceProxy, VerificationDetail } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 import { AppService } from 'shared/AppService';
 
@@ -51,9 +51,8 @@ export class VerificationActionDialogComponent implements OnInit {
     private dialogRef: DynamicDialogRef,
     private serviceProxy: ServiceProxy,
     private appService: AppService,
-    private assessmentProxy: AssesmentControllerServiceProxy,
+    private assessmentProxy: AssessmentControllerServiceProxy,
   ) { 
-    console.log("config data--------", config.data)
     this.parameter = this.config.data['parameter'];
     this.verificationDetail = config.data['verificationDetail']
     this.type = config.data['type']
@@ -85,7 +84,6 @@ export class VerificationActionDialogComponent implements OnInit {
         .subscribe((res: any) => {
           this.ndcList = res.data;
           this.ndcList = this.ndcList.filter((o) => o.country.id == this.userCountryId && o.sector.id == this.userSectorId);
-          console.log("+++++++++", this.ndcList)
         });
     } else if (this.type === 'parameter') {
       
@@ -120,7 +118,7 @@ export class VerificationActionDialogComponent implements OnInit {
   }
 
   async getInstitutions(){
-    let ins = await this.instituationProxy.getInstitutionforAssesment().toPromise()
+    let ins = await this.instituationProxy.getInstitutionforAssessment().toPromise()
     if (ins.length > 0){
       this.instiTutionList = ins
     } 
@@ -233,7 +231,6 @@ export class VerificationActionDialogComponent implements OnInit {
   }
 
   async sendValueForVerification(_isEnterData: boolean) {
-    console.log("clicked")
     if ((this.correctValue && this.correctUnit) || (this.selectedInstitution && this.correctUnit)
       || this.resultComment || (this.selectedDefault && this.correctUnit) ||  (this.selectedHistoricalValue && this.correctUnit) || (this.selectedNdc)) {
       if (this.type === 'parameter') {
@@ -264,15 +261,10 @@ export class VerificationActionDialogComponent implements OnInit {
             }
             body.isHistorical = true
           } else {
-            console.log("enter direct value", this.correctValue, this.correctUnit)
-            console.log("selected parameter", this.parameter)
-           
             body.correctData = {
               value: this.correctValue,
               unit: this.correctUnit.ur_fromUnit
             }
-            
-            console.log(body)
           }
           let res = await this.verificationControllerServiceProxy.changeParameterValue(body).toPromise()
           if (res.status === 'saved') {
@@ -290,7 +282,6 @@ export class VerificationActionDialogComponent implements OnInit {
               this.dialogRef.close({ isEnterData: _isEnterData, value: this.correctValue + this.correctUnit.ur_fromUnit })
             }
           }
-          console.log(res)
 
         } else {
           // data collection path
@@ -314,7 +305,6 @@ export class VerificationActionDialogComponent implements OnInit {
             });
             this.dialogRef.close({ isEnterData: _isEnterData, value: this.selectedInstitution.name })
           }
-          console.log(res)
         }
       } else if (this.type === 'ndc') {
         this.dialogRef.close({ result: { ndc: this.selectedNdc, subNdc: this.selectedSubNdc } })

@@ -20,57 +20,58 @@ export class PowerPlantParameterComponent implements OnInit {
   IsProposal: boolean;
 
   @Input()
-  isDisableforSubmitButton:boolean;
+  isDisableforSubmitButton: boolean;
   @Input()
   infos: any;
   @Input()
-  isSubmitted: boolean
+  isSubmitted: boolean;
 
   instiTutionList: Institution[];
-  isHistoricalValue: boolean = false;
-  userCountryId:number = 0;
-  userSectorId:number = 0;
+  isHistoricalValue = false;
+  userCountryId = 0;
+  userSectorId = 0;
 
   constructor(
     private serviceProxy: ServiceProxy,
-    private instituationProxy: InstitutionControllerServiceProxy
+    private instituationProxy: InstitutionControllerServiceProxy,
   ) {}
 
   ngOnInit(): void {
-
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
-    this.userCountryId  = tokenPayload.countryId;
+    this.userCountryId = tokenPayload.countryId;
     this.userSectorId = tokenPayload.sectorId;
 
-
     this.instituationProxy
-      .getInstitutionforAssesment()
+      .getInstitutionforAssessment()
       .subscribe((res: any) => {
         this.instiTutionList = res;
-        //this.instiTutionList = this.instiTutionList.filter((o)=>o.country?.id == this.userCountryId);
-       
       });
   }
 
-  ngOnChanges(changes: any) {
-    // console.log(this.parameterSection);
+  ngOnChanges(changes: any) {}
+
+  onSelectHistoricalVal(event: any, idxSec: any, idxPara: any) {
+    this.parameterSection.powerPlantSection.sectionparameters[
+      idxSec
+    ].parameters[idxPara]['value'] = event.value.value;
+    this.parameterSection.powerPlantSection.sectionparameters[
+      idxSec
+    ].parameters[idxPara]['historicalParaID'] = event.value.id;
   }
 
-  onSelectHistoricalVal(event:any, idxSec:any, idxPara:any){
-    console.log(event.value.value)
-    this.parameterSection.powerPlantSection.sectionparameters[idxSec].parameters[idxPara]["value"] = event.value.value
-    this.parameterSection.powerPlantSection.sectionparameters[idxSec].parameters[idxPara]["historicalParaID"] = event.value.id
+  changeUnit(e: any, idxSec: any, idxPara: any) {
+    const values = this.parameterSection.powerPlantSection.sectionparameters[
+      idxSec
+    ].parameters[idxPara].historicalValues.filter(
+      (val) =>
+        val.unit ===
+        this.parameterSection.powerPlantSection.sectionparameters[idxSec]
+          .parameters[idxPara].UOM,
+    );
+    values.sort((a: any, b: any) => b.year - a.year);
+    this.parameterSection.powerPlantSection.sectionparameters[
+      idxSec
+    ].parameters[idxPara].displayhisValues = values;
   }
-
-  changeUnit(e: any, idxSec:any, idxPara:any ){
-    console.log(e.value)
-    let values = this.parameterSection.powerPlantSection.sectionparameters[idxSec].parameters[idxPara].historicalValues.filter(
-      (val) => val.unit === this.parameterSection.powerPlantSection.sectionparameters[idxSec].parameters[idxPara].UOM
-    )
-    values.sort((a: any,b: any) => b.year - a.year);
-    this.parameterSection.powerPlantSection.sectionparameters[idxSec].parameters[idxPara].displayhisValues = values
-
-  }
-
 }

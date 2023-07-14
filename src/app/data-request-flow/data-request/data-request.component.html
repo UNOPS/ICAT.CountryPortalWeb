@@ -20,7 +20,6 @@
             label="Search"
             (click)="onSearchClick($event)"
           ></button>
-        
         </div>
       </div>
     </div>
@@ -28,7 +27,6 @@
       <div class="col-md-4">
         <div class="col-12">
           <div class="p-field">
-            <!--climateactions-->
             <label for="projStatus">Specific Climate Actions</label>
             <p-dropdown
               name="climateActiontype"
@@ -82,9 +80,7 @@
       </div>
     </div>
 
-    <!-- <div> {{climateactions|json}} </div> -->
-
-    <div class="row p-2" style="margin-bottom: 36px;">
+    <div class="row p-2" style="margin-bottom: 36px">
       <p-table
         #table
         [value]="dataRequestList"
@@ -100,26 +96,7 @@
         [responsive]="true"
         [(selection)]="selectedParameters"
       >
-        <!-- Table header start search -->
-
-        <!-- <p-table #tt [value]="climateactions" [columns]="cols" placeholder="Global Filter" [filter]="true" filterMatchMode="contains" >                                                          
-      <ng-template pTemplate="caption">
-          <div style="text-align: right">        
-              <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-              <input type="text" pInputText size="50" style="width:auto">
-          </div>
-      </ng-template> -->
-
-        <!-- Table header END Search -->
-
         <ng-template pTemplate="header">
-          <!-- <tr> 
-          <th *ngFor="let col of columns" [ngSwitch]="col.field">
-            <input *ngSwitchCase="'climateActionName'" pInputText type="text"
-              (input)="dt.filter($event.target.value, col.field, 'contains')" />
-          </th>
-        </tr> -->
-
           <tr>
             <th style="width: 3rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
@@ -161,12 +138,12 @@
             </td>
             <td>
               {{
-                dataRequestList?.parameter.isAlternative ? "Alternative" : ""
+                dataRequestList?.parameter.isAlternative ? 'Alternative' : ''
               }}
-              {{ dataRequestList?.parameter.isBaseline ? "Baseline" : "" }}
-              {{ dataRequestList?.parameter.isProject ? "Project" : "" }}
-              {{ dataRequestList?.parameter.isLekage ? "Lekage" : "" }}
-              {{ dataRequestList?.parameter.isProjection ? "Projection" : "" }}
+              {{ dataRequestList?.parameter.isBaseline ? 'Baseline' : '' }}
+              {{ dataRequestList?.parameter.isProject ? 'Project' : '' }}
+              {{ dataRequestList?.parameter.isLekage ? 'Lekage' : '' }}
+              {{ dataRequestList?.parameter.isProjection ? 'Projection' : '' }}
             </td>
             <td>
               <button
@@ -209,7 +186,7 @@
                 {{
                   dataRequestList.parameter.institution
                     ? dataRequestList.parameter.institution.name
-                    : ""
+                    : ''
                 }}
               </div>
 
@@ -236,14 +213,18 @@
                   : dataRequestList.parameter.projectionBaseYear
               }}
             </td>
-            <td>{{ dataRequestList.deadline | date: "dd-MM-yyyy " }}</td>
+            <td>{{ dataRequestList.deadline | date : 'dd-MM-yyyy ' }}</td>
             <td>
               {{
-                dataRequestList.dataRequestStatus == -1 ? "Just Created" : ""
+                dataRequestList.dataRequestStatus == -1 ? 'Just Created' : ''
               }}
-              {{ dataRequestList.dataRequestStatus == 1 ? "Saved" : "" }}
-              {{ dataRequestList.dataRequestStatus == 30 ? "Rejected(QC)" : "" }}
-              {{ dataRequestList.dataRequestStatus == -6? "Rejected(IA)" : "" }}
+              {{ dataRequestList.dataRequestStatus == 1 ? 'Saved' : '' }}
+              {{
+                dataRequestList.dataRequestStatus == 30 ? 'Rejected(QC)' : ''
+              }}
+              {{
+                dataRequestList.dataRequestStatus == -6 ? 'Rejected(IA)' : ''
+              }}
             </td>
             <td>
               <i
@@ -252,7 +233,6 @@
                 (click)="getInfo(dataRequestList)"
               ></i>
             </td>
-            <!-- <td>{{ dataRequestList.id }}</td> -->
           </tr>
         </ng-template>
       </p-table>
@@ -268,7 +248,6 @@
       </div>
     </div>
   </div>
-  
 </div>
 <p-toast position="top-right"></p-toast>
 <p-dialog [(visible)]="confirm1" header="Assign a Deadline">
@@ -298,7 +277,6 @@
               (click)="onClickSend(1)"
               style="width: 100px"
             ></button>
-            <!-- <p-toast position="top-right"></p-toast> -->
           </div>
         </td>
         <td>
@@ -311,7 +289,6 @@
               label="Send Now"
               (click)="onClickSend(2)"
             ></button>
-            <!-- <p-toast position="top-right"></p-toast> -->
           </div>
         </td>
         <td>
@@ -330,13 +307,6 @@
   [draggable]="false"
   [resizable]="false"
 >
-  <!-- <app-raise-concern
-    [area]="raiseConcernSection"
-    [verificationDetails]="concernVerificationDetails"
-    [assesmentYear]="assementYear"
-    [isNdC]="concernIsNdC"
-    [isMethodology]="concernIsMethodology"
-  ></app-raise-concern> -->
   <app-view-datarequest-history
     [parameterId]="paraId"
     [listOfHistory]="requestHistoryList"
@@ -352,12 +322,6 @@
   [draggable]="false"
   [resizable]="true"
 >
-  <!-- <div class="p-field p-col-12 p-md-4">
-  <span class="p-float-label">
-    
-    <label>{{selectedParameter?.name}}</label>
-  </span>
-</div> -->
   <p-card
     subheader="{{ selectedParameter?.name }}"
     [style]="{ width: '360px' }"
@@ -373,11 +337,6 @@
       [listStyle]="{ 'max-height': '250px' }"
       optionLabel="name"
     >
-      <!-- <ng-template let-country pTemplate="item">
-        <div class="country-item">
-            <div>{{country.name}}</div>
-        </div>
-    </ng-template> -->
     </p-listbox>
     <small *ngIf="selectDataProvider" class="p-error"
       >Please select Data provider.</small
@@ -397,8 +356,6 @@
           [style]="{ 'margin-right': '.5em' }"
         ></p-button>
       </div>
-      <!-- <p-button label="Save" icon="pi pi-check"></p-button>
-      <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-secondary" [style]="{'margin-left': '.5em'}"></p-button> -->
     </ng-template>
   </p-card>
 </p-dialog>
@@ -445,8 +402,6 @@
           [style]="{ 'margin-right': '.5em' }"
         ></p-button>
       </div>
-      <!-- <p-button label="Save" icon="pi pi-check"></p-button>
-      <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-secondary" [style]="{'margin-left': '.5em'}"></p-button> -->
     </ng-template>
   </p-card>
 </p-dialog>

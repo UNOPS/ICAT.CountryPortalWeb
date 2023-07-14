@@ -1,8 +1,18 @@
-<p-checkbox name="groupname" [(ngModel)]="checked" (click)="publish(doc_name[0])" [binary]="true"></p-checkbox>
-<p-card header={{doc_name[0]}} [style]="{'width': '15rem','height':'10rem', 'margin-bottom': '2em'}" styleClass="p-card-shadow" (click)="onRedirect()">
-    <ng-template pTemplate="header">
-        <img alt="" src="">
-    </ng-template>
-    
-    <p>Updated Date {{doc_name[1] | date: "yyyy-MM-dd" }}</p>
-</p-card> 
+<p-checkbox
+  name="groupname"
+  [(ngModel)]="checked"
+  (click)="publish(doc_name[0])"
+  [binary]="true"
+></p-checkbox>
+<p-card
+  header="{{ doc_name[0] }}"
+  [style]="{ width: '15rem', height: '10rem', 'margin-bottom': '2em' }"
+  styleClass="p-card-shadow"
+  (click)="onRedirect()"
+>
+  <ng-template pTemplate="header">
+    <img alt="" src="" />
+  </ng-template>
+
+  <p>Updated Date {{ doc_name[1] | date : 'yyyy-MM-dd' }}</p>
+</p-card>

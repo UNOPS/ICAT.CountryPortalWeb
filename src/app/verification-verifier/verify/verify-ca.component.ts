@@ -1,29 +1,11 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
-import {
-  ConfirmationService,
-  LazyLoadEvent,
-  MessageService,
-} from 'primeng/api';
+import { LazyLoadEvent, MessageService } from 'primeng/api';
 
 import {
-  AssesmentControllerServiceProxy,
   Assessment,
   AssessmentYear,
-  MitigationActionType,
-  Project,
-  ProjectApprovalStatus,
-  ProjectControllerServiceProxy,
-  ProjectOwner,
-  ProjectStatus,
-  Sector,
   ServiceProxy,
   User,
   VerificationControllerServiceProxy,
@@ -38,7 +20,6 @@ export class VerifyCaComponent implements OnInit {
   VerificationStatusEnum = VerificationStatus;
 
   verificationStatus: string[] = [
-    // VerificationStatus[VerificationStatus.Pending],
     VerificationStatus[VerificationStatus['Pre Assessment']],
     VerificationStatus[VerificationStatus['NC Received']] === 'NC Received' ? 'NC Sent' : 'NC Received' ,
     VerificationStatus[VerificationStatus['In Remediation']],
@@ -60,9 +41,9 @@ export class VerifyCaComponent implements OnInit {
   event: any;
   paras: AssessmentYear[] = [];
   assessmentList: Assessment[] = [];
-  blank: string = '';
+  blank = '';
   userName: string;
-  loggedUser:User[] = [];
+  loggedUser: User[] = [];
 
   @ViewChild('op') overlay: any;
   constructor(
@@ -79,34 +60,7 @@ export class VerifyCaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.verificationStatus)
-    // this.userName = localStorage.getItem('user_name')!;
-
-    // let filter1: string[] = [];
-    // filter1.push('username||$eq||' + this.userName);
-     // lmFilter.push('LearningMaterial.isPublish||$eq||' + 1);
-
-    // this.serviceProxy
-    //   .getManyBaseUsersControllerUser(
-    //     undefined,
-    //     undefined,
-    //     filter1,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    //   .subscribe((res: any) => {
-       
-    //     this.loggedUser = res.data;
-    //     console.log('logged user....', this.loggedUser);
-    //   });
-
-
-    // this.onSearch();
+    
   }
 
   onStatusChange($event: any) {
@@ -114,7 +68,7 @@ export class VerifyCaComponent implements OnInit {
   }
 
   onSearch() {
-    let event: any = {};
+    const event: any = {};
     event.rows = this.rows;
     event.first = 0;
 
@@ -140,12 +94,9 @@ export class VerifyCaComponent implements OnInit {
       this.vrServiceProxy
         .getVerifierParameters(pageNumber, this.rows, statusId, filtertext)
         .subscribe((a) => {
-          console.log(a)
-         this.paras = a.items;
-          // this.paras = a.items.filter((o: any)=>o.verificationStatus != 6 && o.verificationStatus != 7 && o.verificationUser == this.loggedUser[0]?.id );
+          this.paras = a.items;
           this.totalRecords = a.meta.totalItems;
-          console.log(this.paras)
-         this.loading = false;
+          this.loading = false;
         }, error => {
           this.messageService.add({
             severity: 'error',
@@ -158,15 +109,6 @@ export class VerifyCaComponent implements OnInit {
   };
 
   statusClick(event: any, object: AssessmentYear) {
-    // if (
-    //   this.QuAlityCheckStatusEnum[object.qaStatus] !==
-    //   this.QuAlityCheckStatusEnum[this.QuAlityCheckStatusEnum.Pass]
-    // ) {
-    //   this.router.navigate(['/qc/detail'], {
-    //     queryParams: { id: object.id },
-    //   });
-    // }
-
     this.router.navigate(['/verification-verifier/detail'], {
       queryParams: {
         id: object.id,

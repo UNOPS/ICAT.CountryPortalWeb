@@ -1,572 +1,386 @@
 <div class="container pl-20 pr-20">
   <div id="content" #content>
     <div class="mb-12">
-      <h4 class="mt-4">Assessment of {{title}} Specific Climate Action - {{project.climateActionName}}</h4>
+      <h4 class="mt-4">
+        Assessment of {{ title }} Specific Climate Action -
+        {{ project.climateActionName }}
+      </h4>
     </div>
-  
+
     <div class="card">
-      
-        <form #fData="ngForm" novalidate>
-          <div class="p-grid p-fluid col-sm-12">
-
-            <div class="row p-2">
-                <div class="col-12 col-md-3">
-                  <div>
-                    <label for="NDC"><b>Aggregated Actions</b></label>
-                  </div>
-                </div>
-                <div class="col-12 col-md-7">
-                  <div>
-                    <!--
-                    <input
-                type="text"
-                name="ndc"
-                class="p-inputtext"
-                [(ngModel)] ="ndc.name"
-                [readonly]="true"
-               
-                pInputText
-              />
-              -->
-              <p>{{ndc?.name}}</p>
-                  </div>
-                 
-                </div>
-               
+      <form #fData="ngForm" novalidate>
+        <div class="p-grid p-fluid col-sm-12">
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="NDC"><b>Aggregated Actions</b></label>
               </div>
-
-
-
-
-              <div class="row p-2 ">
-                <div class="col-12 col-md-3">
-                  <div>
-                    <label for="subNDC"><b>Action Areas</b></label>
-                  </div>
-                </div>
-                <div class="col-12 col-md-7">
-                  <div>
-                    <!--
-                      <input
-                      type="text"
-                      name="subNdc"
-                      class="p-inputtext"
-                      [(ngModel)] ="subNdc.name"
-                      [readonly]="true"
-                     
-                      pInputText
-                    />
-                    -->
-                    <p>{{subNdc?.name}}</p>
-                  </div>
-                 
-                </div>
-
             </div>
-
-
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                        <div>
-                        <label for="projectStartDate"><b>Project Start Date</b></label>  
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                        <div>
-                          <!--
-                        <input
-                        type="text"
-                        name="prstartdate"
-                        class="p-inputtext"
-                        [(ngModel)] ="projectStartDate"
-                        [readonly]="true"
-                        
-                        pInputText
-                        />
-                        -->
-                        <p>{{projectStartDate}}</p>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                        <div>
-                        <label for="AssessmentYear"><b>Assessment Year</b></label>  
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                        <div>
-                          <!--
-                        <input
-                        type="text"
-                        name="AssessmentYear"
-                        class="p-inputtext"
-                        [(ngModel)] ="assessmentYear"
-                        [readonly]="true"
-                        
-                        pInputText
-                        />
-                        -->
-                        <p>{{assessmentYear}}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                        <div>
-                        <label for="objAsse"><b>Objective of Assessment</b></label>  
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                        <div>
-                          <!--
-                        <input
-                        type="text"
-                        name="objAsse1"
-                        class="p-inputtext"
-                        [(ngModel)] ="objectiveOfAssessment"
-                       
-                        
-                        pInputText
-                        />
-                        -->
-                        <p>{{objectiveOfAssessment}}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                        <label for="discrate"><b>Discount Rate</b></label>
-                    </div>
-                    <div class="col-12 col-md-7">
-                        <div>
-                          <!--
-                            <p-inputNumber
-                              name="DiscountRate"
-                              [(ngModel)] ="getDiscountRate"
-                             
-                            >
-                            </p-inputNumber>
-                           -->
-                            <p>{{getDiscountRate}} %</p>
-                          </div>
-                    </div>
-                </div>  
-              
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-10">
-                        <h5 class="mt-4" style="background-clip: border-box; background: rgb(123, 199, 224); padding: 15px;">Baseline Scenario</h5>
-                    </div>
-                </div> 
-                
-
-                
-
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                        <label for="bsTotalInvestment"><b>Total Investment</b></label>
-                    </div>
-                    <div class="col-12 col-md-7">
-                        <div>
-                          <!--
-                            <p-inputNumber
-                              name="bstotalinvestemt"
-                              [(ngModel)] ="getBsTotalInvestment"
-                             
-                            >
-                            </p-inputNumber>
-                          -->
-                            <p>{{getBsTotalInvestment | number: '1.0-5'}} $</p>
-                          </div>
-                    </div>
-                </div> 
-                
-                
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                        <label for="bsprojectlife"><b>Project Life</b></label>
-                    </div>
-                    <div class="col-12 col-md-7">
-                        <div>
-                          <!--
-                            <p-inputNumber
-                              name="bsprojetlifes"
-                              [(ngModel)] ="getBsProjectLife"
-                             
-                            >
-                            </p-inputNumber>
-                           -->
-                            <p>{{getBsProjectLife}} Years</p>
-                          </div>
-                    </div>
-                </div> 
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                      <div>
-                        <label for="AnnualORM"><b>Annual O&M</b></label>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                      <div>
-                        <!--
-                        <p-inputNumber
-                         
-                          name="bsAnnualORM"
-                          [(ngModel)] ="getBsAnnualOM"
-                          [readonly]="true"
-                        >
-                        </p-inputNumber>
-                        
-                        -->
-                        <p>{{getBsAnnualOM  | number: '1.0-5'}} $</p>
-                        
-                        
-                      </div>
-                    </div>
-                </div>
-
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                      <div>
-                        <label for="annualfulel"><b>Annual Fuel Cost</b></label>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                      <div>
-                        <!--
-                        <p-inputNumber
-                          
-                          name="bsAnnualFuelCost"
-                          [(ngModel)]= "getBsAnnualFuelCost"
-                          [readonly]="true"
-                         
-                        >
-                        </p-inputNumber>
-                        -->
-                        <p>{{getBsAnnualFuelCost  | number: '1.0-5'}} $</p>
-                      </div>
-                    </div>
-                </div>
-              
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                      <div>
-                        <label for="OtherAnnualCosts"><b>Other Annual Costs</b></label>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                      <div>
-                        <!--
-                        <p-inputNumber
-                         
-                          name="bsOtherAnnualCost"
-                          [(ngModel)]= "getBsOtherAnnualCost"
-                          [readonly]="true"
-                         
-                        >
-                        </p-inputNumber>
-                        -->
-                        <p>{{getBsOtherAnnualCost  | number: '1.0-5'}} $</p>
-                      </div>
-                    </div>
-                </div>
-
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                      <div>
-                        <label for="TotalAnnualCosts"><b>Total Annual Costs</b></label>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                      <div>
-                        <!--
-                        <p-inputNumber
-                         
-                          name="bsttlAnnualCost"
-                          [(ngModel)]= "getBsTotalAnnualCost"
-                          [readonly]="true"
-                         
-                        >
-                        </p-inputNumber>
-                        -->
-                        <p>{{getBsTotalAnnualCost  | number: '1.0-5'}} $</p>
-                      </div>
-                    </div>
-                </div>
-
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-10">
-                        <h5 class="mt-4" 
-                        style="background-clip: 
-                        border-box; 
-                        background: rgb(123, 199, 224);
-                        padding: 15px;">
-                        Project Scenario</h5>
-                    </div>
-                </div> 
-
-
-
-                
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                        <label for="psTotalInvestment"><b>Total Investment</b></label>
-                    </div>
-                    <div class="col-12 col-md-7">
-                        <div>
-                          <!--
-                            <p-inputNumber
-                              name="pstotalinvestemt"
-                              [(ngModel)] ="getPsTotalInvestment"
-                             
-                            >
-                            </p-inputNumber>
-                          -->
-                            <p>{{getPsTotalInvestment  | number: '1.0-5'}} $</p>
-                          </div>
-                    </div>
-                </div> 
-                
-                
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                        <label for="psprojectlife"><b>Project Life</b></label>
-                    </div>
-                    <div class="col-12 col-md-7">
-                        <div>
-                          <!--
-                            <p-inputNumber
-                              name="pssprojetlifes"
-                              [(ngModel)] ="getPsProjectLife"
-                             
-                            >
-                            </p-inputNumber>
-                             -->
-                            <p>{{getPsProjectLife}} Years</p>
-                          </div>
-                    </div>
-                </div> 
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                      <div>
-                        <label for="AnnualORM"><p><b>Annual O&M</b></p></label>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                      <div>
-                        <!--
-                        <p-inputNumber
-                         
-                          name="psAnnualORM"
-                          [(ngModel)] ="getPsAnnualOM"
-                          [readonly]="true"
-                        >
-                        </p-inputNumber>
-                           -->
-                        <p>{{getPsAnnualOM  | number: '1.0-5'}} $</p>
-                      </div>
-                    </div>
-                </div>
-
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                      <div>
-                        <label for="annualfulel"><b>Annual Fuel Cost</b></label>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                      <div>
-                        <!--
-                        <p-inputNumber
-                          
-                          name="psAnnualFuelCost"
-                          [(ngModel)]= "getPsAnnualFuelCost"
-                          [readonly]="true"
-                         
-                        >
-                        </p-inputNumber>
-                        -->
-                        <p>{{getPsAnnualFuelCost | number: '1.0-5'}} $</p>
-                      </div>
-                    </div>
-                </div>
-              
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                      <div>
-                        <label for="OtherAnnualCosts"><b>Other Annual Costs</b></label>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                      <div>
-                        <!--
-                        <p-inputNumber
-                         
-                          name="psOtherAnnualCost"
-                          [(ngModel)]= "getPsOtherAnnualCost"
-                          [readonly]="true"
-                         
-                        >
-                        </p-inputNumber>
-                          -->
-                        <p>{{getPsOtherAnnualCost | number: '1.0-5'}} $</p>
-                      </div>
-                    </div>
-                </div>
-
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                      <div>
-                        <label for="TotalAnnualCosts"><b>Total Annual Costs</b></label>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                      <div>
-                        <!--
-                        <p-inputNumber
-                         
-                          name="psttlAnnualCost"
-                          [(ngModel)]= "getPsTotalAnnualCost"
-                          [readonly]="true"
-                         
-                        >
-                        </p-inputNumber>
-                          -->
-                        <p>{{getPsTotalAnnualCost | number: '1.0-5'}} $</p>
-                      </div>
-                    </div>
-                </div>
-
-
-                <div class="row p-2 ">
-                  <div class="col-12 col-md-10">
-                      <h5 class="mt-4" 
-                      style="background-clip: 
-                      border-box; 
-                      background: rgb(123, 199, 224);
-                      padding: 15px;">
-                      Result</h5>
-                  </div>
-              </div> 
-
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                        
-                    </div>
-                </div> 
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                      <div>
-                        <label for="CostDifference"><b>Cost Difference</b></label>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                      <div>
-                        <p>{{getCostDifference | number: '1.0-5'}} $</p>
-
-                      </div>
-                    </div>
-                </div>
-
-                <div class="row p-2 ">
-                    <div class="col-12 col-md-3">
-                      <div>
-                        <label for="emmissionreduction"><b>Emission Reduction</b></label>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-7">
-                      <div>
-                        <p>{{getReduction | number: '1.0-5'}} tCO2e</p>
-                      </div>
-                    </div>
-                </div>
-
-
-                <div class="row p-2 ">
-                  <div class="col-12 col-md-3">
-                    <div 
-                      style="background-clip: border-box;
-                      background: rgb(77, 186, 230); 
-                      padding-top: 5; 
-                      padding-bottom: 5;
-
-                      ">
-        
-                      
-                          <p><b>MAC</b></p>
-                      
-                      </div>
-                  </div>
-                  <div class="col-12 col-md-7">
-                    <div>
-                      <p>{{getMacValue | number: '1.0-5'}} USD/tCO2e</p>
-                    </div>
-                  </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ ndc?.name }}</p>
               </div>
-
-
-              <div class="row p-2 ">
-                <div class="col-12 col-md-3">
-                  <div>
-   
-                  </div>
-                </div>
-                <div class="col-12 col-md-7">
-                  <div>
-                   
-                  </div>
-                </div>
             </div>
+          </div>
 
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="subNDC"><b>Action Areas</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ subNdc?.name }}</p>
+              </div>
+            </div>
+          </div>
 
-          </div>    
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="projectStartDate"><b>Project Start Date</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ projectStartDate }}</p>
+              </div>
+            </div>
+          </div>
 
-        </form>
-     
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="AssessmentYear"><b>Assessment Year</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ assessmentYear }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="objAsse"><b>Objective of Assessment</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ objectiveOfAssessment }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <label for="discrate"><b>Discount Rate</b></label>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getDiscountRate }} %</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-10">
+              <h5
+                class="mt-4"
+                style="
+                  background-clip: border-box;
+                  background: rgb(123, 199, 224);
+                  padding: 15px;
+                "
+              >
+                Baseline Scenario
+              </h5>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <label for="bsTotalInvestment"><b>Total Investment</b></label>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getBsTotalInvestment | number: '1.0-5' }} $</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <label for="bsprojectlife"><b>Project Life</b></label>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getBsProjectLife }} Years</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="AnnualORM"><b>Annual O&M</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getBsAnnualOM  | number: '1.0-5' }} $</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="annualfulel"><b>Annual Fuel Cost</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getBsAnnualFuelCost  | number: '1.0-5' }} $</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="OtherAnnualCosts"><b>Other Annual Costs</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getBsOtherAnnualCost  | number: '1.0-5' }} $</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="TotalAnnualCosts"><b>Total Annual Costs</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getBsTotalAnnualCost  | number: '1.0-5' }} $</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-10">
+              <h5
+                class="mt-4"
+                style="
+                  background-clip: border-box;
+                  background: rgb(123, 199, 224);
+                  padding: 15px;
+                "
+              >
+                Project Scenario
+              </h5>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <label for="psTotalInvestment"><b>Total Investment</b></label>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getPsTotalInvestment  | number: '1.0-5' }} $</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <label for="psprojectlife"><b>Project Life</b></label>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getPsProjectLife }} Years</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="AnnualORM"
+                  ><p><b>Annual O&M</b></p></label
+                >
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getPsAnnualOM  | number: '1.0-5' }} $</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="annualfulel"><b>Annual Fuel Cost</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getPsAnnualFuelCost  | number: '1.0-5' }} $</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="OtherAnnualCosts"><b>Other Annual Costs</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getPsOtherAnnualCost  | number: '1.0-5' }} $</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="TotalAnnualCosts"><b>Total Annual Costs</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getPsTotalAnnualCost  | number: '1.0-5' }} $</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-10">
+              <h5
+                class="mt-4"
+                style="
+                  background-clip: border-box;
+                  background: rgb(123, 199, 224);
+                  padding: 15px;
+                "
+              >
+                Result
+              </h5>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3"></div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="CostDifference"><b>Cost Difference</b></label>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getCostDifference  | number: '1.0-5' }} $</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div>
+                <label for="emmissionreduction"
+                  ><b>Emission Reduction</b></label
+                >
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getReduction  | number: '1.0-5' }} tCO2e</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div
+                style="
+                  background-clip: border-box;
+                  background: rgb(77, 186, 230);
+                  padding-top: 5;
+                  padding-bottom: 5;
+                "
+              >
+                <p><b>MAC</b></p>
+              </div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div>
+                <p>{{ getMacValue  | number: '1.0-5' }} USD/tCO2e</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-3">
+              <div></div>
+            </div>
+            <div class="col-12 col-md-7">
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-  
-          <div class="row p-2 ">
-            <div class="col-12 col-md-2">
-            
-            </div>
 
-            <div class="col-12 col-md-4">
+  <div class="row p-2">
+    <div class="col-12 col-md-2"></div>
 
-            </div>
+    <div class="col-12 col-md-4"></div>
 
-            <div class="col-12 col-md-2">
-              <button pButton pRipple type="button" label="Back" class="p-button-raised" (click)="back()"></button>
-            </div>
+    <div class="col-12 col-md-2">
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Back"
+        class="p-button-raised"
+        (click)="back()"
+      ></button>
+    </div>
 
-            <div class="col-12 col-md-2">
-              
-              <button pButton pRipple type="button" label="Download Pdf" class="p-button-raised" (click)="download()"></button>
-              
-            </div>
-            <div class="col-12 col-md-2">
-              <button pButton pRipple type="button" label="Download Excel" class="p-button-raised" (click)="downloadExcel()"></button>
-             
-            </div>
-          
-              
-          </div> 
-      
+    <div class="col-12 col-md-2">
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Download Pdf"
+        class="p-button-raised"
+        (click)="download()"
+      ></button>
+    </div>
+    <div class="col-12 col-md-2">
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Download Excel"
+        class="p-button-raised"
+        (click)="downloadExcel()"
+      ></button>
+    </div>
+  </div>
 </div>

@@ -2,7 +2,6 @@
 <div class="container pl-20 pr-20">
     <div class="p-grid p-fluid card" id="content" #content>
         <h4 class="mt-4">Non - Conformance Report</h4>
-        <!-- <div> {{climateactions|json}} </div> -->
         <div *ngIf="roundOneHeadTable != null">
             <div class="row p-2" style="border:1px solid black;">
                 <div class="masterRoundOne" style="border:1px solid black;">
@@ -59,7 +58,6 @@
                                 <h6>Area : Aggregated Actions/Action Areas </h6>
                             </div>
                             <div class="col-md-3">
-                                <!-- <h6>Date : {{roundOnendcList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
                             </div>
                             <div class="col-md-2">
                                 <button pButton pRipple type="button" label="Edit" class="p-button-info"
@@ -170,7 +168,6 @@
                                     <h6>Area : BaselineEmission - {{item?.parameter?.name}} </h6>
                                 </div>
                                 <div class="col-md-3">
-                                    <!-- <h6>Date : {{roundOnebaseleineList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
                                 </div>
                                 <div class="col-md-2">
                                     <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
@@ -227,9 +224,7 @@
                                 <div class="col-md-3">
                                     <h6>Area : Project Emmission - {{item?.parameter.name}} </h6>
                                 </div>
-                                <div class="col-md-3">
-                                    <!-- <h6>Date : {{roundOneprojectList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                                </div>
+                                <div class="col-md-3"> </div>
                                 <div class="col-md-2">
                                     <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
                                         class="p-button-info"></button>
@@ -285,9 +280,7 @@
                                 <div class="col-md-3">
                                     <h6>Area : Projection - {{item.parameter.name}} </h6>
                                 </div>
-                                <div class="col-md-3">
-                                    <!-- <h6>Date : {{roundOneprojectionList[i]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                                </div>
+                                <div class="col-md-3"></div>
                                 <div class="col-md-2">
                                     <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
                                         class="p-button-info"></button>
@@ -343,9 +336,7 @@
                                 <div class="col-md-3">
                                     <h6>Area : lekage - {{item?.parameter.name}} </h6>
                                 </div>
-                                <div class="col-md-3">
-                                    <!-- <h6>Date : {{roundOnelekageList?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                                </div>
+                                <div class="col-md-3"> </div>
                                 <div class="col-md-2">
                                     <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
                                         class="p-button-info"></button>
@@ -402,9 +393,7 @@
                             <div class="col-md-3">
                                 <h6>Area : Assumption </h6>
                             </div>
-                            <div class="col-md-3">
-                                <!-- <h6>Date : {{roundOneAssumptionList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                            </div>
+                            <div class="col-md-3"> </div>
                             <div class="col-md-2">
                                 <button pButton pRipple type="button" label="Edit" class="p-button-info"
                                     (click)="toDetailPage()"></button>
@@ -457,9 +446,7 @@
                                         <span *ngIf="result.isDifference">Result - Cost Difference</span>
                                     </h6>
                                 </div>
-                                <div class="col-md-3">
-                                    <!-- <h6>Date : {{roundOneAssumptionList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                                </div>
+                                <div class="col-md-3"></div>
                                 <div class="col-md-2">
                                     <button pButton pRipple type="button" label="Edit" class="p-button-info"
                                         (click)="toDetailPage()"></button>
@@ -563,9 +550,7 @@
                             <div class="col-md-3">
                                 <h6>Area : Aggregated Actions/Action Areas </h6>
                             </div>
-                            <div class="col-md-3">
-                                <!-- <h6>Date : {{roundTwondcList[0]?.editedOn | date: "yyyy-MM-dd "}} </h6> -->
-                            </div>
+                            <div class="col-md-3"> </div>
                             <div class="col-md-2">
                                 <button pButton pRipple type="button" label="Edit" (click)="toDetailPage()"
                                     class="p-button-info"></button>

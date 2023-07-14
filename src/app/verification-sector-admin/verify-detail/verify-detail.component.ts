@@ -4,26 +4,26 @@ import { QuAlityCheckStatus } from 'app/Model/QuAlityCheckStatus.enum';
 import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
 import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
-  AssesmentControllerServiceProxy,
-  AssesmentResaultControllerServiceProxy,
+  AssessmentControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
   Assessment,
-  AssessmentResault,
+  AssessmentResult,
   AssessmentYear,
-  AssessmentYearVerificationStatus,
   Ndc,
   Parameter,
-  ParameterVerifierAcceptance,
   Project,
-  ProjectionResault,
-  ProjectionResaultControllerServiceProxy,
+  ProjectionResult,
+  ProjectionResultControllerServiceProxy,
   ServiceProxy,
   SubNdc,
   User,
   VerificationControllerServiceProxy,
   VerificationDetail,
+  ParameterVerifierAcceptance,
 } from 'shared/service-proxies/service-proxies';
+import { environment } from 'environments/environment';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { VerificationActionDialogComponent } from '../verification-action-dialog/verification-action-dialog.component';
 
 @Component({
@@ -31,31 +31,30 @@ import { VerificationActionDialogComponent } from '../verification-action-dialog
   templateUrl: './verify-detail.component.html',
   styleUrls: ['./verify-detail.component.css'],
 })
-export class VerifyDetailComponentSectorAdmin implements OnInit {
-
-  assesMentYearId: number = 0;
-  verificationStatus: number = 0;
-  assementYear: AssessmentYear = new AssessmentYear();
-  parameters: any[] = [];
+export class VerifyDetailSectorAdminComponent implements OnInit {
+  assesMentYearId = 0;
+  verificationStatus = 0;
+  assessmentYear: AssessmentYear = new AssessmentYear();
+  parameters: Parameter[] = [];
   baselineParameters: Parameter[] = [];
   projectParameters: Parameter[] = [];
   lekageParameters: Parameter[] = [];
   projectionParameters: Parameter[] = [];
-  loading: boolean = false;
-  assessmentResult: AssessmentResault = new AssessmentResault();
-  projectionResult: ProjectionResault[] = [];
-  selectdProjectionResult: ProjectionResault;
-  isApprove: boolean = false;
+  loading = false;
+  assessmentResult: AssessmentResult = new AssessmentResult();
+  projectionResult: ProjectionResult[] = [];
+  selectdProjectionResult: ProjectionResult;
+  isApprove = false;
   drComment = '';
-  commentRequried: boolean = false;
-  displayConcern: boolean = false;
-  flag:number = 1;
-  assesmentResultComment = '';
-  assesmentResultCommentRequried: boolean = false;
-  assessmentObjective:any
+  commentRequried = false;
+  displayConcern = false;
+  flag = 1;
+  assessmentResultComment = '';
+  assessmentResultCommentRequried = false;
+  assessmentObjective: any;
 
-  selectdAssementType: number;
-  isApproveAssement: boolean = false;
+  selectdAssessmentType: number;
+  isApproveAssessment = false;
 
   ndcList: Ndc[];
   selectedNdc: Ndc;
@@ -65,14 +64,14 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   concernVerificationDetails: VerificationDetail[] | undefined;
   verificationDetails: VerificationDetail[] = [];
 
-  raiseConcernSection: string = '';
+  raiseConcernSection = '';
   concernIsMethodology: boolean;
   concernIsNdC: boolean;
   concernIsAssumption: boolean;
 
 
   loggedUser: User;
-  assumption:string = '';
+  assumption: string = '';
 
   isMethodologyAccepted: boolean = false
   hasMethodologyConcern: boolean = false
@@ -105,16 +104,16 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private assesmentProxy: AssesmentControllerServiceProxy,
-    private assesmentResaultProxy: AssesmentResaultControllerServiceProxy,
-    private projectionResultProxy: ProjectionResaultControllerServiceProxy,
+    private assesmentProxy: AssessmentControllerServiceProxy,
+    private assesmentResaultProxy: AssessmentResultControllerServiceProxy,
+    private projectionResultProxy: ProjectionResultControllerServiceProxy,
     private router: Router,
     private messageService: MessageService,
     private verificationProxy: VerificationControllerServiceProxy,
     private confirmationService: ConfirmationService,
     private serviceProxy: ServiceProxy,
     public dialogService: DialogService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -128,14 +127,13 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
           undefined,
           undefined,
           undefined,
-          // ['sector.id||$eq||' + this.project.sector.id],
           undefined,
           ['name,ASC'],
           ['subNdc'],
           1000,
           0,
           0,
-          0
+          0,
         )
         .subscribe((res: any) => {
           this.ndcList = res.data;
@@ -149,13 +147,13 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
           undefined
         )
         .subscribe(async (res) => {
-          this.assementYear = res;
+          this.assessmentYear = res;
 
 
           this.serviceProxy.getManyBaseAssessmentObjectiveControllerAssessmentObjective(
             undefined,
             undefined,
-            ["assessmentId||$eq||"+ this.assementYear?.assessment?.id],
+            ["assessmentId||$eq||" + this.assessmentYear?.assessment?.id],
             undefined,
             undefined,
             undefined,
@@ -163,26 +161,22 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
             0,
             0,
             0
-  
-            ).subscribe((res:any) => {
-              console.log('asssmntObjective----',res);
-  
-             if( res.data[0])
-             {
+
+          ).subscribe((res: any) => {
+
+            if (res.data[0]) {
               this.assessmentObjective = res.data[0]?.objective;
-             }
-             else{
-               console.log("N/A")
-               this.assessmentObjective = "-"
-             }
-            console.log('asssmntObjectiveName----',this.assessmentObjective);
+            }
+            else {
+              this.assessmentObjective = "-"
+            }
           });
-          
+
           await this.getVerificationDetail();
           this.getAssesment();
           this.getProjectionResult();
           this.getAssesmentResult(false);
-          
+
         });
     });
   }
@@ -205,7 +199,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.loggedUser = res.data[0];
@@ -213,102 +207,93 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   }
 
   async getVerificationDetail() {
-    // await this.verificationProxy
-    //   .getVerificationDetails(this.assesMentYearId)
-    //   .subscribe((a) => {
-    //     this.verificationDetails = a;
-    //   });
     this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assesMentYearId).toPromise()
-    for await (let v of this.verificationDetails){
-      console.log(v)
-      if (v.isMethodology){
-        if (v.isAccepted){
+    for await (let v of this.verificationDetails) {
+      if (v.isMethodology) {
+        if (v.isAccepted) {
           this.isMethodologyAccepted = true
         }
-        if (v.explanation){
+        if (v.explanation) {
           this.hasMethodologyConcern = true
         }
-      } else if (v.isNDC){
-        if (v.isAccepted){
+      } else if (v.isNDC) {
+        if (v.isAccepted) {
           this.isNdcAccepted = true
         }
-        if (v.explanation){
+        if (v.explanation) {
           this.hasNdcConcern = true
         }
-        if (v.rootCause || v.correctiveAction){
+        if (v.rootCause || v.correctiveAction) {
           this.canActiveNdcAction = true
         }
-      } else if (v.isAssumption){
-        if (v.isAccepted){
+      } else if (v.isAssumption) {
+        if (v.isAccepted) {
           this.isAssumptionAccepted = true
-        } 
-        if (v.explanation){
+        }
+        if (v.explanation) {
           this.hasAssumptionConcern = true
         }
-      } else if (v.isTotal){
-        if (v.isAccepted){
+      } else if (v.isTotal) {
+        if (v.isAccepted) {
           this.isTotalResultAccepted = true
         }
-        if (v.explanation){
+        if (v.explanation) {
           this.hasTotalResultConcern = true
         }
-        if (v.rootCause || v.correctiveAction) this.canActiveTotalAction  = true
-      } else if (v.isMac){
-        if (v.isAccepted){
+        if (v.rootCause || v.correctiveAction) this.canActiveTotalAction = true
+      } else if (v.isMac) {
+        if (v.isAccepted) {
           this.isMacResultAccepted = true
         }
-        if (v.explanation){
+        if (v.explanation) {
           this.hasMacResultConcern = true
         }
-        if (v.action){
+        if (v.action) {
           this.hasMacComment = true
         }
         if (v.rootCause || v.correctiveAction) this.canActiveMacAction = true
-      } else if (v.isDifference){
-        if (v.isAccepted){
+      } else if (v.isDifference) {
+        if (v.isAccepted) {
           this.isCostResultAccepted = true
         }
-        if (v.explanation){
+        if (v.explanation) {
           this.hasCostResultConcern = true
-        } 
-        if (v.action){
+        }
+        if (v.action) {
           this.hasCostComment = true
         }
         if (v.rootCause || v.correctiveAction) this.canActiveDifferenceAction = true
       }
     }
-    console.log(this.hasTotalResultConcern)
   }
 
   getAssesmentResult(isCalculate: boolean) {
     this.assesmentResaultProxy
-      .getAssesmentResult(
-        this.assementYear.assessment.id,
+      .getAssessmentResult(
+        this.assessmentYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
         'sec-admin',
-        "1234"
+        environment.apiKey1
       )
       .subscribe((res) => {
         this.assessmentResult = res;
-        console.log("this.assessmentResult...",this.assessmentResult);
       });
   }
 
   getProjectionResult() {
     this.projectionResultProxy
       .getProjectionResult(
-        this.assementYear.assessment.id,
-        Number(this.assementYear.assessmentYear)
+        this.assessmentYear.assessment.id,
+        Number(this.assessmentYear.assessmentYear),
       )
       .subscribe((res) => {
         this.projectionResult = res;
-        console.log("ffffffffffffff",res)
       });
   }
 
   getParameters(asessmentYear: AssessmentYear) {
-    let filter: string[] = new Array();
+    const filter: string[] = [];
     filter.push('assessment.id||$eq||' + asessmentYear.assessment.id);
     filter.push('projectionYear||$eq||' + asessmentYear.assessmentYear);
 
@@ -323,21 +308,21 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         1000,
         0,
         0,
-        undefined
+        undefined,
       )
       .subscribe((res) => {
         asessmentYear.assessment.parameters = res.data;
       });
   }
 
-  parameterFilter(p: Parameter){
-    if (p.isDefault || p.isHistorical){
+  parameterFilter(p: Parameter) {
+    if (p.isDefault || p.isHistorical) {
       return ![
-        ParameterVerifierAcceptance.REJECTED, 
+        ParameterVerifierAcceptance.REJECTED,
         ParameterVerifierAcceptance.RETURNED,].includes(p.verifierAcceptance)
     } else {
       return ![
-        ParameterVerifierAcceptance.REJECTED, 
+        ParameterVerifierAcceptance.REJECTED,
         ParameterVerifierAcceptance.RETURNED,
         ParameterVerifierAcceptance.DATA_ENTERED
       ].includes(p.verifierAcceptance)
@@ -346,27 +331,27 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
   getAssesment() {
     let statusToRemove = [
-      ParameterVerifierAcceptance.REJECTED, 
+      ParameterVerifierAcceptance.REJECTED,
       ParameterVerifierAcceptance.RETURNED,
       ParameterVerifierAcceptance.DATA_ENTERED
     ]
     this.assesmentProxy
       .getAssment(
-        this.assementYear.assessment.id,
-        this.assementYear.assessmentYear
+        this.assessmentYear.assessment.id,
+        this.assessmentYear.assessmentYear
       )
       .subscribe((res) => {
-        this.assementYear.assessment = res;
+        this.assessmentYear.assessment = res;
 
-        this.parameters = this.assementYear.assessment.parameters;
+        this.parameters = this.assessmentYear.assessment.parameters;
 
         this.parameters = this.parameters.map(para => {
           let v = this.verificationDetails.find(o => o.parameter.id === para.id)
-          if (v){
-            if (v.explanation){
+          if (v) {
+            if (v.explanation) {
               para['isConcernRaised'] = true
             }
-            if (v.rootCause || v.correctiveAction){
+            if (v.rootCause || v.correctiveAction) {
               para['canActiveAction'] = true
             }
           }
@@ -374,62 +359,37 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         })
 
         this.baselineParameters =
-          this.assementYear.assessment.parameters.filter(
+          this.assessmentYear.assessment.parameters.filter(
             (p) => p.isBaseline && this.parameterFilter(p)
           );
 
-        this.projectParameters = this.assementYear.assessment.parameters.filter(
+        this.projectParameters = this.assessmentYear.assessment.parameters.filter(
           (p) => p.isProject && this.parameterFilter(p)
         );
-        this.lekageParameters = this.assementYear.assessment.parameters.filter(
+        this.lekageParameters = this.assessmentYear.assessment.parameters.filter(
           (p) => p.isLekage && this.parameterFilter(p)
         );
 
         this.projectionParameters =
-          this.assementYear.assessment.parameters.filter(
+          this.assessmentYear.assessment.parameters.filter(
             (p) =>
               p.isProjection &&
-              p.projectionBaseYear == Number(this.assementYear.assessmentYear)
+              p.projectionBaseYear == Number(this.assessmentYear.assessmentYear)
               && this.parameterFilter(p)
           );
-        let p = this.assementYear.assessment.parameters.filter(
+        let p = this.assessmentYear.assessment.parameters.filter(
           (p) => p.isProjection
         );
-        console.log(res);
 
         this.selectedNdc = this.ndcList.find(
-          (a) => a.id == this.assementYear.assessment.ndc?.id
+          (a) => a.id == this.assessmentYear.assessment.ndc?.id
         )!;
 
         this.selectedSubNdc = this.selectedNdc?.subNdc.find(
-          (a) => a.id == this.assementYear.assessment.subNdc?.id
+          (a) => a.id == this.assessmentYear.assessment.subNdc?.id
         )!;
       });
   }
-
-  // detail() {
-  //   this.router.navigate(['/qc']);
-  // }
-
-  // async submit() {
-
-  //   await this.getVerificationDetail();
-
-  //   this.assementYear.verificationStatus = 3;
-  //   //AssessmentYearVerificationStatus.NCRecieved;
-  //   let assessment = new Assessment();
-  //   assessment.id = this.assementYear.assessment.id;
-  //   this.assementYear.assessment = assessment;
-  //   this.proxy
-  //     .updateOneBaseAssessmentYearControllerAssessmentYear(
-  //       this.assementYear.id,
-  //       this.assementYear
-  //     )
-  //     .subscribe((a) => {
-  //       //rederict to NC Report
-  //       alert('updates');
-  //     });
-  // }
 
   back() {
     this.router.navigate(['/verification-sector-admin']);
@@ -452,8 +412,8 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   }
 
   onRowSelectAssessment(event: any, isApprove: boolean) {
-    this.selectdAssementType = event;
-    this.isApproveAssement = isApprove;
+    this.selectdAssessmentType = event;
+    this.isApproveAssessment = isApprove;
   }
 
   OnShowOerlayDR() {
@@ -462,13 +422,13 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   }
 
   OnShowOerlayDRAssessment() {
-    this.assesmentResultComment = '';
-    this.assesmentResultCommentRequried = false;
+    this.assessmentResultComment = '';
+    this.assessmentResultCommentRequried = false;
   }
 
-  approve(parameter: ProjectionResault) {}
+  approve(parameter: ProjectionResult) { }
 
-  reject(parameter: ProjectionResault) {}
+  reject(parameter: ProjectionResult) { }
 
   drWithComment() {
     if (!this.isApprove && this.drComment === '') {
@@ -476,7 +436,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       return;
     }
 
-    var qastatus = this.isApprove
+    const qastatus = this.isApprove
       ? QuAlityCheckStatus.Pass
       : QuAlityCheckStatus.Fail;
 
@@ -485,7 +445,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         this.selectdProjectionResult.id,
         this.selectdProjectionResult.projectionYear,
         qastatus,
-        this.drComment
+        this.drComment,
       )
       .subscribe(
         (res) => {
@@ -496,13 +456,11 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
             closable: true,
           });
 
-          var index = this.projectionResult.indexOf(
-            this.selectdProjectionResult
+          const index = this.projectionResult.indexOf(
+            this.selectdProjectionResult,
           );
 
           this.selectdProjectionResult.qcStatus = this.isApprove ? 4 : 3;
-
-          // this.parameters.splice(index, 0, this.selectdParameter);
 
           this.overlayDRPro.hide();
         },
@@ -513,27 +471,27 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
             detail: 'Internal server error, please try again.',
             sticky: true,
           });
-        }
+        },
       );
   }
 
-  drWithCommentAssesment() {
-    if (!this.isApproveAssement && this.assesmentResultComment === '') {
+  drWithCommentAssessment() {
+    if (!this.isApproveAssessment && this.assessmentResultComment === '') {
       this.commentRequried = true;
       return;
     }
 
-    var qastatus = this.isApproveAssement
+    const qastatus = this.isApproveAssessment
       ? QuAlityCheckStatus.Pass
       : QuAlityCheckStatus.Fail;
 
     this.assesmentResaultProxy
-      .updateQCStatusAssesmentResult(
+      .updateQCStatusAssessmentResult(
         this.assessmentResult.id,
         this.assessmentResult.assessmentYear.id,
         qastatus,
-        this.selectdAssementType,
-        this.assesmentResultComment
+        this.selectdAssessmentType,
+        this.assessmentResultComment,
       )
       .subscribe(
         (res) => {
@@ -548,33 +506,29 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
             this.selectdProjectionResult
           );
 
-          // this.projectionResult.qcStatus = this.isApprove ? 4 : 3;
-
-          // this.parameters.splice(index, 0, this.selectdParameter);
-
           this.overlayDRAssemnet.hide();
         },
-        (err) => {
+        (err: any) => {
           this.messageService.add({
             severity: 'error',
             summary: 'Error.',
             detail: 'Internal server error, please try again.',
             sticky: true,
           });
-        }
+        },
       );
   }
 
   parameterAccept(isNdc: boolean, isMethodology: boolean) {
     this.confirmationService.confirm({
-      message: 'Are sure you want to accept the ' + isMethodology ? 'methodology ?': 'parameter(s) ?',
+      message: 'Are sure you want to accept the ' + isMethodology ? 'methodology ?' : 'parameter(s) ?',
       header: 'Accept Confirmation',
       acceptIcon: 'icon-not-visible',
       rejectIcon: 'icon-not-visible',
       accept: () => {
         this.accept(isNdc, isMethodology);
       },
-      reject: () => {},
+      reject: () => { },
     });
   }
 
@@ -597,11 +551,11 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       vd.createdOn = moment();
       vd.updatedDate = moment();
       vd.userVerifier = this.loggedUser.id;
-      vd.assessmentId = this.assementYear.assessment.id;
+      vd.assessmentId = this.assessmentYear.assessment.id;
       let assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assementYear.id;
+      assesmentYear.id = this.assessmentYear.id;
       vd.assessmentYear = assesmentYear;
-      vd.year = Number(this.assementYear.assessmentYear);
+      vd.year = Number(this.assessmentYear.assessmentYear);
 
       if (IsNdc) {
         vd.isNDC = true;
@@ -612,14 +566,14 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     }
 
     if (
-      this.assementYear.verificationStatus === 1
+      this.assessmentYear.verificationStatus === 1
       //AssessmentYearVerificationStatus.Pending
     ) {
       vd.verificationStatus = 2;
       // VerificationDetailVerificationStatus.PreAssessment;
       vd.verificationStage = 1;
     } else if (
-      this.assementYear.verificationStatus === 3
+      this.assessmentYear.verificationStatus === 3
       // AssessmentYearVerificationStatus.NCRecieved
     ) {
       vd.verificationStatus = 4;
@@ -649,21 +603,21 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   getverificationStage() {
     let stage = 0;
     if (
-      this.assementYear.verificationStatus === 1 ||
-      this.assementYear.verificationStatus === 2 ||
-      this.assementYear.verificationStatus === 3
+      this.assessmentYear.verificationStatus === 1 ||
+      this.assessmentYear.verificationStatus === 2 ||
+      this.assessmentYear.verificationStatus === 3
     ) {
       stage = 1;
-    } else if (this.assementYear.verificationStatus === 4) {
+    } else if (this.assessmentYear.verificationStatus === 4) {
       stage = 2;
-    } else if (this.assementYear.verificationStatus === 5) {
+    } else if (this.assessmentYear.verificationStatus === 5) {
       stage = 3;
     }
 
     return stage;
   }
 
-  raiseConcern(isNdc: boolean, isMethodology: boolean, isAssumption:boolean, isResult:boolean, column?: string) {
+  raiseConcern(isNdc: boolean, isMethodology: boolean, isAssumption: boolean, isResult: boolean, column?: string) {
     if (isNdc) {
       this.raiseConcernSection = 'NDC';
       this.concernVerificationDetails = this.verificationDetails.filter(
@@ -682,7 +636,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         (a) => a.isAssumption
       );
     }
-    if (isResult){
+    if (isResult) {
       if (column === 'isTotal') {
         this.raiseConcernSection = 'Emission Reduction'
         this.concernVerificationDetails = this.verificationDetails.filter(
@@ -690,13 +644,13 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         )
 
         this.canActiveTotalAction = true
-      } else if (column === 'isMac'){
+      } else if (column === 'isMac') {
         this.raiseConcernSection = 'Mac Result'
         this.concernVerificationDetails = this.verificationDetails.filter(
           (a) => a.isMac
         )
         this.canActiveMacAction = true
-      } else if (column === 'isDifference'){
+      } else if (column === 'isDifference') {
         this.raiseConcernSection = 'Cost Difference'
         this.concernVerificationDetails = this.verificationDetails.filter(
           (a) => a.isDifference
@@ -717,44 +671,22 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   }
 
   sendForVerification() {
-    //console.log("come inside to method ->",this.assumption)
-
-    // this.serviceProxy
-    // .getOneBaseAssessmentYearControllerAssessmentYear(
-    //   this.assesMentYearId,
-    //   undefined,
-    //   undefined,
-    //   undefined
-    // )
-    // .subscribe((res) => {
-    //   res.assessmentAssumption = this.assumption;
-    //   this.serviceProxy
-    //     .updateOneBaseAssessmentYearControllerAssessmentYear(res.id, res)
-    //     .subscribe((res) => {});
-    // });
-
-
-   
-
-    this.assementYear.verificationStatus = 2;
-    this.assementYear.assessmentAssumption = this.assumption;
+    this.assessmentYear.verificationStatus = 2;
+    this.assessmentYear.assessmentAssumption = this.assumption;
     let assessment = new Assessment();
-    assessment.id = this.assementYear.assessment.id;
-    this.assementYear.assessment = assessment;
+    assessment.id = this.assessmentYear.assessment.id;
+    this.assessmentYear.assessment = assessment;
     this.serviceProxy
       .updateOneBaseAssessmentYearControllerAssessmentYear(
-        this.assementYear.id,
-        this.assementYear
+        this.assessmentYear.id,
+        this.assessmentYear
       )
       .subscribe((a) => {
-        //rederict to NC Report
-       // alert('updates');
-      
-       this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully sent to verification'});
-      // window.location.reload();
-      setTimeout(() => {
-        window.location.reload();
-      },1000);
+        this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Successfully sent to verification' });
+        ;
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       });
   }
 
@@ -762,7 +694,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
     let data = {
       type: 'ndc',
-      assessmentYear: this.assementYear
+      assessmentYear: this.assessmentYear
     }
 
     this.ref = this.dialogService.open(VerificationActionDialogComponent, {
@@ -774,28 +706,26 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     });
 
     this.ref.onClose.subscribe(async (res) => {
-      console.log(res)
       this.selectedNdc = res.result.ndc
       this.selectedSubNdc = res.result.subNdc
-      let action = `Ndc changed,  Original Value : ${this.assementYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n`;
+      let action = `Ndc changed,  Original Value : ${this.assessmentYear.assessment.project.ndc.name} New Value : ${this.selectedNdc.name} \n`;
 
-      if (this.assementYear.assessment.project.subNdc !== null || this.selectedSubNdc !== undefined){
-        action = action + `Sub Ndc changed,  Original Value : ${this.assementYear.assessment.project.subNdc?.name} New Value : ${this.selectedSubNdc?.name} \n`
+      if (this.assessmentYear.assessment.project.subNdc !== null || this.selectedSubNdc !== undefined) {
+        action = action + `Sub Ndc changed,  Original Value : ${this.assessmentYear.assessment.project.subNdc?.name} New Value : ${this.selectedSubNdc?.name} \n`
       }
 
-      this.assementYear.assessment.project.ndc = this.selectedNdc;
-      this.assementYear.assessment.project.subNdc = this.selectedSubNdc;
+      this.assessmentYear.assessment.project.ndc = this.selectedNdc;
+      this.assessmentYear.assessment.project.subNdc = this.selectedSubNdc;
 
-      console.log("ndcAction", this.assementYear.assessment)
-      let assessment = await this.serviceProxy.getOneBaseAssesmentControllerAssessment(
-        this.assementYear.assessment.id,
+      let assessment = await this.serviceProxy.getOneBaseAssessmentControllerAssessment(
+        this.assessmentYear.assessment.id,
         undefined,
         undefined,
         0
       ).toPromise()
 
       let project: Project = await this.serviceProxy.getOneBaseProjectControllerProject(
-        this.assementYear.assessment.project.id,
+        this.assessmentYear.assessment.project.id,
         undefined,
         undefined,
         undefined).toPromise()
@@ -811,7 +741,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       assessment.ndc = ndc
       assessment.subNdc = subNdc
 
-      await this.serviceProxy.updateOneBaseAssesmentControllerAssessment(
+      await this.serviceProxy.updateOneBaseAssessmentControllerAssessment(
         assessment.id,
         assessment
       ).toPromise()
@@ -823,11 +753,9 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
         )
         .subscribe(
           (res) => {
-            console.log(res)
             this.saveVerificationDetails(true, false, action);
           },
           (error) => {
-            console.log('Error', error);
           }
         );
 
@@ -837,13 +765,13 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
   toNonConformance() {
     this.router.navigate(['/non-conformance'], {
-      queryParams: { id: this.assementYear.id, flag: 'sec-admin' },
+      queryParams: { id: this.assessmentYear.id, flag: 'sec-admin' },
     });
   }
 
   detail(climateactions: any) {
     this.router.navigate(['/propose-project'], {
-      queryParams: { id: climateactions.id, flag:this.flag },
+      queryParams: { id: climateactions.id, flag: this.flag },
     });
   }
 
@@ -863,21 +791,21 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
 
     let vd = new VerificationDetail();
 
-    if (currentVerification) {     
+    if (currentVerification) {
       vd = currentVerification;
       let assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assementYear.id;  
-     vd.assessmentYear=assesmentYear;
+      assesmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assesmentYear;
       vd.updatedDate = moment();
     } else {
       vd.createdOn = moment();
       vd.updatedDate = moment();
       vd.userVerifier = this.loggedUser.id;
-      vd.assessmentId = this.assementYear.assessment.id;
+      vd.assessmentId = this.assessmentYear.assessment.id;
       let assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assementYear.id;
+      assesmentYear.id = this.assessmentYear.id;
       vd.assessmentYear = assesmentYear;
-      vd.year = Number(this.assementYear.assessmentYear);
+      vd.year = Number(this.assessmentYear.assessmentYear);
 
       if (IsNdc) {
         vd.isNDC = true;
@@ -891,7 +819,7 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     vd.verificationStage = this.getverificationStage();
 
     verificationDetails.push(vd);
-    
+
     this.verificationProxy
       .saveVerificationDetails(verificationDetails)
       .subscribe((a) => {
@@ -904,21 +832,21 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
       });
   }
 
-  getResult(type: any){
-    if (this.assementYear.assessment.assessmentType === 'MAC'){
-      if (type === "baseline"){
+  getResult(type: any) {
+    if (this.assessmentYear.assessment.assessmentType === 'MAC') {
+      if (type === "baseline") {
         return this.assessmentResult.bsTotalAnnualCost
-      } else if (type === "project"){
+      } else if (type === "project") {
         return this.assessmentResult.psTotalAnnualCost
       } else {
         return ''
       }
     } else {
-      if (type === "baseline"){
+      if (type === "baseline") {
         return this.assessmentResult.baselineResult
-      } else if (type === "project"){
+      } else if (type === "project") {
         return this.assessmentResult.projectResult
-      } else if (type === "lekage"){
+      } else if (type === "lekage") {
         return this.assessmentResult.lekageResult
       } else {
         return ''
@@ -926,16 +854,16 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     }
   }
 
-  onComplete(e:any){
+  onComplete(e: any) {
     this.isCompleted = true
-    if (e){
+    if (e) {
       this.displayConcern = false
     }
   }
 
-  onResultAction(column: string){
-   
-    let data:any = {type: 'result'}
+  onResultAction(column: string) {
+
+    let data: any = { type: 'result' }
     this.ref = this.dialogService.open(VerificationActionDialogComponent, {
       header: "Result action",
       width: '40%',
@@ -945,10 +873,8 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     });
 
     this.ref.onClose.subscribe(async (res) => {
-      if (res){
-        console.log(res)
-        let result = await this.verificationProxy.sendResultToRecalculate(this.assementYear.id).toPromise()
-        console.log(result)
+      if (res) {
+        let result = await this.verificationProxy.sendResultToRecalculate(this.assessmentYear.id).toPromise()
         let comment = this.loggedUser.userType.name + '|' + res.result.comment
         await this.saveVerificationDetailsResult(column, comment)
       }
@@ -959,36 +885,33 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
     let verificationDetail = undefined;
     let verificationStage = await this.getverificationStage()
     let verificationDetails = []
-    console.log(column)
     if (this.verificationDetails) {
-      console.log(this.verificationDetails)
       verificationDetail = this.verificationDetails.find(
         (a: any) =>
           a.isResult === true && a[column] === true &&
           a.verificationStage == verificationStage
       );
-      console.log("selected verificationDetail", verificationDetail)
       let _vd = new VerificationDetail();
       if (verificationDetail) {
         _vd = verificationDetail;
       } else {
-        _vd.assessmentId = this.assementYear.assessment.id;
+        _vd.assessmentId = this.assessmentYear.assessment.id;
         let assesmentYear = new AssessmentYear();
-        assesmentYear.id = this.assementYear.id;
+        assesmentYear.id = this.assessmentYear.id;
         _vd.assessmentYear = assesmentYear;
-        _vd.year = Number(this.assementYear.assessmentYear);
+        _vd.year = Number(this.assessmentYear.assessmentYear);
         _vd.createdOn = moment();
         _vd.isAccepted = false;
-        if(column == 'isTotal'){_vd.isTotal =true}
-        else if( column == 'isMac') {_vd.isMac =true}
-        else if (column =='isDifference'){_vd.isDifference=true}
+        if (column == 'isTotal') { _vd.isTotal = true }
+        else if (column == 'isMac') { _vd.isMac = true }
+        else if (column == 'isDifference') { _vd.isDifference = true }
 
-      //  _vd[column] = true
+        //  _vd[column] = true
       }
       _vd.editedOn = moment();
       _vd.updatedDate = moment();
       _vd.verificationStage = await this.getverificationStage();
-      _vd.verificationStatus = Number(this.assementYear.verificationStatus);
+      _vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
       _vd.action = action
       verificationDetails.push(_vd)
     }
@@ -1007,14 +930,14 @@ export class VerifyDetailComponentSectorAdmin implements OnInit {
   }
 
   onHide() {
-    if(!this.isCompleted) {
-      if (this.concernIsNdC){
+    if (!this.isCompleted) {
+      if (this.concernIsNdC) {
         this.canActiveNdcAction = false
-      } else if(this.concernIsTotal){
+      } else if (this.concernIsTotal) {
         this.canActiveTotalAction = false
-      } else if (this.concernIsMac){
+      } else if (this.concernIsMac) {
         this.canActiveMacAction = false
-      } else if (this.concernIsDiff){
+      } else if (this.concernIsDiff) {
         this.canActiveDifferenceAction = false
       }
     }

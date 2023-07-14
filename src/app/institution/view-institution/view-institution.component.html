@@ -1,260 +1,193 @@
 <div class="container pl-20 pr-20">
-    <div class="mb-12">
-      
-      <h4 class="mt-4" > {{title}} </h4>
-    </div>
-  
-    <!-- <div> {{institution|json}} </div> -->
-    <!-- <form #fData="ngForm" (ngSubmit)="saveForm(fData)" novalidate>  -->
-  
-      <div class="card">
-        <div class="p-grid p-fluid col-sm-12">
-          
-          <div class="row p-2">
-            
-   <!-- <div> {{selectedTypeList|json}} </div> -->
-  
-            <div class="col-12 col-md-6">
-              <div class="p-field">
-                <label for="type">Type</label>
-                <input
-                type="text"
-                [disabled]="institutionId > 0"
-                placeholder={{institution.type?.name}}
-                [(ngModel)]="institution.type.name"
-                  name = "type"
-                  class="p-inputtext"
-                  pInputText
-                  optionLabel="name"
-                >
-                
-              </div>
-            </div>
-          </div>
-          <div class="row p-2">
-            <div class="col-12 col-md-6">
-              <div class="p-field">
-                <label for="sector">Sector</label>
-                <input
-                [disabled]="institutionId !==0"
-                placeholder={{institution.sector?.name}}
-                  
-                  name="sector"
-                  class="p-inputtext"
-                  pInputText
+  <div class="mb-12">
+    <h4 class="mt-4">{{ title }}</h4>
+  </div>
 
-                 
-                >
-               
-              </div>
-            </div>
+  <div class="card">
+    <div class="p-grid p-fluid col-sm-12">
+      <div class="row p-2">
+        <div class="col-12 col-md-6">
+          <div class="p-field">
+            <label for="type">Type</label>
+            <input
+              type="text"
+              [disabled]="institutionId > 0"
+              placeholder="{{ institution.type?.name }}"
+              [(ngModel)]="institution.type.name"
+              name="type"
+              class="p-inputtext"
+              pInputText
+              optionLabel="name"
+            />
           </div>
-          <div class="row p-2">
-            <div class="col-12 col-md-6">
-              <div class="p-field">
-                <label for="category">Category</label>
-                <input
-                 [disabled]="institutionId > 0"
-                  [(ngModel)]="institution.category.name"
-                  placeholder={{institution.category?.name}}
-                  name="category"
-                  
-                  optionLabel="name"
-                  class="p-inputtext"
-                  pInputText
-
-                >
-                <!-- <p
-                  class="info-message text-danger"
-                  *ngIf="
-                    !project.sector &&
-                    (fData.submitted || sector.touched || sector.dirty)
-                  "
-                >
-                  This is a mandatory field
-                </p> -->
-              </div>
-            </div>
-          </div>
-          
-          <div class="row p-2">
-            <div class="col-12 col-md-6">
-              <div class="p-field">
-                <label for="projScope">Name</label>
-                <input
-                [disabled]="institutionId > 0"
-                pattern="^[a-zA-Z]{1,64}$"
-                  type="text"
-                  placeholder=""
-                  name="projScope"
-                  [(ngModel)]="institution.name"
-                  class="p-inputtext"
-                  pInputText
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row p-2">
-            <div class="col-12 col-md-6">
-              <div class="p-field">
-                <label for="projScope">Contact Number</label>
-                <input
-                [disabled]="institutionId > 0"
-                pattern="^[a-zA-Z]{1,64}$"
-                  type="text"
-                  placeholder=""
-                  name="projScope"
-                  [(ngModel)]="institution.telephoneNumber"
-                  class="p-inputtext"
-                  pInputText
-                />
-              </div>
-            </div>
-          </div>
-  
-  
-  
-          <div class="row p-2">
-            <div class="col-12 col-md-12">
-              <div class="p-field">
-                <label for="objective">Description</label>
-                <textarea
-                [disabled]="institutionId > 0"
-                pattern="^[a-zA-Z]{1,64}$"
-                  name="objective"
-                  placeholder=""
-                  [(ngModel)]="institution.description"
-                  rows="5"
-                  cols="130"
-                  pInputTextarea
-                  autoResize="autoResize"
-                  class="p-inputtext"
-                ></textarea>
-              </div>
-            </div>
-          </div>
-  
-  
-          <div class="row p-2">
-            <div class="col-12 col-md-12">
-              <div class="p-field">
-                <label for="objective">Address</label>
-                <textarea
-                [disabled]="institutionId > 0"
-                pattern="^[a-zA-Z]{1,64}$"
-                  name="objective"
-                  placeholder=""
-                  [(ngModel)]="institution.address"
-                  rows="5"
-                  cols="130"
-                  pInputTextarea
-                  autoResize="autoResize"
-                  class="p-inputtext"
-                ></textarea>
-              </div>
-            </div>
-          </div>
-  
         </div>
       </div>
-      
-  
-      <!-- <div class="d-flex col-1 justify-content-start"> -->
-        <div class="d-flex flex-row-reverse mt-2 mb-2">
+      <div class="row p-2">
+        <div class="col-12 col-md-6">
+          <div class="p-field">
+            <label for="sector">Sector</label>
+            <input
+              [disabled]="institutionId !== 0"
+              placeholder="{{ institution.sector?.name }}"
+              name="sector"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row p-2">
+        <div class="col-12 col-md-6">
+          <div class="p-field">
+            <label for="category">Category</label>
+            <input
+              [disabled]="institutionId > 0"
+              [(ngModel)]="institution.category.name"
+              placeholder="{{ institution.category?.name }}"
+              name="category"
+              optionLabel="name"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
 
-        <button
-        class="btn btn-primary btn-block text-uppercase m-1"
-        (click) = "onBackClick()"
-        >
-          Back
-        </button>
+      <div class="row p-2">
+        <div class="col-12 col-md-6">
+          <div class="p-field">
+            <label for="projScope">Name</label>
+            <input
+              [disabled]="institutionId > 0"
+              pattern="^[a-zA-Z]{1,64}$"
+              type="text"
+              placeholder=""
+              name="projScope"
+              [(ngModel)]="institution.name"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row p-2">
+        <div class="col-12 col-md-6">
+          <div class="p-field">
+            <label for="projScope">Contact Number</label>
+            <input
+              [disabled]="institutionId > 0"
+              pattern="^[a-zA-Z]{1,64}$"
+              type="text"
+              placeholder=""
+              name="projScope"
+              [(ngModel)]="institution.telephoneNumber"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
 
-        <button
-        *ngIf="institutionId > 0 && institution.status===0"
-        pButton
-        pRipple
-        class="btn btn-primary btn-block text-uppercase m-1"
-        (click)="activateInstitution(institution)" 
-      >
-      Deactivate
-      </button>
-  
-      <button
-      *ngIf="institutionId > 0 && institution.status===1"
+      <div class="row p-2">
+        <div class="col-12 col-md-12">
+          <div class="p-field">
+            <label for="objective">Description</label>
+            <textarea
+              [disabled]="institutionId > 0"
+              pattern="^[a-zA-Z]{1,64}$"
+              name="objective"
+              placeholder=""
+              [(ngModel)]="institution.description"
+              rows="5"
+              cols="130"
+              pInputTextarea
+              autoResize="autoResize"
+              class="p-inputtext"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="row p-2">
+        <div class="col-12 col-md-12">
+          <div class="p-field">
+            <label for="objective">Address</label>
+            <textarea
+              [disabled]="institutionId > 0"
+              pattern="^[a-zA-Z]{1,64}$"
+              name="objective"
+              placeholder=""
+              [(ngModel)]="institution.address"
+              rows="5"
+              cols="130"
+              pInputTextarea
+              autoResize="autoResize"
+              class="p-inputtext"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex flex-row-reverse mt-2 mb-2">
+    <button
+      class="btn btn-primary btn-block text-uppercase m-1"
+      (click)="onBackClick()"
+    >
+      Back
+    </button>
+
+    <button
+      *ngIf="institutionId > 0 && institution.status === 0"
       pButton
       pRipple
       class="btn btn-primary btn-block text-uppercase m-1"
-      (click)="activateInstitution(institution)" 
+      (click)="activateInstitution(institution)"
     >
-    Activate
+      Deactivate
     </button>
-    
-        <button
-        *ngIf="institutionId > 0" 
-        pButton
-          pRipple
-          class="btn btn-primary btn-block text-uppercase m-1"
-          type="edit"
-          (click) = "edit(institution)"
-        >
-          Edit
-        </button>
-  
-      </div>
-    <!-- </form> -->
-  
-    <p-toast position="top-right"></p-toast>
-    <p-toast
-      position="bottom-center"
-      key="c"
-      (onClose)="onReject()"
-      [baseZIndex]="5000"
+
+    <button
+      *ngIf="institutionId > 0 && institution.status === 1"
+      pButton
+      pRipple
+      class="btn btn-primary btn-block text-uppercase m-1"
+      (click)="activateInstitution(institution)"
     >
-    <!-- <ng-template let-message pTemplate="message">
-      <div class="p-flex p-flex-column" style="flex: 1">
-        <div class="p-text-center">
-          <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
-          <h4>{{ message.summary }}</h4>
-          <p>{{ message.detail }}</p>
-        </div>
-        <div class="p-grid p-fluid">
-          <div class="p-col-6">
-            <button
-            type="button"
-            pButton
-            (click)="onConfirm()"
-            label="Yes"
-            class="p-button-success"
-          ></button>
-          </div>
-          <div class="p-col-6">
-            <button
-              type="button"
-              pButton
-              (click)="onReject()"
-              label="No"
-              class="p-button-secondary"
-            ></button>
-          </div>
-        </div>
-      </div>
-    </ng-template> -->
+      Activate
+    </button>
+
+    <button
+      *ngIf="institutionId > 0"
+      pButton
+      pRipple
+      class="btn btn-primary btn-block text-uppercase m-1"
+      type="edit"
+      (click)="edit(institution)"
+    >
+      Edit
+    </button>
+  </div>
+
+  <p-toast position="top-right"></p-toast>
+  <p-toast
+    position="bottom-center"
+    key="c"
+    (onClose)="onReject()"
+    [baseZIndex]="5000"
+  >
   </p-toast>
-  
-  
-  </div> 
-  <p-confirmDialog
-  
+</div>
+<p-confirmDialog
   [style]="{ width: '50vw' }"
   [baseZIndex]="10000"
   rejectButtonStyleClass="p-button-text"
-  ></p-confirmDialog>
-  
-  <p-overlayPanel
+></p-confirmDialog>
+
+<p-overlayPanel
   #op
   [showCloseIcon]="true"
   [style]="{ width: '50vw' }"
   (onShow)="OnShowOerlay()"
-  ></p-overlayPanel>
-  
-  
+></p-overlayPanel>

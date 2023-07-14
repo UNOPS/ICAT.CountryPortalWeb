@@ -56,26 +56,7 @@
         [responsive]="true"
         [(selection)]="selectedParameters"
       >
-        <!-- Table header start search -->
-
-        <!-- <p-table #tt [value]="climateactions" [columns]="cols" placeholder="Global Filter" [filter]="true" filterMatchMode="contains" >                                                          
-      <ng-template pTemplate="caption">
-          <div style="text-align: right">        
-              <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-              <input type="text" pInputText size="50" style="width:auto">
-          </div>
-      </ng-template> -->
-
-        <!-- Table header END Search -->
-
         <ng-template pTemplate="header">
-          <!-- <tr> 
-          <th *ngFor="let col of columns" [ngSwitch]="col.field">
-            <input *ngSwitchCase="'climateActionName'" pInputText type="text"
-              (input)="dt.filter($event.target.value, col.field, 'contains')" />
-          </th>
-        </tr> -->
-
           <tr>
             <th style="width: 3rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
@@ -98,58 +79,71 @@
             </td>
             <td>
               {{
-                assignDataRequestList?.parameterId!.Assessment?.Prject!
+                (assignDataRequestList?.parameterId)!.Assessment?.Prject!
                   ?.climateActionName!
               }}
             </td>
             <td>{{ assignDataRequestList.parameterId?.name! }}</td>
 
+            <ng-container
+              *ngIf="
+                assignDataRequestList.parameterId?.DefaultValue?.year! ==
+                  undefined;
+                else elseBlockYear
+              "
+            >
+              <td>
+                {{
+                  assignDataRequestList.parameterId.AssessmentYear
+                    ? assignDataRequestList.parameterId.AssessmentYear
+                    : assignDataRequestList.parameterId.projectionYear
+                    ? assignDataRequestList.parameterId.projectionYear
+                    : assignDataRequestList.parameterId.projectionBaseYear
+                }}
+              </td>
+            </ng-container>
+            <ng-template #elseBlockYear>
+              <td>
+                {{ assignDataRequestList.parameterId?.DefaultValue?.year! }}
+              </td>
+            </ng-template>
 
-            <ng-container *ngIf=" assignDataRequestList.parameterId?.DefaultValue?.year! == undefined ; else elseBlockYear">
-            <td>
-              {{
-                assignDataRequestList.parameterId.AssessmentYear?assignDataRequestList.parameterId.AssessmentYear:assignDataRequestList.parameterId.projectionYear?assignDataRequestList.parameterId.projectionYear:assignDataRequestList.parameterId.projectionBaseYear
-              
-              }}
-            </td>
-           </ng-container>
-           <ng-template #elseBlockYear>  
-            <td>
-              {{
-                assignDataRequestList.parameterId?.DefaultValue?.year!
-              }}
-            </td>
-           </ng-template>
-
-            <td>{{ assignDataRequestList.deadline | date: "dd-MM-yyyy " }}</td>
+            <td>{{ assignDataRequestList.deadline | date : 'dd-MM-yyyy ' }}</td>
             <td>
               {{
                 assignDataRequestList.parameterId?.Assessment!?.User!
-                  ? assignDataRequestList.parameterId?.Assessment!?.User!?.firstName!
-                  : ""
+                  ? assignDataRequestList.parameterId?.Assessment!?.User!
+                      ?.firstName!
+                  : ''
               }}
             </td>
             <td>
               {{
-                assignDataRequestList.deadlineDataEntry | date: "dd-MM-yyyy "
+                assignDataRequestList.deadlineDataEntry | date : 'dd-MM-yyyy '
               }}
             </td>
             <td>
               {{
                 assignDataRequestList.dataRequestStatus == 2
-                  ? "Data Request"
-                  : ""
+                  ? 'Data Request'
+                  : ''
               }}
-              {{ assignDataRequestList.dataRequestStatus == 3 ? "Saved" : "" }}
+              {{ assignDataRequestList.dataRequestStatus == 3 ? 'Saved' : '' }}
               {{
-                assignDataRequestList.dataRequestStatus == -9 ? "Rejected" : ""
+                assignDataRequestList.dataRequestStatus == -9 ? 'Rejected' : ''
               }}
               {{
-                assignDataRequestList.dataRequestStatus == -10 ? "Rejected(DEO)" : ""
+                assignDataRequestList.dataRequestStatus == -10
+                  ? 'Rejected(DEO)'
+                  : ''
               }}
             </td>
             <td>
-              <i class="pi pi-ellipsis-v" style="font-size: 2rem" (click)="getInfo(assignDataRequestList)"></i>
+              <i
+                class="pi pi-ellipsis-v"
+                style="font-size: 2rem"
+                (click)="getInfo(assignDataRequestList)"
+              ></i>
             </td>
           </tr>
         </ng-template>
@@ -231,12 +225,9 @@
   [draggable]="false"
   [resizable]="false"
 >
-  
   <app-view-datarequest-history
     [parameterId]="paraId"
-    [listOfHistory] = "requestHistoryList"
+    [listOfHistory]="requestHistoryList"
   >
-
   </app-view-datarequest-history>
-  
 </p-dialog>

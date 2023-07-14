@@ -1,7 +1,7 @@
 import SectionParameter from './section-parameter';
 
 class ParameterSection {
-  public sectionHeader: string = '';
+  public sectionHeader = '';
 
   public sectionparameters: SectionParameter[] = [];
 }

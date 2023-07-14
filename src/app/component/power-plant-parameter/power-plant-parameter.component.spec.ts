@@ -8,9 +8,8 @@ describe('PowerPlantParameterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PowerPlantParameterComponent ]
-    })
-    .compileComponents();
+      declarations: [PowerPlantParameterComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

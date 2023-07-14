@@ -8,9 +8,8 @@ describe('AssignVerifiersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssignVerifiersComponent ]
-    })
-    .compileComponents();
+      declarations: [AssignVerifiersComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

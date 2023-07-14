@@ -4,10 +4,8 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { Router } from '@angular/router';
 import {
   LearningMaterialControllerServiceProxy,
-  ServiceProxy,
   LearningMaterial,
 } from 'shared/service-proxies/service-proxies';
 
@@ -16,28 +14,28 @@ import {
   templateUrl: './learning-material.component.html',
   styleUrls: ['./learning-material.component.css']
 })
-export class LearningMaterialComponent implements OnInit,AfterViewInit {
+export class LearningMaterialComponent implements OnInit, AfterViewInit {
 
   learnigMaterials: LearningMaterial[];
-  lm:any;
-  ug:any;
-  sortOrder: number = 1; //1
-  sortType: number = 0; //0
+  lm: any;
+  ug: any;
+  sortOrder: number = 1;
+  sortType: number = 0;
   event: any;
   searchBy: any = {
     text: null,
-    sortOption :'',
+    sortOption: '',
   };
 
-  sortOptions = [    // for sorting drop down
-    {name: 'BY DATE -> DESC'},
-    {name: 'BY DATE -> ASC'},
-    {name: 'BY DOCUMENT NAME -> DESC'},
-    {name: 'BY DOCUMENT NAME -> ASC'},
-    ];
+  sortOptions = [
+    { name: 'BY DATE -> DESC' },
+    { name: 'BY DATE -> ASC' },
+    { name: 'BY DOCUMENT NAME -> DESC' },
+    { name: 'BY DOCUMENT NAME -> ASC' },
+  ];
 
-  userTypeId : number = 0; // should dynamically add after login system develop
-  sectorId : number=0; // should dynamically add after login system develop
+  userTypeId: number = 0; // should dynamically add after login system develop
+  sectorId: number = 0; // should dynamically add after login system develop
   constructor(
     private LearningMaterialProxy: LearningMaterialControllerServiceProxy,
     private cdr: ChangeDetectorRef
@@ -48,78 +46,55 @@ export class LearningMaterialComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit(): void {
-
-  this.loadgridData();
-
+    this.loadgridData();
   }
 
   onSearch() {
-   
     this.loadgridData();
   }
 
   onStatusChange(event: any) {
-    //console.log('inside loadgrid...',this.searchBy.sortOption)
     this.onSearch();
 
- }
+  }
 
 
   loadgridData = () => {
-
-
-    //console.log('i am coming...',this.searchBy.sortOption);
-    //this.loading = true;
-    if(this.searchBy.sortOption.name == 'BY DATE -> DESC')
-    {
+    if (this.searchBy.sortOption.name == 'BY DATE -> DESC') {
       this.sortOrder = 0;
       this.sortType = 0;
-     // console.log('inside loadgrid...',this.searchBy.sortOption);
     }
-    if(this.searchBy.sortOption.name == 'BY DATE -> ASC')
-    {
+    if (this.searchBy.sortOption.name == 'BY DATE -> ASC') {
       this.sortOrder = 1;
       this.sortType = 0;
-      //console.log('inside loadgrid...',this.searchBy.sortOption);
     }
-    if(this.searchBy.sortOption.name == 'BY DOCUMENT NAME -> DESC')
-    {
+    if (this.searchBy.sortOption.name == 'BY DOCUMENT NAME -> DESC') {
       this.sortOrder = 0;
       this.sortType = 1;
-      //console.log('inside loadgrid...',this.searchBy.sortOption);
     }
-    if(this.searchBy.sortOption.name == 'BY DOCUMENT NAME -> ASC')
-    {
+    if (this.searchBy.sortOption.name == 'BY DOCUMENT NAME -> ASC') {
       this.sortOrder = 1;
       this.sortType = 1;
-     // console.log('inside loadgrid...',this.searchBy.sortOption);
     }
-    
-    
-    
+
     let filtertext = this.searchBy.text ? this.searchBy.text : '';
 
     let pageNumber = 1;
     let rows = 1000;
     setTimeout(() => {
       this.LearningMaterialProxy.getLearningMaterialDetails(
-          pageNumber,
-          rows,
-          filtertext,
-          // this.userTypeId,
-          // this.sectorId,
-          this.sortOrder,
-          this.sortType,
-         
-        )
+        pageNumber,
+        rows,
+        filtertext,
+        this.sortOrder,
+        this.sortType,
+
+      )
         .subscribe((a) => {
           this.learnigMaterials = a.items;
-          console.log("this.learnigMaterials ",this.learnigMaterials )
-          this.lm = this.learnigMaterials.filter((o: any)=>o.documentType == 'Learning Material');
-          this.ug = this.learnigMaterials.filter((o: any)=>o.documentType == 'User Guidence');
-         console.log(" this.lm..", this.lm)
-         console.log("this.ug..",this.ug)
-         
+          this.lm = this.learnigMaterials.filter((o: any) => o.documentType == 'Learning Material');
+          this.ug = this.learnigMaterials.filter((o: any) => o.documentType == 'User Guidence');
+
         });
     }, 1);
   };

@@ -8,9 +8,8 @@ describe('GhgAssessmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GhgAssessmentComponent ]
-    })
-    .compileComponents();
+      declarations: [GhgAssessmentComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

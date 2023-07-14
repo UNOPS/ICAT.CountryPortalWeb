@@ -214,44 +214,10 @@
               pInputText
             />
             </ng-template>
-              <!-- <p
-                class="info-message text-danger"
-                *ngIf="
-                  !project.mappedInstitution &&
-                  (fData.submitted || institute.touched || institute.dirty)
-                "
-              >
-                This is a mandatory field
-              </p> -->
             </div>
           </div>
         </div>
 
-        <!-- pointing institution start -->
-
-        <!-- <div class="row p-2">
-          <div class="col-12 col-md-6">
-            <div class="p-field">
-              <label for="institution"
-                >Institution (Climate Action Proponent Entity)*</label
-              >
-             
-              <p-dropdown
-              
-              placeholder="Institution"
-              #countryDD="ngModel"
-              [(ngModel)]="project.mappedInstitution"
-              [ngModelOptions]="{ standalone: true }"
-              [autoDisplayFirst]="false"
-              [options]="institutionList"
-              optionLabel="name"
-            ></p-dropdown>
-              
-            </div>
-          </div>
-
-        </div> -->
-        <!-- ENDING -->
       </div>
     </div>
 
@@ -312,14 +278,6 @@
                 <h1></h1>
                 <div *ngFor="let p of relatedItem">
                   {{ p.climateActionName }}
-                  <!-- <a
-                    class="text-break font-weight-light ml-20"
-                    [routerLink]="['/project']"
-                    [queryParams]="{ id: p.id }"
-                    target="_blank"
-                  >
-                    View</a
-                  > -->
                 </div>
               </div>
             </div>
@@ -483,14 +441,6 @@
                 [ngModelOptions]="{ standalone: true }"
                 optionLabel="name"
               ></p-dropdown>
-              <!-- <p
-                class="info-message text-danger"
-                *ngIf="
-                  !project.ndc && (fData.submitted || ndc.touched || ndc.dirty)
-                "
-              >
-                This is a mandatory field
-              </p> -->
             </ng-container>
             <ng-template #elseBlockndc>
               <input
@@ -524,15 +474,6 @@
                 [ngModelOptions]="{ standalone: true }"
                 optionLabel="name"
               ></p-dropdown>
-              <!-- <p
-                class="info-message text-danger"
-                *ngIf="
-                  !project.ndc &&
-                  (fData.submitted || subndc.touched || subndc.dirty)
-                "
-              >
-                This is a mandatory field
-              </p> -->
             </ng-container>
             <ng-template #elseBlocksubndc>
               <input
@@ -697,7 +638,7 @@
         <div class="row p-2">
           <div class="col-12 col-md-6">
             <div class="p-field">
-              <label for="projectownership">Ownership *</label>
+              <label for="projectownership">Ownership</label>
               <ng-container *ngIf="isDownloadMode == 0 && flag !=1; else elseBlockownership">
               <p-dropdown
                 [disabled]="editEntytyId > 0"
@@ -827,17 +768,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="row p-2"></div>
-        <div class="row p-2"></div>
-        <div class="row p-2"></div>
-        <div class="row p-2"></div>
-        <div class="row p-2"></div>
-        <div class="row p-2"></div>
-        <div class="row p-2"></div>
-        <div class="row p-2"></div>
-        <div class="row p-2"></div>
-        <div class="row p-2"></div>
-        <div class="row p-2"></div> -->
 
         <div class="row p-2">
           <div class="col-12 col-md-12">
@@ -1172,16 +1102,6 @@
                   
                 ></p-dropdown>
               </div>
-              <!-- <input
-                [disabled]="editEntytyId > 0"
-                type="text"
-                placeholder=" "
-                name="gdp"
-                #gdp="ngModel"
-                [(ngModel)]="project.gdp"
-                class="p-inputtext"
-                pInputText
-              /> -->
             </div>
           </div>
         </div>
@@ -1314,7 +1234,6 @@
         <div class="p-2">
           <h6>Project Documents</h6>
 
-          <!-- <h6 style="font-size: smaller;">Pre assessmnet report, feasibility study, project proposal, project develoment doc, EIA docs SDG asssessments etc.</h6> -->
           <ng-container *ngIf="isDownloadMode == 0; else elseBlockdocuments">
           <div class="col-12 wrapper-doc-upload mt-4">
             <app-document-upload
@@ -1337,7 +1256,6 @@
       </div>
     </div>
 
-    <!-- added for document delete popup -->
     <p-confirmDialog
       [style]="{ width: '50vw' }"
       [baseZIndex]="10000"
@@ -1345,20 +1263,6 @@
     >
     </p-confirmDialog>
 
-    <!-- <div
-      class="d-flex justify-content-start align-content-center flex-wrap pl-0"
-    >
-      <div class="col-12 d-flex align-items-center pl-0">
-        <app-document-upload
-          [doucmentList]="documents"
-          [documentOwner]="documentsDocumentOwner"
-          [documentOwnerId]="3"
-          [isNew]="false"
-          [showUpload]="true"
-        >
-        </app-document-upload>
-      </div>
-    </div> -->
 
     <div class="card mt-2">
       <div class="p-grid p-fluid col-sm-12">
@@ -1936,23 +1840,17 @@
         <div class="p-2">
           <p>Proposed Date is <b>{{proposedDate| date: "yyyy-MM-dd "}}</b></p>
         </div>
-
-
-
-
         <div *ngIf="ndcupdatehistoryList.length != 0">
-        <div class="p-2">
-          <h6>Aggregated Actions and Action Areas mapped history</h6>
+          <div class="p-2">
+            <h6>Aggregated Actions and Action Areas mapped history</h6>
+          </div>
+
+          <ng-container *ngFor="let item of ndcupdatehistoryList; let i = index">
+
+            <p><b>{{item.createdOn | date: "yyyy-MM-dd "}}</b> ,changed Aggregated Actions from <b>{{item.previousNdcs}}</b> to <b>{{item.currentNdcs}}</b> and changed Action Areas from <b>{{item.previousSubNdcs}}</b> to <b>{{item.currentSubNdcs}}</b> by <b>{{item.actionUser}}</b>.</p>
+
+          </ng-container>
         </div>
-
-        <ng-container *ngFor="let item of ndcupdatehistoryList; let i = index">
-
-          <p><b>{{item.createdOn | date: "yyyy-MM-dd "}}</b> ,changed Aggregated Actions from <b>{{item.previousNdcs}}</b> to <b>{{item.currentNdcs}}</b> and changed Action Areas from <b>{{item.previousSubNdcs}}</b> to <b>{{item.currentSubNdcs}}</b> by <b>{{item.actionUser}}</b>.</p>
-
-        </ng-container>
-       </div>
-
-
         <div *ngIf="statusupdatehistoryList.length != 0">
         <div class="p-2">
           <h6>Project approval status update history</h6>
@@ -1963,18 +1861,10 @@
           <p><b>{{status.createdOn | date: "yyyy-MM-dd "}}</b> ,changed Status from <b>{{status.previousAction}}</b> to <b>{{status.currentAction}}</b> by <b>{{status.actionUser}}</b>.</p>
 
         </ng-container>
-       </div>
+        </div>
 
       </div>
     </div>   
-
-
-
-
-
-
-
-
     <div class="p-grid p-fluid col-sm-12">
       <div class="p-2">
         <ng-container *ngIf="isDownloadMode == 1; else elseBlockdate">
@@ -1989,19 +1879,15 @@
 
     </div>
 
-
-
-
     <div class="d-flex flex-row-reverse mt-2 mb-2">
       <button
         pButton
         pRipple
         type="button"
-        [label]="editEntytyId>0?'Back':(isSaving?'Back':'Cancel')"
+        [label]="editEntytyId>0?'back':(isSaving?'back':'cancel')"
         class="p-button-raised"
-        (click)="confirmBack(editEntytyId>0?'Back':(isSaving?'Back':'Cancel'))"
+        (click)="confirmBack(editEntytyId>0?'back':(isSaving?'back':'cancel'))"
       ></button>
-      <!-- <div *ngIf="isDownloading == false">    [disabled]="isSaving || !fData.form.valid" -->
       <button
         pButton
         pRipple
@@ -2024,7 +1910,6 @@
         >
       </button>
         </div>
-    <!-- </div> -->
     </div>
 
   </form>

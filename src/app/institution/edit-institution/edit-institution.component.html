@@ -1,132 +1,114 @@
 <div class="container pl-20 pr-20">
-    <div class="mb-12">
-      
-      <h4 class="mt-4"> Edit institution </h4>
-    </div>
+  <div class="mb-12">
+    <h4 class="mt-4">Edit institution</h4>
+  </div>
 
-    <!-- <div> {{institution|json}} </div> -->
-    <form #fData="ngForm" (ngSubmit)="saveForm(fData)" novalidate>
-   
-      <div class="card">
-        <div class="p-grid p-fluid col-sm-12">
-          
-          <div class="row p-2">
-             
-   
-            <div class="col-12 col-md-6">
-              <div class="p-field">
-                <label for="type">Type*</label>
-                <p-dropdown
+  <form #fData="ngForm" (ngSubmit)="saveForm(fData)" novalidate>
+    <div class="card">
+      <div class="p-grid p-fluid col-sm-12">
+        <div class="row p-2">
+          <div class="col-12 col-md-6">
+            <div class="p-field">
+              <label for="type">Type*</label>
+              <p-dropdown
                 appendTo="body"
                 placeholder="Select"
-                  [(ngModel)]="institution.type"
-                  name = "type"
-                  [options]="typeList"
-                  [autoDisplayFirst]="false"
-                  optionLabel="name"
-                  [disabled]="institutionId > 0"
-                  
-                  ></p-dropdown>
-                
-              </div>
+                [(ngModel)]="institution.type"
+                name="type"
+                [options]="typeList"
+                [autoDisplayFirst]="false"
+                optionLabel="name"
+                [disabled]="institutionId > 0"
+              ></p-dropdown>
             </div>
           </div>
-          <div class="row p-2">
-            <div class="col-12 col-md-6">
-              <div class="p-field">
-                <label for="sector">Sector*</label>
-                <p-dropdown
-                
-                  placeholder=""
-                  [(ngModel)]="institution.sector"
-                  name="sector"
-                  [options]="sectorList"
-                  optionLabel="name"
-                  [disabled]="institutionId > 0"
-
-                ></p-dropdown>
-               
-              </div>
+        </div>
+        <div class="row p-2">
+          <div class="col-12 col-md-6">
+            <div class="p-field">
+              <label for="sector">Sector*</label>
+              <p-dropdown
+                placeholder=""
+                [(ngModel)]="institution.sector"
+                name="sector"
+                [options]="sectorList"
+                optionLabel="name"
+                [disabled]="institutionId > 0"
+              ></p-dropdown>
             </div>
           </div>
-          <div class="row p-2">
-            <div class="col-12 col-md-6">
-              <div class="p-field">
-                <label for="category">Category*</label>
-                <p-dropdown
-                
+        </div>
+        <div class="row p-2">
+          <div class="col-12 col-md-6">
+            <div class="p-field">
+              <label for="category">Category*</label>
+              <p-dropdown
                 placeholder="Select"
-                  [(ngModel)]="institution.category"
-                  name="category"
-                  [options]="categoryList"
-                  [autoDisplayFirst]="false"
-                  optionLabel="name"
-                  #inscat="ngModel"
-                  
-                  
-
-                ></p-dropdown>
-                <p
+                [(ngModel)]="institution.category"
+                name="category"
+                [options]="categoryList"
+                [autoDisplayFirst]="false"
+                optionLabel="name"
+                #inscat="ngModel"
+              ></p-dropdown>
+              <p
                 class="info-message text-danger"
                 *ngIf="
                   !institution.category &&
                   (fData.submitted || inscat.touched || inscat.dirty)
                 "
-                >
+              >
                 This is a mandatory field
               </p>
-              </div>
             </div>
           </div>
-          
-          <div class="row p-2">
-            <div class="col-12 col-md-6">
-              <div class="p-field">
-                <label for="projScope">Name*</label>
-                <input
-               
-                  type="text"
-                  placeholder=""
-                  name="projScope"
-                  [(ngModel)]="institution.name"
-                  class="p-inputtext"
-                  #insname="ngModel"
-                  required
+        </div>
 
-                  pInputText
-                />
-                <p
+        <div class="row p-2">
+          <div class="col-12 col-md-6">
+            <div class="p-field">
+              <label for="projScope">Name*</label>
+              <input
+                type="text"
+                placeholder=""
+                name="projScope"
+                [(ngModel)]="institution.name"
+                class="p-inputtext"
+                #insname="ngModel"
+                required
+                pInputText
+              />
+              <p
                 class="info-message text-danger"
                 *ngIf="
                   !institution.name &&
                   (fData.submitted || insname.touched || insname.dirty)
-              "
+                "
               >
                 This is a mandatory field
               </p>
-              </div>
             </div>
           </div>
+        </div>
 
+        <div class="row p-2">
+          <div class="col-12 col-md-6">
+            <div class="p-field">
+              <label for="emailin">Email</label>
+              <input
+                pattern="[\w-\.]+@([\w-]+\.)+[\w-]{1,30}$"
+                type="text"
+                maxlength="30"
+                placeholder="Email"
+                name="email"
+                #emailin="ngModel"
+                class="p-inputtext"
+                pInputText
+                [(ngModel)]="institution.email"
+                required
+              />
 
-          <div class="row p-2">
-            <div class="col-12 col-md-6">
-              <div class="p-field">
-                <label for="emailin">Email</label>
-                <input
-                  pattern="[\w-\.]+@([\w-]+\.)+[\w-\.]{1,30}$"
-                  type="text"
-                  maxlength="30"
-                  placeholder="Email"
-                  name="email"
-                  #emailin="ngModel"
-                  class="p-inputtext"
-                  pInputText
-                  [(ngModel)]="institution.email"
-                  required
-                />
-
-                <p
+              <p
                 class="info-message text-danger"
                 *ngIf="
                   !institution.email &&
@@ -135,17 +117,14 @@
                 >
                 This is a mandatory field
               </p>
-  
               </div>
             </div>
           </div>
-  
-  
+
           <div class="row p-2">
             <div class="col-12 col-md-6">
               <div class="p-field">
                 <label for="objective">Contact Number*</label>
-                 
                 <input
                 type="text"
                 name="telephoneNumber"
@@ -155,9 +134,7 @@
                 placeholder="011 111 1111"
                 class="p-inputtext"
                 pInputText
-                required             
-
-                
+                required
               />
 
               <p
@@ -169,19 +146,14 @@
               >
               This is a mandatory field
             </p>
-            <!-- <p class="info-message text-danger" *ngIf="institution.telephoneNumber!.indexOf('_') > 0">
-              A valid telephone number is required.
-            </p> -->
               </div>
             </div>
           </div>
-
           <div class="row p-2">
             <div class="col-12 col-md-12">
               <div class="p-field">
                 <label for="objective">Description</label>
                 <textarea
-             
                   name="description"
                   placeholder=""
                   [(ngModel)]="institution.description"
@@ -194,14 +166,11 @@
               </div>
             </div>
           </div>
-
-
           <div class="row p-2">
             <div class="col-12 col-md-12">
               <div class="p-field">
                 <label for="objective">Address</label>
                 <textarea
-                
                   name="objective"
                   placeholder=""
                   [(ngModel)]="institution.address"
@@ -217,17 +186,13 @@
 
         </div>
       </div>
-      
-      <!-- <div class="d-flex col-1 justify-content-start"> -->
         <div class="d-flex flex-row-reverse mt-2 mb-2">
-
         <button
         class="btn btn-primary btn-block text-uppercase ml-10"
         (click) = "onBackClick()"
         >
           Back
         </button>
-
         <button
           pRipple
           [disabled]="isSaving"
@@ -236,11 +201,7 @@
         >
           Save
         </button>
-        
       </div>
-
-
-     
     </form>
 
     <p-toast position="top-right"></p-toast>
@@ -250,38 +211,13 @@
       (onClose)="onReject()"
       [baseZIndex]="5000"
     >
-      <!-- <ng-template let-message pTemplate="message">
-        <div class="p-flex p-flex-column" style="flex: 1">
-          <div class="p-text-center">
-            <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
-            <h4>{{ message.summary }}</h4>
-            <p>{{ message.detail }}</p>
-          </div>
-          <div class="p-grid p-fluid">
-            <div class="p-col-6">
-              <button
-                type="button"
-                pButton
-                (click)="onConfirm()"
-                label="Yes"
-                class="p-button-success"
-              ></button>
-            </div>
-          </div>
-        </div>
-      </ng-template> -->
     </p-toast>
-    <!-- <p-confirmDialog
-      
-      
-    ></p-confirmDialog> -->
     <p-overlayPanel
       #op
       [showCloseIcon]="true"
       [style]="{ width: '50vw' }"
       (onShow)="OnShowOerlay()"
     ></p-overlayPanel>
- 
 </div> 
  
  

@@ -3,351 +3,159 @@
   <h4 class="mt-4">Track Specific Climate Actions</h4>
 
   <div class="p-grid p-fluid card">
-  <div class="row p-2">
-   
+    <div class="row p-2">
+      <div class="col-sm-6" *ngIf="this.recievedFlag == undefined">
+        <p-dropdown name="assessmentYear" [(ngModel)]="selectedYear" [options]="uniqueYears" #fyear="ngModel"
+          [filter]="true" placeholder="Select Assessment year" (ngModelChange)="onyearChange($event)">
+        </p-dropdown>
 
+      </div>
+      <div class="col-sm-6" *ngIf="this.recievedFlag == undefined">
 
-  <div class="col-sm-6" *ngIf="this.recievedFlag == undefined">
-    
+        <p-multiSelect name="multiNdc" [options]="ndcList" [(ngModel)]="year" #fndc="ngModel"
+          placeholder="Select Aggregated Actions" optionLabel="name" (ngModelChange)="onNDCChange($event)">
+        </p-multiSelect>
+      </div>
 
-  <p-dropdown 
-  name="assessmentYear" 
-  [(ngModel)]="selectedYear" 
-  [options]="uniqueYears"
-  #fyear="ngModel"
-  
-  [filter]="true" 
-  placeholder="Select Assessment year" 
-  (ngModelChange)="onyearChange($event)"
-   >
-   </p-dropdown>
-
-  </div>
-  <div class="col-sm-6" *ngIf="this.recievedFlag == undefined">
-    
-    <p-multiSelect 
-    name="multiNdc"
-    [options]="ndcList"
-    [(ngModel)]="year"
-    #fndc="ngModel"
-    placeholder="Select Aggregated Actions"
-    optionLabel="name"
-    (ngModelChange)="onNDCChange($event)"
-  >
-  </p-multiSelect >
-
-  <!-- <p-dropdown 
-    name="multiNdc"
-    [options]="ndcList"
-    [disabled]="isActivendc"
-    [(ngModel)]="year" 
-    placeholder="Select Ndc"
-    optionLabel="name"
-    (ngModelChange)="onNDCChange($event)"
-   >
-   </p-dropdown> -->
-  
-    </div>
-  
-  <br><br><br><br>
-<!-- <div> {{activeprojects|json}} </div> -->
-  <div class="col-sm-12" #TABLE>
-    <p-table
-      #dt
-      id="excel-table"
-      p-table
-      #table
-      [value]="activeprojects"
-      [lazy]="true"
-      (onLazyLoad)="loadgridData($event)"
-      [paginator]="true"
-      [rows]="rows"
-      paginatorDropdownAppendTo="body"
-      [showCurrentPageReport]="true"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      [rowsPerPageOptions]="[1, 10, 25, 50]"
-      [totalRecords]="activeprojects.length"
-      [loading]="loading"
-      [responsive]="true"
-    >
-      <ng-template pTemplate="header">
-        <tr>
-          <th class="has-details"
-          pTooltip="Parties may indicate whether a measure is included in the ‘with measures’ projections."
-          tooltipPosition="bottom">Name
-            <!-- <span class="details">
-              <ul>Parties may indicate whether a measure is included in the ‘with measures’ projections.</ul>
-         </span> -->
-          </th>
-          <th class="has-details"
-            pTooltip="Additional information may also be provided on the cost of the mitigation actions, non-GHG mitigation benefits, and how the mitigation action interacts with other mitigation actions, as appropriate (para. 83(a–c) of the MPGs)
+      <br><br><br><br>
+      <div class="col-sm-12" #TABLE>
+        <p-table #dt id="excel-table" p-table #table [value]="activeprojects" [lazy]="true"
+          (onLazyLoad)="loadgridData($event)" [paginator]="true" [rows]="rows" paginatorDropdownAppendTo="body"
+          [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [rowsPerPageOptions]="[1, 10, 25, 50]" [totalRecords]="activeprojects.length" [loading]="loading"
+          [responsive]="true">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="has-details"
+                pTooltip="Parties may indicate whether a measure is included in the ‘with measures’ projections."
+                tooltipPosition="bottom">Name
+              </th>
+              <th class="has-details"
+                pTooltip="Additional information may also be provided on the cost of the mitigation actions, non-GHG mitigation benefits, and how the mitigation action interacts with other mitigation actions, as appropriate (para. 83(a–c) of the MPGs)
                     Parties should identify actions, policies and measures that influence GHG emissions from international transport (para. 88 of the MPGs).
                     Parties should, to the extent possible, provide information about how actions, policies and measures are modifying longer-term trends in GHG emissions and removals (para. 89 of the MPGs)."
-            tooltipPosition="bottom"        
-          >Description
-            <!-- <span class="details">
-              <ul>Additional information may also be provided on the cost of the mitigation actions, non-GHG mitigation benefits, and how the mitigation action interacts with other mitigation actions, as appropriate (para. 83(a–c) of the MPGs)</ul>
-              <ul> Parties should identify actions, policies and measures that influence GHG emissions from international transport (para. 88 of the MPGs).</ul>
-            <ul>Parties should, to the extent possible, provide information about how actions, policies and measures are modifying longer-term trends in GHG emissions and removals (para. 89 of the MPGs).</ul>
-         </span> -->
-          </th>
-          <th>Objectives</th>
-          <th>Type of Instrument</th>
-          <th class="has-details" pTooltip="Parties shall, to the extent possible, use the following descriptive terms to report on status of implementation: planned, adopted or implemented (para. 82(e) of the MPGs)."
-          tooltipPosition="bottom" tooltipStyleClass="tooltip">Status
-            <!-- <span class="details">
-              <ul>Parties shall, to the extent possible, use the following descriptive terms to report on status of implementation: planned, adopted or implemented (para. 82(e) of the MPGs).</ul>
-         </span> -->
-          </th>
-          <th class="has-details"
-              pTooltip="Parties shall, to the extent possible, provide information on sector(s) affected: energy, transport, industrial processes and product use, agriculture, LULUCF, waste management or other (paras. 81 and 82(f) of the MPGs)."
-              tooltipPosition="bottom"
-            >Sector(s) Affected
-            <!-- <span class="details">
-              <ul>Parties shall, to the extent possible, provide information on sector(s) affected: energy, transport, industrial processes and product use, agriculture, LULUCF, waste management or other (paras. 81 and 82(f) of the MPGs).</ul>
-         </span> -->
-          </th>
-          <th>Gasses Affected</th>
-          <th>Start Year of Implementation</th>
-          <th>Implementing Entity or Entities</th>
-          <th 
-            pTooltip="Each Party shall provide, to the extent possible, estimates of expected and achieved GHG emission reductions for its actions, policies and measures in the tabular format; those developing country Parties that need flexibility in the light of their capacities with respect to this provision are instead encouraged to report this information (para. 85 of the MPGs).</ul>
-                      To the extent available, each Party shall describe the methodologies and assumptions used to estimate the GHG emission reductions or removals due to each action, policy and measure. This information may be presented in an annex to the biennial transparency report (para. 86 of the MPGs)." 
-            tooltipStyleClass="tooltip"
-            tooltipPosition="bottom"
-            appenTo="body"
-          >Estimate of GHG Emission Reduction (ktCO₂ e)  
-            <!-- <span class="details">
-              <ul>Each Party shall provide, to the extent possible, estimates of expected and achieved GHG emission reductions for its actions, policies and measures in the tabular format; those developing country Parties that need flexibility in the light of their capacities with respect to this provision are instead encouraged to report this information (para. 85 of the MPGs).</ul>
-              <ul>To the extent available, each Party shall describe the methodologies and assumptions used to estimate the GHG emission reductions or removals due to each action, policy and measure. This information may be presented in an annex to the biennial transparency report (para. 86 of the MPGs).</ul>
-            </span> -->
+                tooltipPosition="bottom">Description
+              </th>
+              <th>Objectives</th>
+              <th>Type of Instrument</th>
+              <th class="has-details"
+                pTooltip="Parties shall, to the extent possible, use the following descriptive terms to report on status of implementation: planned, adopted or implemented (para. 82(e) of the MPGs)."
+                tooltipPosition="bottom" tooltipStyleClass="tooltip">Status
+              </th>
+              <th class="has-details"
+                pTooltip="Parties shall, to the extent possible, provide information on sector(s) affected: energy, transport, industrial processes and product use, agriculture, LULUCF, waste management or other (paras. 81 and 82(f) of the MPGs)."
+                tooltipPosition="bottom">Sector(s) Affected
+              </th>
+              <th>Gasses Affected</th>
+              <th>Start Year of Implementation</th>
+              <th>Implementing Entity or Entities</th>
+              <th
+                pTooltip="Each Party shall provide, to the extent possible, estimates of expected and achieved GHG emission reductions for its actions, policies and measures in the tabular format; those developing country Parties that need flexibility in the light of their capacities with respect to this provision are instead encouraged to report this information (para. 85 of the MPGs).</ul>
+                      To the extent available, each Party shall describe the methodologies and assumptions used to estimate the GHG emission reductions or removals due to each action, policy and measure. This information may be presented in an annex to the biennial transparency report (para. 86 of the MPGs)."
+                tooltipStyleClass="tooltip" tooltipPosition="bottom" appenTo="body">Estimate of GHG Emission Reduction
+                (ktCO₂ e)
             <tr>
-            <th>Achieved</th>
-            <th>|Expected</th>
-            </tr> </th>
-           
-          </tr>
-       
-   
-      </ng-template>
-      <ng-template pTemplate="body" let-activeprojects>
-        <tr>
-          <!-- optionLabel="climateActionName" -->
-          <td>
-           
-            <div
-            class="might-overflow"
-            [pTooltip]="activeprojects.Name"
-            tooltipPosition="top"
-          >
-            {{activeprojects.Name}}
-          </div>
-          
-          <td>
-            <div
-            class="might-overflow"
-            [pTooltip]="activeprojects.Description"
-            tooltipPosition="top"
-            [innerHTML]="activeprojects.Description"
-          >
-            <!-- {{activeprojects.Description}} -->
-          </div>
-            </td>
-          <td>
-            <div
-            class="might-overflow"
-            [pTooltip]="activeprojects.Objectives"
-            tooltipPosition="top"
-          >
-            {{activeprojects.Objectives}}
-          </div>
-            </td>
+              <th>Achieved</th>
+              <th>|Expected</th>
+            </tr>
+            </th>
 
-            <ng-container *ngIf="userRole == 'Country Admin'; else elseCountryAdminInstrument">
+            </tr>
+
+
+          </ng-template>
+          <ng-template pTemplate="body" let-activeprojects>
+            <tr>
               <td>
-                <div
-                    class="might-overflow"
-                    [pTooltip]="activeprojects.Type_Of_Instrument"
-                    tooltipPosition="top"
-                  >
+
+                <div class="might-overflow" [pTooltip]="activeprojects.Name" tooltipPosition="top">
+                  {{activeprojects.Name}}
+                </div>
+
+              <td>
+                <div class="might-overflow" [pTooltip]="activeprojects.Description" tooltipPosition="top"
+                  [innerHTML]="activeprojects.Description">
+                </div>
+              </td>
+              <td>
+                <div class="might-overflow" [pTooltip]="activeprojects.Objectives" tooltipPosition="top">
+                  {{activeprojects.Objectives}}
+                </div>
+              </td>
+
+              <ng-container *ngIf="userRole == 'Country Admin'; else elseCountryAdminInstrument">
+                <td>
+                  <div class="might-overflow" [pTooltip]="activeprojects.Type_Of_Instrument" tooltipPosition="top">
                     {{ activeprojects.Type_Of_Instrument }}
                   </div>
-            </td>
-            </ng-container>
-            <ng-template #elseCountryAdminInstrument>
-              <td><p-dropdown
-                placeholder="Select"
-                name="instrument"
-                [(ngModel)]="activeprojects.Type_Of_Instrument"
-                [options]="instrumentList"
-             
-                
-              ></p-dropdown></td>
-            </ng-template>
-
-
-
-
-            <td>
-              <div
-                  class="might-overflow"
-                  [pTooltip]="activeprojects.Status"
-                  tooltipPosition="top"
-                >
+                </td>
+              </ng-container>
+              <ng-template #elseCountryAdminInstrument>
+                <td><p-dropdown placeholder="Select" name="instrument" [(ngModel)]="activeprojects.Type_Of_Instrument"
+                    [options]="instrumentList"></p-dropdown></td>
+              </ng-template>
+              <td>
+                <div class="might-overflow" [pTooltip]="activeprojects.Status" tooltipPosition="top">
                   {{ activeprojects.Status }}
                 </div>
-          </td>
-
-
-         <!-- <ng-container *ngIf="userRole == 'Country Admin'; else elseCountryAdmin">
-          <td><p-dropdown
-            placeholder="Select"
-            name="status"
-            [(ngModel)]="activeprojects.Status"
-            [options]="statusList"
-         
-            
-          ></p-dropdown></td>
-         </ng-container>
-         <ng-template #elseCountryAdmin>
-          <td>
-            <div
-                class="might-overflow"
-                [pTooltip]="activeprojects.Status"
-                tooltipPosition="top"
-              >
-                {{ activeprojects.Status }}
-              </div>
-        </td>
-
-         </ng-template> -->
-
-         
-
-
-
-
-          <td>
-            <div
-            class="might-overflow"
-            [pTooltip]="activeprojects.Sector_affected"
-            tooltipPosition="top"
-          >
-            {{ activeprojects.Sector_affected }}
-          </div>
-          </td>
-          <td>
-            <input
-            type="text"
-            class="p-inputtext"
-            placeholder="CO₂"
-            pInputText
-            style="border: transparent"
-            [readonly]="true"
-          />
-           </td>
-           <!-- <td>
-            <div
-            class="might-overflow"
-            [pTooltip]="activeprojects.ndc_ca"
-            tooltipPosition="top"
-          >
-            {{ activeprojects.ndc_ca }}
-          </div>
-
-          
-           </td> -->
-          <td>
-            <input
-            type="text"
-            class="p-inputtext"
-            [(ngModel)]="activeprojects.startYear_of_implementation"
-            pInputText
-            style="border: transparent"
-            [readonly]="true"
-          
-          />
-         
-        
-          </td>
-          <td>
-
-            <div
-            class="might-overflow"
-            [pTooltip]="activeprojects.implementing_entity_or_entities"
-            tooltipPosition="top"
-          >
-            {{activeprojects.implementing_entity_or_entities}}
-          </div>
-           </td>
-          <td><tr>
-            <td>
-              <input
-            type="text"
-            class="p-inputtext"
-            [(ngModel)]="activeprojects.achieved"
-            pInputText
-            style="border: transparent"
-            [readonly]="true"
-          
-          />
-             </td>
-            <td>
-              <input
-            type="text"
-            class="p-inputtext"
-            [(ngModel)]="activeprojects.expected"
-            pInputText
-            style="border: transparent"
-            [readonly]="true"
-          
-          />
               </td>
-          </tr></td>
-          
-        </tr>
-       
-      </ng-template>
-    </p-table>
-  </div>
-  </div>
-<div class="row">
-  <div class="col-md-2">
-
-    <div class="col">
-      <button pRipple pButton type="button" (click)="download()"
-      class="btn btn-primary btn-block  btn-lg" >
-        Download Excel
-    </button>
+              <td>
+                <div class="might-overflow" [pTooltip]="activeprojects.Sector_affected" tooltipPosition="top">
+                  {{ activeprojects.Sector_affected }}
+                </div>
+              </td>
+              <td>
+                <input type="text" class="p-inputtext" placeholder="CO₂" pInputText style="border: transparent"
+                  [readonly]="true" />
+              </td>
+              <td>
+                <input type="text" class="p-inputtext" [(ngModel)]="activeprojects.startYear_of_implementation"
+                  pInputText style="border: transparent" [readonly]="true" />
+              </td>
+              <td>
+                <div class="might-overflow" [pTooltip]="activeprojects.implementing_entity_or_entities"
+                  tooltipPosition="top">
+                  {{activeprojects.implementing_entity_or_entities}}
+                </div>
+              </td>
+              <td>
+            <tr>
+              <td>
+                <input type="text" class="p-inputtext" [(ngModel)]="activeprojects.achieved" pInputText
+                  style="border: transparent" [readonly]="true" />
+              </td>
+              <td>
+                <input type="text" class="p-inputtext" [(ngModel)]="activeprojects.expected" pInputText
+                  style="border: transparent" [readonly]="true" />
+              </td>
+            </tr>
+            </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
     </div>
-
-  </div>
-
-  <div class="col-md-2">
-
-
-    <div class="col" *ngIf="this.recievedFlag == undefined">
-      <button pRipple pButton type="button"  (click)="publish()"
-      class="btn btn-primary btn-block  btn-lg" >
-        {{userRole == 'Country Admin' ?'Save':'Publish'}}
-    </button>
+    <div class="row">
+      <div class="col-md-2">
+        <div class="col">
+          <button pRipple pButton type="button" (click)="download()" class="btn btn-primary btn-block  btn-lg">
+              Download Excel
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="col" *ngIf="this.recievedFlag == undefined">
+          <button pRipple pButton type="button" (click)="publish()" class="btn btn-primary btn-block  btn-lg">
+              {{userRole == 'Country Admin' ?'Save':'Publish'}}
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button pRipple pButton type="button" (click)="back()" class="btn btn-primary btn-block  btn-lg">
+            Back
+        </button>
+      </div>
+      <div class="col-md-6"></div>
     </div>
-    
   </div>
-
-  <div class="col-md-2">
-
-
-    
-      <button pRipple pButton type="button"  (click)="back()"
-      class="btn btn-primary btn-block  btn-lg" >
-        Back
-    </button>
- 
-    
-  </div>
-  <div class="col-md-6"></div>
-</div>
-  
-</div>
 </section>

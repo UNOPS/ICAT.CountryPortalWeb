@@ -2,7 +2,6 @@
   <h4 class="mt-4">Manage Specific Climate Actions</h4>
   <div class="p-grid p-fluid card">
     <div class="row mb-3">
-
       <div class="col-md-6">
         <div class="col-12">
           <div class="p-field">
@@ -43,13 +42,11 @@
           ></button>
         </div>
       </div>
-
     </div>
 
     <div class="row p-2">
       <p-table
         #table
-    
         [value]="climateactions"
         [lazy]="true"
         (onLazyLoad)="loadgridData($event)"
@@ -58,7 +55,7 @@
         [showCurrentPageReport]="true"
         paginatorDropdownAppendTo="body"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [rowsPerPageOptions]="[ 10, 25, 50]"
+        [rowsPerPageOptions]="[10, 25, 50]"
         [totalRecords]="totalRecords"
         [loading]="loading"
         [responsive]="true"
@@ -88,11 +85,8 @@
               <p-tableHeaderCheckbox (click)="buttonEnable()" ></p-tableHeaderCheckbox>
             </th>
             <th>
-          
               View/Accept
             </th>
-           
-            
             <th >Name</th>
             <th>Project Proponent</th>
             <th>Status of the Project</th>
@@ -109,11 +103,14 @@
             <th></th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body"  let-climateactions>
+        <ng-template pTemplate="body" let-climateactions>
           <tr>
-           
             <td style="text-align: center">
-              <p-tableCheckbox [value]="climateactions" (click)="buttonEnable()"> </p-tableCheckbox>
+              <p-tableCheckbox
+                [value]="climateactions"
+                (click)="buttonEnable()"
+              >
+              </p-tableCheckbox>
             </td>
             <td style="text-align: center">
               <button
@@ -125,128 +122,50 @@
                 class="p-button-rounded p-button-text p-eye"
               ></button>
             </td>
-            <!-- <td>
-              <i
-                class="pi pi-eye"
-                style="font-size: 1.5rem; color: #000; margin-left: 17%"
-                (click)="detail(climateactions)"
-              ></i>
-            </td> -->
             <td>{{ climateactions.climateActionName }}</td>
             <td>{{ climateactions.institution }}</td>
             <td>{{ climateactions.projectStatus?.name }}</td>
             <td>
               <table>
                 <tr>
-
-
-                  <ng-container *ngIf="climateactions.projectApprovalStatus?.id == 1 || climateactions.projectApprovalStatus?.id == 5 ; else elseBlockAccept">
-                  <td>
-                    <label>
-                      {{climateactions.projectApprovalStatus?.id === 1 ? "Accepted" : "Activated" }}
-                    </label>
-                    <!-- <button
-                      type="button"
-                      pButton
-                      pRipple
-                      [disabled]="true"
-                      class="p-btn-sm"
-                      (click)="updateProjectApprovalStatus(climateactions, 1)"
-                    >
-                     
-                    </button> -->
-                  </td>
-                  </ng-container>
-                  <ng-template #elseBlockAccept>   
+                  <ng-container
+                    *ngIf="
+                      climateactions.projectApprovalStatus?.id == 1 ||
+                        climateactions.projectApprovalStatus?.id == 5;
+                      else elseBlockAccept
+                    "
+                  >
                     <td>
                       <label>
-                        {{climateactions.projectApprovalStatus?.id === 2 ? "Rejected" : climateactions.projectApprovalStatus?.id === 3 ?"Data Requested":"Proposed" }}
+                        {{
+                          climateactions.projectApprovalStatus?.id === 1
+                            ? 'Accepted'
+                            : 'Activated'
+                        }}
                       </label>
-                      <!-- <button
-                        type="button"
-                        pButton
-                        pRipple
-                        [disabled]="true"
-                        class="p-btn-sm"
-                        (click)="updateProjectApprovalStatus(climateactions, 1)"
-                      >
-                        
-                      </button> -->
                     </td>
-                  </ng-template> 
-
-
-
-                  <!-- <ng-container *ngIf=" climateactions.projectApprovalStatus?.id == 5 ; else elseBlockReject">
-                  <td>
-                    <button
-                      type="button"
-                      pButton
-                      pRipple
-                      class="p-btn-sm"
-                      [disabled]="true"
-                      (click)="op.toggle($event); onRowSelect(climateactions)"
-                    >
-                      {{
-                        climateactions.projectApprovalStatus?.id === 2
-                          ? "Rejected"
-                          : "Reject"
-                      }}
-                    </button>
-                  </td>
                   </ng-container>
-                  <ng-template #elseBlockReject>
+                  <ng-template #elseBlockAccept>
                     <td>
-                      <button
-                        type="button"
-                        pButton
-                        pRipple
-                        [disabled]="true"
-                        class="p-btn-sm"
-                        (click)="op.toggle($event); onRowSelect(climateactions)"
-                      >
+                      <label>
                         {{
                           climateactions.projectApprovalStatus?.id === 2
-                            ? "Rejected"
-                            : "Reject"
+                            ? 'Rejected'
+                            : climateactions.projectApprovalStatus?.id === 3
+                            ? 'Data Requested'
+                            : 'Proposed'
                         }}
-                      </button>
+                      </label>
                     </td>
-
-                  </ng-template>  -->
-
-
-
-
-                  <!-- <td>
-                    <button
-                      type="button"
-                      pButton
-                      pRipple
-                      [disabled]="true"
-                      class="p-btn-sm"
-                      (click)="opDR.toggle($event); onRowSelect(climateactions)"
-                    >
-                      {{
-                        climateactions.projectApprovalStatus?.id === 3
-                          ? "Data Requested"
-                          : "Data Request"
-                      }}
-                    </button>
-                  </td> -->
-                 
+                  </ng-template>
                 </tr>
               </table>
             </td>
-            <td>
-                    
-                    
+            <td>    
               <button pButton pRipple  type="button" label="Assess Climate Action" class="p-btn-sm" (click)="toGhGAsse(climateactions)"></button>
             </td>
             <td>
-
               <button pButton pRipple type="button" label="Results" class="p-btn-sm" (click)="sendDetails(climateactions)"></button>
-              
             </td>
           </tr>
         </ng-template>
@@ -254,28 +173,20 @@
     </div>
 
     <div class="row mb-3">
-      
       <div class="col-md-2">
         <button
-        type="button"
-        [disabled] = "isChecked"
-        pButton
-        pRipple
-        label="Download Excel"
-        class="p-btn-sm"
-        (click)="toDownloadCAs()"
-      >
-       
-      </button>
+          type="button"
+          [disabled]="isChecked"
+          pButton
+          pRipple
+          label="Download Excel"
+          class="p-btn-sm"
+          (click)="toDownloadCAs()"
+        ></button>
       </div>
     </div>
-
-
-
-
-
   </div>
-  
+
   <p-toast position="top-right"></p-toast>
   <p-toast
     position="bottom-center"
@@ -313,11 +224,8 @@
       </div>
     </ng-template>
   </p-toast>
-  <p-confirmDialog
-    header="Climate Action"
-    icon="pi pi-exclamation-triangle"
-  >
-</p-confirmDialog>
+  <p-confirmDialog header="Climate Action" icon="pi pi-exclamation-triangle">
+  </p-confirmDialog>
   <p-overlayPanel
     #op
     [showCloseIcon]="true"
@@ -326,13 +234,7 @@
   >
     <ng-template pTemplate>
       <div
-        class="
-          d-flex
-          justify-content-start
-          align-content-center
-          flex-wrap
-          mb-15
-        "
+        class="d-flex justify-content-start align-content-center flex-wrap mb-15"
       >
         <textarea
           name="scopeTA"
@@ -352,14 +254,7 @@
         </p>
       </div>
       <div
-        class="
-          d-flex
-          justify-content-end
-          align-content-center
-          flex-wrap
-          mb-15
-          mr-10
-        "
+        class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
       >
         <button
           class="btn btn-primary text-uppercase"
@@ -387,13 +282,7 @@
   >
     <ng-template pTemplate>
       <div
-        class="
-          d-flex
-          justify-content-start
-          align-content-center
-          flex-wrap
-          mb-15
-        "
+        class="d-flex justify-content-start align-content-center flex-wrap mb-15"
       >
         <textarea
           name="scopeTA"
@@ -413,14 +302,7 @@
         </p>
       </div>
       <div
-        class="
-          d-flex
-          justify-content-end
-          align-content-center
-          flex-wrap
-          mb-15
-          mr-10
-        "
+        class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
       >
         <button
           class="btn btn-primary text-uppercase"

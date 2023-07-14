@@ -4,15 +4,18 @@
       <div class="col-12">
         <h4 class="mt-4">
           {{
-            this.assementYear !== undefined
-              ? "Verification " +
-                VerificationStatusEnum[this.assementYear.verificationStatus] 
-              : "Verification "
+            this.assessmentYear !== undefined
+              ? 'Verification ' +
+                VerificationStatusEnum[this.assessmentYear.verificationStatus]
+              : 'Verification '
           }}
         </h4>
       </div>
     </div>
-    <div class="col-md-2 d-flex align-items-center" *ngIf="assementYear?.verificationStatus! > 1">
+    <div
+      class="col-md-2 d-flex align-items-center"
+      *ngIf="assessmentYear?.verificationStatus! > 1"
+    >
       <div class="col-12">
         <button
           type="button"
@@ -30,13 +33,15 @@
       <div class="col-md-10">
         <div class="col-12">
           <div class="p-field">
-            <label for="projStatus"><strong>Specific Climate Action</strong></label>
+            <label for="projStatus"
+              ><strong>Specific Climate Action</strong></label
+            >
             <input
               [disabled]="true"
               type="text"
               name="ndc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment.project?.climateActionName!"
+              [(ngModel)]="assessmentYear.assessment.project?.climateActionName!"
               class="p-inputtext"
               pInputText
             />
@@ -50,37 +55,30 @@
             pRipple
             type="button"
             icon="pi pi-eye"
-            (click)="detail(assementYear.assessment.project)"
+            (click)="detail(assessmentYear.assessment.project)"
             class="p-button-rounded p-button-text"
           ></button>
         </div>
       </div>
     </div>
 
-    <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType != 'MAC' ">
+    <div
+      class="row mb-3"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
+    >
       <div class="col-md-4">
         <div class="col-12">
           <div class="p-field">
             <label for="projStatus"><strong>Aggregated Actions</strong></label>
             <input
-            [disabled]="true"
-            type="text"
-            name="ndc"
-            #chgEmission="ngModel"
-            [(ngModel)]="selectedNdc?.name!"
-            class="p-inputtext"
-            pInputText
-          />
-            <!-- <p-dropdown
-              placeholder="Select Aggregated Actions"
+              [disabled]="true"
+              type="text"
               name="ndc"
-              #ndc="ngModel"
-              [autoDisplayFirst]="false"
-              [options]="ndcList"
-              [(ngModel)]="selectedNdc"
-              [ngModelOptions]="{ standalone: true }"
-              optionLabel="name"
-            ></p-dropdown> -->
+              #chgEmission="ngModel"
+              [(ngModel)]="selectedNdc?.name!"
+              class="p-inputtext"
+              pInputText
+            />
           </div>
         </div>
       </div>
@@ -98,28 +96,17 @@
             class="p-inputtext"
             pInputText
           />
-
-            <!-- <p-dropdown
-              placeholder="Select Action Areas"
-              name="subndc"
-              #subndc="ngModel"
-              [autoDisplayFirst]="false"
-              [options]="selectedNdc === undefined ? [] : selectedNdc.subNdc"
-              [(ngModel)]="selectedSubNdc"
-              [ngModelOptions]="{ standalone: true }"
-              optionLabel="name"
-            ></p-dropdown> -->
           </div>
         </div>
       </div>
-      <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && !isNdcAccepted && hasNdcConcern">
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && !isNdcAccepted && hasNdcConcern">
         <div class="col-12">
           <button [disabled]="!canActiveNdcAction" type="button" pButton pRipple (click)="ndcAction()">
             Action
           </button>
         </div>
       </div>
-      <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && hasNdcConcern">
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && hasNdcConcern">
         <div class="col-12">
           <button
             type="button"
@@ -143,7 +130,7 @@
               type="text"
               name="ndc"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment.assessmentType"
+              [(ngModel)]="assessmentYear.assessment.assessmentType"
               class="p-inputtext"
               pInputText
             />
@@ -152,8 +139,10 @@
       </div>
     </div>
 
-
-    <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType != 'MAC' ">
+    <div
+      class="row mb-3"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
+    >
       <div class="col-md-5">
         <div class="col-5">
           <label> <strong>Emission Reduction </strong> </label>
@@ -168,14 +157,14 @@
             />
         </div>
       </div>
-      <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && !isTotalResultAccepted && hasTotalResultConcern">
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && !isTotalResultAccepted && hasTotalResultConcern">
         <div class="col-12">
           <button type="button" [disabled]="!canActiveTotalAction" pButton pRipple (click)="onResultAction('isTotal')">
             Action
           </button>
         </div>
       </div>
-      <div class="col-md-2 d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && hasTotalResultConcern">
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && hasTotalResultConcern">
         <div class="col-12">
           <button
             type="button"
@@ -189,7 +178,7 @@
       </div>
     </div>
 
-    <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType == 'MAC' ">
+    <div class="row mb-3" *ngIf="assessmentYear.assessment.assessmentType == 'MAC' ">
       <div class="col-md-5">
         <div class="col-5">
           <label> <strong>MAC Result </strong> </label>
@@ -204,14 +193,14 @@
             />
         </div>
       </div>
-      <div class="col-md-2 d-flex align-items-end" *ngIf="(assementYear?.verificationStatus! == 3 && !hasMacComment) && !isMacResultAccepted && hasMacResultConcern">
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 && !hasMacComment) && !isMacResultAccepted && hasMacResultConcern">
         <div class="col-12">
           <button type="button" [disabled]="!canActiveMacAction" pButton pRipple (click)="onResultAction('isMac')">
             Action
           </button>
         </div>
       </div>
-      <div class="col-md-2 d-flex align-items-end" *ngIf="(assementYear?.verificationStatus! == 3 || !hasMacComment) && hasMacResultConcern">
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 || !hasMacComment) && hasMacResultConcern">
         <div class="col-12">
           <button
             type="button"
@@ -225,7 +214,7 @@
       </div>
     </div>
     
-    <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType == 'MAC' ">
+    <div class="row mb-3" *ngIf="assessmentYear.assessment.assessmentType == 'MAC' ">
       <div class="col-md-5">
         <div class="col-5">
           <label> <strong>Cost Difference </strong> </label>
@@ -240,14 +229,14 @@
             />
         </div>
       </div>
-      <div class="col-md-2 d-flex align-items-end" *ngIf="(assementYear?.verificationStatus! == 3 || !hasCostComment) && !isCostResultAccepted && hasCostResultConcern">
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 || !hasCostComment) && !isCostResultAccepted && hasCostResultConcern">
         <div class="col-12">
           <button type="button" [disabled]="!canActiveDifferenceAction" pButton pRipple (click)="onResultAction('isDifference')">
             Action
           </button>
         </div>
       </div>
-      <div class="col-md-2 d-flex align-items-end" *ngIf="(assementYear?.verificationStatus! == 3 || !hasCostComment) && hasCostResultConcern">
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 || !hasCostComment) && hasCostResultConcern">
         <div class="col-12">
           <button
             type="button"
@@ -261,19 +250,22 @@
       </div>
     </div>
 
-    <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType != 'MAC' ">
+    <div
+      class="row mb-3"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
+    >
       <div class="col-md-5">
         <div class="col-5">
           <label> <strong>Base Year </strong> </label>
           <input
-              [disabled]="true"
-              type="text"
-              name="baseasseYear"
-              #baseasseYear="ngModel"
-              [(ngModel)]="assementYear.assessment.baseYear!"
-              class="p-inputtext"
-              pInputText
-            />
+            [disabled]="true"
+            type="text"
+            name="baseasseYear"
+            #baseasseYear="ngModel"
+            [(ngModel)]="assessmentYear.assessment.baseYear!"
+            class="p-inputtext"
+            pInputText
+          />
         </div>
       </div>
     </div>
@@ -281,22 +273,24 @@
     <div class="row mb-3">
       <div class="col-md-5">
         <div class="col-5">
-          <label for="projStatus"><strong>Assessment Year</strong></label
-          >
+          <label for="projStatus"><strong>Assessment Year</strong></label>
           <input
-              [disabled]="true"
-              type="text"
-              name="asseYear"
-              #asseYear="ngModel"
-              [(ngModel)]="assementYear.assessmentYear!"
-              class="p-inputtext"
-              pInputText
-            />
+            [disabled]="true"
+            type="text"
+            name="asseYear"
+            #asseYear="ngModel"
+            [(ngModel)]="assessmentYear.assessmentYear!"
+            class="p-inputtext"
+            pInputText
+          />
         </div>
       </div>
     </div>
 
-    <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType != 'MAC' ">
+    <div
+      class="row mb-3"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
+    >
       <div class="col-md-8">
         <div class="col-12">
           <div class="p-field">
@@ -306,26 +300,14 @@
               type="text"
               name="meth"
               #chgEmission="ngModel"
-              [(ngModel)]="assementYear.assessment.methodology?.displayName!"
+              [(ngModel)]="assessmentYear.assessment.methodology?.displayName!"
               class="p-inputtext"
               pInputText
             />
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-2" *ngIf="assementYear?.verificationStatus! == 3">
-        <div class="col-12">
-          <button
-            type="button"
-            pButton
-            pRipple
-            (click)="parameterAccept(false, true)"
-          >
-            Action
-          </button>
-        </div>
-      </div> -->
-      <div class="col-md-2  d-flex align-items-end" *ngIf="assementYear?.verificationStatus! == 3 && hasMethodologyConcern">
+      <div class="col-md-2  d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && hasMethodologyConcern">
         <div class="col-12">
           <button
             type="button"
@@ -337,25 +319,18 @@
           </button>
         </div>
       </div>
-      <!-- <div class="col-md-2">
-          <div class="col-12">
-            <button
-              pButton
-              pRipple
-              type="button"
-              icon="pi pi-eye"
-              (click)="detail()"
-              class="p-button-rounded p-button-text"
-            ></button>
-          </div>
-        </div> -->
     </div>
 
-    <div class="row mb-3" *ngIf="assementYear.assessment.assessmentType != 'MAC' ">
+    <div
+      class="row mb-3"
+      *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
+    >
       <div class="col-md-10">
         <div class="col-12">
           <div class="p-field">
-            <label for="projStatus"><strong>Objectives of the assessment</strong></label>
+            <label for="projStatus"
+              ><strong>Objectives of the assessment</strong></label
+            >
             <input
               [disabled]="true"
               type="text"
@@ -368,27 +343,15 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-2">
-          <div class="col-12">
-            <button
-              pButton
-              pRipple
-              type="button"
-              icon="pi pi-eye"
-              (click)="detail()"
-              class="p-button-rounded p-button-text"
-            ></button>
-          </div>
-        </div> -->
     </div>
 
     <div class="row mb-3">
       <app-verify-parameter-section-admin
         header="Baseline Parameters"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.baselineScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.baselineScenario"
         [parameters]="baselineParameters"
-        [ResultLabel]="assementYear.assessment.assessmentType === 'MAC' ? 'Total Annual Cost' : 'Baseline emission'"
+        [ResultLabel]="assessmentYear.assessment.assessmentType === 'MAC' ? 'Total Annual Cost' : 'Baseline emission'"
         [ResultValue]="getResult('baseline')"
         [verificationDetails]="verificationDetails"
         [isBaseline]="true"
@@ -400,10 +363,10 @@
     <div class="row mb-3">
       <app-verify-parameter-section-admin
         header="Project Parameters"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.projectScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.projectScenario"
         [parameters]="projectParameters"
-        [ResultLabel]="assementYear.assessment.assessmentType === 'MAC' ? 'Total Annual Cost' : 'Project emission'"
+        [ResultLabel]="assessmentYear.assessment.assessmentType === 'MAC' ? 'Total Annual Cost' : 'Project emission'"
         [ResultValue]="getResult('project')"
         [verificationDetails]="verificationDetails"
         [isProject]="true"
@@ -416,8 +379,8 @@
       <app-verify-parameter-section-admin
         *ngIf="lekageParameters.length > 0"
         header="Leakage Parameters"
-        [assessmentYear]="assementYear"
-        [scenario]="assementYear.assessment.lekageScenario"
+        [assessmentYear]="assessmentYear"
+        [scenario]="assessmentYear.assessment.lekageScenario"
         [parameters]="lekageParameters"
         ResultLabel="Leakage emission"
         [ResultValue]="getResult('lekage')"
@@ -432,7 +395,7 @@
       <app-verify-parameter-section-admin
         *ngIf="projectionParameters.length > 0"
         header="Projection Parameter"
-        [assessmentYear]="assementYear"
+        [assessmentYear]="assessmentYear"
         [scenario]=""
         [parameters]="projectionParameters"
         ResultLabel="Projected Emission Reduction"
@@ -446,13 +409,10 @@
     <div class="container pl-20 pr-20">
       <h4 class="mt-4">Assumption</h4>
       <div class="p-grid p-fluid card">
-
-
         <div class="row p-2">
         <div class="col-8">
           <div class="p-field">
             <textarea
-              
               name="RelevantindirectSD"
               placeholder="Please Enter Your Assumption here"
               [(ngModel)]="assumption"
@@ -464,18 +424,8 @@
               class="p-inputtext"
             ></textarea>
           </div>
-          <!-- <p
-                class="info-message text-danger"
-                *ngIf="
-                  !assumption &&
-                  (myAssumption.touched || myAssumption.dirty)
-                "
-              >
-                This is a mandatory field
-              </p> -->
         </div>
-        
-        <div class="col-2" *ngIf="assementYear?.verificationStatus! == 3 && hasAssumptionConcern">
+        <div class="col-2" *ngIf="assessmentYear?.verificationStatus! == 3 && hasAssumptionConcern">
           <button
             type="button"
             pButton
@@ -485,23 +435,9 @@
             View Concerns
           </button>
         </div>
-      
-       
-
-
       </div>
       </div>
     </div>    
-    <!-- <div class="row mb-3">
-        <app-parameter-summary
-          *ngIf="projectionParameters.length > 0"
-          header="Projection Parameter"
-          [scenario]=""
-          [assessmentYearId]="assesMentYearId"
-          [parameters]="projectionParameters"
-        ></app-parameter-summary>
-      </div> -->
-
     <div class="row mb-3">
       <div
         class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
@@ -514,13 +450,12 @@
           Back
         </button>
         <button
-          *ngIf="assementYear?.verificationStatus! == 1"
+          *ngIf="assessmentYear?.verificationStatus! == 1"
           class="btn btn-primary text-uppercase ml-5"
           type="submit"
           (click)="sendForVerification()"
         >
           Send for verification
-          <!-- {{parameters.find(m => m.parameterRequest.qaStatus !== 4) === undefined ? 'Calculate' :  'Submit'}} -->
         </button>
       </div>
     </div>
@@ -537,20 +472,12 @@
   <app-raise-concern-admin
     [area]="raiseConcernSection"
     [verificationDetails]="concernVerificationDetails"
-    [assesmentYear]="assementYear"
+    [assessmentYear]="assessmentYear"
     [isNdC]="concernIsNdC"
     [isMethodology]="concernIsMethodology"
     (onCompleteConcern)="onComplete($event)"
   ></app-raise-concern-admin>
 </div>
-  <!-- <ng-template pTemplate="footer">
-      <p-button
-        icon="pi pi-check"
-        (click)="displayConcern = false"
-        label="Complete"
-        styleClass="p-button-text"
-      ></p-button>
-    </ng-template> -->
 </p-dialog>
 
 <p-confirmDialog

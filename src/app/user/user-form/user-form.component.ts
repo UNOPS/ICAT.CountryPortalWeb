@@ -13,10 +13,7 @@ import {
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Message } from 'primeng//api';
 import { Router } from '@angular/router';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { flatten } from '@angular/compiler';
 import decode from 'jwt-decode';
 
 @Component({
@@ -36,18 +33,19 @@ export class UserFormComponent implements OnInit {
   selectedUserTypesFordrop: UserType[] = [];
   selecteduserType: any = {};
 
-  sss:any = {
+  sss: any = {
     ae_createdBy: null,
-      ae_createdOn: null,
-      ae_description: "MRV Admin",
-      ae_editedBy: null,
-      ae_editedOn: null,
-      ae_id: 4,
-      ae_name: "MRV Admin",
-      ae_sortOrder: 4,
-      ae_status: 0,
-      int_institutionTypeId: 2,
-      int_userTypeId: 4}
+    ae_createdOn: null,
+    ae_description: "MRV Admin",
+    ae_editedBy: null,
+    ae_editedOn: null,
+    ae_id: 4,
+    ae_name: "MRV Admin",
+    ae_sortOrder: 4,
+    ae_status: 0,
+    int_institutionTypeId: 2,
+    int_userTypeId: 4
+  }
 
   institutions: Institution[] = [];
 
@@ -71,11 +69,11 @@ export class UserFormComponent implements OnInit {
 
   coreatingUser: boolean = false;
   countryId: number;
-  sectorId:number;
-  userRole:string;
-  telephoneLength:number;
-  uniq:string;
-  mask:string;
+  sectorId: number;
+  userRole: string;
+  telephoneLength: number;
+  uniq: string;
+  mask: string;
 
   constructor(
     private serviceProxy: ServiceProxy,
@@ -84,56 +82,52 @@ export class UserFormComponent implements OnInit {
     private router: Router,
     private confirmationService: ConfirmationService,
     private UserTypeServiceProxy: UserTypeControllerServiceProxy,
-    private instProxy:InstitutionControllerServiceProxy
-  ) {}
+    private instProxy: InstitutionControllerServiceProxy
+  ) { }
 
   ngOnInit(): void {
-
-    console.log("ngonitit")
     const token = localStorage.getItem('access_token')!;
-  
-      const tokenPayload = decode<any>(token);
-      this.countryId=tokenPayload.countryId;
 
-      let country=new Country()
-       country.id=this.countryId;
-      // country.id=2;
-      this.sectorId = tokenPayload.sectorId;
-      this.userRole = tokenPayload.roles[0]
-      console.log("user role..",this.userRole)
+    const tokenPayload = decode<any>(token);
+    this.countryId = tokenPayload.countryId;
 
-      this.serviceProxy.getOneBaseCountryControllerCountry(
-        this.countryId,
-        undefined,
-        undefined,
-        0
-      )
+    let country = new Country()
+    country.id = this.countryId;
+    // country.id=2;
+    this.sectorId = tokenPayload.sectorId;
+    this.userRole = tokenPayload.roles[0]
+
+    this.serviceProxy.getOneBaseCountryControllerCountry(
+      this.countryId,
+      undefined,
+      undefined,
+      0
+    )
       .subscribe((res: any) => {
-        this.telephoneLength =res.telephoneLength;
-      this.mask = res.uniqtelephone + " ";
-      let y =3;
-      for(let x=0;x<this.telephoneLength-1;x++){
-        if (x==y){
-          y +=3;
-          this.mask += "-9"
+        this.telephoneLength = res.telephoneLength;
+        this.mask = res.uniqtelephone + " ";
+        let y = 3;
+        for (let x = 0; x < this.telephoneLength - 1; x++) {
+          if (x == y) {
+            y += 3;
+            this.mask += "-9"
+          }
+          else {
+            this.mask += "9"
+          }
         }
-        else {
-          this.mask += "9"
-        }    
-      }
       })
-     
-      
+
+
 
     this.user.userType = undefined!;
     this.user.mobile = '';
     this.user.telephone = '';
-    this.user.country=country;
+    this.user.country = country;
 
     this.route.queryParams.subscribe((params) => {
       this.editUserId = params['id'];
       if (this.editUserId && this.editUserId > 0) {
-        
         this.isNewUser = false;
         this.serviceProxy
           .getOneBaseUsersControllerUser(
@@ -143,77 +137,25 @@ export class UserFormComponent implements OnInit {
             0
           )
           .subscribe((res: any) => {
-            console.log('getUser====', res);
-          //  this.onInstitutionChange2(res);
-            //this.selecteduserType = 
             this.onInstitutionChange2(res);
             this.user = res;
-            this.selecteduserType={"ae_name":this.user.userType.description,
-                                     "ae_id" : this.user.userType.id      }
+            this.selecteduserType = {
+              "ae_name": this.user.userType.description,
+              "ae_id": this.user.userType.id
+            }
             this.selectedUserTypesFordrop.push(this.selecteduserType)
-            
 
-          
-
-          
-
-     
-
-            // this.institutions.forEach((ins) => {
-            //   if (ins.id == this.user.institution.id) {
-            //     this.user.institution = ins;
-            //     console.log('ins set =======================');
-            //   }
-            // });
           });
       }
     });
 
     this.UserTypeServiceProxy.getUserTypes().subscribe((res: any) => {
-      console.log('userTypes res ============', res);
       this.userTypes = res;
-      console.log('userTypes============', this.userTypes);
     });
 
-    // this.serviceProxy
-    //   .getManyBaseUserTypeControllerUserType(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['name,ASC'],
-    //     ['institutionType'],
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    //   .subscribe((res: any) => {
-    //     console.log('userTypes res ============', res);
-    //     this.userTypes = res.data;
-    //     console.log('userTypes============', this.userTypes);
-    //   });
 
-    // this.serviceProxy
-    //   .getManyBaseInstitutionControllerInstitution(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['name,ASC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     1,
-    //     0
-    //   )
-
-
-
-
-      this.instProxy.getInstitutionForManageUsers(0,0)
+    this.instProxy.getInstitutionForManageUsers(0, 0)
       .subscribe((res) => {
-        console.log('institutions res ============', res);
         this.institutions = res.items;
 
         if (this.user?.institution) {
@@ -224,45 +166,30 @@ export class UserFormComponent implements OnInit {
               ins.category = new InstitutionCategory(cat)
               ins.type = new InstitutionType(type)
               let _ins = new Institution(ins)
-              console.log(_ins)
               this.user.institution = _ins;
-              console.log('ins set =======================');
             }
           });
         }
-        console.log('institutions============', this.institutions);
-        // remove UNFCCC Focal Point type institution
-        // this.institutions = this.institutions.filter((o)=> o.type.id != 1);
 
-        
-        
-
-       if(this.userRole == 'Data Collection Team')
-       {
-        this.institutions = this.institutions.filter((o)=>o.country.id == this.countryId && o.sectorId == this.sectorId && o.type.id == 3);
-       }
+        if (this.userRole == 'Data Collection Team') {
+          this.institutions = this.institutions.filter((o) => o.country.id == this.countryId && o.sectorId == this.sectorId && o.type.id == 3);
+        }
 
 
       });
 
-      
+
   }
 
-  onChangeUser(event: any) {
-    //console.log(event);
-    // this.user.title = event.value?.name;
-  }
+  onChangeUser(event: any) { }
 
   async saveUser(userForm: NgForm) {
-    console.log('userForm================', userForm);
-   
-
     if (userForm.valid) {
       if (this.isNewUser) {
         this.isEmailUsed = false;
         this.usedEmail = '';
 
-        let tempUsers = await this.serviceProxy
+        const tempUsers = await this.serviceProxy
           .getManyBaseUsersControllerUser(
             undefined,
             undefined,
@@ -273,27 +200,12 @@ export class UserFormComponent implements OnInit {
             1,
             0,
             0,
-            0
+            0,
           )
           .subscribe((res) => {
             if (res.data.length > 0) {
               this.isEmailUsed = true;
               this.usedEmail = res.data[0].email;
-              // alert("Email address is already in use, please select a diffrent email address to create a new user.")
-              // this.confirmationService.confirm({
-              //   message:
-              //     'Email address is already in use, please select a diffrent email address to create a new user.!',
-              //   header: 'Error!',
-              //   //acceptIcon: 'icon-not-visible',
-              //   rejectIcon: 'icon-not-visible',
-              //   rejectVisible: false,
-              //   acceptLabel: 'Ok',
-              //   accept: () => {
-              //     // this.onBackClick();
-              //   },
-
-              //   reject: () => {},
-              // });
               this.messageService.add({
                 severity: 'error',
                 summary: 'Error.',
@@ -307,33 +219,19 @@ export class UserFormComponent implements OnInit {
               // this.user.status = 1;
 
               let userType = new UserType();
-               userType.id = this.selecteduserType.ae_id;
+              userType.id = this.selecteduserType.ae_id;
               this.user.userType = userType;
 
               let insTemp = this.user.institution;
               this.user.institution = new Institution();
               this.user.institution.id = insTemp.id;
               this.coreatingUser = true;
-              console.log("userd",this.user)
 
 
               this.serviceProxy
                 .createOneBaseUsersControllerUser(this.user)
                 .subscribe(
                   (res) => {
-                    // this.confirmationService.confirm({
-                    //   message: 'User is created successfully!',
-                    //   header: 'Confirmation',
-                    //   //acceptIcon: 'icon-not-visible',
-                    //   rejectIcon: 'icon-not-visible',
-                    //   rejectVisible: false,
-                    //   acceptLabel: 'Ok',
-                    //   accept: () => {
-                    //     this.onBackClick();
-                    //   },
-
-                    //   reject: () => {},
-                    // });
                     this.messageService.add({
                       severity: 'success',
                       summary: 'Success',
@@ -344,54 +242,21 @@ export class UserFormComponent implements OnInit {
                   (error) => {
                     this.coreatingUser = false;
                     alert('An error occurred, please try again.');
-                    console.log('Error', error);
                   },
                   () => {
                     this.coreatingUser = false;
                   }
                 );
-                setTimeout(() => {
-                  this.onBackClick();    
-                },1000);
+              setTimeout(() => {
+                this.onBackClick();
+              }, 1000);
             }
           });
-
-        // this.serviceProxy.createOneBaseUserv2ControllerUser(this.user).subscribe(res => {
-        //   alert("User created !");
-        //   //this.DisplayAlert('User created !', AlertType.Message);
-
-        //   console.log("edit user", res.id);
-
-        //   this.router.navigate(['/user'], { queryParams: { id: res.id } });
-
-        // }, error => {
-        //   alert("An error occurred, please try again.")
-        //   // this.DisplayAlert('An error occurred, please try again.', AlertType.Error);
-
-        //   console.log("Error", error);
-        // });
       } else {
-        // let insTemp = this.user.institution
-        // this.user.institution = new Institution();
-        // this.user.institution.id = insTemp.id;
-        //update user
         this.serviceProxy
           .updateOneBaseUsersControllerUser(this.user.id, this.user)
           .subscribe(
             (res) => {
-              // this.confirmationService.confirm({
-              //   message: 'User is updated successfully!',
-              //   header: 'Confirmation',
-              //   //acceptIcon: 'icon-not-visible',
-              //   rejectIcon: 'icon-not-visible',
-              //   rejectVisible: false,
-              //   acceptLabel: 'Ok',
-              //   accept: () => {
-              //     // this.onBackClick();
-              //   },
-
-              //   reject: () => {},
-              // });
               this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
@@ -406,17 +271,14 @@ export class UserFormComponent implements OnInit {
                 detail: 'An error occurred, please try again.',
                 closable: true,
               });
-              // this.DisplayAlert('An error occurred, please try again.', AlertType.Error);
-
-              console.log('Error', error);
             }
           );
-          setTimeout(() => {
-            this.onBackClick();    
-          },1000);
+        setTimeout(() => {
+          this.onBackClick();
+        }, 1000);
       }
     }
-    else{
+    else {
       alert("Fill all the mandetory fields")
     }
   }
@@ -427,114 +289,77 @@ export class UserFormComponent implements OnInit {
 
   onDeleteClick() {
     this.confirmationService.confirm({
-      message: `Are you sure you want to ${this.user.status?'activate':'deactivate'} the user?`,
-      header: `${this.user.status?'Activate':'Deactivate'} Confirmation`,
+      message: `Are you sure you want to ${this.user.status ? 'activate' : 'deactivate'} the user?`,
+      header: `${this.user.status ? 'Activate' : 'Deactivate'} Confirmation`,
       acceptIcon: 'icon-not-visible',
       rejectIcon: 'icon-not-visible',
       accept: () => {
         this.deleteUser();
       },
-      reject: () => {},
+      reject: () => { },
     });
-    // this.router.navigate(['/user-list']);
   }
 
   deleteUser() {
 
-    this.user.status=1;
+    this.user.status = 1;
     this.serviceProxy
-      .updateOneBaseUsersControllerUser(this.user.id,this.user)
+      .updateOneBaseUsersControllerUser(this.user.id, this.user)
       .subscribe((res) => {
-        //this.DisplayAlert('Deleted successfully.', AlertType.Message);
-        // this.confirmationService.confirm({
-        //   message: 'User is deleted successfully!',
-        //   header: 'Delete Confirmation',
-        //   //acceptIcon: 'icon-not-visible',
-        //   rejectIcon: 'icon-not-visible',
-        //   rejectVisible: false,
-        //   acceptLabel: 'Ok',
-        //   accept: () => {
-        //     this.onBackClick();
-        //   },
-
-        //   reject: () => {},
-        // });
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: `${this.user.status?'deactivate':'activate'} Confirmation`,
+          detail: `${this.user.status ? 'deactivate' : 'activate'} Confirmation`,
           closable: true,
         });
-      },err=>{
-               // });
-               this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: `${this.user.status?'deactivate':'activate'} fail`,
-                closable: true,
-              });
+      }, err => {
+        // });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `${this.user.status ? 'deactivate' : 'activate'} fail`,
+          closable: true,
+        });
       });
   }
-  
 
- async onInstitutionChange(event: any) {
-    console.log('event====1',event);
-  
-    let tempList= this.userTypes
 
-//in here check if there are any users  for inst type 1,2,3 for that certent country
+  async onInstitutionChange(event: any) {
+    let tempList = this.userTypes
 
-    // if(event.type.id==1){
-    //   let res= await this.instProxy.getInstitutionForUsers(event.id,3).toPromise()
-    // }
- 
-    
-     if(event.type.id==2){
-      let res= await this.instProxy.getInstitutionForUsers(event.id,3).toPromise()
-    
-      if(res==1){
-   
-       tempList= tempList.filter((a)=> a.ae_name!="Sector Admin")
+    if (event.type.id == 2) {
+      let res = await this.instProxy.getInstitutionForUsers(event.id, 3).toPromise()
+
+      if (res == 1) {
+
+        tempList = tempList.filter((a) => a.ae_name != "Sector Admin")
       }
     }
-    else if(event.type.id==3){
-      
-      let res= await this.instProxy.getInstitutionForUsers(event.id,8).toPromise();
-     
-      if(res==1){
-        tempList= tempList.filter((a)=> a.ae_name!="Institution Admin")
-       }
+    else if (event.type.id == 3) {
+
+      let res = await this.instProxy.getInstitutionForUsers(event.id, 8).toPromise();
+
+      if (res == 1) {
+        tempList = tempList.filter((a) => a.ae_name != "Institution Admin")
+      }
     }
 
-    if(this.userRole ==="Institution Admin"){
-      this.selectedUserTypesFordrop = tempList.filter((a)=> a.ae_name==="Data Entry Operator")
-      // console.log(this.userTypes) 
-       }
-  else{
- 
-    this.selectedUserTypesFordrop = tempList.filter(
-      (a) => a.int_institutionTypeId === event.type.id
-    );
+    if (this.userRole === "Institution Admin") {
+      this.selectedUserTypesFordrop = tempList.filter((a) => a.ae_name === "Data Entry Operator")
+    }
+    else {
 
-
-
-  }
-
-    console.log('eventtypeID===', event.type.id);
-    console.log('selectedUserTypesFordrop=====',this.selectedUserTypesFordrop);
-
+      this.selectedUserTypesFordrop = tempList.filter(
+        (a) => a.int_institutionTypeId === event.type.id
+      );
+    }
   }
 
   onInstitutionChange2(aaa: any) {
-    console.log('event====',aaa.institution);
-
-  
     this.selectedUserTypesFordrop = this.userTypes.filter(
-      (a) => a.int_institutionTypeId ===  1//aaa.institution.type.id
+      (a) => a.int_institutionTypeId === 1//aaa.institution.type.id
     );
-    console.log('eventtypeID===', aaa.institution.type.id);
-    console.log('selectedUserTypesFordrop=====',this.selectedUserTypesFordrop);
 
   }
-  
+
 }

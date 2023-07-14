@@ -2,7 +2,7 @@
   class="row p-2"
   *ngIf="parameterSection && parameterSection.soilSection !== undefined"
 >
-    <h5>{{ parameterSection.soilSection.sectionHeader }}</h5>
+  <h5>{{ parameterSection.soilSection.sectionHeader }}</h5>
   <hr />
   <div
     class="row p-2"
@@ -10,17 +10,18 @@
       let sp of parameterSection.soilSection.sectionparameters;
       let spi = index
     "
-    >
+  >
     <h6>{{ sp.parameterHeader }}</h6>
-    <!-- Main Param -->
     <div class="row p-2" *ngFor="let p of sp.parameters; let i = index">
-      <!-- Alternavtive Param -->
       <div class="row p-2">
         <div class="col-12 col-md-3">
           <div>
             <label for="projectownership">{{ p.parameterName }} </label>
-            <i *ngIf="infos[p.Code] !== undefined"
-            class="pi pi-info-circle" pTooltip="{{infos[p.Code]}}">
+            <i
+              *ngIf="infos[p.Code] !== undefined"
+              class="pi pi-info-circle"
+              pTooltip="{{ infos[p.Code] }}"
+            >
             </i>
           </div>
         </div>
@@ -40,7 +41,7 @@
         </div>
         <div class="col-12 col-md-4">
           <div *ngIf="!IsProposal">
-            <div *ngIf="p.isDefaultValue  && !p.isHistorical">
+            <div *ngIf="p.isDefaultValue && !p.isHistorical">
               <p-dropdown
                 placeholder="Select Default value"
                 name="{{ 'p' + i }}"
@@ -53,7 +54,8 @@
               ></p-dropdown>
               <p
                 class="info-message text-danger"
-                *ngIf="(!p.defaultValue && isSubmitted)">
+                *ngIf="!p.defaultValue && isSubmitted"
+              >
                 This is a mandatory field
               </p>
             </div>
@@ -64,16 +66,17 @@
                 [disabled]="isDisableforSubmitButton"
                 [autoDisplayFirst]="false"
                 [options]="p.displayhisValues"
-                (onChange) = "onSelectHistoricalVal($event, spi, i)"
+                (onChange)="onSelectHistoricalVal($event, spi, i)"
                 optionLabel="label"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
-                *ngIf="(!p.historicalValue && isSubmitted)">
+                *ngIf="!p.historicalValue && isSubmitted"
+              >
                 This is a mandatory field
               </p>
             </div>
-            <div *ngIf="!p.isDefaultValue  && !p.isHistorical">
+            <div *ngIf="!p.isDefaultValue && !p.isHistorical">
               <p-dropdown
                 placeholder="Select Institution"
                 name="{{ 'vp' + i }}"
@@ -86,13 +89,14 @@
               ></p-dropdown>
               <p
                 class="info-message text-danger"
-                *ngIf="(!p.institution && isSubmitted)">
+                *ngIf="!p.institution && isSubmitted"
+              >
                 This is a mandatory field
               </p>
             </div>
           </div>
           <div *ngIf="IsProposal">
-            <div *ngIf="p.isDefaultValue  && !p.isHistorical">
+            <div *ngIf="p.isDefaultValue && !p.isHistorical">
               <p-dropdown
                 placeholder="Select Default value"
                 name="{{ 'p' + i }}"
@@ -105,7 +109,8 @@
               ></p-dropdown>
               <p
                 class="info-message text-danger"
-                *ngIf="(!p.defaultValue && isSubmitted)">
+                *ngIf="!p.defaultValue && isSubmitted"
+              >
                 This is a mandatory field
               </p>
             </div>
@@ -116,16 +121,17 @@
                 [disabled]="isDisableforSubmitButton"
                 [autoDisplayFirst]="false"
                 [options]="p.displayhisValues"
-                (onChange) = "onSelectHistoricalVal($event, spi, i)"
+                (onChange)="onSelectHistoricalVal($event, spi, i)"
                 optionLabel="label"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
-                *ngIf="(!p.historicalValue && isSubmitted)">
+                *ngIf="!p.historicalValue && isSubmitted"
+              >
                 This is a mandatory field
               </p>
             </div>
-            <div *ngIf="!p.isDefaultValue  && !p.isHistorical">
+            <div *ngIf="!p.isDefaultValue && !p.isHistorical">
               <input
                 type="text"
                 name="{{ 'vp' + i }}"
@@ -152,18 +158,16 @@
                 inputId="binary"
                 label="Default Values"
               ></p-checkbox>
-              <!-- <label for="binary">Default Values</label> -->
             </div>
           </div>
           <div class="p-field-checkbox">
             <p-checkbox
-              [(ngModel)]="p.isHistorical" 
+              [(ngModel)]="p.isHistorical"
               [binary]="true"
               [disabled]="isDisableforSubmitButton || p.isDefaultValue"
               inputId="binary"
               label="Historical Values"
             ></p-checkbox>
-            <!-- <label for="binary">Default Values</label> -->
           </div>
         </div>
       </div>
@@ -175,9 +179,18 @@
         <div class="row p-2 align-items-center">
           <div class="col-12 col-md-3">
             <div>
-               <label for="projectownership"><i 
-                class="pi pi-info-circle" pTooltip="This is an alternative parameter for {{p.parameterName}}">
-                <b><i>{{ ap.parameterName }}</i> </b></i> </label>
+              <label for="projectownership"
+                ><i
+                  class="pi pi-info-circle"
+                  pTooltip="This is an alternative parameter for {{
+                    p.parameterName
+                  }}"
+                >
+                  <b
+                    ><i>{{ ap.parameterName }}</i>
+                  </b></i
+                >
+              </label>
             </div>
           </div>
           <div class="col-12 col-md-3">
@@ -208,7 +221,8 @@
                 ></p-dropdown>
                 <p
                   class="info-message text-danger"
-                  *ngIf="(!ap.defaultValue && isSubmitted)">
+                  *ngIf="!ap.defaultValue && isSubmitted"
+                >
                   This is a mandatory field
                 </p>
               </div>
@@ -225,7 +239,8 @@
                 ></p-dropdown>
                 <p
                   class="info-message text-danger"
-                  *ngIf="(!ap.institution && isSubmitted)">
+                  *ngIf="!ap.institution && isSubmitted"
+                >
                   This is a mandatory field
                 </p>
               </div>
@@ -268,7 +283,6 @@
                 inputId="binary"
                 label="Default Values"
               ></p-checkbox>
-              <!-- <label for="binary">Default Values</label> -->
             </div>
           </div>
         </div>

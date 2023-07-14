@@ -8,9 +8,8 @@ describe('ResidueParameterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ResidueParameterComponent ]
-    })
-    .compileComponents();
+      declarations: [ResidueParameterComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

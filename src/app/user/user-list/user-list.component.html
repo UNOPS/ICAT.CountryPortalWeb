@@ -56,7 +56,7 @@
       [rowsPerPageOptions]="[1, 10, 25, 50]"
       [totalRecords]="totalRecords"
       [loading]="loading"
-      [ngStyle]="{'margin-bottom': itemsPerPage === 1?'100px':'unset'}"
+      [ngStyle]="{ 'margin-bottom': itemsPerPage === 1 ? '100px' : 'unset' }"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -104,11 +104,6 @@
             icon="pi pi-pencil"
             (click)="EditUser(customer)"
           ></button>
-            <!-- <i
-              class="pi pi-eye"
-              style="font-size: 1.5rem; color: #000; margin-left: 17%"
-              (click)="viewUser(customer)"
-            ></i> -->
           </td>
 
           <td>{{ customer.firstName }}</td>
@@ -131,7 +126,7 @@
           >
             <a href="mailto:{{ customer.email }}">{{ customer.email }}</a>
           </td>
-          <td>{{ customer.status == 0 ? "Active" : "Deactivated" }}</td>
+          <td>{{ customer.status == 0 ? 'Active' : 'Deactivated' }}</td>
         </tr>
       </ng-template>
     </p-table>

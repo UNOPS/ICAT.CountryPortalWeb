@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RoleGuardService } from 'app/auth/role-guard.service';
@@ -22,7 +22,7 @@ export class LoginFormComponent implements OnInit {
   showLoginForm = true;
   showForgotPassword = false;
   showSetPassword = false;
-  display: boolean = false;
+  display = false;
   showPassword: boolean;
   showPasswordOnPress: boolean;
 
@@ -31,7 +31,7 @@ export class LoginFormComponent implements OnInit {
 
   isSubmitLogin: boolean;
   isInvalidCredential: boolean;
-  loginError: string = '';
+  loginError = '';
   userRoles: any[] = [];
   userRole: any = { name: 'Guest', role: '-1' };
 
@@ -43,22 +43,11 @@ export class LoginFormComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private WMServiceService: AppService,
     private roleGuardService: RoleGuardService,
-    private sharedDataService: SharedDataService
-  ) {
-    console.log('LoginFormComponent ctor');
-  }
+    private sharedDataService: SharedDataService,
+  ) {}
 
   ngOnInit(): void {
-    console.log('LoginFormComponent ngOnInit');
-    // this._loginApiService.findAll().subscribe(result => {
-    //   // console.log(result);
-    // });
-
     this.authenticationService.authenticate(false, true);
-
-    // this._investorsControllerServiceProxy.findAll().subscribe(result => {
-    //   console.log(result);
-    // });
   }
 
   showPasswordResetForm() {
@@ -68,18 +57,15 @@ export class LoginFormComponent implements OnInit {
     this.logiLayoutService.toggleLoginForm(
       this.showLoginForm,
       this.showForgotPassword,
-      this.showSetPassword
-    ); // call login layout service
+      this.showSetPassword,
+    );
   }
 
   resetError() {
-    console.log("work")
     this.isInvalidCredential = false;
   }
 
   login() {
-    // this.display = true;
-    console.log(this.logiLayoutService.authCredentialDot)
     this.isSubmitLogin = true;
     if (!this.fLogin.valid) {
       return;
@@ -88,36 +74,20 @@ export class LoginFormComponent implements OnInit {
       .login(this.logiLayoutService.authCredentialDot)
       .subscribe(
         (token) => {
-          console.log(token);
           if (token && token.access_token) {
             this.isInvalidCredential = false;
 
             this.isLoggedIn = true;
             this.hideSideBar = false;
             this.WMServiceService.steToken(token.access_token);
-            localStorage.setItem('access_token', token.access_token); // store the tocken
+            localStorage.setItem('access_token', token.access_token);
             localStorage.setItem(
               'user_name',
-              this.logiLayoutService.authCredentialDot.username
-            ); // store the username
+              this.logiLayoutService.authCredentialDot.username,
+            );
             this.WMServiceService.userProfile = {
               username: this.logiLayoutService.authCredentialDot.username,
             };
-
-            //this.authenticationService.authenticate(this.isLoggedIn, this.hideSideBar);
-
-            // if (this.roleGuardService.checkRoles(['Institution Admin'])) {
-
-            //   this.userRole = this.userRoles[7];
-            //   this.router.navigate(['/ia-dashboard']);
-
-            // }
-
-            //this.router.navigate(['/dashboard']);
-
-            // this.appControllServiceProxy.getProfile().subscribe(res=> {
-
-            // });
 
             if (this.roleGuardService.checkRoles(['Country Admin'])) {
               this.userRole = this.userRoles[0];
@@ -153,17 +123,15 @@ export class LoginFormComponent implements OnInit {
               this.userRole = this.userRoles[8];
               this.router.navigate(['/ia-dashboard']);
             }
-            //Set value in AppComponent
             this.sharedDataService.changeMessage('login_success');
           } else {
             this.isInvalidCredential = true;
-            this.loginError = token.error
+            this.loginError = token.error;
           }
         },
         (error) => {
-          console.log(error);
           this.isInvalidCredential = true;
-        }
+        },
       );
   }
 }

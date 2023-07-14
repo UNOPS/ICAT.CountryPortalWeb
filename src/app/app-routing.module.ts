@@ -16,13 +16,11 @@ import { InstitutionComponent } from './institution/add-institution/institution.
 import { LoginLayoutComponent } from './login/login-layout/login-layout.component';
 import { InstitutionListComponent } from './institution/institution-list/institution-list.component';
 import { EditInstitutionComponent } from './institution/edit-institution/edit-institution.component';
-// import { ViewInstitutionComponent } from './institution/view-institution/view-institution.component';
 import { AuditComponent } from './audit/audit.component';
 import { UserListComponent } from './user/user-list/user-list.component';
 import { UserFormComponent } from './user/user-form/user-form.component';
 import { AllClimateActionComponent } from './all-climate-action/all-climate-action.component';
 import { ActiveClimateActionComponent } from './active-climate-action/active-climate-action.component';
-
 import { GhgImpactComponent } from './assess-ca/ghg-impact/ghg-impact.component';
 import { LearningMaterialComponent } from './learning-material/learning-material.component';
 import { ActiveResultComponent } from './climate-action-result/active-result/active-result.component';
@@ -36,7 +34,6 @@ import { IaDashboardComponent } from './dashboard/ia-dashboard/ia-dashboard.comp
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoardMoreComponent } from './landing-page/loard-more/loard-more.component';
 import { MacResultComponent } from './assessmet-result/mac-result/mac-result.component';
-
 import { ManageDefaultValuesComponent } from './data-request-flow/manage-default-values/manage-default-values.component';
 import { EnterDataComponent } from './data-request-flow/enter-data/enter-data.component';
 import { AssignDataRequestComponent } from './data-request-flow/assign-data-request/assign-data-request.component';
@@ -56,12 +53,11 @@ import { VerifyHistoryComponent } from './verification-verifier/verify-history/v
 import { VerificationSectorAdminComponent } from './verification-sector-admin/verification-sector-admin.component';
 import { NonconformanceReportComponent } from './nonconformance-report/nonconformance-report.component';
 import { SectorComponent } from './sector/sector.component';
-
 import { VerifyDetailComponent } from './verification-verifier/verify-detail/verify-detail.component';
 import { RoleGuardService } from './auth/role-guard.service';
 import { SummarytrackclimateactionsCountryComponent } from './trackclimateactions-country/summarytrackclimateactions-country/summarytrackclimateactions-country.component';
 import { TrackclimateactionsCountryComponent } from './trackclimateactions-country/trackclimateactions-country.component';
-import { VerifyDetailComponentSectorAdmin } from './verification-sector-admin/verify-detail/verify-detail.component';
+import { VerifyDetailSectorAdminComponent } from './verification-sector-admin/verify-detail/verify-detail.component';
 import { DefaultValueFormComponent } from './data-request-flow/manage-default-values/default-value-form/default-value-form.component';
 import { SetPasswordComponent } from './login/set-password/set-password.component';
 
@@ -81,8 +77,7 @@ export enum CountryModule {
   GHG_MODULE = 1,
   MAC_MODULE = 2,
   DATACOLLECTION_MODULE = 3,
-  DATACOLLECTION_GHG_MODULE = 4
-  
+  DATACOLLECTION_GHG_MODULE = 4,
 }
 const routes: Routes = [
   {
@@ -116,43 +111,26 @@ const routes: Routes = [
         UserRoles.INS_ADMIN,
         UserRoles.MRV_ADMIN,
         UserRoles.TT,
-        UserRoles.DCT
-      
+        UserRoles.DCT,
       ],
     },
   },
   {
     path: 'user',
     component: UserFormComponent,
-    // canActivate: [RoleGuard],
-    // data: {
-    //   expectedRoles: ['ccs-admin', 'ins-admin']
-    // }
   },
   {
     path: 'user-new',
     component: UserFormComponent,
-    // canActivate: [RoleGuard],
-    // data: {
-    //   expectedRoles: ['ccs-admin', 'ins-admin']
-    // }
   },
-  // {
-  //   path: 'qc',
-  //   component: QualityCheckComponent,
-  //   canActivate: [RoleGuardService],
-  //   data: {
-  //     expectedRoles: ['ccs-admin', 'ins-admin'],
-  //   },
-  // },
   {
     path: 'qc',
     component: QualityCheckComponent,
     canActivate: [RoleGuardService],
     data: {
-      expectedRoles: [UserRoles.QC,UserRoles.MRV_ADMIN,],
+      expectedRoles: [UserRoles.QC, UserRoles.MRV_ADMIN],
     },
-  }, //new
+  },
 
   { path: 'qc/detail', component: QualityCheckDetailComponent },
   {
@@ -201,8 +179,7 @@ const routes: Routes = [
       ],
       expectedModules: [
         CountryModule.DATACOLLECTION_MODULE,
-        CountryModule.DATACOLLECTION_GHG_MODULE
-        
+        CountryModule.DATACOLLECTION_GHG_MODULE,
       ],
     },
   },
@@ -275,7 +252,6 @@ const routes: Routes = [
   },
   { path: 'edit-institution', component: EditInstitutionComponent },
   { path: 'view-institution', component: ViewInstitutionComponent },
-  // { path: 'view-institution/:id', component: ViewInstitutionComponent}
   {
     path: 'ghg-impact',
     component: GhgImpactComponent,
@@ -290,8 +266,7 @@ const routes: Routes = [
         CountryModule.MAC_MODULE,
         CountryModule.DATACOLLECTION_MODULE,
         CountryModule.GHG_MODULE,
-        CountryModule.DATACOLLECTION_GHG_MODULE
-        
+        CountryModule.DATACOLLECTION_GHG_MODULE,
       ],
     },
   },
@@ -325,7 +300,6 @@ const routes: Routes = [
       ],
     },
   },
-  // { path: 'ca-result', component: CaResultComponent},
   { path: 'learning-material', component: LearningMaterialComponent },
   { path: 'learning-material', component: LearningMaterialComponent },
   { path: 'active-result', component: ActiveResultComponent },
@@ -345,7 +319,6 @@ const routes: Routes = [
       expectedModules: [
         CountryModule.MAC_MODULE,
         CountryModule.DATACOLLECTION_MODULE,
-        
       ],
     },
   },
@@ -363,12 +336,10 @@ const routes: Routes = [
         CountryModule.MAC_MODULE,
         CountryModule.GHG_MODULE,
         CountryModule.DATACOLLECTION_GHG_MODULE,
-        CountryModule.DATACOLLECTION_MODULE
-        
+        CountryModule.DATACOLLECTION_MODULE,
       ],
     },
   },
-  // { path: 'ia-dashboard', component: IaDashboardComponent},
   { path: 'manage-datastatus', component: ManagedatastatusComponent },
   {
     path: 'ia-dashboard',
@@ -378,7 +349,6 @@ const routes: Routes = [
       expectedRoles: [UserRoles.INS_ADMIN, UserRoles.DEO],
     },
   },
-  // { path: 'ia-dashboard', component: IaDashboardComponent},
   { path: 'mac-result', component: MacResultComponent },
   {
     path: 'ia-dashboard',
@@ -393,7 +363,7 @@ const routes: Routes = [
     component: ManageDefaultValuesComponent,
     canActivate: [RoleGuardService],
     data: {
-      expectedRoles: [UserRoles.DCT,UserRoles.MRV_ADMIN,],
+      expectedRoles: [UserRoles.DCT, UserRoles.MRV_ADMIN],
     },
   },
   {
@@ -419,13 +389,10 @@ const routes: Routes = [
     component: SummarytrackclimateactionsCountryComponent,
     canActivate: [RoleGuardService],
     data: {
-      expectedRoles: [
-        UserRoles.COUNTRY_ADMIN,
-        UserRoles.SECTOR_ADMIN,
-      ],
+      expectedRoles: [UserRoles.COUNTRY_ADMIN, UserRoles.SECTOR_ADMIN],
       expectedModules: [
         CountryModule.DATACOLLECTION_MODULE,
-        CountryModule.DATACOLLECTION_GHG_MODULE
+        CountryModule.DATACOLLECTION_GHG_MODULE,
       ],
     },
   },
@@ -443,7 +410,7 @@ const routes: Routes = [
     component: DataRequestComponent,
     canActivate: [RoleGuardService],
     data: {
-      expectedRoles: [UserRoles.DCT,UserRoles.MRV_ADMIN,],
+      expectedRoles: [UserRoles.DCT, UserRoles.MRV_ADMIN],
     },
   },
   {
@@ -475,7 +442,7 @@ const routes: Routes = [
       ],
       expectedModules: [
         CountryModule.DATACOLLECTION_MODULE,
-        CountryModule.DATACOLLECTION_GHG_MODULE
+        CountryModule.DATACOLLECTION_GHG_MODULE,
       ],
     },
   },
@@ -484,7 +451,7 @@ const routes: Routes = [
     component: ManagedatastatusComponent,
     canActivate: [RoleGuardService],
     data: {
-      expectedRoles: [UserRoles.DCT,UserRoles.MRV_ADMIN],
+      expectedRoles: [UserRoles.DCT, UserRoles.MRV_ADMIN],
     },
   },
   { path: 'report', component: ReportComponent },
@@ -499,7 +466,7 @@ const routes: Routes = [
       expectedRoles: [UserRoles.COUNTRY_ADMIN],
       expectedModules: [
         CountryModule.DATACOLLECTION_MODULE,
-        CountryModule.DATACOLLECTION_GHG_MODULE
+        CountryModule.DATACOLLECTION_GHG_MODULE,
       ],
     },
   },
@@ -533,14 +500,13 @@ const routes: Routes = [
       ],
       expectedModules: [
         CountryModule.DATACOLLECTION_MODULE,
-        CountryModule.DATACOLLECTION_GHG_MODULE
-        
+        CountryModule.DATACOLLECTION_GHG_MODULE,
       ],
     },
   },
   {
     path: 'verification-sector-admin/detail',
-    component: VerifyDetailComponentSectorAdmin,
+    component: VerifyDetailSectorAdminComponent,
   },
   { path: 'verification-verifier/detail', component: VerifyDetailComponent },
 ];

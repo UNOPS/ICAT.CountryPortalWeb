@@ -8,9 +8,8 @@ describe('AssignDataRequestComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssignDataRequestComponent ]
-    })
-    .compileComponents();
+      declarations: [AssignDataRequestComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

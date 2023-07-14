@@ -1,50 +1,39 @@
 <div class="container pl-20 pr-20">
   <div class="mb-12">
-    
-    <!-- <h4 class="mt-4" > {{title}} </h4> -->
-    <h4 class="mt-4" > {{ isNew ? "Add" : "View" }} Institution {{internalTeam ? "/ Internal Team" : ""}} </h4>
-    
-
+    <h4 class="mt-4">
+      {{ isNew ? 'Add' : 'View' }} Institution
+      {{ internalTeam ? '/ Internal Team' : '' }}
+    </h4>
   </div>
 
-  <!-- <div> {{institution|json}} </div> -->
-  <form #fData="ngForm" (ngSubmit)="saveForm(fData)" novalidate> 
-
+  <form #fData="ngForm" (ngSubmit)="saveForm(fData)" novalidate>
     <div class="card">
       <div class="p-grid p-fluid col-sm-12">
-        
         <div class="row p-2">
-          
- <!-- <div> {{selectedTypeList|json}} </div> -->
-
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="type">Type*</label>
               <p-dropdown
-              appendTo="body"
-              [disabled]="institutionId > 0"
-              placeholder="Select"
+                appendTo="body"
+                [disabled]="institutionId > 0"
+                placeholder="Select"
                 [(ngModel)]="intype"
-                name = "type"
+                name="type"
                 [options]="selectedTypeList1"
                 optionLabel="name"
                 #instype="ngModel"
                 (ngModelChange)="onInstitutionChange($event)"
-
-              
               >
-              
-            </p-dropdown>
-            <p
-              class="info-message text-danger"
-              *ngIf="
-                !intype &&
-                (fData.submitted || instype.touched || instype.dirty)
-              "
+              </p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="
+                  !intype &&
+                  (fData.submitted || instype.touched || instype.dirty)
+                "
               >
-              This is a mandatory field
-            </p>
-              
+                This is a mandatory field
+              </p>
             </div>
           </div>
         </div>
@@ -53,26 +42,24 @@
             <div class="p-field">
               <label for="sector">Sector*</label>
               <p-dropdown
-              [disabled]="institutionId > 0"
-              placeholder="Select"
+                [disabled]="institutionId > 0"
+                placeholder="Select"
                 [(ngModel)]="insector"
                 name="sector"
                 [options]="sectorList"
                 optionLabel="name"
                 #inssec="ngModel"
-
-              >                         
-            </p-dropdown>
-            <p
-              class="info-message text-danger"
-              *ngIf="
-                !insector &&
-                (fData.submitted || inssec.touched || inssec.dirty)
-              "
               >
-              This is a mandatory field
-            </p>
-             
+              </p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="
+                  !insector &&
+                  (fData.submitted || inssec.touched || inssec.dirty)
+                "
+              >
+                This is a mandatory field
+              </p>
             </div>
           </div>
         </div>
@@ -81,36 +68,34 @@
             <div class="p-field">
               <label for="category">Category*</label>
               <p-dropdown
-              placeholder="Select"
-               [disabled]="institutionId > 0"
+                placeholder="Select"
+                [disabled]="institutionId > 0"
                 [(ngModel)]="incategory"
                 name="category"
                 [options]="categoryList"
                 optionLabel="name"
                 #inscat="ngModel"
-
-              >                          
-            </p-dropdown>
-            <p
-              class="info-message text-danger"
-              *ngIf="
-                !incategory &&
-                (fData.submitted || inscat.touched || inscat.dirty)
-              "
               >
-              This is a mandatory field
-            </p>
-             
+              </p-dropdown>
+              <p
+                class="info-message text-danger"
+                *ngIf="
+                  !incategory &&
+                  (fData.submitted || inscat.touched || inscat.dirty)
+                "
+              >
+                This is a mandatory field
+              </p>
             </div>
           </div>
         </div>
-        
+
         <div class="row p-2">
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="name">Name*</label>
               <input
-              [disabled]="institutionId > 0"
+                [disabled]="institutionId > 0"
                 type="text"
                 placeholder=""
                 name="name"
@@ -127,18 +112,13 @@
                 *ngIf="
                   !inname &&
                   (fData.submitted || insname.touched || insname.dirty)
-              "
+                "
               >
                 This is a mandatory field
               </p>
-              <p
-              class="info-message text-danger"
-              *ngIf="insName "
-            >
-              This name is already exist
-            </p>
-
-              
+              <p class="info-message text-danger" *ngIf="insName">
+                This name is already exist
+              </p>
             </div>
           </div>
         </div>
@@ -148,8 +128,8 @@
             <div class="p-field">
               <label for="emailin">Email*</label>
               <input
-              [disabled]="institutionId > 0"
-                pattern="[\w-\.]+@([\w-]+\.)+[\w-\.]{1,30}$"
+                [disabled]="institutionId > 0"
+                pattern="[\w-\.]+@([\w-]+\.)+[\w-]{1,30}$"
                 type="text"
                 maxlength="30"
                 placeholder="Email"
@@ -162,19 +142,17 @@
               />
 
               <p
-              class="info-message text-danger"
-              *ngIf="
-                !inmail &&
-                (fData.submitted || emailin.touched || emailin.dirty)
-              "
+                class="info-message text-danger"
+                *ngIf="
+                  !inmail &&
+                  (fData.submitted || emailin.touched || emailin.dirty)
+                "
               >
-              This is a mandatory field
-            </p>
-
+                This is a mandatory field
+              </p>
             </div>
           </div>
         </div>
-
 
         <div class="row p-2">
           <div class="col-12 col-md-6">
@@ -191,9 +169,6 @@
               pInputText
               required
             />
-          <!-- <p class="info-message text-danger" *ngIf="intelephoneNumber!.indexOf('_') > 0">
-            A valid telephone number is required.
-          </p> -->
           <p
           class="info-message text-danger"
           *ngIf="
@@ -207,14 +182,12 @@
           </div>
         </div>
 
-
         <div class="row p-2">
           <div class="col-12 col-md-12">
             <div class="p-field">
               <label for="description">Description</label>
               <textarea
-              [disabled]="institutionId > 0"
-              
+                [disabled]="institutionId > 0"
                 name="description"
                 placeholder=""
                 [(ngModel)]="indescription"
@@ -224,22 +197,17 @@
                 autoResize="autoResize"
                 class="p-inputtext"
               >
-
-           
-            
-            </textarea>
+              </textarea>
             </div>
           </div>
         </div>
-
-
 
         <div class="row p-2">
           <div class="col-12 col-md-12">
             <div class="p-field">
               <label for="objective">Address*</label>
               <textarea
-              [disabled]="institutionId > 0"
+                [disabled]="institutionId > 0"
                 name="objective"
                 placeholder=""
                 [(ngModel)]="inaddress"
@@ -249,85 +217,76 @@
                 autoResize="autoResize"
                 class="p-inputtext"
                 #address="ngModel"
-
-              >                          
-            </textarea>
-            <p
-              class="info-message text-danger"
-              *ngIf="
-                !inaddress &&
-                (fData.submitted || address.touched || address.dirty)
-              "
               >
-              This is a mandatory field
-            </p>
+              </textarea>
+              <p
+                class="info-message text-danger"
+                *ngIf="
+                  !inaddress &&
+                  (fData.submitted || address.touched || address.dirty)
+                "
+              >
+                This is a mandatory field
+              </p>
             </div>
           </div>
         </div>
-        
-
-        
-
       </div>
     </div>
 
     <div class="d-flex flex-row-reverse mt-2 mb-2">
-     
-        
       <button
-      class="btn btn-primary btn-block text-uppercase ml-10"
-      (click) = "onBackClick()"
-      label="Back"
+        class="btn btn-primary btn-block text-uppercase ml-10"
+        (click)="onBackClick()"
+        label="Back"
       >
-      Back
+        Back
       </button>
       <button
-      [hidden]="institutionId > 0"
-      pRipple
-      [disabled]="isSaving"
-      [disabled]=" insName"
-      class="btn btn-primary btn-block text-uppercase ml-10"
-      type="submit"
-      label="Save"
-    >Save
-  </button>
-    </div> 
+        [hidden]="institutionId > 0"
+        pRipple
+        [disabled]="isSaving"
+        [disabled]="insName"
+        class="btn btn-primary btn-block text-uppercase ml-10"
+        type="submit"
+        label="Save"
+      >
+        Save
+      </button>
+    </div>
 
     <div class="d-flex flex-row-reverse mt-2 mb-2">
-      <!-- <p-confirmDialog header="Deactivation" icon="pi pi-exclamation-triangle"></p-confirmDialog> -->
       <button
-      *ngIf="institutionId > 0 && institution.status===0"
-      pButton
-      pRipple
-      class="btn btn-primary btn-block text-uppercase  ml-10"
-      (click)="activateInstitution(institution)" 
-    >
-    Deactivate
-    </button>
-
-    <button
-    *ngIf="institutionId > 0 && institution.status===1"
-    pButton
-    pRipple
-    class="btn btn-primary btn-block text-uppercase  ml-10"
-  (click)="activateInstitution(institution)" 
-  >
-  Activate
-  </button>
-
-  </div> 
-
-  <div class="d-flex flex-row-reverse mt-2 mb-2">
-      <button
-      *ngIf="institutionId > 0" 
+        *ngIf="institutionId > 0 && institution.status === 0"
+        pButton
         pRipple
-        class="btn btn-primary btn-block text-uppercase  ml-10"
+        class="btn btn-primary btn-block text-uppercase ml-10"
+        (click)="activateInstitution(institution)"
+      >
+        Deactivate
+      </button>
+
+      <button
+        *ngIf="institutionId > 0 && institution.status === 1"
+        pButton
+        pRipple
+        class="btn btn-primary btn-block text-uppercase ml-10"
+        (click)="activateInstitution(institution)"
+      >
+        Activate
+      </button>
+    </div>
+
+    <div class="d-flex flex-row-reverse mt-2 mb-2">
+      <button
+        *ngIf="institutionId > 0"
+        pRipple
+        class="btn btn-primary btn-block text-uppercase ml-10"
         type="edit"
-        (click) = "edit(institution)"
+        (click)="edit(institution)"
       >
         Edit
       </button>
-
     </div>
   </form>
 
@@ -338,49 +297,17 @@
     (onClose)="onReject()"
     [baseZIndex]="5000"
   >
-  <!-- <ng-template let-message pTemplate="message">
-    <div class="p-flex p-flex-column" style="flex: 1">
-      <div class="p-text-center">
-        <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
-        <h4>{{ message.summary }}</h4>
-        <p>{{ message.detail }}</p>
-      </div>
-      <div class="p-grid p-fluid">
-        <div class="p-col-6">
-          <button
-          type="button"
-          pButton
-          (click)="onConfirm()"
-          label="Yes"
-          class="p-button-success"
-        ></button>
-        </div>
-        <div class="p-col-6">
-          <button
-            type="button"
-            pButton
-            (click)="onReject()"
-            label="No"
-            class="p-button-secondary"
-          ></button>
-        </div>
-      </div>
-    </div>
-  </ng-template> -->
-</p-toast>
-
-
-</div> 
+  </p-toast>
+</div>
 <p-confirmDialog
-
-[style]="{ width: '50vw' }"
-[baseZIndex]="10000"
-rejectButtonStyleClass="p-button-text"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text"
 ></p-confirmDialog>
 
 <p-overlayPanel
-#op
-[showCloseIcon]="true"
-[style]="{ width: '50vw' }"
-(onShow)="OnShowOerlay()"
+  #op
+  [showCloseIcon]="true"
+  [style]="{ width: '50vw' }"
+  (onShow)="OnShowOerlay()"
 ></p-overlayPanel>

@@ -54,21 +54,15 @@ export class SetPasswordComponent implements OnInit {
       const token = localStorage.getItem('access_token')!;
 
       const tokenPayload = decode<any>(token);
-
-      console.log('testload---------', tokenPayload);
-
-      //   this.restToken = tokenPayload;
       this.email = tokenPayload.usr;
       if (this.email) {
         this.showEmail = true
       }
-      //   console.log("restToken", this.restToken);
     });
   }
 
   
   clickResetPassword() {
-    console.log(" this.form1", this.form1.valid)
     if (this.form.valid && this.passwordConfirm == this.resetPasswordDto.password) {
       this.resetPasswordDto.token = "";
       this.resetPasswordDto.email = this.email;
@@ -81,8 +75,6 @@ export class SetPasswordComponent implements OnInit {
       },
         err => {
           this.isErrorPopup = true;
-          console.log(err);
-
         });
     }
   }

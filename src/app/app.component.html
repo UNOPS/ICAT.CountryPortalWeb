@@ -14,9 +14,6 @@
           <i class="pi pi-arrow-left" *ngIf="togglemenu"></i>
         </div>
         <div class="sidebar--header">
-          <!-- <img src="../assets/images/icat-logo.jpg" width="200px" height="50px" />  -->
-          <!-- <img src="../../../assets/images/logo-new.png" /> -->
-          <!-- <div class="col-lg-6 col-md-11 col-sm-8 " > -->
           <div class="row mb-2">
             <div class="col-md-3">
               <img
@@ -34,13 +31,7 @@
             </div>
           </div>
         </div>
-        <!-- <div class="m-0 ml-2">
-          <div class="p-text-left p-text-nowrap p-text-truncate m-1">
-            <p class="m-0"><small>{{userType}}</small></p>
-          </div>    
-        </div> -->
         <div class="sidebar-items flex-grow-1">
-          <!-- <div data-ccs-admin-menu *ngIf="userRole.role == 1"> -->
           <div data-ccs-admin-menu>
             <div
               *ngIf="
@@ -261,7 +252,6 @@
                   routerLinkActive="selected"
                 >
                   <p class="mb-0 ml-20">Accepted Climate Action</p>
-                  <!-- all CA -->
                 </div>
 
                 <div
@@ -269,20 +259,25 @@
                     (userRole.role == 3 ||
                       userRole.role == 4 ||
                       userRole.role == 5) &&
-                    [models.DATACOLLECTION_MODULE, models.DATACOLLECTION_GHG_MODULE].some(getModel)
+                    [
+                      models.DATACOLLECTION_MODULE,
+                      models.DATACOLLECTION_GHG_MODULE
+                    ].some(getModel)
                   "
                   class="sidebar-items--link d-flex flex-column align-items-start"
                   [routerLink]="['/active-climate-action']"
                   routerLinkActive="selected"
                 >
                   <p class="mb-0 ml-20">Assessed Climate Action</p>
-                  <!-- active ca -->
                 </div>
 
                 <div
                   *ngIf="
                     (userRole.role == 1 || userRole.role == 3) &&
-                    [models.DATACOLLECTION_MODULE, models.DATACOLLECTION_GHG_MODULE].some(getModel)
+                    [
+                      models.DATACOLLECTION_MODULE,
+                      models.DATACOLLECTION_GHG_MODULE
+                    ].some(getModel)
                   "
                   class="sidebar-items--link d-flex flex-column align-items-start"
                   [routerLink]="['/track-ca-summary-country']"
@@ -309,39 +304,8 @@
                 <p-header
                   class="p-accordion-header-text d-flex flex-row align-items-left"
                 >
-                  <!-- <div
-                    *ngIf="
-                      userRole.role == 1 ||
-                      userRole.role == 3 ||
-                      userRole.role == 4 ||
-                      userRole.role == 5
-                    "
-                    [routerLink]="['/user-list']"
-                    routerLinkActive="selected"
-                  > -->
-                    <p class="mb-2">Assess Climate Actions</p>
-                  <!-- </div> -->
+                  <p class="mb-2">Assess Climate Actions</p>
                 </p-header>
-                <!-- <div
-                  *ngIf="
-                    userRole.role == 3 ||
-                    userRole.role == 4 ||
-                    userRole.role == 5
-                  "
-                  class="sidebar-items--link d-flex flex-column align-items-start"
-                  [routerLink]="['/track-ca-summary']"
-                  routerLinkActive="selected"
-                >
-                  <p class="mb-0 ml-20">Track Climate Actions</p>
-                </div> -->
-                <!-- <div
-                  *ngIf="userRole.role == 1"
-                  class="sidebar-items--link d-flex flex-column align-items-start"
-                  [routerLink]="['/track-ca-summary-country']"
-                  routerLinkActive="selected"
-                >
-                  <p class="mb-0 ml-20">Track CA - Country</p>
-                </div> -->
 
                 <div
                   *ngIf="
@@ -393,7 +357,11 @@
                 (userRole.role == 3 ||
                   userRole.role == 4 ||
                   userRole.role == 5) &&
-                [models.GHG_MODULE, models.MAC_MODULE, models.DATACOLLECTION_MODULE].some(getModel)
+                [
+                  models.GHG_MODULE,
+                  models.MAC_MODULE,
+                  models.DATACOLLECTION_MODULE
+                ].some(getModel)
               "
               class="sidebar-items--link align-items-start"
               [routerLink]="['/all-result']"
@@ -408,7 +376,10 @@
                 (userRole.role == 3 ||
                   userRole.role == 4 ||
                   userRole.role == 5) &&
-                [models.DATACOLLECTION_MODULE, models.DATACOLLECTION_GHG_MODULE].some(getModel)
+                [
+                  models.DATACOLLECTION_MODULE,
+                  models.DATACOLLECTION_GHG_MODULE
+                ].some(getModel)
               "
               class="sidebar-items--link align-items-start"
               [routerLink]="['/verification-sector-admin']"
@@ -439,7 +410,10 @@
             <div
               *ngIf="
                 userRole.role == 1 &&
-                [models.DATACOLLECTION_MODULE, models.DATACOLLECTION_GHG_MODULE].some(getModel)
+                [
+                  models.DATACOLLECTION_MODULE,
+                  models.DATACOLLECTION_GHG_MODULE
+                ].some(getModel)
               "
               class="sidebar-items--link align-items-start"
               [routerLink]="['/app-assign-verifiers']"
@@ -455,7 +429,10 @@
                   userRole.role == 3 ||
                   userRole.role == 4 ||
                   userRole.role == 5) &&
-                [models.DATACOLLECTION_MODULE, models.DATACOLLECTION_GHG_MODULE].some(getModel)
+                [
+                  models.DATACOLLECTION_MODULE,
+                  models.DATACOLLECTION_GHG_MODULE
+                ].some(getModel)
               "
               class="sidebar-items--link align-items-start"
               [routerLink]="['/report']"
@@ -530,74 +507,7 @@
             <div class=""></div>
             Reset Your Password
           </div>
-
-            <!-- <div
-              class="sidebar-items--link align-items-start"
-              [routerLink]="['/landing-page']"
-              routerLinkActive="selected"
-            >
-              <div class=""></div>
-              Landing Page
-            </div> -->
-
-            <!-- <div
-              class="sidebar-items--link align-items-start"
-              [routerLink]="['/view-sector']"
-              routerLinkActive="selected"
-            >
-              <div class=""></div>
-              Sector
-            </div> -->
-
-            <!-- <div
-            
-              class="sidebar-items--link align-items-start"
-              [routerLink]="['/propose-project']"
-              routerLinkActive="selected"
-            >
-              <div class=""></div>
-              Propose a Project
-            </div> -->
-
             <p-accordion>
-              <!-- <p-accordionTab data-users>
-                <p-header class="p-accordion-header-text d-flex flex-row align-items-left">
-                  <div [routerLink]="['/user-list']" routerLinkActive="selected">
-                    <p class="mb-2">Users</p>
-                  </div>
-                </p-header>
-                <div class="sidebar-items--link d-flex flex-column align-items-start" [routerLink]="['/user-new']"
-                  routerLinkActive="selected">
-                  <p class="mb-0  ml-20">Create users</p>
-                </div>
-                <div class="sidebar-items--link d-flex flex-column align-items-start ml-16" [routerLink]="['/user-list']"
-                  routerLinkActive="selected">
-    
-                  <p class="mb-0 ml-20">Manage users</p>
-                </div>
-    
-    
-              </p-accordionTab>
-    
-    
-              <p-accordionTab data-institutions>
-                <p-header class="p-accordion-header-text d-flex flex-row align-items-center">
-                  <div [routerLink]="['/institution-list']" routerLinkActive="selected"
-                    [routerLinkActiveOptions]="{ exact: true }">
-                    <p class="mb-2">Institutions</p>
-                  </div>
-                </p-header>
-                <div class="sidebar-items--link d-flex flex-column align-items-start" [routerLink]="['/institution-new']"
-                  routerLinkActive="selected">
-                  <p class="mb-0 ml-20">Add institutions</p>
-                </div>
-                <div class="sidebar-items--link d-flex flex-column align-items-start" [routerLink]="['/institution-list']"
-                  routerLinkActive="selected">
-                  <p class="mb-0 ml-20">Manage institutions</p>
-                </div>
-    
-    
-              </p-accordionTab>-->
             </p-accordion>
           </div>
         </div>
@@ -606,24 +516,12 @@
           <div></div>
           <div></div>
           <div></div>
-          <!-- <div class="sidebar-items--link" [routerLink]="['/settings']" routerLinkActive="router-link-active">
-            <i class="pi pi-cog"></i> Settings
-          </div> -->
-          <div class="ml-2 mr-2">
-            <!-- <p-dropdown [disabled]="true" [options]="userRoles" [(ngModel)]="userRole" placeholder="Select a City"
-              optionLabel="name">
-            </p-dropdown> -->
-          </div>
-
-          <!-- <div class="sidebar-items--link" (click)="logout()" [routerLink]="['/login']" routerLinkActive="router-link-active">
-            <i class="pi pi-sign-out"></i> Logout
-          </div> -->
+          <div class="ml-2 mr-2"></div>
         </div>
       </div>
       <div class="main d-flex flex-column flex-grow-1">
         <div class="d-flex flex-column justify-content-end">
           <div class="p-text-nowrap p-text-truncate m-0 pr-2 text-right">
-            <!-- <small><b>{{useremail}}</b></small> -->
             <div
               class="top-panel d-flex justify-content-end"
               *ngIf="showTopMenu"
@@ -663,20 +561,14 @@
               </div>
             </div>
           </div>
-          <div class="p-text-nowrap p-text-truncate m-0 mb-1 pr-2 text-right">
-            <!-- <small><b>{{userInstitution}}</b></small> -->
-          </div>
+          <div
+            class="p-text-nowrap p-text-truncate m-0 mb-1 pr-2 text-right"
+          ></div>
         </div>
         <router-outlet></router-outlet>
       </div>
     </div>
-    <!-- 
-    <div  class="d-flex flex-column flex-grow-1"  *ngIf="hideSidebar">
-      <router-outlet></router-outlet>
-    </div> -->
   </nb-layout-column>
 
-  <nb-layout-footer fixed>
-    <!-- Insert footer here -->
-  </nb-layout-footer>
+  <nb-layout-footer fixed> </nb-layout-footer>
 </nb-layout>

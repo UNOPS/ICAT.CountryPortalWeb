@@ -4,24 +4,23 @@ import { QuAlityCheckStatus } from 'app/Model/QuAlityCheckStatus.enum';
 import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
 import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
 import {
-  AssesmentControllerServiceProxy,
-  AssesmentResaultControllerServiceProxy,
+  AssessmentControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
   Assessment,
-  AssessmentResault,
+  AssessmentResult,
   AssessmentYear,
-  AssessmentYearVerificationStatus,
   Parameter,
-  ParameterVerifierAcceptance,
-  ProjectionResault,
-  ProjectionResaultControllerServiceProxy,
+  ProjectionResult,
+  ProjectionResultControllerServiceProxy,
   ServiceProxy,
   User,
   VerificationControllerServiceProxy,
   VerificationDetail,
+  ParameterVerifierAcceptance,
 } from 'shared/service-proxies/service-proxies';
 import { VerificationService } from 'shared/verification-service';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'verify-detail-detail',
@@ -29,35 +28,35 @@ import { VerificationService } from 'shared/verification-service';
   styleUrls: ['./verify-detail.component.css'],
 })
 export class VerifyDetailComponent implements OnInit {
-  assesMentYearId: number = 0;
-  verificationStatus: number = 0;
-  assementYear: AssessmentYear = new AssessmentYear();
-  parameters: any[] = [];
+  assesMentYearId = 0;
+  verificationStatus = 0;
+  assessmentYear: AssessmentYear = new AssessmentYear();
+  parameters: Parameter[] = [];
   baselineParameters: Parameter[] = [];
   projectParameters: Parameter[] = [];
   lekageParameters: Parameter[] = [];
   projectionParameters: Parameter[] = [];
-  loading: boolean = false;
-  assessmentResult: AssessmentResault = new AssessmentResault();
-  projectionResult: ProjectionResault[] = [];
-  selectdProjectionResult: ProjectionResault;
-  isApprove: boolean = false;
+  loading = false;
+  assessmentResult: AssessmentResult = new AssessmentResult();
+  projectionResult: ProjectionResult[] = [];
+  selectdProjectionResult: ProjectionResult;
+  isApprove = false;
   drComment = '';
-  commentRequried: boolean = false;
-  displayConcern: boolean = false;
+  commentRequried = false;
+  displayConcern = false;
 
-  assesmentResultComment = '';
-  assesmentResultCommentRequried: boolean = false;
+  assessmentResultComment = '';
+  assessmentResultCommentRequried = false;
 
-  selectdAssementType: number;
-  isApproveAssement: boolean = false;
+  selectdAssessmentType: number;
+  isApproveAssessment = false;
 
   VerificationStatusEnum = VerificationStatus;
   concernVerificationDetails: VerificationDetail[] | undefined;
   verificationDetails: VerificationDetail[] = [];
   verificationDetailsFromDb: VerificationDetail[] = [];
 
-  raiseConcernSection: string = '';
+  raiseConcernSection = '';
   concernIsMethodology: boolean;
   concernIsNdC: boolean;
   concernIsAssumption: boolean;
@@ -100,9 +99,9 @@ export class VerifyDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private proxy: ServiceProxy,
-    private assesmentProxy: AssesmentControllerServiceProxy,
-    private assesmentResaultProxy: AssesmentResaultControllerServiceProxy,
-    private projectionResultProxy: ProjectionResaultControllerServiceProxy,
+    private assessmentProxy: AssessmentControllerServiceProxy,
+    private assessmentResultProxy: AssessmentResultControllerServiceProxy,
+    private projectionResultProxy: ProjectionResultControllerServiceProxy,
     private router: Router,
     private messageService: MessageService,
     private verificationProxy: VerificationControllerServiceProxy,
@@ -115,10 +114,9 @@ export class VerifyDetailComponent implements OnInit {
     this.route.queryParams.subscribe(async (params) => {
       this.assesMentYearId = params['id'];
       this.verificationStatus = +params['verificationStatus'];
-      console.log("verificationStatus",this.verificationStatus)
       this.flag = params['flag'];
 
-      this.assementYear = await this.proxy
+      this.assessmentYear = await this.proxy
       .getOneBaseAssessmentYearControllerAssessmentYear(
         this.assesMentYearId,
         undefined,
@@ -129,7 +127,6 @@ export class VerifyDetailComponent implements OnInit {
       this.getAssesment();
       this.getAssesmentResult(false);
       this.getProjectionReuslt();
-      console.log(this.verificationDetails)
     });
 
     this.loadUser();
@@ -153,20 +150,6 @@ export class VerifyDetailComponent implements OnInit {
             this.isNdcDisableReject = false;
           }
         })
-        // if (ndcObj?.isAccepted == true)
-        // {
-        //   this.isNdcDisable = true;
-        //   this.isNdcAccepted = true;
-        //   this.isNdcDisableReject = true;
-        // } else {
-        //   if (ndcObj?.explanation){
-        //     this.isNdcDisable = true;
-        //   }
-        //   this.isNdcAccepted = false;
-        //   this.isNdcDisableReject = false;
-        // }
-        
-
         let methObject = this.verificationDetailsFromDb.find((o)=>o.isMethodology == true);
         if(methObject?.isAccepted == true)
         {
@@ -252,7 +235,6 @@ export class VerifyDetailComponent implements OnInit {
 
     let filter1: string[] = [];
     filter1.push('username||$eq||' + userName);
-    // lmFilter.push('LearningMaterial.isPublish||$eq||' + 1);
 
     this.serviceProxy
       .getManyBaseUsersControllerUser(
@@ -265,7 +247,7 @@ export class VerifyDetailComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.loggedUser = res.data[0];
@@ -273,35 +255,28 @@ export class VerifyDetailComponent implements OnInit {
   }
 
   async getVerificationDetail() {
-    // await this.verificationProxy
-    //   .getVerificationDetails(this.assesMentYearId)
-    //   .subscribe((a) => {
-    //     console.log(a)
-    //     this.verificationDetails = a;
-    //   });
     this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assesMentYearId).toPromise()
   }
 
   getAssesmentResult(isCalculate: boolean) {
-    this.assesmentResaultProxy
-      .getAssesmentResult(
-        this.assementYear.assessment.id,
+    this.assessmentResultProxy
+      .getAssessmentResult(
+        this.assessmentYear.assessment.id,
         this.assesMentYearId,
         isCalculate,
-        'verifier',
-        "1234"
+        'verify',
+        environment.apiKey1
       )
       .subscribe((res) => {
         this.assessmentResult = res;
-        console.log(res);
       });
   }
 
   getProjectionReuslt() {
     this.projectionResultProxy
       .getProjectionResult(
-        this.assementYear.assessment.id,
-        Number(this.assementYear.assessmentYear)
+        this.assessmentYear.assessment.id,
+        Number(this.assessmentYear.assessmentYear),
       )
       .subscribe((res) => {
         this.projectionResult = res;
@@ -309,7 +284,7 @@ export class VerifyDetailComponent implements OnInit {
   }
 
   getResult(type: any){
-    if (this.assementYear.assessment.assessmentType === 'MAC'){
+    if (this.assessmentYear.assessment.assessmentType === 'MAC'){
       if (type === "baseline"){
         return this.assessmentResult.bsTotalAnnualCost
       } else if (type === "project"){
@@ -350,31 +325,21 @@ export class VerifyDetailComponent implements OnInit {
       )
       .subscribe((res) => {
         asessmentYear.assessment.parameters = res.data;
-
-        console.log("veriifer parameters...",res.data);
       });
   }
 
   getAssesment() {
-    this.assesmentProxy
+    this.assessmentProxy
       .getAssment(
-        this.assementYear.assessment.id,
-        this.assementYear.assessmentYear
+        this.assessmentYear.assessment.id,
+        this.assessmentYear.assessmentYear
       )
       .subscribe(async (res) => {
-        console.log('rrrrrrrrrrrrrrrrr');
-        console.log("para next...",res);
-
-        this.assementYear.assessment = res;
-        console.log("this.assementYear.assessment",  this.assementYear.assessment);
-
-      console.log("this.assementYear.assessment.id",this.assementYear.assessment.id)  
-
-
+        this.assessmentYear.assessment = res; 
         this.serviceProxy.getManyBaseAssessmentObjectiveControllerAssessmentObjective(
           undefined,
           undefined,
-          ["assessmentId||$eq||"+ this.assementYear.assessment.id],
+          ["assessmentId||$eq||"+ this.assessmentYear.assessment.id],
           undefined,
           undefined,
           undefined,
@@ -384,28 +349,21 @@ export class VerifyDetailComponent implements OnInit {
           0
 
           ).subscribe((res:any) => {
-            console.log('asssmntObjective----',res);
-
            if( res.data[0])
            {
             this.assessmentObjective = res.data[0].objective;
            }
            else{
-             console.log("N/A")
              this.assessmentObjective = "N/A"
            }
-          console.log('asssmntObjectiveName----',this.assessmentObjective);
         });
 
 
-        this.parameters = this.assementYear.assessment.parameters;
-        console.log(this.assementYear.assessment)
-
+        this.parameters = this.assessmentYear.assessment.parameters;
         this.parameters = await Promise.all(
           this.parameters.map(para => {
             if (para.verifierAcceptance !== ParameterVerifierAcceptance.DATA_ENTERED){
               let v = this.verificationDetails.find(o => o.parameter.id === para.id)
-              console.log(para.id, v)
               if (v){
                 if (!v.isAccepted && (v.rootCause === null || v.correctiveAction === null || v.action === null)){
                   para['isConcernRaised'] = true
@@ -417,7 +375,7 @@ export class VerifyDetailComponent implements OnInit {
         ) 
 
         this.baselineParameters =
-          this.assementYear.assessment.parameters.filter(
+          this.assessmentYear.assessment.parameters.filter(
             (p) => p.isBaseline
             && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
           );
@@ -428,7 +386,7 @@ export class VerifyDetailComponent implements OnInit {
           }
         }
 
-        this.projectParameters = this.assementYear.assessment.parameters.filter(
+        this.projectParameters = this.assessmentYear.assessment.parameters.filter(
           (p) => p.isProject
           && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
         );
@@ -438,7 +396,7 @@ export class VerifyDetailComponent implements OnInit {
             this.isProjectAccept =false;
           }
         }
-        this.lekageParameters = this.assementYear.assessment.parameters.filter(
+        this.lekageParameters = this.assessmentYear.assessment.parameters.filter(
           (p) => p.isLekage
           && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
         );
@@ -451,10 +409,10 @@ export class VerifyDetailComponent implements OnInit {
         
         
         this.projectionParameters =
-          this.assementYear.assessment.parameters.filter(
+          this.assessmentYear.assessment.parameters.filter(
             (p) =>
               p.isProjection &&
-              p.projectionBaseYear == Number(this.assementYear.assessmentYear)
+              p.projectionBaseYear == Number(this.assessmentYear.assessmentYear)
               && ![ParameterVerifierAcceptance.REJECTED, ParameterVerifierAcceptance.RETURNED].includes(p.verifierAcceptance)
           );
 
@@ -463,13 +421,12 @@ export class VerifyDetailComponent implements OnInit {
               this.isProjectionAccept =false;
             }
           }
-          console.log("__________",this.projectionParameters)
       });
   }
 
   detail(climateactions: any) {
     this.router.navigate(['/propose-project'], {
-      queryParams: { id: climateactions.id, flag:this.flag },
+      queryParams: { id: climateactions.id, flag: this.flag },
     });
   }
 
@@ -477,28 +434,26 @@ export class VerifyDetailComponent implements OnInit {
     this.verificationProxy
       .getVerificationDetails(this.assesMentYearId)
       .subscribe((a) => {
-        var notaccepted = a.filter((a) => !a.isAccepted);
+        const notaccepted = a.filter((a) => !a.isAccepted);
 
         if (
           notaccepted &&
           notaccepted.length > 0 &&
-          this.assementYear.verificationStatus === 3
+          this.assessmentYear.verificationStatus === 3
         ) {
-          this.assementYear.verificationStatus = 6;
+          this.assessmentYear.verificationStatus = 6;
         }
       });
 
-    //AssessmentYearVerificationStatus.NCRecieved;
-    let assessment = new Assessment();
-    assessment.id = this.assementYear.assessment.id;
-    this.assementYear.assessment = assessment;
+    const assessment = new Assessment();
+    assessment.id = this.assessmentYear.assessment.id;
+    this.assessmentYear.assessment = assessment;
     this.proxy
       .updateOneBaseAssessmentYearControllerAssessmentYear(
-        this.assementYear.id,
-        this.assementYear
+        this.assessmentYear.id,
+        this.assessmentYear,
       )
       .subscribe((a) => {
-        //rederict to NC Report
         alert('updates');
       });
   }
@@ -524,8 +479,8 @@ export class VerifyDetailComponent implements OnInit {
   }
 
   onRowSelectAssessment(event: any, isApprove: boolean) {
-    this.selectdAssementType = event;
-    this.isApproveAssement = isApprove;
+    this.selectdAssessmentType = event;
+    this.isApproveAssessment = isApprove;
   }
 
   OnShowOerlayDR() {
@@ -534,13 +489,13 @@ export class VerifyDetailComponent implements OnInit {
   }
 
   OnShowOerlayDRAssessment() {
-    this.assesmentResultComment = '';
-    this.assesmentResultCommentRequried = false;
+    this.assessmentResultComment = '';
+    this.assessmentResultCommentRequried = false;
   }
 
-  approve(parameter: ProjectionResault) {}
+  approve(parameter: ProjectionResult) {}
 
-  reject(parameter: ProjectionResault) {}
+  reject(parameter: ProjectionResult) {}
 
   drWithComment() {
     if (!this.isApprove && this.drComment === '') {
@@ -548,7 +503,7 @@ export class VerifyDetailComponent implements OnInit {
       return;
     }
 
-    var qastatus = this.isApprove
+    const qastatus = this.isApprove
       ? QuAlityCheckStatus.Pass
       : QuAlityCheckStatus.Fail;
 
@@ -557,7 +512,7 @@ export class VerifyDetailComponent implements OnInit {
         this.selectdProjectionResult.id,
         this.selectdProjectionResult.projectionYear,
         qastatus,
-        this.drComment
+        this.drComment,
       )
       .subscribe(
         (res) => {
@@ -568,13 +523,11 @@ export class VerifyDetailComponent implements OnInit {
             closable: true,
           });
 
-          var index = this.projectionResult.indexOf(
-            this.selectdProjectionResult
+          const index = this.projectionResult.indexOf(
+            this.selectdProjectionResult,
           );
 
           this.selectdProjectionResult.qcStatus = this.isApprove ? 4 : 3;
-
-          // this.parameters.splice(index, 0, this.selectdParameter);
 
           this.overlayDRPro.hide();
         },
@@ -585,27 +538,27 @@ export class VerifyDetailComponent implements OnInit {
             detail: 'Internal server error, please try again.',
             sticky: true,
           });
-        }
+        },
       );
   }
 
-  drWithCommentAssesment() {
-    if (!this.isApproveAssement && this.assesmentResultComment === '') {
+  drWithCommentAssessment() {
+    if (!this.isApproveAssessment && this.assessmentResultComment === '') {
       this.commentRequried = true;
       return;
     }
 
-    var qastatus = this.isApproveAssement
+    const qastatus = this.isApproveAssessment
       ? QuAlityCheckStatus.Pass
       : QuAlityCheckStatus.Fail;
 
-    this.assesmentResaultProxy
-      .updateQCStatusAssesmentResult(
+    this.assessmentResultProxy
+      .updateQCStatusAssessmentResult(
         this.assessmentResult.id,
         this.assessmentResult.assessmentYear.id,
         qastatus,
-        this.selectdAssementType,
-        this.assesmentResultComment
+        this.selectdAssessmentType,
+        this.assessmentResultComment,
       )
       .subscribe(
         (res) => {
@@ -616,13 +569,9 @@ export class VerifyDetailComponent implements OnInit {
             closable: true,
           });
 
-          var index = this.projectionResult.indexOf(
-            this.selectdProjectionResult
+          const index = this.projectionResult.indexOf(
+            this.selectdProjectionResult,
           );
-
-          // this.projectionResult.qcStatus = this.isApprove ? 4 : 3;
-
-          // this.parameters.splice(index, 0, this.selectdParameter);
 
           this.overlayDRAssemnet.hide();
         },
@@ -650,17 +599,16 @@ export class VerifyDetailComponent implements OnInit {
     });
   }
 
-  accept(IsNdc: boolean, isMethodology: boolean , isAssumption:boolean) {
-    let verificationDetails: VerificationDetail[] = [];
+  accept(IsNdc: boolean, isMethodology: boolean, isAssumption: boolean) {
+    const verificationDetails: VerificationDetail[] = [];
 
-    let currentVerification = this.verificationDetails.find(
+    const currentVerification = this.verificationDetails.find(
       (a) =>
         a.isNDC == IsNdc &&
-        a.isMethodology == isMethodology && 
+        a.isMethodology == isMethodology &&
         a.isAssumption == isAssumption &&
-        a.verificationStage == this.getverificationStage()
+        a.verificationStage == this.getverificationStage(),
     );
-//
     let vd = new VerificationDetail();
 
     if (currentVerification) {
@@ -670,11 +618,11 @@ export class VerifyDetailComponent implements OnInit {
       vd.userVerifier = this.loggedUser.id;
       vd.createdOn = moment();
       vd.updatedDate = moment();
-      vd.assessmentId = this.assementYear.assessment.id;
-      let assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assementYear.id;
-      vd.assessmentYear = assesmentYear;
-      vd.year = Number(this.assementYear.assessmentYear);
+      vd.assessmentId = this.assessmentYear.assessment.id;
+      const assessmentYear = new AssessmentYear();
+      assessmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assessmentYear;
+      vd.year = Number(this.assessmentYear.assessmentYear);
 
       if (IsNdc) {
         vd.isNDC = true;
@@ -682,35 +630,28 @@ export class VerifyDetailComponent implements OnInit {
       if (isMethodology) {
         vd.isMethodology = true;
       }
-      if(isAssumption){
+      if (isAssumption) {
         vd.isAssumption = true;
       }
 
-
-      if(IsNdc)
-      {
+      if (IsNdc) {
         this.isNdcDisable = true;
         this.isNdcDisableReject = true;
       }
 
-      if(isMethodology)
-      {
+      if (isMethodology) {
         this.isMethodology = true;
         this.isMethodologyReject = true;
       }
 
-      if(isAssumption)
-      {
+      if (isAssumption) {
         this.isAssumptions = true;
         this.isAssumptionsReject = true;
       }
-
-
-      
     }
 
     vd.verificationStage = this.getverificationStage();
-    vd.verificationStatus = Number(this.assementYear.verificationStatus);
+    vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
 
     vd.isAccepted = true;
 
@@ -731,14 +672,14 @@ export class VerifyDetailComponent implements OnInit {
   getverificationStage() {
     let stage = 0;
     if (
-      this.assementYear.verificationStatus === 1 ||
-      this.assementYear.verificationStatus === 2 ||
-      this.assementYear.verificationStatus === 3
+      this.assessmentYear.verificationStatus === 1 ||
+      this.assessmentYear.verificationStatus === 2 ||
+      this.assessmentYear.verificationStatus === 3
     ) {
       stage = 1;
-    } else if (this.assementYear.verificationStatus === 4) {
+    } else if (this.assessmentYear.verificationStatus === 4) {
       stage = 2;
-    } else if (this.assementYear.verificationStatus === 5) {
+    } else if (this.assessmentYear.verificationStatus === 5) {
       stage = 3;
     }
 
@@ -785,13 +726,11 @@ export class VerifyDetailComponent implements OnInit {
       if(isNdc)
       {
         this.isNdcDisable = true;
-        // this.isNdcDisableReject = true;
       }
   
       if(isAssumption)
       {
         this.isAssumptions = true;
-        // this.isAssumptionsReject = true;
       }
     }
   }
@@ -799,7 +738,7 @@ export class VerifyDetailComponent implements OnInit {
   toNonConformance() {
     this.router.navigate(['/non-conformance'], {
       queryParams: {
-        id: this.assementYear.id,
+        id: this.assessmentYear.id,
         isVerificationHistory: this.flag,
         vStatus: this.verificationStatus,
       },
@@ -808,15 +747,13 @@ export class VerifyDetailComponent implements OnInit {
 
   async onComplete(e: any){
     this.isCompleted = true
-    console.log( e)
-    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assementYear.id).toPromise()
+    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assessmentYear.id).toPromise()
     if (e){
       this.displayConcern = false
     }
   }
 
   onHide(){
-    console.log("cdllk")
     if (!this.isCompleted){
       if (this.concernIsNdC){
         this.isNdcDisable = false;
@@ -845,9 +782,7 @@ export class VerifyDetailComponent implements OnInit {
       this.hasCostResultConcern = true
     }
     this.raiseConcernSection = section;
-    // this.isParameter = false;
     this.isResult = true;
-    // this.concernParam = undefined;
 
     if (this.verificationDetails) {
 
@@ -889,7 +824,7 @@ export class VerifyDetailComponent implements OnInit {
 
     if (this.verificationDetails) {
       verificationDetail = this.verificationDetails.find(
-        (a: any) => a.assessmentId === this.assementYear.assessment.id && a[column] == true && a.isResult === true
+        (a: any) => a.assessmentId === this.assessmentYear.assessment.id && a[column] == true && a.isResult === true
       );
     }
     let vd = new VerificationDetail();
@@ -897,13 +832,12 @@ export class VerifyDetailComponent implements OnInit {
     if (verificationDetail) {
       vd = verificationDetail;
     } else {
-      console.log("new result")
       vd.userVerifier = this.loggedUser.id;
-      vd.assessmentId = this.assementYear.assessment.id;
+      vd.assessmentId = this.assessmentYear.assessment.id;
       let assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assementYear.id;
+      assesmentYear.id = this.assessmentYear.id;
       vd.assessmentYear = assesmentYear;
-      vd.year = Number(this.assementYear.assessmentYear);
+      vd.year = Number(this.assessmentYear.assessmentYear);
       vd.createdOn = moment();
       vd.isResult = true
       if(column == 'isTotal'){vd.isTotal =true}
@@ -915,8 +849,7 @@ export class VerifyDetailComponent implements OnInit {
     vd.updatedDate = moment();
     vd.isAccepted = true;
     vd.verificationStage = this.getverificationStage();
-    vd.verificationStatus = Number(this.assementYear.verificationStatus);
-    console.log(vd)
+    vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
 
     verificationDetails.push(vd);
 
@@ -929,7 +862,6 @@ export class VerifyDetailComponent implements OnInit {
           detail: 'successfully Save.',
           closable: true,
         });
-        // this.isAccept=true
         this.isResultAccepted = true
       });
   }

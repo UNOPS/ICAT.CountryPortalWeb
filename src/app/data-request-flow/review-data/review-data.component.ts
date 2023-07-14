@@ -1,6 +1,5 @@
 import {
   AssessmentYearControllerServiceProxy,
-  Institution,
   ParameterHistoryControllerServiceProxy,
   ParameterRequestControllerServiceProxy,
   Project,
@@ -9,12 +8,7 @@ import {
   User,
   UsersControllerServiceProxy,
 } from './../../../shared/service-proxies/service-proxies';
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import {
@@ -23,6 +17,7 @@ import {
   MessageService,
 } from 'primeng/api';
 import decode from 'jwt-decode';
+import { environment } from 'environments/environment.prod';
 @Component({
   selector: 'app-review-data',
   templateUrl: './review-data.component.html',
@@ -37,15 +32,13 @@ export class ReviewDataComponent implements OnInit {
   relatedItems: Project[] = [];
   yearList: any[] = [];
   assessmentList: any[] = [];
-  assessmentType: string[] = ['Ex-ante','Ex-post','MAC'];
+  assessmentType: string[] = ['Ex-ante', 'Ex-post', 'MAC'];
   cols: any;
   columns: any;
   options: any;
-  confirm1: boolean = false;
+  confirm1 = false;
   dataRequestList: any[] = [];
   minDate: Date;
-  // sectorList: string[] = new Array();
-  //mitigationActionList: MitigationActionType[] = [];
   selectedParameters: any[];
   selectedDeadline: Date;
   reasonForReject: string;
@@ -54,8 +47,8 @@ export class ReviewDataComponent implements OnInit {
   searchText: string;
 
   loading: boolean;
-  totalRecords: number = 0;
-  rows: number = 10;
+  totalRecords = 0;
+  rows = 10;
   last: number;
   event: any;
   asseType = ['MAC', 'Ex-ante', 'Ex-post'];
@@ -67,17 +60,16 @@ export class ReviewDataComponent implements OnInit {
   };
 
   first = 0;
-  paraId:number;
+  paraId: number;
   requestHistoryList: any[] = [];
-  displayHistory:boolean = false;
-  climateActionListFromBackend:any[]=[];
+  displayHistory = false;
+  climateActionListFromBackend: any[] = [];
 
-
-  climateactionsList:any[]=[];
+  climateactionsList: any[] = [];
   assignCAArray: any[] = [];
 
-  userCountryId:number = 0;
-  userSectorId:number = 0;
+  userCountryId = 0;
+  userSectorId = 0;
 
   constructor(
     private router: Router,
@@ -88,51 +80,28 @@ export class ReviewDataComponent implements OnInit {
     private messageService: MessageService,
     private usersControllerServiceProxy: UsersControllerServiceProxy,
     private confirmationService: ConfirmationService,
-    private prHistoryProxy : ParameterHistoryControllerServiceProxy,
+    private prHistoryProxy: ParameterHistoryControllerServiceProxy,
   ) {}
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
   }
 
-   async ngOnInit(): Promise<void> {
-
+  async ngOnInit(): Promise<void> {
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
-    this.userCountryId  = tokenPayload.countryId;
+    this.userCountryId = tokenPayload.countryId;
     this.userSectorId = tokenPayload.sectorId;
-    // this.totalRecords = 0;
     this.minDate = new Date();
 
     this.userName = localStorage.getItem('user_name')!;
-    this.climateActionListFromBackend =  await this.parameterProxy.getClimateActionByDataRequestStatusSix().toPromise();
-   
-    // this.serviceProxy
-    //   .getManyBaseProjectControllerProject(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['editedOn,DESC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    //   .subscribe((res: any) => {
-    //     this.climateactions = res.data;
-    //     this.totalRecords = res.totalRecords;
-    //     if (res.totalRecords !== null) {
-    //       this.last = res.count;
-    //     } else {
-    //       this.last = 0;
-    //     }
-    //   });
-    let filter2: string[] = new Array();
+    this.climateActionListFromBackend = await this.parameterProxy
+      .getClimateActionByDataRequestStatusSix()
+      .toPromise();
+
+    const filter2: string[] = [];
 
     filter2.push('projectApprovalStatus.id||$eq||' + 5);
-  
-    //this may be unnessesary plx check later
+
     this.serviceProxy
       .getManyBaseProjectControllerProject(
         undefined,
@@ -144,71 +113,49 @@ export class ReviewDataComponent implements OnInit {
         1000,
         0,
         0,
-        0
+        0,
       )
       .subscribe((res: any) => {
         this.climateactions = res.data;
-        // this.climateactionsList = this.climateactions.filter((o:any)=>o.country.id == this.userCountryId);
         this.climateactions = this.climateActionListFromBackend;
-        // console.log('my list....s', this.climateactions);
       });
 
-      this.parameterProxy
-        .getReviewDataRequest(
-          0,
-          0,
-          '',
-          0,
-          '',
-          '',
-          this.userName,
-          "1234"
-        )
+    this.parameterProxy
+      .getReviewDataRequest(
+        0,
+        0,
+        '',
+        0,
+        '',
+        '',
+        this.userName,
+        environment.apiKey1,
+      )
       .subscribe((res: any) => {
-        console.log('my list....s', res.items);
-        for(let a of res.items){   
+        for (const a of res.items) {
           if (a.parameter.Assessment !== null) {
-         
-         if (
-           !this.assignCAArray.includes(
-             a.parameter.Assessment.Prject
-               .climateActionName
-           )
-         ) {
-          
-           this.assignCAArray.push(
-             a.parameter.Assessment.Prject
-               .climateActionName
-           );
-           this.climateactionsList.push(
-            a.parameter.Assessment.Prject
-           );
-         }
-       }}
+            if (
+              !this.assignCAArray.includes(
+                a.parameter.Assessment.Prject.climateActionName,
+              )
+            ) {
+              this.assignCAArray.push(
+                a.parameter.Assessment.Prject.climateActionName,
+              );
+              this.climateactionsList.push(a.parameter.Assessment.Prject);
+            }
+          }
+        }
       });
 
-
-
-
-
-    // this.usersControllerServiceProxy
-    //   .allUserDetails(1, 1000, '', 1)
-    //   .subscribe((res: any) => {
-    //     this.userList = res.items;
-    //     this.totalRecords = res.totalRecords;
-    //   });
     this.usersControllerServiceProxy
       .usersByInstitution(1, 1000, '', 9, this.userName)
       .subscribe((res: any) => {
         this.userList = res.items;
-        // this.totalRecords = res.totalRecords;
-
-        console.log('this.userList', this.userList);
       });
   }
 
   onCAChange(event: any) {
-    console.log('searchby', this.searchBy);
     this.assessmentYearProxy
       .getAllByProjectId(this.searchBy.climateaction.id)
       .subscribe((res: any) => {
@@ -221,30 +168,24 @@ export class ReviewDataComponent implements OnInit {
     this.onSearch();
   }
 
-  
-
-  onReject()
-{
-  this.confirm1 = false;
-}
+  onReject() {
+    this.confirm1 = false;
+  }
   onAcceptClick() {
-    console.log('onAcceptClick');
     if (this.selectedParameters) {
       this.confirmationService.confirm({
         message: 'Are you sure you want to accept all the selected parameters?',
         accept: () => {
-          ////////Inside Accept////////
-          console.log('Inside Accept');
-          let idList = new Array<number>();
+          const idList = new Array<number>();
           for (let index = 0; index < this.selectedParameters.length; index++) {
             const element = this.selectedParameters[index];
             idList.push(element.id);
           }
 
-          let inputParameters = new UpdateDeadlineDto();
+          const inputParameters = new UpdateDeadlineDto();
           inputParameters.ids = idList;
           inputParameters.status = 9;
-          console.log("inputParameters..",inputParameters)
+
           this.parameterProxy.acceptReviewData(inputParameters).subscribe(
             (res) => {
               this.messageService.add({
@@ -261,9 +202,8 @@ export class ReviewDataComponent implements OnInit {
                 summary: 'Error.',
                 detail: 'Internal server error, please try again.',
               });
-            }
+            },
           );
-          //////End Accept////////
         },
       });
     }
@@ -287,40 +227,36 @@ export class ReviewDataComponent implements OnInit {
   }
 
   onSearch() {
-    let event: any = {};
+    const event: any = {};
     event.rows = this.rows;
     event.first = 0;
 
     this.loadgridData(event);
   }
 
-  // /////////////////////////////////////////////
-
   loadgridData = (event: LazyLoadEvent) => {
-    console.log('event Date', event);
     this.loading = true;
     this.totalRecords = 0;
 
-    let climateActionId = this.searchBy.climateaction
+    const climateActionId = this.searchBy.climateaction
       ? this.searchBy.climateaction.id
       : 0;
-    let institutionId = this.searchBy.institution
+    const institutionId = this.searchBy.institution
       ? this.searchBy.institution.id
       : 0;
-    let year = this.searchBy.year ? this.searchBy.year.assessmentYear : '';
-    let type = this.searchBy.type ? this.searchBy.type : '';
-    let filtertext = this.searchBy.text ? this.searchBy.text : '';
+    const year = this.searchBy.year ? this.searchBy.year.assessmentYear : '';
+    const type = this.searchBy.type ? this.searchBy.type : '';
+    const filtertext = this.searchBy.text ? this.searchBy.text : '';
 
-    let editedOn = this.searchBy.editedOn
+    const editedOn = this.searchBy.editedOn
       ? moment(this.searchBy.editedOn).format('YYYY-MM-DD')
       : '';
 
-    let pageNumber =
+    const pageNumber =
       event.first === 0 || event.first === undefined
         ? 1
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
     this.rows = event.rows === undefined ? 10 : event.rows;
-    console.log('searchBy', this.searchBy);
     setTimeout(() => {
       this.parameterProxy
         .getReviewDataRequest(
@@ -331,13 +267,12 @@ export class ReviewDataComponent implements OnInit {
           year,
           type,
           this.userName,
-          "1234"
+          environment.apiKey1,
         )
         .subscribe((a) => {
-          console.log('aa', a);
           if (a) {
             this.dataRequestList = a.items;
-            console.log("this.dataRequestList...",this.dataRequestList)
+
             this.totalRecords = a.meta.totalItems;
           }
           this.loading = false;
@@ -361,44 +296,14 @@ export class ReviewDataComponent implements OnInit {
     this.first = this.first - this.rows;
   }
 
-  getInfo(obj: any)
-  {
-       console.log("dataRequestList...",obj)
-       this.paraId = obj.parameter.id;
-       console.log("this.paraId...",this.paraId)
+  getInfo(obj: any) {
+    this.paraId = obj.parameter.id;
 
-      // let x = 602;
-       this.prHistoryProxy
-       .getHistroyByid(this.paraId)  // this.paraId
-       .subscribe((res) => {
-         
-        this.requestHistoryList =res;
-         
-       console.log('this.requestHistoryList...', this.requestHistoryList);
-       
-       });
-      //  let filter1: string[] = [];
-      //  filter1.push('parameter.id||$eq||' + this.paraId);
-      //  this.serviceProxy
-      //  .getManyBaseParameterRequestControllerParameterRequest(
-      //    undefined,
-      //    undefined,
-      //    filter1,
-      //    undefined,
-      //    undefined,
-      //    undefined,
-      //    1000,
-      //    0,
-      //    0,
-      //    0
-      //  )
-      //  .subscribe((res: any) => {
-      //    this.requestHistoryList =res.data;
-         
-      //    console.log('this.requestHistoryList...', this.requestHistoryList);
-      //  });
+    this.prHistoryProxy.getHistroyByid(this.paraId).subscribe((res) => {
+      this.requestHistoryList = res;
+    });
 
-       this.displayHistory = true;
+    this.displayHistory = true;
   }
 
   reset() {
@@ -416,21 +321,19 @@ export class ReviewDataComponent implements OnInit {
   }
 
   search() {
-    let a: any = {};
+    const a: any = {};
     a.rows = this.rows;
     a.first = 0;
-
-    // this.onClimateActionStatusChange(a);
   }
 
   onRejectConfirm(status: number) {
-    let idList = new Array<number>();
+    const idList = new Array<number>();
     for (let index = 0; index < this.selectedParameters.length; index++) {
       const element = this.selectedParameters[index];
       idList.push(element.id);
     }
 
-    let inputParameters = new UpdateDeadlineDto();
+    const inputParameters = new UpdateDeadlineDto();
     inputParameters.ids = idList;
     inputParameters.status = status;
     inputParameters.userId = this.selectedUser ? this.selectedUser.id : 0;
@@ -452,7 +355,7 @@ export class ReviewDataComponent implements OnInit {
           summary: 'Error.',
           detail: 'Internal server error, please try again.',
         });
-      }
+      },
     );
     this.confirm1 = false;
   }

@@ -8,9 +8,8 @@ describe('CASADashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CASADashboardComponent ]
-    })
-    .compileComponents();
+      declarations: [CASADashboardComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

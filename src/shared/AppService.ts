@@ -6,7 +6,7 @@ import { ServiceProxy, UsersControllerServiceProxy } from './service-proxies/ser
   providedIn: 'root',
 })
 export class AppService {
-  public jwt: string = '';
+  public jwt = '';
   public userProfile: any = {};
 
   public isDataupdated = new BehaviorSubject<boolean>(true);

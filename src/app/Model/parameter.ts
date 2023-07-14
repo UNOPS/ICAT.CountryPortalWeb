@@ -4,8 +4,8 @@ import {
 } from 'shared/service-proxies/service-proxies';
 
 class Parameter {
-  public parameterName: string = '';
-  public isAlternativeParameter: boolean = false;
+  public parameterName = '';
+  public isAlternativeParameter = false;
   public alternativeParameters: Parameter[] = [];
   public institution: Institution;
   public value: any;
@@ -15,7 +15,7 @@ class Parameter {
   public Code: string;
 
   public useDefaultValue: boolean;
-  public isDefaultValue: boolean = false;
+  public isDefaultValue = false;
 
   public defaultValues: DefaultValue[] = [];
   public defaultValue: DefaultValue;
@@ -25,12 +25,6 @@ class Parameter {
   public displayhisValues: any[] = [];
   public historicalValue: any;
   public historicalParaID: any;
-  // public isRootLevel: boolean = false;
-  // public isDimentionLevel: boolean = false;
-  // public isDimensionValueLevel: boolean = false;
-  // public rootParameterName: string = '';
-  // public dimentionName: string = '';
-  // public dimensionValueName: string = '';
 }
 
 export default Parameter;
