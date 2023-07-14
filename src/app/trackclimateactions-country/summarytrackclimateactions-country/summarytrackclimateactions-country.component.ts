@@ -24,7 +24,8 @@ export class SummarytrackclimateactionsCountryComponent implements OnInit {
 
   loading: boolean = false
 
-  constructor(private serviceProxy: ServiceProxy,
+  constructor(
+    private serviceProxy: ServiceProxy,
     private router: Router,
     private activerouter: ActivatedRoute,
     private trckCAProxy: TrackClimateControllerServiceProxy,) { }

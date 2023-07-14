@@ -26,7 +26,9 @@ export class ResidueParameterComponent implements OnInit {
   instiTutionList: Institution[];
   isHistoricalValue = false;
 
-  constructor(private instituationProxy: InstitutionControllerServiceProxy) {}
+  constructor(
+    private instituationProxy: InstitutionControllerServiceProxy
+  ) { }
 
   ngOnInit(): void {
     const token = localStorage.getItem('access_token')!;
