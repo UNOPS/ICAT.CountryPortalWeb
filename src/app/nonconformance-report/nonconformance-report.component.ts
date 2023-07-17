@@ -27,78 +27,78 @@ import {
   templateUrl: './nonconformance-report.component.html',
   styleUrls: ['./nonconformance-report.component.css']
 })
-export class NonconformanceReportComponent implements OnInit,AfterViewInit {
+export class NonconformanceReportComponent implements OnInit, AfterViewInit {
 
 
-  c = {name: 'ovindu',age:'25'};
+  c = { name: 'ovindu', age: '25' };
 
-  assmentYearList:any;
-  
-  assessment : Assessment[] = [];
-  verificationList :VerificationDetail[] = [];
-  verificationList2 :VerificationDetail[] = [];
+  assmentYearList: any;
 
-  roundOneList:VerificationDetail[] = [];
-  roundTwoList:VerificationDetail[] = [];
-  roundThreeList:VerificationDetail[] = [];
+  assessment: Assessment[] = [];
+  verificationList: VerificationDetail[] = [];
+  verificationList2: VerificationDetail[] = [];
 
-  roundOnendcList:any;
-  roundOnemethodologyList:any;
-  roundOneprojectList:any;
-  roundOneprojectionList:any;
-  roundOnelekageList:any;
-  roundOnebaseleineList:any;
-  roundOneAssumptionList:any;
+  roundOneList: VerificationDetail[] = [];
+  roundTwoList: VerificationDetail[] = [];
+  roundThreeList: VerificationDetail[] = [];
+
+  roundOnendcList: any;
+  roundOnemethodologyList: any;
+  roundOneprojectList: any;
+  roundOneprojectionList: any;
+  roundOnelekageList: any;
+  roundOnebaseleineList: any;
+  roundOneAssumptionList: any;
   roundOneResultList: any;
 
-  roundTwondcList:any;
-  roundTwomethodologyList:any;
-  roundTwoprojectList:any;
-  roundTwoprojectionList:any;
-  roundTwolekageList:any;
-  roundTwobaseleineList:any;
-  roundTwoAssumptionList:any;
+  roundTwondcList: any;
+  roundTwomethodologyList: any;
+  roundTwoprojectList: any;
+  roundTwoprojectionList: any;
+  roundTwolekageList: any;
+  roundTwobaseleineList: any;
+  roundTwoAssumptionList: any;
   roundTwoResultList: any;
 
-  roundThreendcList:any;
-  roundThreemethodologyList:any;
-  roundThreeprojectList:any;
-  roundThreeprojectionList:any;
-  roundThreelekageList:any;
-  roundThreebaseleineList:any;
-  roundThreeAssumptionList:any;
+  roundThreendcList: any;
+  roundThreemethodologyList: any;
+  roundThreeprojectList: any;
+  roundThreeprojectionList: any;
+  roundThreelekageList: any;
+  roundThreebaseleineList: any;
+  roundThreeAssumptionList: any;
   roundThreeResultList: any;
 
-  roundOneHeadTable:any;
-  roundTwoHeadTable:any;
-  roundThreeHeadTable:any;
+  roundOneHeadTable: any;
+  roundTwoHeadTable: any;
+  roundThreeHeadTable: any;
 
-  ndcList :any;
-  methodologyList:any;
-  projectList:any;
-  projectionList:any;
-  lekageList:any;
-  baseleineList:any;
-  mydate:any = '2022-02-29';
-  dateGenerated:any;
-  assumptionList:any;
+  ndcList: any;
+  methodologyList: any;
+  projectList: any;
+  projectionList: any;
+  lekageList: any;
+  baseleineList: any;
+  mydate: any = '2022-02-29';
+  dateGenerated: any;
+  assumptionList: any;
 
 
-  assesMentYearId:any;
-  recievdAssementYear:any;
-  assessmentId:any;
+  assesMentYearId: any;
+  recievdAssementYear: any;
+  assessmentId: any;
   assementYear: AssessmentYear = new AssessmentYear();
-  flag:string;
-  isVerificationHistory:number;
+  flag: string;
+  isVerificationHistory: number;
 
-  roundOneVerifier:any;
-  roundTwoVerifier:any;
-  roundThreeVerifier:any;
-  vStatus:number;
+  roundOneVerifier: any;
+  roundTwoVerifier: any;
+  roundThreeVerifier: any;
+  vStatus: number;
   VerificationStatusEnum = VerificationStatus;
 
   verificationStatus: string[] = [
-   
+
     VerificationStatus[VerificationStatus['Pre Assessment']],
     VerificationStatus[VerificationStatus['Initial Assessment']],
     VerificationStatus[VerificationStatus['Final Assessment']],
@@ -107,16 +107,16 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
 
   isReviewComplete: boolean = true
   verificationRound: number
- 
-  
+
+
   constructor(
     private serviceProxy: ServiceProxy,
     private cdr: ChangeDetectorRef,
     private assYearProxy: AssessmentYearControllerServiceProxy,
     private route: ActivatedRoute,
     private router: Router,
-    private messageService :MessageService,
-    
+    private messageService: MessageService,
+
   ) { }
 
   ngAfterViewInit(): void {
@@ -141,92 +141,90 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
         )
         .subscribe(async (res) => {
           this.assementYear = res;
-          this.recievdAssementYear =this.assementYear.assessmentYear;
+          this.recievdAssementYear = this.assementYear.assessmentYear;
           this.assessmentId = this.assementYear.assessment.id;
 
-         let assessment = await this.serviceProxy.getOneBaseAssesmentControllerAssessment(this.assementYear.assessment.id, undefined, undefined, 0).toPromise()
-       
+          let assessment = await this.serviceProxy.getOneBaseAssesmentControllerAssessment(this.assementYear.assessment.id, undefined, undefined, 0).toPromise()
+
           this.assYearProxy
-          .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentId,this.recievdAssementYear)
-          .subscribe(async (a) => {
-            this.assmentYearList = a;
-            this.verificationList = a[0]?.verificationDetail;
-            
-            this.roundOneList = this.verificationList.filter((o: any)=>o.verificationStage == 1 && o.isAccepted == 0);
-            this.roundTwoList= this.verificationList.filter((o: any)=>o.verificationStage == 2 && o.isAccepted == 0);
-            this.roundThreeList= this.verificationList.filter((o: any)=>o.verificationStage == 3 && o.isAccepted == 0);
+            .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentId, this.recievdAssementYear)
+            .subscribe(async (a) => {
+              this.assmentYearList = a;
+              this.verificationList = a[0]?.verificationDetail;
 
-            this.roundOneHeadTable = this.verificationList?.find((o: any)=>o.verificationStage == 1);
-            if(this.roundOneHeadTable !=null)
-            {
-              this.verificationRound = 1
-              let verifierId = this.roundOneHeadTable.userVerifier;
+              this.roundOneList = this.verificationList.filter((o: any) => o.verificationStage == 1 && o.isAccepted == 0);
+              this.roundTwoList = this.verificationList.filter((o: any) => o.verificationStage == 2 && o.isAccepted == 0);
+              this.roundThreeList = this.verificationList.filter((o: any) => o.verificationStage == 3 && o.isAccepted == 0);
 
-              this.serviceProxy.
-              getOneBaseUsersControllerUser(
-              verifierId,
-              undefined,
-              undefined,
-              undefined,
-              
-              ).subscribe((res: any) => {
-              this.roundOneVerifier = res;
-            });
+              this.roundOneHeadTable = this.verificationList?.find((o: any) => o.verificationStage == 1);
+              if (this.roundOneHeadTable != null) {
+                this.verificationRound = 1
+                let verifierId = this.roundOneHeadTable.userVerifier;
 
+                this.serviceProxy.
+                  getOneBaseUsersControllerUser(
+                    verifierId,
+                    undefined,
+                    undefined,
+                    undefined,
+
+                  ).subscribe((res: any) => {
+                    this.roundOneVerifier = res;
+                  });
+
+              }
+              this.roundTwoHeadTable = this.verificationList?.find((o: any) => o.verificationStage == 2);
+              if (this.roundTwoHeadTable != null) {
+                this.verificationRound = 2
+                let verifierId = this.roundTwoHeadTable.userVerifier;
+
+                this.serviceProxy.
+                  getOneBaseUsersControllerUser(
+                    verifierId,
+                    undefined,
+                    undefined,
+                    undefined,
+
+                  ).subscribe((res: any) => {
+                    this.roundTwoVerifier = res;
+                  });
+
+              }
+              this.roundThreeHeadTable = this.verificationList?.find((o: any) => o.verificationStage == 3);
+
+              await this.checkReviewComplete(this.verificationList, assessment.parameters)
+
+              this.roundOnendcList = this.roundOneList.filter((o: any) => o.isNDC == true);
+              this.roundOnemethodologyList = this.roundOneList.filter((o: any) => o.isMethodology == true);
+              this.roundOneprojectList = this.roundOneList.filter((o: any) => o.isProject == true && !o.isResult);
+              this.roundOneprojectionList = this.roundOneList.filter((o: any) => o.isProjection == true && !o.isResult);
+              this.roundOnelekageList = this.roundOneList.filter((o: any) => o.isLekage == true && !o.isResult);
+              this.roundOnebaseleineList = this.roundOneList.filter((o: any) => o.isBaseline == true && !o.isResult);
+              this.roundOneAssumptionList = this.roundOneList.filter((o: any) => o.isAssumption == true);
+              this.roundOneResultList = this.roundOneList.filter((o: any) => o.isResult === true);
+
+              this.roundTwondcList = this.roundTwoList.filter((o: any) => o.isNDC == true);
+              this.roundTwomethodologyList = this.roundTwoList.filter((o: any) => o.isMethodology == true);
+              this.roundTwoprojectList = this.roundTwoList.filter((o: any) => o.isProject == true && !o.isResult);
+              this.roundTwoprojectionList = this.roundTwoList.filter((o: any) => o.isProjection == true && !o.isResult);
+              this.roundTwolekageList = this.roundTwoList.filter((o: any) => o.isLekage == true && !o.isResult);
+              this.roundTwobaseleineList = this.roundTwoList.filter((o: any) => o.isBaseline == true && !o.isResult);
+              this.roundThreeAssumptionList = this.roundTwoList.filter((o: any) => o.isAssumption == true);
+              this.roundTwoResultList = this.roundTwoList.filter((o: any) => o.isResult === true);
+
+              this.roundThreendcList = this.roundThreeList.filter((o: any) => o.isNDC == true);
+              this.roundThreemethodologyList = this.roundThreeList.filter((o: any) => o.isMethodology == true);
+              this.roundThreeprojectList = this.roundThreeList.filter((o: any) => o.isProject == true && !o.isResult);
+              this.roundThreeprojectionList = this.roundThreeList.filter((o: any) => o.isProjection == true && !o.isResult);
+              this.roundThreelekageList = this.roundThreeList.filter((o: any) => o.isLekage == true && !o.isResult);
+              this.roundThreebaseleineList = this.roundThreeList.filter((o: any) => o.isBaseline == true && !o.isResult);
+              this.roundThreeAssumptionList = this.roundThreeList.filter((o: any) => o.isAssumption == true);
+              this.roundThreeResultList = this.roundTwoList.filter((o: any) => o.isResult === true);
             }
-            this.roundTwoHeadTable = this.verificationList?.find((o: any)=>o.verificationStage == 2);
-            if(this.roundTwoHeadTable !=null)
-            {
-              this.verificationRound = 2
-              let verifierId = this.roundTwoHeadTable.userVerifier;
+              ,
+              (error) => {
 
-              this.serviceProxy.
-              getOneBaseUsersControllerUser(
-              verifierId,
-              undefined,
-              undefined,
-              undefined,
-              
-              ).subscribe((res: any) => {
-              this.roundTwoVerifier = res;
-            });
-
-            }
-            this.roundThreeHeadTable = this.verificationList?.find((o: any)=>o.verificationStage == 3);
-
-            await this.checkReviewComplete(this.verificationList, assessment.parameters)
-  
-            this.roundOnendcList = this.roundOneList.filter((o: any)=>o.isNDC == true);
-            this.roundOnemethodologyList = this.roundOneList.filter((o: any)=>o.isMethodology == true);
-            this.roundOneprojectList = this.roundOneList.filter((o: any)=>o.isProject == true && !o.isResult);
-            this.roundOneprojectionList = this.roundOneList.filter((o: any)=>o.isProjection == true && !o.isResult);
-            this.roundOnelekageList = this.roundOneList.filter((o: any)=>o.isLekage == true && !o.isResult);
-            this.roundOnebaseleineList = this.roundOneList.filter((o: any)=>o.isBaseline == true && !o.isResult);
-            this.roundOneAssumptionList = this.roundOneList.filter((o: any)=>o.isAssumption == true);
-            this.roundOneResultList = this.roundOneList.filter((o: any) => o.isResult === true);
-
-            this.roundTwondcList = this.roundTwoList.filter((o: any)=>o.isNDC == true);
-            this.roundTwomethodologyList = this.roundTwoList.filter((o: any)=>o.isMethodology == true);
-            this.roundTwoprojectList = this.roundTwoList.filter((o: any)=>o.isProject == true && !o.isResult);
-            this.roundTwoprojectionList = this.roundTwoList.filter((o: any)=>o.isProjection == true && !o.isResult);
-            this.roundTwolekageList = this.roundTwoList.filter((o: any)=>o.isLekage == true && !o.isResult);
-            this.roundTwobaseleineList = this.roundTwoList.filter((o: any)=>o.isBaseline == true && !o.isResult);
-            this.roundThreeAssumptionList = this.roundTwoList.filter((o: any)=>o.isAssumption == true);
-            this.roundTwoResultList = this.roundTwoList.filter((o: any) => o.isResult === true);
-    
-            this.roundThreendcList = this.roundThreeList.filter((o: any)=>o.isNDC == true);
-            this.roundThreemethodologyList = this.roundThreeList.filter((o: any)=>o.isMethodology == true);
-            this.roundThreeprojectList = this.roundThreeList.filter((o: any)=>o.isProject == true && !o.isResult);
-            this.roundThreeprojectionList = this.roundThreeList.filter((o: any)=>o.isProjection == true && !o.isResult);
-            this.roundThreelekageList = this.roundThreeList.filter((o: any)=>o.isLekage == true && !o.isResult);
-            this.roundThreebaseleineList = this.roundThreeList.filter((o: any)=>o.isBaseline == true && !o.isResult);
-            this.roundThreeAssumptionList = this.roundThreeList.filter((o: any)=>o.isAssumption == true);
-            this.roundThreeResultList = this.roundTwoList.filter((o: any) => o.isResult === true);
-          }
-          ,
-          (error)=>{
-            
-          });
+              });
 
 
         });
@@ -239,30 +237,42 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
     let hasProject = false
     let hasLekage = false
     let hasProjection = false
+    let parentIds: any[] = []
 
     for await (let para of parameters) {
-      if (para.verifierAcceptance !== ParameterVerifierAcceptance.REJECTED){
+      if (para.verifierAcceptance !== ParameterVerifierAcceptance.REJECTED) {
         if (para.isBaseline) hasBaseline = true
         if (para.isProject) hasProject = true
         if (para.isLekage) hasLekage = true
         if (para.isProjection) hasProjection = true
         let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStatus === this.assementYear.verificationStatus))
         if (vd === undefined) {
-          if (!para.isAlternative){
-            this.isReviewComplete = false
-            break;
+          if (para.hasChild && !para.value) {
+            parentIds.push(para.id)
+          } else {
+            if (para.isAlternative) {
+              if (parentIds.includes(para.parentParameterId)) {
+                this.isReviewComplete = false
+                parentIds.splice(parentIds.indexOf(para.parentParameterId), 1)
+                break;
+              }
+            } else {
+              this.isReviewComplete = false
+              break;
+            }
           }
         }
+        if (!this.isReviewComplete && parentIds.length > 0) this.isReviewComplete = false
       }
     }
 
-    if (this.isReviewComplete){
+    if (this.isReviewComplete) {
       let columns: string[] = []
-      if (this.assementYear.assessment.assessmentType === 'MAC'){columns = [...['isAssumption']]}
-      else {columns = [...['isNDC', 'isMethodology', 'isAssumption']]}
-      for await (let col of columns){
+      if (this.assementYear.assessment.assessmentType === 'MAC') { columns = [...['isAssumption']] }
+      else { columns = [...['isNDC', 'isMethodology', 'isAssumption']] }
+      for await (let col of columns) {
         let vd = vdList.find((o: any) => o[col] && (o.isAccepted || o.verificationStatus === this.assementYear.verificationStatus))
-        if (vd === undefined){
+        if (vd === undefined) {
           this.isReviewComplete = false
           break;
         }
@@ -288,12 +298,12 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
         unit: 'px'
       })
 
-    pdf.internal.pageSize.width = componentWidth
-    pdf.internal.pageSize.height = componentHeight
+      pdf.internal.pageSize.width = componentWidth
+      pdf.internal.pageSize.height = componentHeight
 
-    pdf.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight)
-    pdf.save('download.pdf')
-  })
+      pdf.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight)
+      pdf.save('download.pdf')
+    })
   }
 
   toChangeStatus() {
@@ -365,55 +375,47 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
           .subscribe(
             (res) => {
               this.messageService.add({ severity: 'success', summary: 'Success', detail: 'successfully updated!' });
-              // console.log("++++++++++++++++++++++", this.assementYear)
             },
           );
-
       }
     }
-
   }
 
-  toDetailPage()
-  {
-
-    if(this.flag == "sec-admin")
-    {
+  toDetailPage() {
+    if (this.flag == "sec-admin") {
       this.router.navigate(['/verification-sector-admin/detail'], {
         queryParams: {
           id: this.assementYear.id,
-         verificationStatus: this.assementYear.verificationStatus,
+          verificationStatus: this.assementYear.verificationStatus,
         },
       });
-
     }
-    else
-    {
+    else {
       this.router.navigate(['/verification-verifier/detail'], {
         queryParams: {
           id: this.assementYear.id,
-         verificationStatus: this.assementYear.verificationStatus,
+          verificationStatus: this.assementYear.verificationStatus,
         },
       });
 
     }
 
-   
+
   }
 
-  disableSubmit(){
-    if (this.flag === 'sec-admin'){
+  disableSubmit() {
+    if (this.flag === 'sec-admin') {
       return ((this.assementYear.verificationStatus !== 3) || this.assementYear.verificationStatus === 7 || this.assementYear.verificationStatus === 6)
     } else {
-      if (!this.isReviewComplete){
+      if (!this.isReviewComplete) {
         return true
-      } 
+      }
       return (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 8 || this.assementYear.verificationStatus === 7 || this.assementYear.verificationStatus === 6)
     }
   }
 
-  getSubmitLabel(){
-    if (this.flag === 'sec-admin'){
+  getSubmitLabel() {
+    if (this.flag === 'sec-admin') {
       if ((this.assementYear.verificationStatus !== 3 && this.assementYear.verificationStatus !== 8) || this.assementYear.verificationStatus === 7) {
         return "Submitted"
       }
@@ -426,9 +428,9 @@ export class NonconformanceReportComponent implements OnInit,AfterViewInit {
     return "Submit"
   }
 
-  getStatus(){
-    if (this.assementYear.verificationStatus === 3){
-      if (this.flag === 'sec-admin'){
+  getStatus() {
+    if (this.assementYear.verificationStatus === 3) {
+      if (this.flag === 'sec-admin') {
         return 'NC Received'
       } else {
         return 'NC Sent'
