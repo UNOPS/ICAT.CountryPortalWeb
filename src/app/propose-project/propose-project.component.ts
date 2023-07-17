@@ -353,7 +353,7 @@ export class ProposeProjectComponent implements OnInit {
                 this.project.projectApprovalStatus == undefined
                   ? 'Propose'
                   : this.project.projectApprovalStatus?.name;
-              this.proposedDate = this.project.createdOn.toString();
+              this.proposedDate = this.project.climateActionCreatedData.toString();
               this.isMapped = this.project?.isMappedCorrectly;
               this.disbaleNdcmappedFromDB = this.project?.isMappedCorrectly;
               this.isLikelyhoodFromDb = this.project?.likelyhood;
@@ -451,7 +451,7 @@ export class ProposeProjectComponent implements OnInit {
                 this.project.projectApprovalStatus == undefined
                   ? 'Propose'
                   : this.project.projectApprovalStatus?.name;
-              this.proposedDate = this.project.createdOn.toString();
+              this.proposedDate = this.project.climateActionCreatedData.toString();
               this.isMapped = this.project?.isMappedCorrectly;
               this.disbaleNdcmappedFromDB = this.project?.isMappedCorrectly;
               this.isLikelyhoodFromDb = this.project?.likelyhood;
@@ -665,6 +665,7 @@ export class ProposeProjectComponent implements OnInit {
 
     this.project.proposeDateofCommence = moment(this.proposeDateofCommence);
     this.project.endDateofCommence = moment(this.endDateofCommence);
+    this.project.climateActionCreatedData = moment(new Date())
     // this.project.mappedInstitution=this.selectedInstitution;/
 
     //     console.log("project")

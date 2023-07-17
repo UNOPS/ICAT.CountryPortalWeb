@@ -3524,6 +3524,7 @@ else{
                       undefined
                     )
                     .subscribe((res) => {
+                      res.createdOn = this.selectedClimateAction.createdOn
                       res.projectApprovalStatus =
                         status === undefined ? (null as any) : status;
                       this.serviceProxy
