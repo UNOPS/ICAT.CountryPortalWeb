@@ -369,7 +369,7 @@ export class QualityCheckDetailComponent implements OnInit {
       )
       .subscribe((res) => {
         this.assessmentResult = res;
-        // console.log('assessmentResult',res)
+        console.log('assessmentResult',res)
         if (isCalculate) {
           this.getAssesmentResult(false);
           this.messageService.add({
@@ -542,22 +542,17 @@ export class QualityCheckDetailComponent implements OnInit {
         detail: "There are parameters in data collection path"
       })
     } else {
-      // console.log("cccccccccc",this.assementYear.assessment.assessmentType)
       if (this.assementYear.assessment.assessmentType != 'MAC') {
-        // console.log("cccccccccc",this.assementYear.assessment.assessmentType)
         this.getAssesmentResult(true);
       } else {
-        // console.log("cccccccccc",this.assementYear.assessment.assessmentType)
-        // setTimeout(() => {
           this.toCalMacResult();
-        // },5500);
        
       }
       setTimeout(() => {
       this.isReadyToCAl = false;
       this.isDisable = true;
       window.location.reload()
-    },1000);
+    },1500);
     }
   }
 
