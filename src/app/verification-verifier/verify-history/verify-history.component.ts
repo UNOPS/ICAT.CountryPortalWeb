@@ -127,7 +127,7 @@ loadgridData = (event: LazyLoadEvent) => {
         this.rows,
         statusId,
         filtertext,
-        true
+        'true'
       )
       .subscribe((a) => {
        this.paras = a.items;
