@@ -337,6 +337,8 @@ export class AllResultComponent implements OnInit, AfterViewInit {
     this.spin = true;
     this.totalRecords = 0;
     // console.log("status",this.searchBy.status)
+    // let filtertext: string[] = [];
+    // filtertext.push('isMac||$eq||' +1);
 
     let filtertext = this.searchBy.text ? this.searchBy.text : '';
     let pageNumber =
@@ -354,7 +356,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
     let id = 0;
 
     setTimeout(() => {
-      this.AssessmentProxy.getAssmentDetails(
+      this.AssessmentProxy.getAssmentDetailsForResult(
         pageNumber,
         this.rows,
         filtertext,
