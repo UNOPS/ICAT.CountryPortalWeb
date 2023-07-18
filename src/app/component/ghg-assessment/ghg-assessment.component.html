@@ -129,15 +129,8 @@
             dateFormat="yy"
             [disabled]="isDisableforSubmitButton"
             [required]="true"
+            (ngModelChange)="onBaseYearChange($event)"
           ></p-calendar>
-          <!-- <p-calendar
-                  placeholder="DD/MM/YYYY"
-                  view="year"
-                  dateFormat="yy"
-                  name="propsedDate"
-                  #propsedDate="ngModel"
-                  [(ngModel)]="baseYear"
-                ></p-calendar> -->
         </div>
         <p
           class="info-message text-danger"
