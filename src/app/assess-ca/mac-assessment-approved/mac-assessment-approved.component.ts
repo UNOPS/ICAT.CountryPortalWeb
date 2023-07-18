@@ -514,7 +514,7 @@ for(let ass of this.selectedApproch){
     assessment.isProposal = this.IsProposal;
   //  assessment.easyOfUseDataCollection = this.selectedEasyofdataCollection;
 
- // console.log("assessment object",assessment);
+ console.log("assessment object",assessment);
 
     let assesmentYars: AssessmentYear[] = [];
     let assessmentObjective: AssessmentObjective[]=[];
