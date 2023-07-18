@@ -2561,13 +2561,9 @@ export class GhgAssessmentComponent implements OnInit {
         ).subscribe(async (res: any) => {
 
           let parametersIds: string[] = res.data.map((p: any) => p.id);
-          // console.log('sectionparam.parametersidsall',res)
-          // console.log('sectionparam.parametersids',parametersIds)
           let qcPassParameterRequest = await this.parameterRequestControllerServiceProxy.getQCpassParameterRequest(parametersIds).toPromise();
 
-          console.log('sectionparam.parameters', qcPassParameterRequest)
           sectionparam.parameters = sectionparam.parameters.map(para => {
-            // let parameters = res.data.filter((p:any) => (p.code == para.Code) && p.value )
             let parameters = qcPassParameterRequest.filter((p: any) => (p.parameter.code == para.Code) && p.parameter.value)
 
 
@@ -2587,10 +2583,13 @@ export class GhgAssessmentComponent implements OnInit {
                 answer.push(x)
               }
             })
-            let unit = this.convertSubscriptsToNormal(para.UOM)
             para.historicalValues = answer
-            para.displayhisValues = para.historicalValues.filter(val => val.unit === unit)
-            para.displayhisValues.sort((a: any, b: any) => b.year - a.year);
+            para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
+            if (para.displayhisValues.length === 0){
+              let unit = this.convertSubscriptsToNormal(para.UOM)
+              para.displayhisValues = para.historicalValues.filter(val => val.unit === unit)
+            }
+            para.displayhisValues.sort((a: any,b: any) => b.year - a.year);
             return para
           })
         })
@@ -3513,6 +3512,7 @@ export class GhgAssessmentComponent implements OnInit {
                       undefined
                     )
                     .subscribe((res) => {
+                      res.createdOn = this.selectedClimateAction.createdOn
                       res.projectApprovalStatus =
                         status === undefined ? (null as any) : status;
                       this.serviceProxy

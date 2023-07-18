@@ -110,7 +110,7 @@ export class VerificationSectorAdminComponent implements OnInit {
     let Active = 0;
     setTimeout(() => {
       this.vrServiceProxy
-        .getVRParameters(pageNumber, this.rows, statusId, filtertext, false)
+        .getVRParameters(pageNumber, this.rows, statusId, filtertext, 'false')
         .subscribe((a) => {
           this.paras = a.items;
           console.log('hey aassse year', this.paras);
