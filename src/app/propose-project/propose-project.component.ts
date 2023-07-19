@@ -1480,6 +1480,7 @@ export class ProposeProjectComponent implements OnInit {
   }
 
   toDownload() {
+    this.textdlod = 'Downloaded date ' + moment().format('YYYY-MM-DD HH:mm:ss');
     this.isDownloadMode = 1;
     this.isDownloading = true;
 
