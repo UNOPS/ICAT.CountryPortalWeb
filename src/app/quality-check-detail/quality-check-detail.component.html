@@ -259,7 +259,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="isbsResultButtonsDisable"
+                  [disabled]="isbsResultButtonsDisable || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="
@@ -280,7 +280,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="isbsResultButtonsDisableReject"
+                  [disabled]="isbsResultButtonsDisableReject || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="
@@ -325,7 +325,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="ispsResultButtonsDisable"
+                  [disabled]="ispsResultButtonsDisable || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="
@@ -346,7 +346,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="ispsResultButtonsDisableReject"
+                  [disabled]="ispsResultButtonsDisableReject || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="
@@ -391,7 +391,7 @@
                 <div class="p-field">
                   <button
                     type="button"
-                    [disabled]="islkResultButtonsDisable"
+                    [disabled]="islkResultButtonsDisable || !assessmentResult.isResultupdated"
                     pButton
                     pRipple
                     (click)="
@@ -412,7 +412,7 @@
                 <div class="p-field">
                   <button
                     type="button"
-                    [disabled]="islkResultButtonsDisableReject"
+                    [disabled]=" islkResultButtonsDisableReject || !assessmentResult.isResultupdated"
                     pButton
                     pRipple
                     (click)="
@@ -457,7 +457,7 @@
                 <div class="p-field">
                   <button
                     type="button"
-                    [disabled]="isteResultButtonsDisable"
+                    [disabled]="isteResultButtonsDisable || !assessmentResult.isResultupdated"
                     pButton
                     pRipple
                     (click)="
@@ -478,7 +478,7 @@
                 <div class="p-field">
                   <button
                     type="button"
-                    [disabled]="isteResultButtonsDisableReject"
+                    [disabled]="isteResultButtonsDisableReject || !assessmentResult.isResultupdated"
                     pButton
                     pRipple
                     (click)="
@@ -523,7 +523,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="ismacResultButtonsDisable"
+                  [disabled]="ismacResultButtonsDisable || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="
@@ -544,7 +544,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="ismacResultButtonsDisableReject"
+                  [disabled]="ismacResultButtonsDisableReject || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="
@@ -588,7 +588,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="iscdResultButtonsDisable"
+                  [disabled]="iscdResultButtonsDisable || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="
@@ -609,7 +609,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="iscdResultButtonsDisableReject"
+                  [disabled]="iscdResultButtonsDisableReject || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="
@@ -653,7 +653,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="ispstacResultButtonsDisable"
+                  [disabled]="ispstacResultButtonsDisable || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="
@@ -674,7 +674,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="ispstacResultButtonsDisableReject"
+                  [disabled]="ispstacResultButtonsDisableReject || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="
@@ -718,7 +718,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="isbstacResultButtonsDisable"
+                  [disabled]="isbstacResultButtonsDisable || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="
@@ -739,7 +739,7 @@
               <div class="p-field">
                 <button
                   type="button"
-                  [disabled]="isbstacResultButtonsDisableReject"
+                  [disabled]="isbstacResultButtonsDisableReject || !assessmentResult.isResultupdated"
                   pButton
                   pRipple
                   (click)="

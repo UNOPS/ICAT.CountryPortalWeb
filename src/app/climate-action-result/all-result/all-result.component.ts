@@ -163,7 +163,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
     const id = 0;
 
     setTimeout(() => {
-      this.AssessmentProxy.getAssmentDetails(
+      this.AssessmentProxy.getAssmentDetailsForResult(
         pageNumber,
         this.rows,
         filtertext,

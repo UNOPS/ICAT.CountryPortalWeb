@@ -139,7 +139,7 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
           this.recievdAssementYear = this.assementYear.assessmentYear;
           this.assessmentId = this.assementYear.assessment.id;
 
-          let assessment = await this.serviceProxy.getOneBaseAssessmentControllerAssessment(this.assementYear.assessment.id, undefined, undefined, 0).toPromise()
+          let assessment = await this.serviceProxy.getOneBaseAssesmentControllerAssessment(this.assementYear.assessment.id, undefined, undefined, 0).toPromise()
 
           this.assYearProxy
             .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentId, this.recievdAssementYear)
@@ -218,6 +218,7 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
             }
               ,
               (error) => {
+
               });
 
 
@@ -231,6 +232,7 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
     let hasProject = false
     let hasLekage = false
     let hasProjection = false
+    let parentIds: any[] = []
 
     for await (let para of parameters) {
       if (para.verifierAcceptance !== ParameterVerifierAcceptance.REJECTED) {
@@ -240,11 +242,22 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
         if (para.isProjection) hasProjection = true
         let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStatus === this.assementYear.verificationStatus))
         if (vd === undefined) {
-          if (!para.isAlternative) {
-            this.isReviewComplete = false
-            break;
+          if (para.hasChild && !para.value) {
+            parentIds.push(para.id)
+          } else {
+            if (para.isAlternative) {
+              if (parentIds.includes(para.parentParameterId)) {
+                this.isReviewComplete = false
+                parentIds.splice(parentIds.indexOf(para.parentParameterId), 1)
+                break;
+              }
+            } else {
+              this.isReviewComplete = false
+              break;
+            }
           }
         }
+        if (!this.isReviewComplete && parentIds.length > 0) this.isReviewComplete = false
       }
     }
 
@@ -355,10 +368,8 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
               this.messageService.add({ severity: 'success', summary: 'Success', detail: 'successfully updated!' });
             },
           );
-
       }
     }
-
   }
 
   toDetailPage() {
@@ -369,7 +380,6 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
           verificationStatus: this.assementYear.verificationStatus,
         },
       });
-
     }
     else {
       this.router.navigate(['/verification-verifier/detail'], {

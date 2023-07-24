@@ -301,7 +301,7 @@ export class ProposeProjectComponent implements OnInit {
                 this.project.projectApprovalStatus == undefined
                   ? 'Propose'
                   : this.project.projectApprovalStatus?.name;
-              this.proposedDate = this.project.createdOn.toString();
+              this.proposedDate = this.project.climateActionCreatedData.toString();
               this.isMapped = this.project?.isMappedCorrectly;
               this.disbaleNdcmappedFromDB = this.project?.isMappedCorrectly;
               this.isLikelyhoodFromDb = this.project?.likelyhood;
@@ -380,7 +380,7 @@ export class ProposeProjectComponent implements OnInit {
                 this.project.projectApprovalStatus == undefined
                   ? 'Propose'
                   : this.project.projectApprovalStatus?.name;
-              this.proposedDate = this.project.createdOn.toString();
+              this.proposedDate = this.project.climateActionCreatedData.toString();
               this.isMapped = this.project?.isMappedCorrectly;
               this.disbaleNdcmappedFromDB = this.project?.isMappedCorrectly;
               this.isLikelyhoodFromDb = this.project?.likelyhood;
@@ -1222,6 +1222,7 @@ export class ProposeProjectComponent implements OnInit {
   }
 
   toDownload() {
+    this.textdlod = 'Downloaded date ' + moment().format('YYYY-MM-DD HH:mm:ss');
     this.isDownloadMode = 1;
     this.isDownloading = true;
 

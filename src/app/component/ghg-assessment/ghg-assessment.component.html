@@ -111,6 +111,7 @@
             dateFormat="yy"
             [disabled]="isDisableforSubmitButton"
             [required]="true"
+            (ngModelChange)="onBaseYearChange($event)"
           ></p-calendar>
         </div>
         <p

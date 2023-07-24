@@ -268,11 +268,12 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     });
   }
 
-  acceptParametrs() {
+  async acceptParametrs() {
     let verificationDetails: VerificationDetail[] = [];
     let parametersToUpdate = [...this.selectedParameter]
     this.selectedParameter = []
-    parametersToUpdate.map((v) => {
+
+    for await (let v of parametersToUpdate) {
       v.isAcceptedByVerifier = 1;
       this.serviceProxy
         .updateOneBaseParameterControllerParameter(
@@ -280,8 +281,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
           v
         )
         .subscribe(
-          (res) => {
-            });
+          (res) => {});
 
       let verificationDetail = undefined;
 
@@ -328,7 +328,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
 
       verificationDetails.push(vd);
-    });
+    };
 
     this.verificationProxy
       .saveVerificationDetails(verificationDetails)

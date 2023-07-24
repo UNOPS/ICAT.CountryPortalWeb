@@ -59,8 +59,9 @@ export class ApproveDataComponent implements OnInit {
   headerBaseYear: string;
   headerAssessmentYear: number;
   userName: string;
-  enableQCButton = false;
-  isRejectButtonDisable = false;
+  dissetButton:boolean =false;
+  enableQCButton: boolean = false;
+  isRejectButtonDisable: boolean = false;
   paraId: number;
   requestHistoryList: any[] = [];
   displayHistory = false;
@@ -83,7 +84,7 @@ export class ApproveDataComponent implements OnInit {
     private instProxy: InstitutionControllerServiceProxy,
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.userName = localStorage.getItem('user_name')!;
     this.route.queryParams.subscribe((params) => {
       this.assessmentYearId = params['id'];
@@ -119,8 +120,8 @@ export class ApproveDataComponent implements OnInit {
         }
       });
 
-    this.assessmentYearProxy
-      .getAssessmentByYearId(this.assessmentYearId, this.userName)
+  await  this.assessmentYearProxy
+      .getAssessmentByYearId(this.assesmentYearId, this.userName)
       .subscribe(async (res) => {
         if (res) {
           this.hideAllButtons = res?.qaStatus;
@@ -133,20 +134,23 @@ export class ApproveDataComponent implements OnInit {
           this.headerAssessmentYear = res?.assessmentYear;
           this.headerBaseYear = res?.assessment?.baseYear;
         }
-
-        this.getAssessment();
+      if(res.qaStatus){
+        this.dissetButton =true
+        }
+        this.getAssesment();
         if (this.finalQC?.qaStatus == null) {
           this.checkQC();
         }
       });
 
-    const filter2: string[] = [];
+    let filter2: string[] = new Array();
 
     filter2.push('type.id||$eq||' + 3);
 
-    this.instProxy.getInstitutionforApproveData().subscribe((a: any) => {
+    await this.instProxy.getInstitutionforApproveData().subscribe((a: any) => {
       this.institutionList = a;
     });
+    this.disableAccept();
   }
 
 
@@ -320,7 +324,7 @@ export class ApproveDataComponent implements OnInit {
     this.buttonLabel = 'Sent';
     this.enableQCButton = false;
     this.isRejectButtonDisable = false;
-
+    setTimeout(() => {
     this.assessmentYearProxy.acceptQC(inputParameters).subscribe(
       (res) => {
         this.messageService.add({
@@ -337,6 +341,7 @@ export class ApproveDataComponent implements OnInit {
         });
       },
     );
+    },1500);
     this.isRejectButtonDisable = true;
     this.isOpenPopUp = false;
   }

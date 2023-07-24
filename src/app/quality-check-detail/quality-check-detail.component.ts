@@ -368,8 +368,8 @@ export class QualityCheckDetailComponent implements OnInit {
       });
   }
 
-  parameterFilter(p: Parameter) {
-    if (p.isDefault || p.isHistorical) {
+  parameterFilter(p: Parameter){
+    if ((p.isDefault || p.isHistorical) && !p.previouseParameterId){
       return ![
         ParameterVerifierAcceptance.REJECTED,
         ParameterVerifierAcceptance.RETURNED,
@@ -424,7 +424,6 @@ export class QualityCheckDetailComponent implements OnInit {
               p.projectionBaseYear == Number(this.assessmentYear.assessmentYear)
               && this.parameterFilter(p)
           );
-
       });
   }
 
@@ -449,17 +448,16 @@ export class QualityCheckDetailComponent implements OnInit {
         detail: "There are parameters in data collection path"
       })
     } else {
-      if (this.assessmentYear.assessment.assessmentType != 'MAC') {
+      if (this.assementYear.assessment.assessmentType != 'MAC') {
         this.getAssesmentResult(true);
       } else {
-        this.toCalMacResult();
-
+          this.toCalMacResult();
       }
       setTimeout(() => {
-        this.isReadyToCAl = false;
-        this.isDisable = true;
-        window.location.reload()
-      }, 1000);
+      this.isReadyToCAl = false;
+      this.isDisable = true;
+      window.location.reload()
+    },1500);
     }
   }
 
@@ -558,7 +556,6 @@ export class QualityCheckDetailComponent implements OnInit {
               assessmentResult.isResultupdated = true
               assessmentResult.isResultRecalculating = false
               this.assessmentResult = assessmentResult;
-
               this.serviceProxy
                 .createOneBaseAssessmentResultControllerAssessmentResult(
                   this.assessmentResult
@@ -625,10 +622,7 @@ export class QualityCheckDetailComponent implements OnInit {
 
 
   back() {
-
-    this.router.navigate(['/qc'], {
-
-    });
+    this.router.navigate(['/qc'], {});
   }
 
   calculateButtonDisable() {

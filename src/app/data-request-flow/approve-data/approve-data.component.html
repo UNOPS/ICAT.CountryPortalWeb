@@ -414,7 +414,7 @@
         <button
           class="btn btn-primary text-uppercase ml-5"
           type="submit"
-          [disabled]="!enableQCButton"
+          [disabled]="!enableQCButton || dissetButton"
           (click)="onOpenPopUP()"
         >
           {{ this.buttonLabel }}
