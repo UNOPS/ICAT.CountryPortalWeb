@@ -220,6 +220,6 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
   }
 
   toPMU() {
-    window.location.href = 'https://icat-ca-tool.climatesi.com/pmu-app';
+    window.location.href = environment.baseUrlPMU;
   }
 }
