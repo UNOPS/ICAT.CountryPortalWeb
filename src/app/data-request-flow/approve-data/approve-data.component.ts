@@ -59,6 +59,7 @@ export class ApproveDataComponent implements OnInit {
   headerBaseYear: string;
   headerAssessmentYear: number;
   userName: string;
+  dissetButton:boolean =false;
   enableQCButton: boolean = false;
   isRejectButtonDisable: boolean = false;
   paraId: number;
@@ -84,18 +85,10 @@ export class ApproveDataComponent implements OnInit {
     private instProxy: InstitutionControllerServiceProxy
   ) { }
 
-  ngOnInit(): void {
-    /*
-    this.route.queryParams.subscribe((params) => {
-      this.assessmentId = params['id'];
-      console.log('id...', this.assessmentId);
-    });
-    */
+  async ngOnInit(): Promise<void> {
     this.userName = localStorage.getItem('user_name')!;
     this.route.queryParams.subscribe((params) => {
       this.assesmentYearId = params['id'];
-      // this.assesMentYearId = 3;
-      console.log('my id..,,', this.assesmentYearId);
     });
 
     this.serviceProxy
@@ -109,11 +102,6 @@ export class ApproveDataComponent implements OnInit {
         this.finalQC = res;
         this.assementYear = res
         if (this.finalQC != null) {
-          // if (this.finalQC.qaStatus != null) {
-          //   console.log('Asseyear...', this.finalQC.qaStatus);
-          //   this.isRejectButtonDisable = true;
-          //   this.isHideRejectButton = true;
-          // }
           if (this.finalQC.qaStatus != 4) {
             console.log('Asseyear...', this.finalQC.qaStatus);
             this.isRejectButtonDisable = false;
@@ -121,7 +109,6 @@ export class ApproveDataComponent implements OnInit {
               console.log("qa status")
               await this.checkQC()
               if (this.finalQC.verificationStatus === 8){
-                console.log(this.enableQCButton)
                 if (this.enableQCButton){
                   this.isHideRejectButton = true;
                 } else {
@@ -138,7 +125,7 @@ export class ApproveDataComponent implements OnInit {
         //  console.log("Asseyear...",this.assessmentYear)
       });
 
-    this.assessmentYearProxy
+  await  this.assessmentYearProxy
       .getAssessmentByYearId(this.assesmentYearId, this.userName)
       .subscribe(async (res) => {
         if (res) {
@@ -153,6 +140,11 @@ export class ApproveDataComponent implements OnInit {
           this.headerAssessmentYear = res?.assessmentYear;
           this.headerBaseYear = res?.assessment?.baseYear;
         }
+      if(res.qaStatus){
+        console.log('PPPPPPPPPPPPPPPpp')
+        this.dissetButton =true
+        console.log(this.dissetButton)
+        }
         console.log('res', res);
         this.getAssesment();
         if (this.finalQC?.qaStatus == null) {
@@ -160,43 +152,17 @@ export class ApproveDataComponent implements OnInit {
         }
       });
 
-    // this.proxy
-    //   .getManyBaseInstitutionControllerInstitution(
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     undefined,
-    //     ['name,ASC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    //   .subscribe((res) => {
-    //     this.institutionList = res.data;
-    //   });
     let filter2: string[] = new Array();
 
     filter2.push('type.id||$eq||' + 3);
 
-    // this.proxy
-    //   .getManyBaseInstitutionControllerInstitution(
-    //     undefined,
-    //     undefined,
-    //     filter2,
-    //     undefined,
-    //     ['name,ASC'],
-    //     undefined,
-    //     1000,
-    //     0,
-    //     0,
-    //     0
-    //   )
-    this.instProxy.getInstitutionforApproveData().subscribe((a: any) => {
+    await this.instProxy.getInstitutionforApproveData().subscribe((a: any) => {
       console.log('my institutions', a);
       this.institutionList = a;
     });
+    console.log(this.dissetButton,this.hideAllButtons)
+    this.disableAccept();
+    console.log(this.dissetButton)
   }
 
   // getParameters(asessmentYear: AssessmentYear) {
@@ -300,20 +266,6 @@ export class ApproveDataComponent implements OnInit {
   }
 
   async checkQC() {
-    // this.assesmentProxy
-    //   .checkAssessmentReadyForQC(
-    //     this.assementYear.assessment.id,
-    //     this.assementYear.assessmentYear
-    //   )
-    //   .subscribe((r) => {
-    //     console.log('checkAssessmentReadyForQC', r);
-    //     if (r) {
-    //       console.log('check res...', r);
-    //       this.enableQCButton = r;
-    //       this.isRejectButtonDisable = !r;
-    //     }
-    //   });
-    // console.log(this.assementYear)
     let r = await this.assesmentProxy.checkAssessmentReadyForQC(
       this.assementYear.assessment.id, this.assementYear.assessmentYear
     ).toPromise()
@@ -414,6 +366,7 @@ export class ApproveDataComponent implements OnInit {
     this.enableQCButton = false;
     this.isRejectButtonDisable = false;
     // console.log('sent');
+    setTimeout(() => {
     this.assessmentYearProxy.acceptQC(inputParameters).subscribe(
       (res) => {
         this.messageService.add({
@@ -433,6 +386,7 @@ export class ApproveDataComponent implements OnInit {
         });
       }
     );
+    },1500);
     this.isRejectButtonDisable = true;
     this.isOpenPopUp = false;
   }

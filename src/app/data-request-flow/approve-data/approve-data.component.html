@@ -487,7 +487,7 @@
         <button
           class="btn btn-primary text-uppercase ml-5"
           type="submit"
-          [disabled]="!enableQCButton"
+          [disabled]="!enableQCButton || dissetButton"
           (click)="onOpenPopUP()"
         >
         {{this.buttonLabel}}
@@ -566,23 +566,7 @@
 
 <p-dialog [(visible)]="isOpenPopUp" header="Assign deadline and send to QC">
   <div class="container" style="width: 600px; height: 500px">
-    <!-- <div class="row mb-2">
-      <div class="col-3">Data Provider</div>
-      <div class="col-4">
-        <p-dropdown
-          name="dataProvider"
-          [options]="institutionList"
-          [(ngModel)]="selectedInstitution"
-          #fsector="ngModel"
-          [showClear]="true"
-          [filter]="true"
-          placeholder="Select .."
-          optionLabel="name"
-        >
-        </p-dropdown>
-      </div>
-      <div class="col-5"></div>
-    </div> -->
+  
     <div class="row mb-2">
       <div class="col-3">New Deadline</div>
       <div class="col-4">
