@@ -29,24 +29,29 @@ import {
   DefaultValueControllerServiceProxy,
   User,
   Country,
+  ProjectControllerServiceProxy,
+  ParameterRequestControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
 import Parameter from 'app/Model/parameter';
 import ParameterSections from 'app/Model/parameter-sections';
 import SectionParameter from 'app/Model/section-parameter';
+
 import { NgForm } from '@angular/forms';
 import { ProjectIndicaters } from 'app/Model/projection-indicaters.enum';
 import { EasyofuseDatacollection } from 'app/Model/easy-of-use-data-Collection.enum';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
+import { empty, Observable } from 'rxjs';
 import { MessageService, SelectItem } from 'primeng/api';
-import { Router } from '@angular/router';
-import { MethodologyControllerServiceProxy } from 'shared/service-proxies/service-proxies';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MethodologyControllerServiceProxy, } from 'shared/service-proxies/service-proxies';
 import { ParameterInfo } from '../parameter-info.enum';
 import { FuelParameterComponent } from '../fuel-parameter/fuel-parameter.component';
 import { VehicalParameterComponent } from '../vehical-parameter/vehical-parameter.component';
+import { Tooltip } from 'chart.js';
 
 declare type ParaInfoType = keyof typeof ParameterInfo;
+
 
 @Component({
   selector: 'app-ghg-assessment',
@@ -61,12 +66,13 @@ export class GhgAssessmentComponent implements OnInit {
   @Input()
   IsProposal: boolean;
 
-  common = 'Common';
+  spin: boolean = false;
+  common: string = 'Common';
   climateActions: Project[] = [];
   selectedClimateAction: Project;
   baseYear: Date;
-  assessmentYear: Date;
-  years: SelectItem[] = [];
+  assesmentYear: Date;
+  years: SelectItem[] = new Array();
   selectYears: number[];
   selectedObjective: AssessmentObjective[] = [];
   approachList: string[] = ['Ex-ante', 'Ex-post'];
@@ -87,73 +93,73 @@ export class GhgAssessmentComponent implements OnInit {
   methodologyCode: string;
   methodologyVersion: string;
 
-  useRoute = false;
-  usePowerPlant = false;
-  useStratum = false;
+  useRoute: boolean = false;
+  usePowerPlant: boolean = false;
+  useStratum: boolean = false;
 
-  baselineScenario = '';
-  ProjectScenario = '';
-  LeakageScenario = '';
+  baselineScenario: string = '';
+  ProjectScenario: string = '';
+  LeakageScenario: string = '';
 
-  blHasVehicale = false;
-  blHasFuel = false;
-  blHasRoute = false;
-  blHasPowerPlant = false;
-  blHasFeedstock = false;
-  blHasSoil = false;
-  blHasStratum = false;
-  blHasResidue = false;
-  blHasLandClearance = false;
+  blHasVehicale: boolean = false;
+  blHasFuel: boolean = false;
+  blHasRoute: boolean = false;
+  blHasPowerPlant: boolean = false;
+  blHasFeedstock: boolean = false;
+  blHasSoil: boolean = false;
+  blHasStratum: boolean = false;
+  blHasResidue: boolean = false;
+  blHasLandClearance: boolean = false;
 
-  blHasVehicaleMulti = false;
-  blHasFuelMulti = false;
-  blHasRouteMulti = false;
-  blHasPowerPlantMulti = false;
-  blHasFeedstockMulti = false;
-  blHasSoilMulti = false;
-  blHasStratumMulti = false;
-  blHasResidueMulti = false;
-  blHasLandClearanceMulti = false;
+  blHasVehicaleMulti: boolean = false;
+  blHasFuelMulti: boolean = false;
+  blHasRouteMulti: boolean = false;
+  blHasPowerPlantMulti: boolean = false;
+  blHasFeedstockMulti: boolean = false;
+  blHasSoilMulti: boolean = false;
+  blHasStratumMulti: boolean = false;
+  blHasResidueMulti: boolean = false;
+  blHasLandClearanceMulti: boolean = false;
 
-  prHasVehicale = false;
-  prHasFuel = false;
-  prHasRoute = false;
-  prHasPowerPlant = false;
-  prHasFeedstock = false;
-  prHasSoil = false;
-  prHasStratum = false;
-  prHasResidue = false;
-  prHasLandClearance = false;
+  prHasVehicale: boolean = false;
+  prHasFuel: boolean = false;
+  prHasRoute: boolean = false;
+  prHasPowerPlant: boolean = false;
+  prHasFeedstock: boolean = false;
+  prHasSoil: boolean = false;
+  prHasStratum: boolean = false;
+  prHasResidue: boolean = false;
+  prHasLandClearance: boolean = false;
 
-  prHasVehicaleMulti = false;
-  prHasFuelMulti = false;
-  prHasRouteMulti = false;
-  prHasPowerPlantMulti = false;
-  prHasFeedstockMulti = false;
-  prHasSoilMulti = false;
-  prHasStratumMulti = false;
-  prHasResidueMulti = false;
-  prHasLandClearanceMulti = false;
+  prHasVehicaleMulti: boolean = false;
+  prHasFuelMulti: boolean = false;
+  prHasRouteMulti: boolean = false;
+  prHasPowerPlantMulti: boolean = false;
+  prHasFeedstockMulti: boolean = false;
+  prHasSoilMulti: boolean = false;
+  prHasStratumMulti: boolean = false;
+  prHasResidueMulti: boolean = false;
+  prHasLandClearanceMulti: boolean = false;
 
-  lkHasVehicale = false;
-  lkHasFuel = false;
-  lkHasRoute = false;
-  lkHasPowerPlant = false;
-  lkHasFeedstock = false;
-  lkHasSoil = false;
-  lkHasStratum = false;
-  lkHasResidue = false;
-  lkHasLandClearance = false;
+  lkHasVehicale: boolean = false;
+  lkHasFuel: boolean = false;
+  lkHasRoute: boolean = false;
+  lkHasPowerPlant: boolean = false;
+  lkHasFeedstock: boolean = false;
+  lkHasSoil: boolean = false;
+  lkHasStratum: boolean = false;
+  lkHasResidue: boolean = false;
+  lkHasLandClearance: boolean = false;
 
-  lkHasVehicaleMulti = false;
-  lkHasFuelMulti = false;
-  lkHasRouteMulti = false;
-  lkHasPowerPlantMulti = false;
-  lkHasFeedstockMulti = false;
-  lkHasSoilMulti = false;
-  lkHasStratumMulti = false;
-  lkHasResidueMulti = false;
-  lkHasLandClearanceMulti = false;
+  lkHasVehicaleMulti: boolean = false;
+  lkHasFuelMulti: boolean = false;
+  lkHasRouteMulti: boolean = false;
+  lkHasPowerPlantMulti: boolean = false;
+  lkHasFeedstockMulti: boolean = false;
+  lkHasSoilMulti: boolean = false;
+  lkHasStratumMulti: boolean = false;
+  lkHasResidueMulti: boolean = false;
+  lkHasLandClearanceMulti: boolean = false;
 
   blVehicalValue: any = [];
   blFuelValue: any = [];
@@ -180,29 +186,33 @@ export class GhgAssessmentComponent implements OnInit {
   projectSelection: ParameterDimensionSelection[] = [];
   lekageSelection: ParameterDimensionSelection[] = [];
 
-  isSaveRoutePowerplantStratum = true;
-  routePowerPlantMaintain = true;
+  isSaveRoutePowerplantStratum: boolean = true;
+  routePowerPlantMaintain: boolean = true;
 
-  showBaslineGenrate = true;
-  baselineShowMaintain = true;
+  showBaslineGenrate: boolean = true;
+  baselineShowMaintain: boolean = true;
 
-  showProjectGenrate = true;
-  projectShowMaintain = true;
+  showProjectGenrate: boolean = true;
+  projectShowMaintain: boolean = true;
 
-  showLekageGenrate = true;
-  lekageShowMaintain = true;
+  showLekageGenrate: boolean = true;
+  lekageShowMaintain: boolean = true;
 
-  pBYPDDefaultValue = false;
+  pBYPDDefaultValue: boolean = false;
 
-  route = 'rout';
-  fuel = 'fuel';
-  vehicle = 'vehicle';
-  power = 'power plant';
-  feedstock = 'feedstock';
-  soil = 'soil';
-  stratum = 'stratum';
-  residue = 'residue';
-  landclearance = 'land clearance';
+  route: string = 'rout';
+  fuel: string = 'fuel';
+  vehicle: string = 'vehicle';
+  power: string = 'power plant';
+  feedstock: string = 'feedstock';
+  soil: string = 'soil';
+  stratum: string = 'stratum';
+  residue: string = 'residue';
+  landclearance: string = 'land clearance';
+
+
+  toolTop: string = '';
+  methcode: any[] = [];
 
   blParameters: ParameterSections;
   prParameters: ParameterSections;
@@ -245,31 +255,31 @@ export class GhgAssessmentComponent implements OnInit {
 
   easyofuseDatacollections: string[] = [
     EasyofuseDatacollection[
-      EasyofuseDatacollection['Highly Resource and Data intensive']
+    EasyofuseDatacollection['Highly Resource and Data intensive']
     ],
     EasyofuseDatacollection[
-      EasyofuseDatacollection['Highly Resource and Low Data Intensive']
+    EasyofuseDatacollection['Highly Resource and Low Data Intensive']
     ],
     EasyofuseDatacollection[
-      EasyofuseDatacollection['Highly Resource and Moderately Data Intensive']
+    EasyofuseDatacollection['Highly Resource and Moderately Data Intensive']
     ],
     EasyofuseDatacollection[
-      EasyofuseDatacollection['Low Resource and Data Intensive']
+    EasyofuseDatacollection['Low Resource and Data Intensive']
     ],
     EasyofuseDatacollection[
-      EasyofuseDatacollection['Low Resource and Highly Data intensive']
+    EasyofuseDatacollection['Low Resource and Highly Data intensive']
     ],
     EasyofuseDatacollection[
-      EasyofuseDatacollection['Low Resource and Moderately Data Intensive']
+    EasyofuseDatacollection['Low Resource and Moderately Data Intensive']
     ],
     EasyofuseDatacollection[
-      EasyofuseDatacollection['Moderately Resource and Data Intensive']
+    EasyofuseDatacollection['Moderately Resource and Data Intensive']
     ],
     EasyofuseDatacollection[
-      EasyofuseDatacollection['Moderately Resource and Highly data intensive']
+    EasyofuseDatacollection['Moderately Resource and Highly data intensive']
     ],
     EasyofuseDatacollection[
-      EasyofuseDatacollection['Moderately Resource and Low Data Intensive']
+    EasyofuseDatacollection['Moderately Resource and Low Data Intensive']
     ],
   ];
 
@@ -324,39 +334,61 @@ export class GhgAssessmentComponent implements OnInit {
 
   infos: any = {};
 
-  requiredParas = true;
+  requiredParas: boolean = true;
+
+  projectId: number;
+  project: Project;
 
   constructor(
     private methodologyProxy: MethodologyControllerServiceProxy,
     private router: Router,
+    private route1: ActivatedRoute,
     private serviceProxy: ServiceProxy,
     private parameterProxy: ParameterControllerServiceProxy,
     private http: HttpClient,
     private defaultValueControllerServiceProxy: DefaultValueControllerServiceProxy,
     private messageService: MessageService,
-    private assessmentResultProxy: AssessmentResultControllerServiceProxy,
-    private assessmentYearProxy: AssessmentYearControllerServiceProxy,
+    private assesmentResaultProxy: AssessmentResultControllerServiceProxy,
+    private assesmentYearProxy: AssessmentYearControllerServiceProxy,
     private instituationProxy: InstitutionControllerServiceProxy,
     private assessmentProxy: AssessmentControllerServiceProxy,
-    private applicabilityControllerServiceProxy: ApplicabilityControllerServiceProxy,
+    private applicabilityControllerServiceProxy:ApplicabilityControllerServiceProxy,
+    private parameterRequestControllerServiceProxy:ParameterRequestControllerServiceProxy,
+    private projectControllerServiceProxy:ProjectControllerServiceProxy,
   ) {}
 
   ngOnInit(): void {
+
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
     this.userCountryId = tokenPayload.countryId;
     this.userSectorId = tokenPayload.sectorId;
 
-    const year = moment().year();
-    this.years.push({ label: year.toString(), value: year });
-    for (let i = 1; i < 30; i++) {
-      this.years.push({ label: (year - i).toString(), value: year - i });
-      this.years.push({ label: (year + i).toString(), value: year + i });
-    }
-
     this.userName = localStorage.getItem('user_name')!;
-    const filterUser: string[] = [];
+    let filterUser: string[] = [];
     filterUser.push('username||$eq||' + this.userName);
+
+    this.route1.queryParams.subscribe((params) => {
+      this.projectId = 0;
+      this.projectId = params['id'];
+    });
+    this.serviceProxy
+    .getManyBaseNdcControllerNdc(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ['name,ASC'],
+      ['subNdc'],
+      1000,
+      0,
+      0,
+      0
+    )
+    .subscribe((res: any) => {
+      this.ndcList = res.data;
+      this.ndcList = this.ndcList.filter((o)=>o.country.id == this.userCountryId && o.sector.id == this.userSectorId);
+    });
 
     this.serviceProxy
       .getManyBaseUsersControllerUser(
@@ -369,20 +401,18 @@ export class GhgAssessmentComponent implements OnInit {
         1000,
         0,
         0,
-        0,
+        0
       )
       .subscribe((res: any) => {
         this.loggedUser = res.data[0];
         this.countryCode = this.loggedUser.country.code_extended;
       });
 
-    this.years = this.years.sort(function (a, b) {
-      return a.value - b.value;
-    });
-
+    this.years = this.years.sort(function (a, b) { return a.value - b.value });
     this.addRoute();
     this.addPowerPlant();
     this.addStratum();
+
 
     this.serviceProxy
       .getManyBaseDefaultValueControllerDefaultValue(
@@ -424,28 +454,25 @@ export class GhgAssessmentComponent implements OnInit {
         1000,
         0,
         0,
-        0,
+        0
       )
       .subscribe((res: any) => {
         this.methodologys = res.data;
-        this.methodologys = this.methodologys.filter(
-          (o) => o.country.id == this.userCountryId,
-        );
+        this.methodologys = this.methodologys.filter((o) => o.country.id == this.userCountryId);
         this.methodologysCopy = this.methodologys;
         this.methodologyList = this.methodologys;
 
-        this.methodologyList.map((a) => {
-          if (a.displayName.length > 110) {
-            a.displayName = a.displayName.substring(0, 105) + '.....';
+        this.methodologyList.map((a)=>{
+          if(a.displayName.length>110) {
+            a.displayName = a.displayName.substring(0,105)+".....";
           }
         });
 
-        for (const meth of this.methodologyList) {
-          this.mitigationIdList.push(meth.mitigationActionType.id);
+        for(let meth of this.methodologyList) {
+           this.mitigationIdList.push(meth.mitigationActionType.id);
         }
         this.mitigationIdList = [...new Set(this.mitigationIdList)];
-
-        const mitifilter: any = ['id||$in||' + this.mitigationIdList];
+        var mitifilter: any = ['id||$in||' +this.mitigationIdList];
         this.serviceProxy
           .getManyBaseMitigationActionControllerMitigationActionType(
             undefined,
@@ -457,63 +484,76 @@ export class GhgAssessmentComponent implements OnInit {
             1000,
             0,
             0,
-            0,
+            0
           )
           .subscribe((res: any) => {
             this.mitigationActionType = res.data;
-
-            this.mitigationActionType = this.mitigationActionType.filter((a) =>
-              a.methodology.find((b) => b.isActive == 1),
-            );
+            this.mitigationActionType = this.mitigationActionType.filter((a)=>a.methodology.find((b)=>b.isActive == 1));
           });
       });
-
-    let filter: any = ['projectApprovalStatus.id||$in||' + [1, 5]];
+    var filter: any = ['projectApprovalStatus.id||$in||' + [1, 5]];
     if (this.IsProposal) {
       filter = undefined;
     }
 
-    this.serviceProxy
-      .getManyBaseProjectControllerProject(
-        undefined,
-        undefined,
-        filter,
-        undefined,
-        ['id,DESC'],
-        undefined,
-        1000,
-        0,
-        0,
-        0,
-      )
-      .subscribe((res: any) => {
-        this.climateActions = res.data;
-        this.climateActions = this.climateActions.filter((o) =>
-          o.country ? o.country.id == this.userCountryId : false,
-        );
-      });
 
-    this.serviceProxy
-      .getManyBaseNdcControllerNdc(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        ['name,ASC'],
-        ['subNdc'],
-        1000,
-        0,
-        0,
-        0,
-      )
-      .subscribe((res: any) => {
-        this.ndcList = res.data;
-        this.ndcList = this.ndcList.filter(
-          (o) =>
-            o.country.id == this.userCountryId &&
-            o.sector.id == this.userSectorId,
-        );
-      });
+    if (this.projectId && this.projectId > 0) {
+      this.spin = true;
+
+      this.serviceProxy
+        .getOneBaseProjectControllerProject(
+          this.projectId,
+          undefined,
+          undefined,
+          0
+        )
+        .subscribe(async (res) => {
+          this.years = [];
+          let year = res.proposeDateofCommence.year();
+          this.years.push({ label: year.toString(), value: year });
+          for (let i = 1; i < 30; i++) {
+            this.years.push({ label: (year + i).toString(), value: year + i });
+          }
+          this.selectedClimateAction = res
+          this.climateActions.push(res)
+          this.spin = false;
+          this.projectDuration = res.duration;
+          this.selectedNdc = this.ndcList.find(
+            (a) => a.name === res.previousNdc
+          )!;
+
+          this.selctedSubNdc = this.selectedNdc?.subNdc.find(
+            (a) => a.id === this.selectedClimateAction.subNdc?.id
+          )!;
+
+          this.proposeDateofCommence = new Date(
+            this.selectedClimateAction.proposeDateofCommence.year(),
+            this.selectedClimateAction.proposeDateofCommence.month(),
+            this.selectedClimateAction.proposeDateofCommence.date()
+          );
+        })
+    }
+    else {
+      this.spin = true;
+      this.serviceProxy
+        .getManyBaseProjectControllerProject(
+          undefined,
+          undefined,
+          filter,
+          undefined,
+          ['id,DESC'],
+          undefined,
+          1000,
+          0,
+          0,
+          0
+        )
+        .subscribe((res: any) => {
+          this.climateActions = res.data;
+          this.spin = false;
+          this.climateActions = this.climateActions.filter(o => o.country ? o.country.id == this.userCountryId : false && o.sector ? o.sector.id == this.userSectorId : false)
+        });
+    }
 
     this.serviceProxy
       .getManyBaseAssessmentObjectiveControllerAssessmentObjective(
@@ -571,206 +611,196 @@ export class GhgAssessmentComponent implements OnInit {
         this.ProjectParam = this.getParam('project', methParam.methodology);
         this.lekageParam = this.getParam('leakage', methParam.methodology);
 
-        [
-          this.blHasVehicale,
-          this.blHasVehicaleMulti,
-        ] = this.isHaveDiminsionType(this.vehicle, this.baslineParam);
+       [ this.blHasVehicale,this.blHasVehicaleMulti] = this.isHaveDiminsionType(
+          this.vehicle,
+          this.baslineParam
+        );
         this.blVehicalValue = this.getDiminsionTypeValue(
           this.vehicle,
-          this.baslineParam,
+          this.baslineParam
         );
-
-        [this.blHasFuel, this.blHasFuelMulti] = this.isHaveDiminsionType(
-          this.fuel,
-          this.baslineParam,
-        );
+        [this.blHasFuel,this.blHasFuelMulti] = this.isHaveDiminsionType(this.fuel, this.baslineParam);
         this.blFuelValue = this.getDiminsionTypeValue(
           this.fuel,
-          this.baslineParam,
+          this.baslineParam
         );
 
-        [
-          this.blHasPowerPlant,
-          this.blHasPowerPlantMulti,
-        ] = this.isHaveDiminsionType(this.power, this.baslineParam);
+        [this.blHasPowerPlant, this.blHasPowerPlantMulti] = this.isHaveDiminsionType(
+          this.power,
+          this.baslineParam
+        );
 
         [this.blHasRoute, this.blHasRouteMulti] = this.isHaveDiminsionType(
           this.route,
-          this.baslineParam,
+          this.baslineParam
         );
         [this.blHasStratum, this.blHasStratumMulti] = this.isHaveDiminsionType(
           this.stratum,
-          this.baslineParam,
+          this.baslineParam
         );
 
-        [this.blHasSoil, this.blHasSoilMulti] = this.isHaveDiminsionType(
+        [this.blHasSoil,this.blHasSoilMulti] = this.isHaveDiminsionType(
           this.soil,
-          this.baslineParam,
+          this.baslineParam
         );
         this.blSoilValue = this.getDiminsionTypeValue(
           this.soil,
-          this.baslineParam,
+          this.baslineParam
         );
 
         [this.blHasResidue, this.blHasResidueMulti] = this.isHaveDiminsionType(
           this.residue,
-          this.baslineParam,
+          this.baslineParam
         );
 
         this.blResidueValue = this.getDiminsionTypeValue(
           this.residue,
-          this.baslineParam,
+          this.baslineParam
         );
 
-        [
-          this.blHasFeedstock,
-          this.blHasFeedstockMulti,
-        ] = this.isHaveDiminsionType(this.feedstock, this.baslineParam);
+        [this.blHasFeedstock, this.blHasFeedstockMulti] = this.isHaveDiminsionType(
+          this.feedstock,
+          this.baslineParam
+        );
         this.blFeedstockValue = this.getDiminsionTypeValue(
           this.feedstock,
-          this.baslineParam,
+          this.baslineParam
         );
 
-        [
-          this.blHasLandClearance,
-          this.blHasLandClearanceMulti,
-        ] = this.isHaveDiminsionType(this.landclearance, this.baslineParam);
+        [this.blHasLandClearance, this.blHasLandClearanceMulti] = this.isHaveDiminsionType(
+          this.landclearance,
+          this.baslineParam
+        );
         this.blLandClearanceValue = this.getDiminsionTypeValue(
           this.landclearance,
-          this.baslineParam,
+          this.baslineParam
         );
 
-        [
-          this.prHasVehicale,
-          this.prHasVehicaleMulti,
-        ] = this.isHaveDiminsionType(this.vehicle, this.ProjectParam);
+        [this.prHasVehicale,this.prHasVehicaleMulti] = this.isHaveDiminsionType(
+          this.vehicle,
+          this.ProjectParam
+        );
         this.prVehicalValue = this.getDiminsionTypeValue(
           this.vehicle,
-          this.ProjectParam,
+          this.ProjectParam
         );
-        [this.prHasFuel, this.prHasFuelMulti] = this.isHaveDiminsionType(
-          this.fuel,
-          this.ProjectParam,
-        );
+        [this.prHasFuel, this.prHasFuelMulti] = this.isHaveDiminsionType(this.fuel, this.ProjectParam);
         this.prFuelValue = this.getDiminsionTypeValue(
           this.fuel,
-          this.ProjectParam,
+          this.ProjectParam
         );
         [this.prHasPowerPlant] = this.isHaveDiminsionType(
           this.power,
-          this.ProjectParam,
+          this.ProjectParam
         );
 
         [this.prHasRoute, this.prHasRouteMulti] = this.isHaveDiminsionType(
           this.route,
-          this.ProjectParam,
+          this.ProjectParam
         );
 
         [this.prHasStratum, this.prHasStratumMulti] = this.isHaveDiminsionType(
           this.stratum,
-          this.ProjectParam,
+          this.ProjectParam
         );
 
-        [this.prHasSoil, this.prHasSoilMulti] = this.isHaveDiminsionType(
+        [this.prHasSoil,this.prHasSoilMulti] = this.isHaveDiminsionType(
           this.soil,
-          this.ProjectParam,
+          this.ProjectParam
         );
         this.prSoilValue = this.getDiminsionTypeValue(
           this.soil,
-          this.ProjectParam,
+          this.ProjectParam
         );
 
         [this.prHasResidue, this.prHasResidueMulti] = this.isHaveDiminsionType(
           this.residue,
-          this.ProjectParam,
+          this.ProjectParam
         );
         this.prResidueValue = this.getDiminsionTypeValue(
           this.residue,
-          this.ProjectParam,
+          this.ProjectParam
         );
 
-        [
-          this.prHasFeedstock,
-          this.prHasFeedstockMulti,
-        ] = this.isHaveDiminsionType(this.feedstock, this.ProjectParam);
+        [this.prHasFeedstock, this.prHasFeedstockMulti] = this.isHaveDiminsionType(
+          this.feedstock,
+          this.ProjectParam
+        );
         this.prFeedstockValue = this.getDiminsionTypeValue(
           this.feedstock,
-          this.ProjectParam,
+          this.ProjectParam
         );
 
-        [
-          this.prHasLandClearance,
-          this.prHasLandClearanceMulti,
-        ] = this.isHaveDiminsionType(this.landclearance, this.ProjectParam);
+        [this.prHasLandClearance, this.prHasLandClearanceMulti] = this.isHaveDiminsionType(
+          this.landclearance,
+          this.ProjectParam
+        );
         this.prLandClearanceValue = this.getDiminsionTypeValue(
           this.landclearance,
-          this.ProjectParam,
+          this.ProjectParam
         );
 
-        [
-          this.lkHasVehicale,
-          this.lkHasVehicaleMulti,
-        ] = this.isHaveDiminsionType(this.vehicle, this.lekageParam);
+        [this.lkHasVehicale,this.lkHasVehicaleMulti] = this.isHaveDiminsionType(
+          this.vehicle,
+          this.lekageParam
+        );
         this.lkVehicalValue = this.getDiminsionTypeValue(
           this.vehicle,
-          this.lekageParam,
+          this.lekageParam
         );
-        [this.lkHasFuel, this.lkHasFuelMulti] = this.isHaveDiminsionType(
-          this.fuel,
-          this.lekageParam,
-        );
+        [this.lkHasFuel, this.lkHasFuelMulti] = this.isHaveDiminsionType(this.fuel, this.lekageParam);
         this.lkFuelValue = this.getDiminsionTypeValue(
           this.fuel,
-          this.lekageParam,
+          this.lekageParam
         );
-        [
-          this.lkHasPowerPlant,
-          this.lkHasPowerPlantMulti,
-        ] = this.isHaveDiminsionType(this.power, this.lekageParam);
+        [this.lkHasPowerPlant, this.lkHasPowerPlantMulti] = this.isHaveDiminsionType(
+          this.power,
+          this.lekageParam
+        );
 
         [this.lkHasRoute, this.lkHasRouteMulti] = this.isHaveDiminsionType(
           this.route,
-          this.lekageParam,
+          this.lekageParam
         );
         [this.lkHasStratum, this.lkHasStratumMulti] = this.isHaveDiminsionType(
           this.stratum,
-          this.lekageParam,
+          this.lekageParam
         );
 
-        [this.lkHasSoil, this.lkHasSoilMulti] = this.isHaveDiminsionType(
+        [this.lkHasSoil,this.lkHasSoilMulti] = this.isHaveDiminsionType(
           this.soil,
-          this.lekageParam,
+          this.lekageParam
         );
         this.lkSoilValue = this.getDiminsionTypeValue(
           this.soil,
-          this.lekageParam,
+          this.lekageParam
         );
 
         [this.lkHasResidue, this.lkHasResidueMulti] = this.isHaveDiminsionType(
           this.residue,
-          this.lekageParam,
+          this.lekageParam
         );
         this.lkResidueValue = this.getDiminsionTypeValue(
           this.residue,
-          this.lekageParam,
+          this.lekageParam
         );
-
-        [
-          this.lkHasFeedstock,
-          this.lkHasFeedstockMulti,
-        ] = this.isHaveDiminsionType(this.feedstock, this.lekageParam);
+        
+       [ this.lkHasFeedstock,this.lkHasFeedstockMulti] = this.isHaveDiminsionType(
+          this.feedstock,
+          this.lekageParam
+        );
         this.lkFeedstockValue = this.getDiminsionTypeValue(
           this.feedstock,
-          this.lekageParam,
+          this.lekageParam
         );
 
-        [
-          this.lkHasLandClearance,
-          this.lkHasLandClearanceMulti,
-        ] = this.isHaveDiminsionType(this.landclearance, this.lekageParam);
+        [this.lkHasLandClearance, this.lkHasLandClearanceMulti] = this.isHaveDiminsionType(
+          this.landclearance,
+          this.lekageParam
+        );
         this.lkLandClearanceValue = this.getDiminsionTypeValue(
           this.landclearance,
-          this.lekageParam,
+          this.lekageParam
         );
 
         this.useRoute =
@@ -831,12 +861,10 @@ export class GhgAssessmentComponent implements OnInit {
     if (param !== undefined && param !== null) {
       param.map((p: any) => {
         const dimnsions = p.dimensions;
-
         if (dimnsions !== undefined) {
           const route = dimnsions.find((a: any) => a.type === type);
           {
             if (route !== undefined && route !== null) Values = route.values;
-
             return;
           }
         }
@@ -1240,107 +1268,86 @@ export class GhgAssessmentComponent implements OnInit {
         this.baslineParam.length > 0
       ) {
         if (this.blHasRoute) {
-          const routeParam = this.getDiminsion(this.route, this.baslineParam);
+          let routeParam = this.getDiminsion(this.route, this.baslineParam);
 
-          const routeSection = this.genrateRouteParameterSection(
+          let routeSection = this.genrateRouteParameterSection(
             this.basllineSelection,
             routeParam,
-            'Route Info',
+            'Route Info'
           );
-
           this.blParameters.routeSection = routeSection;
         }
-        if (this.blHasVehicale) {
-          if (!this.blHasFeedstock) {
-            const vehicalParam = this.getDiminsion(
-              this.vehicle,
-              this.baslineParam,
-            );
-            const vehicalCommon = this.getCommon(this.blVehicalValue);
-
-            if (vehicalCommon) {
-              const commonEntered = this.basllineSelection.filter(
-                (b) => b.vehical.id === vehicalCommon.id,
-              );
-              if (commonEntered.length === 0) {
-                const tempCommon = new ParameterDimensionSelection().createNew();
-                tempCommon.vehical = vehicalCommon;
-                this.basllineSelection.push(tempCommon);
-                this.hasCommonBaseline = true;
-              }
+        if (this.blHasVehicale){
+          if( !this.blHasFeedstock) {
+          let vehicalParam = this.getDiminsion(this.vehicle, this.baslineParam);
+          let vehicalCommon = this.getCommon(this.blVehicalValue);
+          if (vehicalCommon) {
+            let commonEntered = this.basllineSelection.filter(b => b.vehical.id === vehicalCommon.id )
+            if (commonEntered.length === 0){
+              var tempCommon = new ParameterDimensionSelection().createNew();
+              tempCommon.vehical = vehicalCommon;
+              this.basllineSelection.push(tempCommon);
+              this.hasCommonBaseline = true;
             }
+          }
+          let vehicalSection = this.genrateVehicalParameterSection(
+            this.basllineSelection,
+            vehicalParam,
+            'Vehicle Info'
+          );
 
-            const vehicalSection = this.genrateVehicalParameterSection(
-              this.basllineSelection,
-              vehicalParam,
-              'Vehicle Info',
-            );
-
-            this.blParameters.vehicalSection = vehicalSection;
-          } else {
-            const vehicalParam = this.getDiminsion(
-              this.vehicle,
-              this.baslineParam,
-            );
-            const fuelCommon = this.getCommon(this.blVehicalValue);
-
-            if (fuelCommon) {
-              this.basllineSelection[0].vehicals.unshift(fuelCommon);
-            }
-
-            const vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
-              this.basllineSelection,
-              vehicalParam,
-              'Vehicle Info',
-            );
-
-            this.blParameters.vehicalSection = vehicalSection;
+          this.blParameters.vehicalSection = vehicalSection;
+        }else{
+          let vehicalParam = this.getDiminsion(this.vehicle, this.baslineParam);
+          let fuelCommon = this.getCommon(this.blVehicalValue);
+          if (fuelCommon) {
+            this.basllineSelection[0].vehicals.unshift(fuelCommon);
+          }
+          let vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
+            this.basllineSelection,
+            vehicalParam,
+            'Vehicle Info'
+          );
+          this.blParameters.vehicalSection = vehicalSection;
           }
         }
         if (this.blHasFuel) {
           if (!this.blHasFeedstock) {
-            const fuelParam = this.getDiminsion(this.fuel, this.baslineParam);
+            let fuelParam = this.getDiminsion(this.fuel, this.baslineParam);
 
-            const fuelCommon = this.getCommon(this.blFuelValue);
+            let fuelCommon = this.getCommon(this.blFuelValue);
             if (fuelCommon) {
               this.basllineSelection[0].fuel.unshift(fuelCommon);
             }
 
-            const fuelSection = this.genrateFuelParameterSection(
+            let fuelSection = this.genrateFuelParameterSection(
               this.basllineSelection,
               fuelParam,
-              'Fuel Info',
-            );
-            this.blParameters.fuelSection = fuelSection;
-          } else {
-            const fuelParam = this.getDiminsion(this.fuel, this.baslineParam);
-            const fuelCommon = this.getCommon(this.blFuelValue);
-            if (fuelCommon) {
-              this.basllineSelection[0].fuel.unshift(fuelCommon);
-            }
-
-            const fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
-              this.basllineSelection,
-              fuelParam,
-              'Fuel Info',
+              'Fuel Info'
             );
             this.blParameters.fuelSection = fuelSection;
           }
+          else {
+            let fuelParam = this.getDiminsion(this.fuel, this.baslineParam);
+            let fuelCommon = this.getCommon(this.blFuelValue);
+            if (fuelCommon) {
+              this.basllineSelection[0].fuel.unshift(fuelCommon);
+            }
+              let fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
+                this.basllineSelection,
+                fuelParam,
+                'Fuel Info'
+              );
+              this.blParameters.fuelSection = fuelSection;
+          }
         }
-
         if (this.blHasFeedstock) {
-          const feedstockParam = this.getDiminsion(
-            this.feedstock,
-            this.baslineParam,
-          );
-
-          const feedstockCommon = this.getCommon(this.blFeedstockValue);
+          let feedstockParam = this.getDiminsion(this.feedstock, this.baslineParam);
+          let feedstockCommon = this.getCommon(this.blFeedstockValue);
           if (feedstockCommon) {
-            const commonEntered = this.basllineSelection.filter(
-              (b) => b.feedstock.id === feedstockCommon.id,
-            );
+            let commonEntered = this.basllineSelection.filter(b => b.feedstock.id === feedstockCommon.id)
             if (commonEntered.length === 0) {
-              const tempCommon = new ParameterDimensionSelection().createNew();
+              var tempCommon = new ParameterDimensionSelection().createNew();
               tempCommon.feedstock = feedstockCommon;
               this.basllineSelection.push(tempCommon);
               this.hasCommonBaseline = true;
@@ -1461,58 +1468,47 @@ export class GhgAssessmentComponent implements OnInit {
 
         this.prParameters.routeSection = routeSection;
       }
-      if (this.prHasVehicale) {
-        if (!this.prHasFeedstock) {
-          const vehicalParam = this.getDiminsion(
-            this.vehicle,
-            this.ProjectParam,
-          );
-          const vehicleCommon = this.getCommon(this.prVehicalValue);
+      if (this.prHasVehicale){
+        if( !this.prHasFeedstock) {
+        let vehicalParam = this.getDiminsion(this.vehicle, this.ProjectParam);
+        let vehicleCommon = this.getCommon(this.prVehicalValue);
 
-          if (vehicleCommon) {
-            const commonEntered = this.projectSelection.filter(
-              (p) => p.vehical.id === vehicleCommon.id,
-            );
-            if (commonEntered.length === 0) {
-              const tempCommon = new ParameterDimensionSelection().createNew();
-              tempCommon.vehical = vehicleCommon;
-              this.hasCommonProject = true;
-              this.projectSelection.push(tempCommon);
-            }
+        if (vehicleCommon) {
+          let commonEntered = this.projectSelection.filter(p => p.vehical.id === vehicleCommon.id)
+          if (commonEntered.length === 0) {
+            var tempCommon = new ParameterDimensionSelection().createNew();
+            tempCommon.vehical = vehicleCommon;
+            this.hasCommonProject = true;
+            this.projectSelection.push(tempCommon);
           }
-          const vehicalSection = this.genrateVehicalParameterSection(
+          let vehicalSection = this.genrateVehicalParameterSection(
             this.projectSelection,
             vehicalParam,
-            'Vehicle Info',
+            'Vehicle Info'
           );
 
-          this.prParameters.vehicalSection = vehicalSection;
-        } else {
-          const vehicalParam = this.getDiminsion(
-            this.vehicle,
-            this.ProjectParam,
-          );
-          const vehicalCommon = this.getCommon(this.prVehicalValue);
-
-          if (vehicalCommon) {
-            this.projectSelection[0].vehicals.unshift(vehicalCommon);
-          }
-
-          const vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
-            this.projectSelection,
-            vehicalParam,
-            'Vehicle Info',
-          );
-
-          this.prParameters.vehicalSection = vehicalSection;
+        this.prParameters.vehicalSection = vehicalSection;
+      }else{
+        
+        let vehicalParam = this.getDiminsion(this.vehicle, this.ProjectParam);
+        let vehicalCommon = this.getCommon(this.prVehicalValue);
+      
+        if (vehicalCommon) {
+          this.projectSelection[0].vehicals.unshift(vehicalCommon);
         }
-      }
-
+       
+        let vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
+          this.projectSelection,
+          vehicalParam,
+          'Vehicle Info'
+        );
+        this.prParameters.vehicalSection = vehicalSection;
+      }}
       if (this.prHasFuel) {
         if (!this.prHasFeedstock) {
-          const fuelParam = this.getDiminsion(this.fuel, this.ProjectParam);
+          let fuelParam = this.getDiminsion(this.fuel, this.ProjectParam);
 
-          const fuelCommon = this.getCommon(this.prFuelValue);
+          let fuelCommon = this.getCommon(this.prFuelValue);
           if (fuelCommon) {
             this.projectSelection[0].fuel.unshift(fuelCommon);
           }
@@ -1638,6 +1634,7 @@ export class GhgAssessmentComponent implements OnInit {
     }
     this.getParameterInfo(this.prParameters);
   }
+}
 
   lekageGenrate() {
     this.showLekageGenrate = !this.showLekageGenrate;
@@ -1660,93 +1657,84 @@ export class GhgAssessmentComponent implements OnInit {
 
           this.lkParameters.routeSection = routeSection;
         }
-        if (this.lkHasVehicale) {
-          if (!this.lkHasFeedstock) {
-            const vehicalParam = this.getDiminsion(
-              this.vehicle,
-              this.lekageParam,
-            );
-            const vehicalCommon = this.getCommon(this.lkVehicalValue);
-            if (vehicalCommon) {
-              const commonEntered = this.lekageSelection.filter(
-                (l) => l.vehical.id === vehicalCommon.id,
-              );
-              if (commonEntered.length === 0) {
-                const tempCommon = new ParameterDimensionSelection().createNew();
-                tempCommon.vehical = vehicalCommon;
-                this.hasCommonLeakage = true;
-                this.lekageSelection.push(tempCommon);
-              }
+        if (this.lkHasVehicale){
+          if( !this.lkHasFeedstock) {
+          let vehicalParam = this.getDiminsion(this.vehicle, this.lekageParam);
+          let vehicalCommon = this.getCommon(this.lkVehicalValue);
+          if (vehicalCommon) {
+            let commonEntered = this.lekageSelection.filter(l => l.vehical.id === vehicalCommon.id)
+            if (commonEntered.length === 0) {
+              var tempCommon = new ParameterDimensionSelection().createNew();
+              tempCommon.vehical = vehicalCommon;
+              this.hasCommonLeakage = true;
+              this.lekageSelection.push(tempCommon);
             }
-            const vehicalSection = this.genrateVehicalParameterSection(
+            let vehicalSection = this.genrateVehicalParameterSection(
               this.lekageSelection,
               vehicalParam,
-              'Vehicle Info',
+              'Vehicle Info'
             );
 
             this.lkParameters.vehicalSection = vehicalSection;
           } else {
-            const vehicalParam = this.getDiminsion(
-              this.vehicle,
-              this.lekageParam,
-            );
-            const vehicalCommon = this.getCommon(this.lkVehicalValue);
+
+            let vehicalParam = this.getDiminsion(this.vehicle, this.lekageParam);
+            let vehicalCommon = this.getCommon(this.lkVehicalValue);
 
             if (vehicalCommon) {
               this.lekageSelection[0].vehicals.unshift(vehicalCommon);
             }
 
-            const vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
+
+            //assume vehical dimention is multiselect every time feedstock is available in dimention
+            let vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
               this.lekageSelection,
               vehicalParam,
-              'Vehicle Info',
+              'Vehicle Info'
             );
 
             this.lkParameters.vehicalSection = vehicalSection;
+
+
+
           }
-        }
+          let vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
+            this.lekageSelection,
+            vehicalParam,
+            'Vehicle Info'
+          );
+          this.lkParameters.vehicalSection = vehicalSection;
+        }}
 
         if (this.lkHasFuel) {
-          if (!this.lkHasFeedstock) {
-            const fuelParam = this.getDiminsion(this.fuel, this.lekageParam);
-            const fuelCommon = this.getCommon(this.lkFuelValue);
+        if (!this.lkHasFeedstock){ 
+          let fuelParam = this.getDiminsion(this.fuel, this.lekageParam);
+          let fuelCommon = this.getCommon(this.lkFuelValue);
+          if (fuelCommon) {
+            this.lekageSelection[0].fuel.unshift(fuelCommon);
+          }
+          else {
+            let fuelParam = this.getDiminsion(this.fuel, this.lekageParam);
+            let fuelCommon = this.getCommon(this.lkFuelValue);
             if (fuelCommon) {
               this.lekageSelection[0].fuel.unshift(fuelCommon);
             }
-            const fuelSection = this.genrateFuelParameterSection(
-              this.lekageSelection,
-              fuelParam,
-              'Fuel Info',
-            );
-            this.lkParameters.fuelSection = fuelSection;
-          } else {
-            const fuelParam = this.getDiminsion(this.fuel, this.lekageParam);
-            const fuelCommon = this.getCommon(this.lkFuelValue);
-            if (fuelCommon) {
-              this.lekageSelection[0].fuel.unshift(fuelCommon);
-            }
-
-            const fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
-              this.lekageSelection,
-              fuelParam,
-              'Fuel Info',
-            );
-            this.lkParameters.fuelSection = fuelSection;
+              let fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
+                this.lekageSelection,
+                fuelParam,
+                'Fuel Info'
+              );
+              this.lkParameters.fuelSection = fuelSection;
           }
         }
         if (this.lkHasFeedstock) {
-          const feedstockParam = this.getDiminsion(
-            this.feedstock,
-            this.lekageParam,
-          );
+          let feedstockParam = this.getDiminsion(this.feedstock, this.lekageParam);
 
-          const feedstockCommon = this.getCommon(this.lkFeedstockValue);
+          let feedstockCommon = this.getCommon(this.lkFeedstockValue);
           if (feedstockCommon) {
-            const commonEntered = this.lekageSelection.filter(
-              (l) => l.feedstock.id === feedstockCommon.id,
-            );
+            let commonEntered = this.lekageSelection.filter(l => l.feedstock.id === feedstockCommon.id)
             if (commonEntered.length === 0) {
-              const tempCommon = new ParameterDimensionSelection().createNew();
+              var tempCommon = new ParameterDimensionSelection().createNew();
               tempCommon.feedstock = feedstockCommon;
               this.hasCommonLeakage = true;
               this.lekageSelection.push(tempCommon);
@@ -1794,45 +1782,36 @@ export class GhgAssessmentComponent implements OnInit {
           this.lkParameters.residueSection = residueSection;
         }
         if (this.lkHasLandClearance) {
-          const landClearanceParam = this.getDiminsion(
-            this.landclearance,
-            this.lekageParam,
-          );
-
-          const landClearanceCommon = this.getCommon(this.lkLandClearanceValue);
+          let landClearanceParam = this.getDiminsion(this.landclearance, this.lekageParam);
+          let landClearanceCommon = this.getCommon(this.lkLandClearanceValue);
           if (landClearanceCommon) {
             this.lekageSelection[0].landClearance.unshift(landClearanceCommon);
           }
 
-          const landClearanceSection = this.genrateLandClearanceParameterSection(
+          let landClearanceSection = this.genrateLandClearanceParameterSection(
             this.lekageSelection,
             landClearanceParam,
-            'Land Clearance Info',
+            'Land Clearance Info'
           );
           this.lkParameters.landClearanceSection = landClearanceSection;
         }
 
         if (this.lkHasStratum) {
-          const stratumParam = this.getDiminsion(
-            this.stratum,
-            this.lekageParam,
-          );
-          const stratumSection = this.genrateStratumParameterSection(
+          let stratumParam = this.getDiminsion(this.stratum, this.lekageParam);
+          let stratumSection = this.genrateStratumParameterSection(
             this.lekageSelection,
             stratumParam,
-            'Stratum Info',
+            'Stratum Info'
           );
-
           this.lkParameters.stratumSection = stratumSection;
         }
 
         if (this.lkHasPowerPlant) {
-          const powerPlant = this.getDiminsion(this.power, this.lekageParam);
-
-          const powerSection = this.genratePowerPlantParameterSection(
+          let powerPlant = this.getDiminsion(this.power, this.lekageParam);
+          let powerSection = this.genratePowerPlantParameterSection(
             this.lekageSelection,
             powerPlant,
-            'Power Plant Info',
+            'Power Plant Info'
           );
           this.lkParameters.powerPlantSection = powerSection;
         }
@@ -1842,6 +1821,7 @@ export class GhgAssessmentComponent implements OnInit {
     }
     this.getParameterInfo(this.lkParameters);
   }
+}
 
   genrateVehicalParameterSection(
     parameterSelection: ParameterDimensionSelection[],
@@ -1889,55 +1869,62 @@ export class GhgAssessmentComponent implements OnInit {
         vehicalSection.sectionparameters.push(sectionparam);
       });
     });
-
-    this.checkDefaultValue(vehicalSection, 'vehical');
-    vehicalSection.sectionparameters.forEach((sp) => {
-      sp.parameters.map((para) => {
-        para.defaultValues.sort((a: any, b: any) => b.year - a.year);
-      });
-    });
+    this.checkDefaultValue(vehicalSection,"vehical");
+    vehicalSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year - a.year)
+      })
+    })
     return vehicalSection;
   }
 
   checkBool(useDefaultValue: any) {
-    if (useDefaultValue == 'true' || useDefaultValue == true) {
-      return true;
-    } else return false;
+    if (useDefaultValue == "true" || useDefaultValue == true) {
+      return true
+    }
+    else return false
   }
 
   checkDefaultValue(pa: ParameterSection, type: string) {
     pa.sectionparameters.forEach((a) => {
-      let name = '';
-      if (type == 'vehical') {
-        name = a.vehical;
-      } else if (type == 'fuel') {
-        name = a.fuel;
-      } else if (type == 'vehicla') {
-        name = a.vehical;
-      } else if (type == 'route') {
-        name = a.route;
-      } else if (type == 'powerPlant') {
-        name = a.powerPlant;
-      } else if (type == 'landClearance') {
-        name = a.landClearance;
-      } else if (type == 'residue') {
-        name = a.residue;
-      } else if (type == 'stratum') {
-        name = a.stratum;
-      } else if (type == 'soil') {
-        name = a.soil;
+      let name = "";
+      if (type == "vehical") {
+        name = a.vehical
+      }
+      else if (type == "fuel") {
+        name = a.fuel
+      }
+      else if (type == "vehicla") {
+        name = a.vehical
+      }
+      else if (type == "route") {
+        name = a.route
+      }
+      else if (type == "powerPlant") {
+        name = a.powerPlant
+      }
+      else if (type == "landClearance") {
+        name = a.landClearance
+      }
+      else if (type == "residue") {
+        name = a.residue
+      }
+      else if (type == "stratum") {
+        name = a.stratum
+      }
+      else if (type == "soil") {
+        name = a.soil
       }
       a.parameters.forEach((para) => {
-        const name1 =
-          para.parameterName + ' ' + name + ' ' + this.loggedUser.country.id;
-        const bool1 = this.checkBool(para.useDefaultValue);
+        let name1 = para.parameterName + " " + name + " " + this.loggedUser.country.id;
+        let bool1 = this.checkBool(para.useDefaultValue);
         if (!this.uniqdeParaName.includes(name1) && bool1 == true) {
-          const unitValues = new DefaultValue();
+          let unitValues = new DefaultValue();
           this.uniqdeParaName.push(name1);
           unitValues.parameterName = para.parameterName;
           unitValues.administrationLevel = name;
           unitValues.unit = para.UOM;
-          const co = new Country();
+          let co = new Country();
           co.id = this.loggedUser.country.id;
           unitValues.country = co;
           this.uniqdefaultValues.push(unitValues);
@@ -1945,24 +1932,23 @@ export class GhgAssessmentComponent implements OnInit {
 
         if (para.alternativeParameters.length > 0) {
           para.alternativeParameters.forEach((al) => {
-            const name2 =
-              al.parameterName + ' ' + name + ' ' + this.loggedUser.country.id;
-            const bool2 = this.checkBool(para.useDefaultValue);
+            let name2 = al.parameterName + " " + name + " " + this.loggedUser.country.id;
+            let bool2 = this.checkBool(para.useDefaultValue);
             if (!this.uniqdeParaName.includes(name2) && bool2 == true) {
-              const unitValues2 = new DefaultValue();
+              let unitValues2 = new DefaultValue();
               this.uniqdeParaName.push(name2);
               unitValues2.parameterName = al.parameterName;
               unitValues2.administrationLevel = name;
               unitValues2.unit = para.UOM;
-              const co = new Country();
+              let co = new Country();
               co.id = this.loggedUser.country.id;
               unitValues2.country = co;
               this.uniqdefaultValues.push(unitValues2);
             }
-          });
+          })
         }
-      });
-    });
+      })
+    })
   }
   genrateVehicalParameterSectionWhenHasFeedstock(
     parameterSelection: ParameterDimensionSelection[],
@@ -1982,35 +1968,34 @@ export class GhgAssessmentComponent implements OnInit {
           vehicalSection.sectionparameters.push(sectionparam);
         }
         if (f.name !== this.common) {
-          const sectionparam = new SectionParameter();
+          let sectionparam = new SectionParameter();
           sectionparam.vehical = f.name;
           sectionparam.feedstock = v.oneFeedstock.name;
           sectionparam.route = '';
-          sectionparam.parameterHeader = v.oneFeedstock.name
-            ? `${v.oneFeedstock.name} - ${f.name}`
-            : `${f.name}`;
+          sectionparam.parameterHeader = v.oneFeedstock.name ? `${v.oneFeedstock.name} - ${f.name}` : `${f.name}`;
           this.getAllParameters(vehicalParam, sectionparam, f);
           vehicalSection.sectionparameters.push(sectionparam);
         }
-      });
+      })
+
     });
-    this.checkDefaultValue(vehicalSection, 'vehical');
-    vehicalSection.sectionparameters.forEach((sp) => {
-      sp.parameters.map((para) => {
-        para.defaultValues.sort((a: any, b: any) => b.year - a.year);
-      });
-    });
+    this.checkDefaultValue(vehicalSection,"vehical");
+    vehicalSection.sectionparameters.forEach(sp => {
+      sp.parameters.map(para => {
+        para.defaultValues.sort((a: any, b: any) => b.year - a.year)
+      })
+    })
     return vehicalSection;
   }
 
   genrateFuelParameterSection(
     parameterSelection: ParameterDimensionSelection[],
     fuelParam: any,
-    sectionHeader: string,
+    sectionHeader: string
   ) {
-    const fuelSection = new ParameterSection();
+    let fuelSection = new ParameterSection();
     fuelSection.sectionHeader = sectionHeader;
-    const fuelList: any = [];
+    let fuelList: any = [];
     let unuiqeFuel: any = [];
 
     parameterSelection.map((v) => {
@@ -2349,47 +2334,24 @@ export class GhgAssessmentComponent implements OnInit {
       }
     }
 
-    this.suggestValues(sectionparam);
+    this.suggestValues(sectionparam)
   }
 
   async suggestValues(sectionparam: SectionParameter) {
-    const assessments = await this.assessmentProxy
-      .getAssessmentsByCountryMethodology(
-        this.selectedMethodology.id,
-        this.userCountryId,
-      )
-      .toPromise();
-
-    this.methodParaCodes = sectionparam.parameters.map((para) => {
-      return para.Code;
-    });
-    const assessmentIds = assessments.map((ass) => {
-      return ass.id;
-    });
-    const filter: string[] | undefined = [];
-    if (
-      this.methodParaCodes &&
-      this.methodParaCodes.length > 0 &&
-      assessmentIds &&
-      assessmentIds.length > 0
-    ) {
+    let assessments = await this.assessmentProxy.getAssessmentsByCountryMethodology(this.selectedMethodology.id, this.userCountryId).toPromise()
+    this.methodParaCodes = sectionparam.parameters.map(para => { return para.Code });
+    let assessmentIds = assessments.map(ass => { return ass.id });
+    let filter: string[] | undefined = []
+    if (this.methodParaCodes && this.methodParaCodes.length > 0 &&
+      assessmentIds && assessmentIds.length > 0) {
       filter.push('assessment.id||$in||' + assessmentIds) &
-        filter.push('code||$in||' + this.methodParaCodes);
-      if (sectionparam.vehical)
-        filter.push('vehical||$eq||' + sectionparam.vehical);
-      if (sectionparam.fuel) filter.push('fuelType||$eq||' + sectionparam.fuel);
-      if (sectionparam.powerPlant)
-        filter.push('powerPlant||$eq||' + sectionparam.powerPlant);
-      if (sectionparam.route) filter.push('route||$eq||' + sectionparam.route);
-      if (sectionparam.feedstock)
-        filter.push('feedstock||$eq||' + sectionparam.feedstock);
-      if (sectionparam.residue)
-        filter.push('residue||$eq||' + sectionparam.residue);
-      if (sectionparam.soil) filter.push('soil||$eq||' + sectionparam.soil);
-      if (sectionparam.stratum)
-        filter.push('stratum||$eq||' + sectionparam.stratum);
-      if (sectionparam.landClearance)
-        filter.push('landClearance||$eq||' + sectionparam.landClearance);
+        filter.push('code||$in||' + this.methodParaCodes)
+      if (sectionparam.vehical) filter.push('vehical||$eq||' + sectionparam.vehical)
+      if (sectionparam.fuel) filter.push('fuelType||$eq||' + sectionparam.fuel)
+      if (sectionparam.feedstock) filter.push('feedstock||$eq||' + sectionparam.feedstock)
+      if (sectionparam.residue) filter.push('residue||$eq||' + sectionparam.residue)
+      if (sectionparam.soil) filter.push('soil||$eq||' + sectionparam.soil)
+      if (sectionparam.landClearance) filter.push('landClearance||$eq||' + sectionparam.landClearance)
 
       this.serviceProxy
         .getManyBaseParameterControllerParameter(
@@ -2402,46 +2364,69 @@ export class GhgAssessmentComponent implements OnInit {
           1000,
           0,
           0,
-          0,
-        )
-        .subscribe((res: any) => {
-          sectionparam.parameters = sectionparam.parameters.map((para) => {
-            const parameters = res.data.filter(
-              (p: any) => p.code == para.Code && p.value,
-            );
-            para.historicalValues = parameters.map((p: any) => {
+          0
+        ).subscribe(async (res: any) => {
+
+          let parametersIds: string[] = res.data.map((p: any) => p.id);
+          let qcPassParameterRequest = await this.parameterRequestControllerServiceProxy.getQCpassParameterRequest(parametersIds).toPromise();
+
+          sectionparam.parameters = sectionparam.parameters.map(para => {
+            let parameters = qcPassParameterRequest.filter((p: any) => (p.parameter.code == para.Code) && p.parameter.value)
+
+            para.historicalValues = parameters.map((dr: any) => {
+              let p = dr.parameter;
               return {
-                label:
-                  p.assessmentYear + ' - ' + p.value + ' ' + p.uomDataEntry,
+                label: p.AssessmentYear + ' - ' + p.value + ' ' + p.uomDataEntry,
                 value: p.value,
                 unit: p.uomDataEntry,
                 year: p.assessmentYear,
-              };
-            });
-            const answer: any[] = [];
-            para.historicalValues.forEach((x: any) => {
-              if (
-                !answer.some((y) => JSON.stringify(y) === JSON.stringify(x))
-              ) {
-                answer.push(x);
+                id: p.id
               }
-            });
-            para.historicalValues = answer;
-            para.displayhisValues = para.historicalValues.filter(
-              (val) => val.unit === para.UOM,
-            );
+            })
+            let answer: any[] = [];
+            para.historicalValues.forEach((x: any) => {
+              if (!answer.some(y => JSON.stringify(y) === JSON.stringify(x))) {
+                answer.push(x)
+              }
+            })
+
+            para.historicalValues = answer
+            para.displayhisValues = para.historicalValues.filter(val => val.unit === para.UOM)
+            if (para.displayhisValues.length === 0) {
+              let unit = this.convertSubscriptsToNormal(para.UOM)
+              para.displayhisValues = para.historicalValues.filter(val => val.unit === unit)
+            }
             para.displayhisValues.sort((a: any, b: any) => b.year - a.year);
-            return para;
-          });
-        });
+            return para
+          })
+        })
     }
+
   }
 
+  convertSubscriptsToNormal(str: string) {
+    var result = '';
+    result = str.replace(/[₀-₉ₐ-ₙₚₛₜ]/g, function (match) {
+      var charCode = match.charCodeAt(0);
+      var normalCharCode = charCode - 8272;
+      return String.fromCharCode(normalCharCode);
+    });
+
+    result = result.replace(/[⁰-⁹²ᵃ-ᵛᵗⁿʰᵏˡᵐⁱ]/g, function (match) {
+      var charCode = match.charCodeAt(0);
+      var normalCharCode = charCode - 8272;
+      return String.fromCharCode(normalCharCode);
+    });
+
+    return result;
+  }
+
+
   createParameter(jsonParam: any) {
-    const params: Parameter[] = [];
+    let params: Parameter[] = [];
     if (jsonParam.parameter !== undefined) {
       jsonParam.parameter.map((p: any) => {
-        const param = new Parameter();
+        let param = new Parameter();
         param.parameterName = p.name;
         param.UOMList = [...p.unit];
         param.Code = p.code;
@@ -2481,14 +2466,22 @@ export class GhgAssessmentComponent implements OnInit {
 
   onCAChange(event: any) {
     this.isDiasbaleEye = false;
+    this.toolTop = 'You can only select the methodology that was used for previous assessment <Br> That methodology are';
+    this.projectControllerServiceProxy.getmeth(this.selectedClimateAction.id).subscribe((res: any) => {
 
+      this.methcode = res;
+      for (let meth of this.methcode) {
+        this.toolTop = this.toolTop + ' <br> <p style="color: yellow">' + meth
+      }
+    })
     if (this.selectedClimateAction.projectApprovalStatus?.id == 5) {
-      this.hasPrevActiveCA = true;
-    } else {
+      this.hasPrevActiveCA = true
+    }
+    else {
       this.hasPrevActiveCA = false;
     }
     this.selectedNdc = this.ndcList.find(
-      (a) => a.id === this.selectedClimateAction.ndc?.id,
+      (a) => a.id === this.selectedClimateAction.ndc?.id
     )!;
 
     this.selectDefaultMethodForNDc();
@@ -2499,23 +2492,28 @@ export class GhgAssessmentComponent implements OnInit {
 
     this.selectDefaultMethodForSUBNDc();
 
+    let year = this.selectedClimateAction.proposeDateofCommence.year();
+    this.years = [];
+    this.years.push({ label: year.toString(), value: year });
+    for (let i = 1; i < 30; i++) {
+      this.years.push({ label: (year + i).toString(), value: year + i });
+    }
+
     this.proposeDateofCommence = new Date(
       this.selectedClimateAction.proposeDateofCommence.year(),
       this.selectedClimateAction.proposeDateofCommence.month(),
-      this.selectedClimateAction.proposeDateofCommence.date(),
+      this.selectedClimateAction.proposeDateofCommence.date()
     );
 
     this.projectDuration = this.selectedClimateAction.duration;
 
     if (this.IsProposal == false) {
-      const filterProject: string[] = [];
+      let filterProject: string[] = new Array();
       filterProject.push('project.id||$eq||' + event.id) &
         filterProject.push('Assessment.isProposal||$eq||' + 0) &
-        filterProject.push(
-          'Assessment.assessmentType||$in||' + this.approachList,
-        );
-      this.serviceProxy
-        .getManyBaseAssessmentControllerAssessment(
+        filterProject.push('Assessment.assessmentType||$in||' + this.approachList);
+      this.serviceProxy.getManyBaseAssessmentControllerAssessment
+        (
           undefined,
           undefined,
           filterProject,
@@ -2525,66 +2523,66 @@ export class GhgAssessmentComponent implements OnInit {
           1000,
           0,
           0,
-          0,
+          0
         )
         .subscribe((res: any) => {
           this.selectedAssessementByCA = res.data;
-
-          const yearList: any[] = [];
+          let yearList: any[] = [];
           let uniqueYearList: any[] = [];
-          for (const assessment of this.selectedAssessementByCA) {
-            for (const years of assessment.assessmentYear) {
-              yearList.push(years.assessmentYear);
+          for (let assement of this.selectedAssessementByCA) {
+            this.methcode.push(assement.methodologyCode);
+            for (let asyears of assement.assessmentYear) {
+
+              yearList.push(asyears.assessmentYear)
             }
           }
           uniqueYearList = [...new Set(yearList)];
-
           const result: any[] = [];
-          [...new Set(yearList)].forEach((item) =>
-            result.push({
-              key: item,
-              count: yearList.filter((i) => i == item).length,
-            }),
-          );
-          const duplicateYears = result.filter((obj) => obj.count > 1);
-
-          for (const x of duplicateYears) {
-            this.years = this.years.filter((obj) => obj != x['key']);
+          [...new Set(yearList)].forEach(item => result.push({
+            key: item,
+            count:
+              yearList.filter(i => i == item).length
+          }));
+          let duplicateYears = result.filter((obj) => obj.count > 1);
+          for (let x of duplicateYears) {
+            this.years = this.years.filter((obj) => obj != x['key'])
           }
 
           if (this.selectedAssessementByCA.length > 0) {
             this.methodologys = [];
             this.methodologys[0] = this.selectedAssessementByCA[0].methodology;
-          } else {
+          }
+          else {
             this.methodologys = this.methodologysCopy;
           }
         });
     }
   }
 
-  getDefaultValues(name: any) {
-    const idArray: any[] = [];
-    let arr: any[] = [];
 
-    arr = this.defaultValues.filter(
-      (a) => a.parameterName === name && a.value !== null,
-    );
-    for (const item of arr) {
-      idArray.push(item.id);
-    }
-
-    const arr2: any[] = [];
-    for (const pId of idArray) {
-      const child = this.defaultValues.filter(
-        (a) => a.parentId === pId && a.value != null,
-      );
-
-      if (child.length != 0) {
-        Array.prototype.push.apply(arr2, child);
-      }
-    }
-    Array.prototype.push.apply(arr, arr2);
-    return arr;
+  getDefaultValues(name:any)
+  {
+   let idArray:any[] = [];
+   let arr:any[] = [];
+   
+   arr = this.defaultValues.filter((a) => a.parameterName === name && a.value !== null);
+   for(let item of arr)
+   {
+     idArray.push(item.id)
+   }
+   let arr2:any[] = [];
+   for(let pId of idArray)
+   {
+    let child = this.defaultValues.filter((a) =>a.parentId === pId && a.value != null);
+     
+     if(child.length != 0)
+     {
+      Array.prototype.push.apply(arr2,child); 
+     }
+     
+   }
+   Array.prototype.push.apply(arr,arr2); 
+   return arr;
   }
 
   onNdcChange(event: any) {
@@ -2699,7 +2697,7 @@ export class GhgAssessmentComponent implements OnInit {
       const parameters: Parameter_Server[] = [];
 
       if (this.IsProposal) {
-        this.selectYears.push(this.assessmentYear.getFullYear());
+        this.selectYears.push(this.assesmentYear.getFullYear());
       }
 
       this.selectYears.map((y: any) => {
@@ -2969,7 +2967,6 @@ export class GhgAssessmentComponent implements OnInit {
             this.countryCode,
           );
           parameters.push(...feedstock!);
-
           const residue = this.createParam(
             this.lkParameters.residueSection,
             false,
@@ -3030,8 +3027,8 @@ export class GhgAssessmentComponent implements OnInit {
         assessment.projectionIndicator = this.selectedprojectIndicater;
         assessment.projectionBaseYear = this.ProjectionbaseYear;
 
-        const projectBaseYearParm = this.createProjectionParam(
-          'Projection Base Year ' + assessment.projectionBaseYear,
+        let projectBaseYearParm = this.createProjectionParam(
+          'Projection Base Year ' + paramSuffix + ' ' + assessment.projectionBaseYear,
           this.selectdProjectionBaseYearInstition,
           this.selectdProjectionBaseYearValue,
           this.pBYPDDefaultValue,
@@ -3083,84 +3080,78 @@ export class GhgAssessmentComponent implements OnInit {
         this.selectYears = [];
       }
 
-      if (this.requiredParas) {
+      if (!this.IsProposal&& !assessment.parameters.some(obj => (obj.institution&&obj.institution.id!=undefined&&obj.institution.id!=null)&&!obj.isDefault&&!obj.isHistorical)) {
+        this.messageService.add({severity:'error', summary:'Can Not Save', detail:'This can not be proceed, you have to at least select one data providing institution'});
+        return
+      }
+  
+      if (this.requiredParas){
+        this.isDisableforSubmitButton = true;
         this.serviceProxy
           .createOneBaseAssessmentControllerAssessment(assessment)
-          .subscribe(
-            (res: any) => {
-              this.isDisableforSubmitButton = true;
-              this.isSubmitted = true;
+          .subscribe((res: any) => {
+            this.isSubmitted = true
+            if (this.IsProposal == false) {
+              this.serviceProxy
+                .getManyBaseProjectApprovalStatusControllerProjectApprovalStatus(
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  1000,
+                  0,
+                  0,
+                  0
+                )
+                .subscribe((res: any) => {
+                  this.projectApprovalStatus = res.data;
 
-              if (this.IsProposal == false) {
-                this.serviceProxy
-                  .getManyBaseProjectApprovalStatusControllerProjectApprovalStatus(
-                    undefined,
-                    undefined,
-                    undefined,
-                    undefined,
-                    undefined,
-                    undefined,
-                    1000,
-                    0,
-                    0,
-                    0,
-                  )
-                  .subscribe((res: any) => {
-                    this.projectApprovalStatus = res.data;
+                  let status = this.projectApprovalStatus.find((a) => a.id === 5);
+                  this.selectedClimateAction.projectApprovalStatus =
+                    status === undefined ? (null as any) : status;
 
-                    const status = this.projectApprovalStatus.find(
-                      (a) => a.id === 5,
-                    );
-                    this.selectedClimateAction.projectApprovalStatus =
-                      status === undefined ? (null as any) : status;
-
-                    this.serviceProxy
-                      .getOneBaseProjectControllerProject(
-                        this.selectedClimateAction.id,
-                        undefined,
-                        undefined,
-                        undefined,
-                      )
-                      .subscribe((res) => {
-                        res.projectApprovalStatus =
-                          status === undefined ? (null as any) : status;
-                        this.serviceProxy
-                          .updateOneBaseProjectControllerProject(res.id, res)
-                          .subscribe((res) => {});
-                      });
-                  });
-              }
-
-              if (this.IsProposal == false) {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Confirmed',
-                  detail: 'Successfully send to  DC team!',
+                  this.serviceProxy
+                    .getOneBaseProjectControllerProject(
+                      this.selectedClimateAction.id,
+                      undefined,
+                      undefined,
+                      undefined
+                    )
+                    .subscribe((res) => {
+                      res.createdOn = this.selectedClimateAction.createdOn
+                      res.projectApprovalStatus =
+                        status === undefined ? (null as any) : status;
+                      this.serviceProxy
+                        .updateOneBaseProjectControllerProject(res.id, res)
+                        .subscribe((res) => { });
+                    });
                 });
+            }
 
-                this.savedAsessment = res;
-                this.getAssessmentResult(res.id);
-                this.isSave = true;
-              } else {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Confirmed',
-                  detail: 'Successfully created an assessment!',
-                });
+            if (this.IsProposal == false) {
+              this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Successfully send to  DC team!' });
 
-                this.savedAsessment = res;
-                this.getAssessmentResult(res.id);
-                this.isSave = true;
-              }
-            },
-            (err) => {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error Saving',
-                detail: 'Error saving in assessment!',
-              });
-            },
-          );
+
+              this.savedAsessment = res;
+              this.getAssessmentResult(res.id);
+              this.isSave = true;
+            }
+            else
+            {
+              this.messageService.add({severity:'success', summary:'Confirmed', detail:'Successfully created an assessment!'});
+              
+  
+            this.savedAsessment = res;
+            this.getAssessmentResult(res.id);
+            this.isSave = true;
+            }
+           
+          }, err => {
+            this.isDisableforSubmitButton = false;
+            this.messageService.add({ severity: 'error', summary: 'Error Saving', detail: 'Error saving in assessment!' });
+          });
       } else {
         this.isSubmitted = true;
       }
@@ -3178,16 +3169,17 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   getAssessmentResult(assessmentId: number) {
-    this.assessmentYearProxy
+    this.assesmentYearProxy
       .getAllByAssessmentId(assessmentId)
       .subscribe((res) => {
         const assesYear = res;
 
-        this.assessmentResultProxy
+        this.assesmentResaultProxy
           .getAssessmentResult(
             assessmentId,
             assesYear[0].ay_id,
             true,
+            '',
             environment.apiKey1,
           )
           .subscribe((res) => {});
@@ -3310,6 +3302,8 @@ export class GhgAssessmentComponent implements OnInit {
     param.value = p.value;
     if (p.isDefaultValue && this.requiredParas) {
       param.value = p.defaultValue.value;
+      param.defaultValue = p.defaultValue;
+      param.isDefault = p.isDefaultValue
       param.uomDataEntry = p.UOM;
       param.conversionValue = p.value;
     }
@@ -3318,7 +3312,10 @@ export class GhgAssessmentComponent implements OnInit {
       param.conversionValue = p.value;
     }
     if (p.isHistorical) {
-      param.isHistorical = p.isHistorical;
+      param.isHistorical = p.isHistorical
+      param.uomDataEntry = p.UOM;
+      param.conversionValue = p.value;
+      param['historicalParaID'] = p.historicalParaID;
     }
     param.uomDataRequest = p.UOM;
     param.methodologyCode = this.methodologyCode;
@@ -3354,7 +3351,7 @@ export class GhgAssessmentComponent implements OnInit {
     if (
       this.selectedprojectIndicater ===
       this.ProjectIndicaterEnum[
-        this.ProjectIndicaterEnum['Population Growth (POP)']
+      this.ProjectIndicaterEnum['Population Growth (POP)']
       ]
     )
       param.uomDataRequest = 'population';
@@ -3519,7 +3516,7 @@ export class GhgAssessmentComponent implements OnInit {
       this.router.navigate(['/result'], {
         queryParams: {
           id: this.savedAsessment.id,
-          yr: this.assessmentYear.getFullYear(),
+          yr: this.assesmentYear.getFullYear(),
         },
       });
     }, 2000);
@@ -3528,7 +3525,7 @@ export class GhgAssessmentComponent implements OnInit {
   async onAssessmentYearChange(event: any) {
     this.projectionBaseyears = [];
     if (this.IsProposal) {
-      this.projectionBaseyears.push(this.assessmentYear.getFullYear());
+      this.projectionBaseyears.push(this.assesmentYear.getFullYear());
       this.ProjectionbaseYear = this.projectionBaseyears[0];
     } else {
       this.projectionBaseyears.push(...this.selectYears);
@@ -3537,7 +3534,7 @@ export class GhgAssessmentComponent implements OnInit {
       this.selectedApproch = '';
       this.assessmentYearAndTypeObjectList = [];
       for (const year of this.selectYears) {
-        const res2 = await this.assessmentYearProxy
+        const res2 = await this.assesmentYearProxy
           .getAssessmentByYearAndProjectId(
             year.toString(),
             this.selectedClimateAction.id,
@@ -3578,7 +3575,7 @@ export class GhgAssessmentComponent implements OnInit {
             this.selectedClimateAction.id,
             this.selectedClimateAction,
           )
-          .subscribe((res) => {});
+          .subscribe((res) => { });
       });
   }
   isGuidedSelectionChange(event: any) {

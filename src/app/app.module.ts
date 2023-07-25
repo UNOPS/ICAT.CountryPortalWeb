@@ -39,6 +39,7 @@ import { ConfirmationService } from 'primeng/api';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ChartModule } from 'primeng/chart';
 import { TreeModule } from 'primeng/tree';
+import { ReactiveFormsModule} from '@angular/forms' 
 import { GMapModule } from 'primeng/gmap';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -57,7 +58,6 @@ import {
   AuthControllerServiceProxy,
   InstitutionControllerServiceProxy,
   AuditControllerServiceProxy,
-  AssessmentControllerServiceProxy,
   ParameterControllerServiceProxy,
   AssessmentYearControllerServiceProxy,
   ParameterRequestControllerServiceProxy,
@@ -65,8 +65,6 @@ import {
   VerificationControllerServiceProxy,
   NdcControllerServiceProxy,
   ReportControllerServiceProxy,
-  AssessmentResultControllerServiceProxy,
-  ProjectionResultControllerServiceProxy,
   SectorControllerServiceProxy,
   UnitConversionControllerServiceProxy,
   UserTypeControllerServiceProxy,
@@ -75,6 +73,9 @@ import {
   DefaultValueControllerServiceProxy,
   ApplicabilityControllerServiceProxy,
   TrackClimateControllerServiceProxy,
+  AssessmentControllerServiceProxy,
+  AssessmentResultControllerServiceProxy,
+  ProjectionResultControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
 import { ProjectInformationComponent } from './climate-action/project-information/project-information.component';
 import { MethodologiesComponent } from './methodologies/methodologies.component';
@@ -158,15 +159,20 @@ import { TokenInterceptor } from './shared/token-interceptor ';
 import { SharedDataService } from 'shared/shared-data-services';
 import { ViewDatarequestHistoryComponent } from './component/view-datarequest-history/view-datarequest-history.component';
 import { DefaultValueFormComponent } from './data-request-flow/manage-default-values/default-value-form/default-value-form.component';
+import {MessageModule} from 'primeng/message';
 import { FeedstockParameterComponent } from './component/feedstock-parameter/feedstock-parameter.component';
 import { SoilParameterComponent } from './component/soil-parameter/soil-parameter.component';
 import { StratumParameterComponent } from './component/stratum-parameter/stratum-parameter.component';
 import { ResidueParameterComponent } from './component/residue-parameter/residue-parameter.component';
-import { PasswordModule } from 'primeng/password';
+import {PasswordModule} from 'primeng/password';
+import { VerificationActionDialogComponent } from './verification-sector-admin/verification-action-dialog/verification-action-dialog.component';
+import { SetPasswordComponent } from './login/set-password/set-password.component';
+import { VerificationService } from 'shared/verification-service';
 
-export function getRemoteServiceBaseUrl(): any {
+export function getRemoteServiceBaseUrl(): string {
   return environment.baseUrlAPI;
 }
+
 
 @NgModule({
   declarations: [
@@ -255,6 +261,9 @@ export function getRemoteServiceBaseUrl(): any {
     SoilParameterComponent,
     StratumParameterComponent,
     ResidueParameterComponent,
+    VerificationActionDialogComponent,
+    SetPasswordComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -263,7 +272,7 @@ export function getRemoteServiceBaseUrl(): any {
     FormsModule,
     HttpClientModule,
     DashboardModule,
-
+    ReactiveFormsModule,
     NgImageSliderModule,
     MultiSelectModule,
     ToastModule,
@@ -307,7 +316,7 @@ export function getRemoteServiceBaseUrl(): any {
     PaginatorModule,
     CarouselModule,
     DynamicDialogModule,
-    PasswordModule,
+    PasswordModule
   ],
   providers: [
     LoginLayoutService,
@@ -348,6 +357,7 @@ export function getRemoteServiceBaseUrl(): any {
     ParameterHistoryControllerServiceProxy,
     DefaultValueControllerServiceProxy,
     ApplicabilityControllerServiceProxy,
+    VerificationService
   ],
   bootstrap: [AppComponent],
 })

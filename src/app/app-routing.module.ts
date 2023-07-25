@@ -25,6 +25,7 @@ import { GhgImpactComponent } from './assess-ca/ghg-impact/ghg-impact.component'
 import { LearningMaterialComponent } from './learning-material/learning-material.component';
 import { ActiveResultComponent } from './climate-action-result/active-result/active-result.component';
 import { ProposedResultComponent } from './climate-action-result/proposed-result/proposed-result.component';
+import { MacAssessmentComponent } from './assess-ca/mac-assessment/mac-assessment.component';
 import { AllResultComponent } from './climate-action-result/all-result/all-result.component';
 import { ManagedatastatusComponent } from './managedatastatus/managedatastatus.component';
 import { ResultComponent } from './view-climate-action-results/proposed-result/result.component';
@@ -58,6 +59,7 @@ import { SummarytrackclimateactionsCountryComponent } from './trackclimateaction
 import { TrackclimateactionsCountryComponent } from './trackclimateactions-country/trackclimateactions-country.component';
 import { VerifyDetailSectorAdminComponent } from './verification-sector-admin/verify-detail/verify-detail.component';
 import { DefaultValueFormComponent } from './data-request-flow/manage-default-values/default-value-form/default-value-form.component';
+import { SetPasswordComponent } from './login/set-password/set-password.component';
 
 export enum UserRoles {
   COUNTRY_ADMIN = 'Country Admin',
@@ -92,10 +94,12 @@ const routes: Routes = [
         UserRoles.DCT,
         UserRoles.QC,
       ],
+      
     },
   },
-  { path: '', redirectTo: '/landing-page', pathMatch: 'full' },
+  { path: '', redirectTo: '/landing-page', pathMatch: 'full' }, // redirect to `first-component`
   { path: 'login', component: LoginLayoutComponent },
+  { path: 'reset-password', component: SetPasswordComponent },
   {
     path: 'user-list',
     component: UserListComponent,

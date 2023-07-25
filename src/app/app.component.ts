@@ -122,7 +122,12 @@ export class AppComponent implements OnInit {
           this.showTopMenu = false;
           return;
         }
-      }
+        if (event.url == '/reset-password') {
+          this.showLeftMenu = false;
+          this.showTopMenu = false;
+          return;
+        }
+    }
     });
   }
 
@@ -164,7 +169,6 @@ export class AppComponent implements OnInit {
     this.instName = tokenPayload.instName ? tokenPayload.instName : '';
     this.moduleLevels = this.roleGuardService.checkModels();
     [1, 2, 3].some(this.getModel);
-
     if (this.roleGuardService.checkRoles(['Country Admin'])) {
       this.userRole = this.userRoles[0];
     } else if (this.roleGuardService.checkRoles(['Verifier'])) {
@@ -185,6 +189,7 @@ export class AppComponent implements OnInit {
       this.userRole = this.userRoles[8];
     }
   }
+  //logout
   logout() {
     localStorage.setItem('access_token', '');
     localStorage.setItem('user_name', '');

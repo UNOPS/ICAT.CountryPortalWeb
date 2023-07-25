@@ -12,6 +12,7 @@ import {
   ParameterControllerServiceProxy,
   ParameterHistoryControllerServiceProxy,
   ParameterRequestControllerServiceProxy,
+  ParameterVerifierAcceptance,
   ServiceProxy,
   UpdateDeadlineDto,
   UpdateValueEnterData,
@@ -23,15 +24,21 @@ import {
   styleUrls: ['./approve-data.component.css'],
 })
 export class ApproveDataComponent implements OnInit {
-  assessmentYearId = 0;
+  assessmentYearId: number = 0;
   assessmentYear: any;
-  assessmentYearDetails: AssessmentYear = new AssessmentYear();
+  assementYearDetails: AssessmentYear = new AssessmentYear();
   parameters: Parameter[] = [];
   baselineParameters: Parameter[] = [];
+  baselineParametersAcceptcount :number =0;
+  baselineParameterscount:number =0;
   projectParameters: Parameter[] = [];
+  projectParametersAcceptcount :number =0;
+  projectParameterscount:number =0;
   lekageParameters: Parameter[] = [];
+  lekageParametersAcceptcount :number =0;
   projectionParameters: Parameter[] = [];
-  loading = false;
+  projectionParametersAcceptcount :number =0;
+  loading: boolean = false;
   confirm1: boolean;
   institutionList: any[] = [];
   selectedInstitution: any;
@@ -52,8 +59,9 @@ export class ApproveDataComponent implements OnInit {
   headerBaseYear: string;
   headerAssessmentYear: number;
   userName: string;
-  enableQCButton = false;
-  isRejectButtonDisable = false;
+  dissetButton:boolean =false;
+  enableQCButton: boolean = false;
+  isRejectButtonDisable: boolean = false;
   paraId: number;
   requestHistoryList: any[] = [];
   displayHistory = false;
@@ -76,7 +84,7 @@ export class ApproveDataComponent implements OnInit {
     private instProxy: InstitutionControllerServiceProxy,
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.userName = localStorage.getItem('user_name')!;
     this.route.queryParams.subscribe((params) => {
       this.assessmentYearId = params['id'];
@@ -87,28 +95,36 @@ export class ApproveDataComponent implements OnInit {
         this.assessmentYearId,
         undefined,
         undefined,
-        undefined,
+        undefined
       )
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
         this.finalQC = res;
+        this.assessmentYear = res
         if (this.finalQC != null) {
           if (this.finalQC.qaStatus != 4) {
             this.isRejectButtonDisable = false;
-            if (this.finalQC.qaStatus == 1) {
-              this.isHideRejectButton = true;
-            } else {
-              this.isHideRejectButton = false;
+            if(this.finalQC.qaStatus==1){
+              await this.checkQC()
+              if (this.finalQC.verificationStatus === 8){
+                if (this.enableQCButton){
+                  this.isHideRejectButton = true;
+                } else {
+                  this.isHideRejectButton = false
+                }
+              } else {
+                this.isHideRejectButton = true;
+              }
             }
+            else {this.isHideRejectButton = false;}
           }
         }
       });
 
-    this.assessmentYearProxy
-      .getAssessmentByYearId(this.assessmentYearId, this.userName)
-      .subscribe((res) => {
+  await  this.assessmentYearProxy
+      .getAssessmentByYearId(this.assesmentYearId, this.userName)
+      .subscribe(async (res) => {
         if (res) {
           this.hideAllButtons = res?.qaStatus;
-
           this.assessmentYear = res;
           this.headerlcimateActionName =
             res.assessment?.Project.climateActionName;
@@ -118,71 +134,108 @@ export class ApproveDataComponent implements OnInit {
           this.headerAssessmentYear = res?.assessmentYear;
           this.headerBaseYear = res?.assessment?.baseYear;
         }
-
-        this.getAssessment();
+      if(res.qaStatus){
+        this.dissetButton =true
+        }
+        this.getAssesment();
         if (this.finalQC?.qaStatus == null) {
           this.checkQC();
         }
       });
 
-    const filter2: string[] = [];
+    let filter2: string[] = new Array();
 
     filter2.push('type.id||$eq||' + 3);
 
-    this.instProxy.getInstitutionforApproveData().subscribe((a: any) => {
+    await this.instProxy.getInstitutionforApproveData().subscribe((a: any) => {
       this.institutionList = a;
     });
+    this.disableAccept();
   }
+
 
   getAssessment() {
     this.assessmentProxy
       .getAssessmentsForApproveData(
         this.assessmentYear.assessment.id,
         this.assessmentYear.assessmentYear,
-        this.userName,
+        this.userName
       )
       .subscribe((res) => {
-        this.assessmentYearDetails.assessment = res;
+        this.assementYearDetails.assessment = res;
 
-        this.parameters = this.assessmentYearDetails.assessment?.parameters;
+        this.parameters = this.assementYearDetails.assessment?.parameters;
 
-        this.baselineParameters = this.assessmentYearDetails.assessment?.parameters.filter(
-          (p) => p.isBaseline,
-        );
+        let statusToRemove = [ParameterVerifierAcceptance.REJECTED]
 
-        this.projectParameters = this.assessmentYearDetails.assessment.parameters.filter(
-          (p) => p.isProject,
-        );
-        this.lekageParameters = this.assessmentYearDetails.assessment.parameters.filter(
-          (p) => p.isLekage,
-        );
-        this.projectionParameters = this.assessmentYearDetails.assessment.parameters.filter(
-          (p) =>
-            p.isProjection && p.projectionBaseYear == this.headerAssessmentYear,
-        );
+        this.baselineParameters =
+          this.assementYearDetails.assessment?.parameters.filter(
+            (p) => p.isBaseline  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
+          );
+            if(this.baselineParameters){
+              for(let n of this.baselineParameters){
+                this.baselineParameterscount += 1;
+                if(n.parameterRequest.dataRequestStatus==11){
+                  this.baselineParametersAcceptcount +=1;
+                }
+              }
+            }
+          
+        this.projectParameters =
+          this.assementYearDetails?.assessment?.parameters.filter(
+            (p) => p.isProject  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
+          );
+          if(this.projectParameters){
+            for(let n of this.projectParameters){
+              this.projectParameterscount += 1;
+              if(n.parameterRequest.dataRequestStatus==11){
+                this.projectParametersAcceptcount +=1;
+              }
+            }
+          }
+         
+        this.lekageParameters =
+          this.assementYearDetails?.assessment?.parameters.filter(
+            (p) => p.isLekage  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
+          );
+          if(this.lekageParameters){
+            for(let n of this.lekageParameters){
+              this.lekageParametersAcceptcount += 1;
+              if(n.parameterRequest.dataRequestStatus==11){
+                this.lekageParametersAcceptcount +=1;
+              }
+            }
+          }
+        
+        this.projectionParameters =
+          this.assementYearDetails?.assessment?.parameters.filter(
+            (p) =>
+              p.isProjection &&
+              p.projectionBaseYear == this.headerAssessmentYear &&
+              !statusToRemove.includes(p.verifierAcceptance) && p.institution
+          );
+          if(this.projectionParameters){
+            for(let n of this.projectionParameters){
+              if(n.parameterRequest.dataRequestStatus==11){
+                this.projectionParametersAcceptcount +=1;
+              }
+            }
+          }
       });
   }
 
-  checkQC() {
-    this.assessmentProxy
-      .checkAssessmentReadyForQC(
-        this.assessmentYear.assessment.id,
-        this.assessmentYear.assessmentYear,
-      )
-      .subscribe((r) => {
-        if (r) {
-          this.enableQCButton = r;
-          this.isRejectButtonDisable = !r;
-        }
-      });
+  async checkQC() {
+    let r = await this.assessmentProxy.checkAssessmentReadyForQC(
+      this.assessmentYear.assessment.id, this.assessmentYear.assessmentYear
+    ).toPromise()
+    if (r) {
+      this.enableQCButton = r;
+      this.isRejectButtonDisable = !r;
+    }
   }
   onRejectClick() {
-    this.selectedParameters.push(
-      ...this.selectedBaselineParameters,
-      ...this.selectedProjectParameters,
-      ...this.selectedLeakageParameters,
-      ...this.selectedProjectionParameters,
-    );
+    this.selectedParameters.push(...this.selectedBaselineParameters, ...this.selectedProjectParameters,
+      ...this.selectedLeakageParameters, ...this.selectedProjectionParameters)
     if (this.selectedParameters.length > 1) {
       this.messageService.add({
         severity: 'error',
@@ -271,7 +324,7 @@ export class ApproveDataComponent implements OnInit {
     this.buttonLabel = 'Sent';
     this.enableQCButton = false;
     this.isRejectButtonDisable = false;
-
+    setTimeout(() => {
     this.assessmentYearProxy.acceptQC(inputParameters).subscribe(
       (res) => {
         this.messageService.add({
@@ -288,6 +341,7 @@ export class ApproveDataComponent implements OnInit {
         });
       },
     );
+    },1500);
     this.isRejectButtonDisable = true;
     this.isOpenPopUp = false;
   }
@@ -327,12 +381,12 @@ export class ApproveDataComponent implements OnInit {
         }
       }
       if (idList.length > 0) {
-        const inputParameters = new UpdateDeadlineDto();
+        let inputParameters = new UpdateDeadlineDto();
         inputParameters.ids = idList;
         inputParameters.status = 11;
-
+        inputParameters.verificationStatus = this.assessmentYear.verificationStatus
         this.parameterProxy.acceptReviewData(inputParameters).subscribe(
-          (res) => {
+          async (res) => {
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
@@ -348,11 +402,13 @@ export class ApproveDataComponent implements OnInit {
               summary: 'Error.',
               detail: 'Internal server error, please try again.',
             });
-          },
+          }
         );
       }
     }
-    this.selectedParameters = [];
+    this.selectedParameters = []
+    this.baselineParametersAcceptcount = 0
+    this.projectParametersAcceptcount = 0
   }
 
   clearParameters() {
@@ -361,5 +417,28 @@ export class ApproveDataComponent implements OnInit {
     this.selectedLeakageParameters = [];
     this.selectedProjectParameters = [];
     this.selectedProjectionParameters = [];
+  }
+
+  disableAccept() {
+    return (this.isHideRejectButton || this.enableQCButton) ||
+      (this.baselineParameters?.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters?.length == this.projectParametersAcceptcount) &&
+      (this.lekageParameters?.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters?.length === this.projectionParametersAcceptcount)
+  }
+
+  disableReject() {
+    return this.isRejectButtonDisable ||
+      (this.baselineParameters?.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters?.length == this.projectParametersAcceptcount) &&
+      (this.lekageParameters?.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters?.length === this.projectionParametersAcceptcount)
+  }
+
+  getAcceptLabel() {
+    return ((this.baselineParameters?.length == this.baselineParametersAcceptcount) &&
+      (this.projectParameters?.length == this.projectParametersAcceptcount) &&
+      (this.lekageParameters?.length === this.lekageParametersAcceptcount) &&
+      (this.projectionParameters?.length === this.projectionParametersAcceptcount)) ? 'Accepted' : 'Accept'
   }
 }

@@ -19,7 +19,10 @@ export class ViewDatarequestHistoryComponent implements OnInit {
   listOfHistory: any[] = [];
   flag: number;
 
-  constructor(private router: Router, public serviceProxy: ServiceProxy) {}
+  constructor(
+    private router: Router,
+    public serviceProxy: ServiceProxy
+  ) { }
 
   ngOnInit(): void {
     this.flag = 8888;

@@ -53,6 +53,9 @@ export class RouteParameterComponent implements OnInit {
     this.parameterSection.routeSection.sectionparameters[idxSec].parameters[
       idxPara
     ]['value'] = event.value.value;
+    this.parameterSection.routeSection.sectionparameters[idxSec].parameters[
+      idxPara
+    ]['historicalParaID'] = event.value.id;
   }
 
   changeUnit(e: any, idxSec: any, idxPara: any) {

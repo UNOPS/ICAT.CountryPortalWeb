@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import {
   AssessmentYear,
+  AssessmentYearControllerServiceProxy,
   Parameter,
+  ParameterVerifierAcceptance,
   ServiceProxy,
   User,
   VerificationControllerServiceProxy,
@@ -51,27 +53,46 @@ export class RaiseConcernComponent implements OnInit {
   isProjection: boolean;
 
   @Input()
+  isAssumption: boolean;
+
+  @Input()
   parameter: Parameter;
+
+  @Input()
+  isTotal: boolean;
+
+  @Input()
+  isMac: boolean;
+
+  @Input()
+  isDifference: boolean;
+
+  @Output()
+  onCompleteConcern = new EventEmitter<boolean>();
 
   lastConcernDate: Date = new Date();
 
-  commentRequried = false;
-  comment = '';
-  verificationRound = 0;
+  commentRequried: boolean = false;
+  comment: string = '';
+  verificationRound: number = 0;
   verificationDetail: VerificationDetail | undefined;
   loggedUser: User;
+  roundOneHeadTable: any;
+  roundTwoHeadTable: any;
+  roundThreeHeadTable: any;
 
   constructor(
     private verificationProxy: VerificationControllerServiceProxy,
     private messageService: MessageService,
     private router: Router,
     private serviceProxy: ServiceProxy,
+    private assessmentYearControllerServiceProxy: AssessmentYearControllerServiceProxy
   ) {}
 
   ngOnInit(): void {
-    const userName = localStorage.getItem('user_name')!;
+    let userName = localStorage.getItem('user_name')!;
 
-    const filter1: string[] = [];
+    let filter1: string[] = [];
     filter1.push('username||$eq||' + userName);
 
     this.serviceProxy
@@ -127,7 +148,7 @@ export class RaiseConcernComponent implements OnInit {
     }
   }
 
-  onComplete() {
+  async onComplete() {
     if (!this.comment || this.comment == '') {
       this.commentRequried = true;
       return;
@@ -155,22 +176,52 @@ export class RaiseConcernComponent implements OnInit {
       vd.isLekage = this.isLekage;
       vd.isProjection = this.isProjection;
       vd.isResult = this.isResult;
+      vd.isAssumption = this.isAssumption
+      vd.isTotal = this.isTotal
+      vd.isMac = this.isMac
+      vd.isDifference = this.isDifference
 
       if (this.isNdC) {
         vd.isNDC = true;
       }
       if (this.isMethodology) {
         vd.isMethodology = true;
+        let asssessmentYear = await this.serviceProxy.getOneBaseAssessmentYearControllerAssessmentYear(
+          assessmentYear.id, undefined, undefined, 0
+        ).toPromise()
+        asssessmentYear.verificationStatus = 6
+        asssessmentYear.editedOn = moment();
+        this.serviceProxy.updateOneBaseAssessmentYearControllerAssessmentYear(
+          asssessmentYear.id, asssessmentYear
+        ).subscribe(res => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'The assessment is failed',
+            closable: true,
+          });
+        })
+
       }
 
       if (this.isParameter) {
-        const param = new Parameter();
+        let param = new Parameter();
         param.id = this.parameter.id;
         vd.parameter = param;
       }
 
       vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
     }
+
+    if (this.isParameter){
+      if (this.verificationRound > 1){
+        let para = vd.parameter
+        para.verifierAcceptance = ParameterVerifierAcceptance.PENDING
+        await this.serviceProxy.updateOneBaseParameterControllerParameter(para.id, para).toPromise()
+      }
+    }
+
+   
 
     vd.explanation = this.comment;
     vd.verificationStage = this.verificationRound;
@@ -187,6 +238,19 @@ export class RaiseConcernComponent implements OnInit {
           detail: 'successfully Save.',
           closable: true,
         });
+        this.onCompleteConcern.emit(true)
+        if (this.isMethodology) window.location.reload()
       });
+  }
+
+  async checkVerificationStage() {
+    if (this.assessmentYear.assessment.id){
+      let verificationList = (await this.assessmentYearControllerServiceProxy
+        .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentYear.assessment.id, this.assessmentYear.assessmentYear)
+        .toPromise())[0]?.verificationDetail;
+      this.roundOneHeadTable = verificationList?.find((o: any) => o.verificationStage == 1);
+      this.roundTwoHeadTable = verificationList?.find((o: any) => o.verificationStage == 2);
+      this.roundThreeHeadTable = verificationList?.find((o: any) => o.verificationStage == 3);
+    }
   }
 }

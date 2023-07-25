@@ -279,35 +279,72 @@ export class MacResultComponent implements OnInit {
     });
   }
 
-  downloadExcel() {
-    for (const x of this.filteredParameters) {
-      const obj: excelMacParameter = {
-        Parameter_Name: '',
-        Entered_Value: '',
-        Unit: '',
-        Institution: '',
-        Assessment_Type: '',
-        Baseline_Parameter: '',
-        Project_Parameter: '',
-        Assessment_Year: '',
-      };
+  async downloadExcel() {
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet([]);
+    const nameValuePairs = [
+      [
+        'Assessment Name',
+        `Assessment of ${this.title} Specific Climate Action - ${this.project.climateActionName}`,
+      ],
+      ['Aggregated Actions', this.ndc ? this.ndc.name : '-'],
+      ['Action Areas', this.subNdc ? this.subNdc.name : '-'],
+      ['Project Start Date', this.projectStartDate],
+      ['Assessment Year', this.assessmentYear],
+      ['Objective of Assessment', this.objectiveOfAssessment],
+      ['Discount Rate', this.getDiscountRate],
+      ['Assessment Type', this.assessment.assessmentType],
+    ];
+  
+    const namevalue = XLSX.utils.sheet_add_aoa(worksheet, nameValuePairs);
 
-      obj.Parameter_Name = x.name;
-      obj.Entered_Value = x.value;
-      obj.Unit = x.uomDataEntry;
-      obj.Institution = x?.institution ? x?.institution?.name : 'N/A';
-      obj.Assessment_Type = this.assessment.assessmentType;
-      obj.Baseline_Parameter = x.isBaseline ? 'Yes' : 'No';
-      obj.Project_Parameter = x.isProject ? 'Yes' : 'No';
-      obj.Assessment_Year = x.assessmentYear;
+    const tableData = [
+      [
+        'Parameter Name',
+        'Entered Value',
+        'Unit',
+        'Institution',
+        'Baseline Parameter',
+        'Project_Parameter',
+      ],
+    ];
+    for (let x of this.filteredParameters) {
+      tableData.push([
+        x.name,
+        x.value,
+        x.uomDataEntry,
+        x?.institution ? x?.institution?.name : 'N/A',
+        x.isBaseline ? 'Yes' : 'No',
+        x.isProject?'Yes':'No'
 
-      this.excellist.push(obj);
+      ]);
     }
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.excellist);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'sheet1');
-    XLSX.writeFile(wb, this.fileName);
-    this.excellist = [];
+   
+    const tableRange = XLSX.utils.sheet_add_aoa(worksheet, tableData, {
+      origin: 'A10',
+    });
+   
+    const result = [
+      [
+        'Cost Defference',
+        this.getCostDifference+' $'
+      ],
+      [
+        'Emission Reduction',
+        this.getReduction+' tCO2e'
+      ],
+      [
+        'MAC',
+        this.getMacValue+' USD/tCO2e'
+      ],
+    ];
+
+     XLSX.utils.sheet_add_aoa(worksheet, result, {
+      origin: 'A'+(this.filteredParameters.length+12),
+    });
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    XLSX.writeFile(workbook, 'data.xlsx');
   }
 
   back() {
@@ -324,4 +361,7 @@ export interface excelMacParameter {
   Baseline_Parameter: any;
   Project_Parameter: any;
   Assessment_Year: any;
+  cost_defference: any;
+  emission_reduction: any;
+  MAC: any;
 }

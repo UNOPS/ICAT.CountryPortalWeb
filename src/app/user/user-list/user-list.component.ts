@@ -45,7 +45,7 @@ export class UserListComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private userControllerService: UsersControllerServiceProxy,
-  ) {}
+  ) { }
 
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
@@ -80,16 +80,18 @@ export class UserListComponent implements OnInit {
         1000,
         0,
         1,
-        0,
+        0
       )
       .subscribe((res) => {
         this.userTypes = res.data;
-        this.userTypes = this.userTypes.filter((e) => e.id != 1);
+        this.userTypes = this.userTypes.filter((e) => e.id != 1)
       });
   }
 
+
+
   onSearch() {
-    const event: any = {};
+    let event: any = {};
     event.rows = this.rows;
     event.first = 0;
 
@@ -98,14 +100,12 @@ export class UserListComponent implements OnInit {
 
   loadCustomers(event: LazyLoadEvent) {
     this.loading = true;
-
     this.totalRecords = 0;
 
-    const typeId = this.searchBy.userType ? this.searchBy.userType.id : 0;
+    let typeId = this.searchBy.userType ? this.searchBy.userType.id : 0;
+    let filterText = this.searchBy.text ? this.searchBy.text : '';
 
-    const filterText = this.searchBy.text ? this.searchBy.text : '';
-
-    const pageNumber =
+    let pageNumber =
       event.first === 0 || event.first == undefined
         ? 1
         : event.first / (event.rows == undefined ? 1 : event.rows) + 1;
@@ -121,8 +121,8 @@ export class UserListComponent implements OnInit {
         });
     }, 1);
   }
-
   editUser(user: User) {
+
     this.router.navigate(['/user'], { queryParams: { id: user.id } });
   }
 

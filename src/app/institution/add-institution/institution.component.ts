@@ -61,9 +61,10 @@ export class InstitutionComponent implements OnInit {
   @ViewChild('op') overlay: any;
   usrrole: any;
   sectorId: any;
-  userSectorId = 0;
-  dataCollectionModuleStatus: number;
-  internalTeam = false;
+  telephoneLength:number;
+  userSectorId:number = 0;
+  dataCollectionModuleStatus:number;
+  internalTeam:boolean = false;
   constructor(
     private serviceProxy: ServiceProxy,
     private confirmationService: ConfirmationService,

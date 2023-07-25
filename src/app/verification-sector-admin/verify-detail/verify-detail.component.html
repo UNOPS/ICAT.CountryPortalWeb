@@ -88,37 +88,31 @@
             <label for="projStatus"><strong>Action Areas</strong></label>
 
             <input
-              [disabled]="true"
-              type="text"
-              name="subNDc"
-              #chgEmission="ngModel"
-              [(ngModel)]="selectedSubNdc?.name!"
-              class="p-inputtext"
-              pInputText
-            />
+            [disabled]="true"
+            type="text"
+            name="subNDc"
+            #chgEmission="ngModel"
+            [(ngModel)]="selectedSubNdc?.name!"
+            class="p-inputtext"
+            pInputText
+          />
           </div>
         </div>
       </div>
-      <div
-        class="col-md-2 d-flex align-items-end"
-        *ngIf="assessmentYear?.verificationStatus! == 3"
-      >
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && !isNdcAccepted && hasNdcConcern">
         <div class="col-12">
-          <button type="button" pButton pRipple (click)="ndcAction()">
+          <button [disabled]="!canActiveNdcAction" type="button" pButton pRipple (click)="ndcAction()">
             Action
           </button>
         </div>
       </div>
-      <div
-        class="col-md-2 d-flex align-items-end"
-        *ngIf="assessmentYear?.verificationStatus! == 3"
-      >
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && hasNdcConcern">
         <div class="col-12">
           <button
             type="button"
             pButton
             pRipple
-            (click)="raiseConcern(true, false, false)"
+            (click)="raiseConcern(true, false,false, false)"
           >
             View Concerns
           </button>
@@ -153,14 +147,105 @@
         <div class="col-5">
           <label> <strong>Emission Reduction </strong> </label>
           <input
-            [disabled]="true"
-            type="text"
-            name="ereduction"
-            #ereduction="ngModel"
-            [(ngModel)]="assessmentResult.totalEmission!"
-            class="p-inputtext"
-            pInputText
-          />
+              [disabled]="true"
+              type="text"
+              name="ereduction"
+              #ereduction="ngModel"
+              [(ngModel)]="assessmentResult?.totalEmission!"
+              class="p-inputtext"
+              pInputText
+            />
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && !isTotalResultAccepted && hasTotalResultConcern">
+        <div class="col-12">
+          <button type="button" [disabled]="!canActiveTotalAction" pButton pRipple (click)="onResultAction('isTotal')">
+            Action
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && hasTotalResultConcern">
+        <div class="col-12">
+          <button
+            type="button"
+            pButton
+            pRipple
+            (click)="raiseConcern(false, false,false,true,'isTotal')"
+          >
+            View Concerns
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3" *ngIf="assessmentYear.assessment.assessmentType == 'MAC' ">
+      <div class="col-md-5">
+        <div class="col-5">
+          <label> <strong>MAC Result </strong> </label>
+          <input
+              [disabled]="true"
+              type="number"
+              name="ereduction"
+              #ereduction="ngModel"
+              [(ngModel)]="assessmentResult?.macResult!"
+              class="p-inputtext"
+              pInputText
+            />
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 && !hasMacComment) && !isMacResultAccepted && hasMacResultConcern">
+        <div class="col-12">
+          <button type="button" [disabled]="!canActiveMacAction" pButton pRipple (click)="onResultAction('isMac')">
+            Action
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 || !hasMacComment) && hasMacResultConcern">
+        <div class="col-12">
+          <button
+            type="button"
+            pButton
+            pRipple
+            (click)="raiseConcern(false, false,false,true,'isMac')"
+          >
+            View Concerns
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mb-3" *ngIf="assessmentYear.assessment.assessmentType == 'MAC' ">
+      <div class="col-md-5">
+        <div class="col-5">
+          <label> <strong>Cost Difference </strong> </label>
+          <input
+              [disabled]="true"
+              type="number"
+              name="ereduction"
+              #ereduction="ngModel"
+              [(ngModel)]="assessmentResult?.costDifference!"
+              class="p-inputtext"
+              pInputText
+            />
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 || !hasCostComment) && !isCostResultAccepted && hasCostResultConcern">
+        <div class="col-12">
+          <button type="button" [disabled]="!canActiveDifferenceAction" pButton pRipple (click)="onResultAction('isDifference')">
+            Action
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex align-items-end" *ngIf="(assessmentYear?.verificationStatus! == 3 || !hasCostComment) && hasCostResultConcern">
+        <div class="col-12">
+          <button
+            type="button"
+            pButton
+            pRipple
+            (click)="raiseConcern(false, false,false,true,'isDifference')"
+          >
+            View Concerns
+          </button>
         </div>
       </div>
     </div>
@@ -222,16 +307,13 @@
           </div>
         </div>
       </div>
-      <div
-        class="col-md-2 d-flex align-items-end"
-        *ngIf="assessmentYear?.verificationStatus! == 3"
-      >
+      <div class="col-md-2  d-flex align-items-end" *ngIf="assessmentYear?.verificationStatus! == 3 && hasMethodologyConcern">
         <div class="col-12">
           <button
             type="button"
             pButton
             pRipple
-            (click)="raiseConcern(false, true, false)"
+            (click)="raiseConcern(false, true,false, false)"
           >
             View Concerns
           </button>
@@ -269,8 +351,8 @@
         [assessmentYear]="assessmentYear"
         [scenario]="assessmentYear.assessment.baselineScenario"
         [parameters]="baselineParameters"
-        ResultLabel="Baseline emission"
-        [ResultValue]="assessmentResult.baselineResult"
+        [ResultLabel]="assessmentYear.assessment.assessmentType === 'MAC' ? 'Total Annual Cost' : 'Baseline emission'"
+        [ResultValue]="getResult('baseline')"
         [verificationDetails]="verificationDetails"
         [isBaseline]="true"
         [isProjection]="false"
@@ -284,8 +366,8 @@
         [assessmentYear]="assessmentYear"
         [scenario]="assessmentYear.assessment.projectScenario"
         [parameters]="projectParameters"
-        ResultLabel="Project emission"
-        [ResultValue]="assessmentResult.projectResult"
+        [ResultLabel]="assessmentYear.assessment.assessmentType === 'MAC' ? 'Total Annual Cost' : 'Project emission'"
+        [ResultValue]="getResult('project')"
         [verificationDetails]="verificationDetails"
         [isProject]="true"
         [isProjection]="false"
@@ -301,7 +383,7 @@
         [scenario]="assessmentYear.assessment.lekageScenario"
         [parameters]="lekageParameters"
         ResultLabel="Leakage emission"
-        [ResultValue]="assessmentResult.lekageResult"
+        [ResultValue]="getResult('lekage')"
         [verificationDetails]="verificationDetails"
         [isLekage]="true"
         [isProjection]="false"
@@ -328,36 +410,34 @@
       <h4 class="mt-4">Assumption</h4>
       <div class="p-grid p-fluid card">
         <div class="row p-2">
-          <div class="col-8">
-            <div class="p-field">
-              <textarea
-                name="RelevantindirectSD"
-                placeholder="Please Enter Your Assumption here"
-                [(ngModel)]="assumption"
-                #myAssumption="ngModel"
-                rows="5"
-                cols="62"
-                pInputTextarea
-                autoResize="autoResize"
-                class="p-inputtext"
-              ></textarea>
-            </div>
-          </div>
-
-          <div class="col-2" *ngIf="assessmentYear?.verificationStatus! == 3">
-            <button
-              type="button"
-              pButton
-              pRipple
-              (click)="raiseConcern(true, false, true)"
-            >
-              View Concerns
-            </button>
+        <div class="col-8">
+          <div class="p-field">
+            <textarea
+              name="RelevantindirectSD"
+              placeholder="Please Enter Your Assumption here"
+              [(ngModel)]="assumption"
+              #myAssumption="ngModel"
+              rows="5"
+              cols="62"
+              pInputTextarea
+              autoResize="autoResize"
+              class="p-inputtext"
+            ></textarea>
           </div>
         </div>
+        <div class="col-2" *ngIf="assessmentYear?.verificationStatus! == 3 && hasAssumptionConcern">
+          <button
+            type="button"
+            pButton
+            pRipple
+            (click)="raiseConcern(true, false,true, false)"
+          >
+            View Concerns
+          </button>
+        </div>
       </div>
-    </div>
-
+      </div>
+    </div>    
     <div class="row mb-3">
       <div
         class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
@@ -380,18 +460,24 @@
       </div>
     </div>
   </div>
+
 </div>
 
-<p-dialog header="View Concern" [(visible)]="displayConcern">
-  <div class="container" style="width: 600px; height: 500px">
-    <app-raise-concern-admin
-      [area]="raiseConcernSection"
-      [verificationDetails]="concernVerificationDetails"
-      [assessmentYear]="assessmentYear"
-      [isNdC]="concernIsNdC"
-      [isMethodology]="concernIsMethodology"
-    ></app-raise-concern-admin>
-  </div>
+<p-dialog
+  header="View Concern"
+  [(visible)]="displayConcern"
+  (onHide)="onHide()"
+>
+<div class="container" style="width: 600px; height: 500px">
+  <app-raise-concern-admin
+    [area]="raiseConcernSection"
+    [verificationDetails]="concernVerificationDetails"
+    [assessmentYear]="assessmentYear"
+    [isNdC]="concernIsNdC"
+    [isMethodology]="concernIsMethodology"
+    (onCompleteConcern)="onComplete($event)"
+  ></app-raise-concern-admin>
+</div>
 </p-dialog>
 
 <p-confirmDialog

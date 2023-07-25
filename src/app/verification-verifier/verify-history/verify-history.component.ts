@@ -13,98 +13,108 @@ import {
 @Component({
   selector: 'app-verify-history',
   templateUrl: './verify-history.component.html',
-  styleUrls: ['./verify-history.component.css'],
+  styleUrls: ['./verify-history.component.css']
 })
-export class VerifyHistoryComponent implements OnInit {
-  VerificationStatusEnum = VerificationStatus;
+export class VerifyHistoryComponent implements OnInit
+{
 
-  verificationStatus: string[] = [
-    VerificationStatus[VerificationStatus.Pending],
-    VerificationStatus[VerificationStatus['Pre Assessment']],
-    VerificationStatus[VerificationStatus['NC Recieved']],
-    VerificationStatus[VerificationStatus['Initial Assessment']],
-    VerificationStatus[VerificationStatus['Final Assessment']],
-    VerificationStatus[VerificationStatus.Fail],
-    VerificationStatus[VerificationStatus['Pass']],
-  ];
+ VerificationStatusEnum = VerificationStatus;
 
-  searchBy: any = {
-    status: null,
-    text: null,
-  };
-  loading: boolean;
-  totalRecords = 0;
-  isActive = false;
-  rows = 10;
-  last: number;
-  event: any;
-  paras: AssessmentYear[] = [];
-  assessmentList: Assessment[] = [];
-  blank = '';
+verificationStatus: string[] = [
+  VerificationStatus[VerificationStatus.Fail],
+  VerificationStatus[VerificationStatus['Pass']]
+];
 
-  @ViewChild('op') overlay: any;
-  constructor(
-    private router: Router,
-    private serviceProxy: ServiceProxy,
-    private vrServiceProxy: VerificationControllerServiceProxy,
-    private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute,
-  ) {}
+searchBy: any = {
+  status: null,
+  text: null,
+};
+loading: boolean;
+totalRecords: number = 0;
+isActive: boolean = false;
+rows: number = 10;
+last: number;
+event: any;
+paras: AssessmentYear[] = [];
+assessmentList: Assessment[] = [];
+blank:string='';
 
-  ngAfterViewInit(): void {
-    this.cdr.detectChanges();
-  }
+@ViewChild('op') overlay: any;
+constructor(
+  private router: Router,
+  private serviceProxy: ServiceProxy,
+  private vrServiceProxy: VerificationControllerServiceProxy,
+  private cdr: ChangeDetectorRef,
+  private route: ActivatedRoute
 
-  ngOnInit(): void {
-    this.onSearch();
-  }
+) { }
 
-  onStatusChange($event: any) {
-    this.onSearch();
-  }
+ngAfterViewInit(): void {
+  this.cdr.detectChanges();
+}
 
-  onSearch() {
-    const event: any = {};
-    event.rows = this.rows;
-    event.first = 0;
+ngOnInit(): void {
 
-    this.loadgridData(event);
-  }
+  this.onSearch();
+}
 
-  loadgridData = (event: LazyLoadEvent) => {
-    this.totalRecords = 0;
 
-    const statusId = this.searchBy.status
-      ? Number(VerificationStatus[this.searchBy.status])
-      : 0;
 
-    const filtertext = this.searchBy.text ? this.searchBy.text : '';
+onStatusChange($event: any) {
+  this.onSearch();
+}
 
-    const pageNumber =
-      event.first === 0 || event.first === undefined
-        ? 1
-        : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
-    this.rows = event.rows === undefined ? 10 : event.rows;
-    setTimeout(() => {
-      this.vrServiceProxy
-        .getVRParameters(pageNumber, this.rows, statusId, filtertext)
-        .subscribe((a) => {
-          this.paras = a.items.filter(
-            (o: any) => o.verificationStatus == 6 || o.verificationStatus == 7,
-          );
 
-          this.totalRecords = this.paras.length;
-        });
-    }, 1);
-  };
+onSearch() {
+  let event: any = {};
+  event.rows = this.rows;
+  event.first = 0;
 
-  statusClick(event: any, object: AssessmentYear) {
-    this.router.navigate(['verification-verifier/detail'], {
-      queryParams: {
-        id: object.id,
-        verificationStatus: object.verificationStatus,
-        flag: 1,
-      },
-    });
-  }
+  this.loadgridData(event);
+}
+
+
+
+
+loadgridData = (event: LazyLoadEvent) => {
+ this.loading = true;
+  this.totalRecords = 0;
+
+  let status = this.searchBy.status  === 'NC Sent' ? 'NC Received' : this.searchBy.status
+  let statusId = status
+    ? Number(VerificationStatus[status])
+    : 0;
+  let filtertext = this.searchBy.text ? this.searchBy.text : '';
+  let pageNumber =
+    event.first === 0 || event.first === undefined
+      ? 1
+      : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
+  this.rows = event.rows === undefined ? 10 : event.rows;
+  let Active = 0;
+  setTimeout(() => {
+    this.vrServiceProxy
+      .getVRParameters(
+        pageNumber,
+        this.rows,
+        statusId,
+        filtertext,
+        'true'
+      )
+      .subscribe((a) => {
+       this.paras = a.items;
+        this.totalRecords = a.meta.totalItems;
+       this.loading = false;
+      });
+  }, 1);
+};
+
+
+statusClick(event: any, object: AssessmentYear) {
+
+  this.router.navigate(['verification-verifier/detail'], {
+    queryParams: { id: object.id , verificationStatus:object.verificationStatus, flag:1 },
+  });
+}
+
+
 }

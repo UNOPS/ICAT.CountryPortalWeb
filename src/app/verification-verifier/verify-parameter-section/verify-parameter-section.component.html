@@ -10,28 +10,17 @@
         (assessmentYear !== undefined &&
           assessmentYear?.verificationStatus! > 1 &&
           isAdmin)
-      "
-    >
+      ">
       <div class="col-12" *ngIf="flag != 1">
-        <button
-          *ngIf="verificationStatus != 3"
-          type="button"
-          [disabled]="selectedParameter.length < 1 || isAccept"
-          pButton
-          pRipple
-          (click)="parameterAccept()"
-        >
-          {{ isAccept ? 'Accepted' : 'Accept' }}
+        <button *ngIf="verificationStatus !=3" type="button" [disabled]="selectedParameter.length < 1 " pButton pRipple
+          (click)="parameterAccept()">
+          <!-- Accept -->
+          {{isAccept ? "Accepted" : "Accept"}}
         </button>
-        <button
-          *ngIf="verificationStatus == 3"
-          type="button"
-          [disabled]="true"
-          pButton
-          pRipple
-          (click)="parameterAccept()"
-        >
-          {{ isAccept ? 'Accepted' : 'Accept' }}
+        <button *ngIf="verificationStatus ==3" type="button" [disabled]="true" pButton pRipple
+          (click)="parameterAccept()">
+          <!-- Accept -->
+          {{isAccept ? "Accepted" : "Accept"}}
         </button>
       </div>
     </div>
@@ -44,17 +33,13 @@
   </div>
 
   <div class="row p-2">
-    <p-table
-      #table
-      [value]="parameters"
-      [loading]="loading"
-      [responsive]="true"
-      selectionMode="single"
-    >
+    <p-table #table [value]="parameters" [loading]="loading" [responsive]="true" selectionMode="single">
       <ng-template pTemplate="header">
         <tr>
           <div *ngIf="flag != 1">
-            <th></th>
+            <th>
+
+            </th>
           </div>
           <th>Parameter</th>
           <th>Accepted</th>
@@ -68,12 +53,9 @@
         <tr>
           <div *ngIf="flag != 1">
             <td>
-              <p-checkbox
-                [binary]="true"
-                (onChange)="checkboxCheck($event, param)"
-                name="groupname"
-                value="check"
-              ></p-checkbox>
+              <p-checkbox [binary]="true" *ngIf="param.isAcceptedByVerifier !== 1"
+                (onChange)="checkboxCheck($event, param)" name="groupname" value="check"
+                [disabled]="disableRaiseConcern(param)" id="{{'checkbox'+param.id}}"></p-checkbox>
             </td>
           </div>
           <td>{{ param.name }}</td>
@@ -90,95 +72,45 @@
               <i class="pi pi-times" style="font-size: 1rem"></i>
             </td>
           </ng-template>
-
-          <td>
-            {{
-              param.institution?.name == undefined
-                ? 'N/A'
-                : param.institution?.name
-            }}
-          </td>
-          <td>{{ param.value }}</td>
+          <td>{{ param.institution?.name == undefined ?'N/A':param.institution?.name }}</td>
+          <td>{{ param.value | number: '1.0-5'}}</td>
           <td>{{ param.uomDataEntry }}</td>
-
-          <td
-            *ngIf="
+          <td *ngIf="
               (!isAdmin ||
-                (assessmentYear !== undefined &&
-                  assessmentYear?.verificationStatus! > 1 &&
-                  isAdmin)) &&
-              flag != 1
-            "
-          >
-            <button
-              *ngIf="verificationStatus != 3"
-              pButton
-              pRipple
-              [disabled]="param.isAcceptedByVerifier == 1 ? true : false"
-              type="button"
-              label="Raise Concern"
-              (click)="raiseConcern($event, param)"
-              class="p-button-info"
-            ></button>
+              (assessmentYear !== undefined &&
+                assessmentYear?.verificationStatus! > 1 &&
+                isAdmin) ) && flag != 1
+            ">
+            <button *ngIf="verificationService.checkStatus(assessmentYear?.verificationStatus)" pButton pRipple
+              [disabled]="param.isAcceptedByVerifier == 1?true:false" type="button" label="Raise Concern"
+              (click)="raiseConcern($event, param)" class="p-button-info"></button>
           </td>
           <td>
-            <i
-              class="pi pi-ellipsis-v"
-              style="font-size: 2rem"
-              (click)="getInfo(param)"
-            ></i>
+            <i class="pi pi-ellipsis-v" style="font-size: 2rem" (click)="getInfo(param)"></i>
           </td>
         </tr>
       </ng-template>
     </p-table>
 
-    <p-overlayPanel
-      #opDR
-      [showCloseIcon]="true"
-      [style]="{ width: '50vw' }"
-      (onShow)="OnShowOerlayDR()"
-    >
+    <p-overlayPanel #opDR [showCloseIcon]="true" [style]="{ width: '50vw' }" (onShow)="OnShowOerlayDR()">
       <ng-template pTemplate>
-        <div
-          class="d-flex justify-content-start align-content-center flex-wrap mb-15"
-        >
+        <div class="d-flex justify-content-start align-content-center flex-wrap mb-15">
           <div class="col-12">
             <div class="p-field">
               <label for="scopeTA">Comment</label>
-              <textarea
-                name="scopeTA"
-                class="form-control"
-                class="form-control"
-                style="width: 100%"
-                pInputTextarea
-                [(ngModel)]="drComment"
-                #fscope="ngModel"
-                [rows]="5"
-                [cols]="30"
-                required
-                maxlength="500"
-              ></textarea>
+              <textarea name="scopeTA" class="form-control" class="form-control" style="width: 100%" pInputTextarea
+                [(ngModel)]="drComment" #fscope="ngModel" [rows]="5" [cols]="30" required maxlength="500"></textarea>
               <p class="info-message text-danger" *ngIf="commentRequried">
                 This is a mandatory field
               </p>
             </div>
           </div>
         </div>
-        <div
-          class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
-        >
-          <button
-            class="btn btn-primary text-uppercase"
-            type="submit"
-            (click)="drWithComment()"
-          >
+        <div class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10">
+          <button class="btn btn-primary text-uppercase" type="submit" (click)="drWithComment()">
             Complete
           </button>
-          <button
-            class="btn btn-primary text-uppercase ml-5"
-            type="submit"
-            (click)="opDR.hide()"
-          >
+          <button class="btn btn-primary text-uppercase ml-5" type="submit" (click)="opDR.hide()">
             Cancel
           </button>
         </div>
@@ -186,120 +118,98 @@
     </p-overlayPanel>
   </div>
 
-  <div
-    class="row mb-3"
-    *ngIf="assessmentYear.assessment.assessmentType != 'MAC'"
-  >
-    <div *ngIf="!isProjectionResult">
-      <div class="col-md-8">
-        <div class="col-12">
-          <div class="p-field">
-            <label for="projStatus">{{ ResultLabel }}</label>
-            <input
-              [disabled]="true"
-              type="text"
-              name="meth"
-              #chgEmission="ngModel"
-              [(ngModel)]="ResultValue"
-              class="p-inputtext"
-              pInputText
-            />
-          </div>
-        </div>
+  <div class="row mb-3" *ngIf="assessmentYear.assessment.assessmentType != 'MAC'">
+    <div *ngIf="!isProjectionResult" class="col-md-8">
+      <div class="p-field">
+        <label for="projStatus">{{ ResultLabel }}</label>
+        <input [disabled]="true" type="text" name="meth" #chgEmission="ngModel" [(ngModel)]="ResultValue"
+          class="p-inputtext" pInputText />
       </div>
     </div>
     <div *ngIf="isProjectionResult">
-      <div class="col-md-8">
-        <div class="col-12">
-          <div class="p-field">
-            <label for="projStatus">Projected Baseline Emission</label>
-            <input
-              [disabled]="true"
-              type="text"
-              name="meth"
-              #chgEmission="ngModel"
-              [(ngModel)]="ResultValue.baselineResult"
-              class="p-inputtext"
-              pInputText
-            />
-          </div>
-        </div>
+      <div class="p-field">
+        <label for="projStatus">Projected Baseline Emission</label>
+        <input *ngIf="ResultValue" [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
+          [(ngModel)]="ResultValue.baselineResult" class="p-inputtext" pInputText />
       </div>
-      <div class="col-md-8">
-        <div class="col-12">
-          <div class="p-field">
-            <label for="projStatus">Projected Project Result</label>
-            <input
-              [disabled]="true"
-              type="text"
-              name="meth"
-              #chgEmission="ngModel"
-              [(ngModel)]="ResultValue.projectResult"
-              class="p-inputtext"
-              pInputText
-            />
-          </div>
-        </div>
+      <div class="p-field">
+        <label for="projStatus">Projected Project Result</label>
+        <input *ngIf="ResultValue" [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
+          [(ngModel)]="ResultValue.projectResult" class="p-inputtext" pInputText />
       </div>
-      <div class="col-md-8">
-        <div class="col-12">
-          <div class="p-field">
-            <label for="projStatus">{{ ResultLabel }}</label>
-            <input
-              [disabled]="true"
-              type="text"
-              name="meth"
-              #chgEmission="ngModel"
-              [(ngModel)]="ResultValue.emissionReduction"
-              class="p-inputtext"
-              pInputText
-            />
-          </div>
-        </div>
+      <div class="p-field">
+        <label for="projStatus">{{ ResultLabel }}</label>
+        <input *ngIf="ResultValue" [disabled]="true" type="text" name="meth" #chgEmission="ngModel"
+          [(ngModel)]="ResultValue.emissionReduction" class="p-inputtext" pInputText />
       </div>
     </div>
-
-    <div
-      class="col-md-2 d-flex align-items-end"
-      *ngIf="
+    <div class="col-md-2 d-flex align-items-end p-2"  *ngIf="
         !isAdmin ||
         (assessmentYear !== undefined &&
           assessmentYear?.verificationStatus! > 1 &&
           isAdmin)
-      "
-    ></div>
+      ">
+      <div class="col-12 " style="margin-right: 10%;" *ngIf="flag != 1 && verificationService.checkStatus(assessmentYear?.verificationStatus)">
+        <button type="button" pButton pRipple [disabled]="isResultAccepted " (click)="raiseConcernResult($event)">
+          Raise Concern
+        </button>
+      </div>
+      <div class="col-12" *ngIf="flag != 1 && verificationService.checkStatus(assessmentYear?.verificationStatus)">
+        <button *ngIf="verificationStatus !=3" type="button" [disabled]="isResultAccepted || hasResultConcern" pButton pRipple
+          (click)="resultAccept()">
+          {{isResultAccepted ? "Accepted" : "Accept"}}
+        </button>
+        <button *ngIf="verificationStatus ==3" type="button" [disabled]="true" pButton pRipple>
+          {{isResultAccepted ? "Accepted" : "Accept"}}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-3" *ngIf="assessmentYear.assessment.assessmentType === 'MAC'">
+    <div class="col-md-8">
+      <div class="p-field">
+        <label for="projStatus">{{ ResultLabel }}</label>
+        <input [disabled]="true" type="text" name="meth" #chgEmission="ngModel" [(ngModel)]="ResultValue"
+          class="p-inputtext" pInputText />
+      </div>
+    </div>
+    <div class="col-md-2 d-flex align-items-end p-2"  *ngIf="
+        !isAdmin ||
+        (assessmentYear !== undefined &&
+          assessmentYear?.verificationStatus! > 1 &&
+          isAdmin)
+      ">
+      <div class="col-12 " style="margin-right: 10%;" *ngIf="flag != 1 && verificationService.checkStatus(assessmentYear?.verificationStatus)">
+        <button type="button" pButton pRipple [disabled]="isResultAccepted " (click)="raiseConcernResult($event)">
+          Raise Concern
+        </button>
+      </div>
+      <div class="col-12" *ngIf="flag != 1 && verificationService.checkStatus(assessmentYear?.verificationStatus)">
+        <button *ngIf="verificationStatus !=3" type="button" [disabled]="isResultAccepted || hasResultConcern" pButton pRipple
+          (click)="resultAccept()">
+          {{isResultAccepted ? "Accepted" : "Accept"}}
+        </button>
+        <button *ngIf="verificationStatus ==3" type="button" [disabled]="true" pButton pRipple>
+          {{isResultAccepted ? "Accepted" : "Accept"}}
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
 <p-dialog header="Raise Concern" [(visible)]="displayConcern" appendTo="body">
   <div class="container" style="width: 600px; height: 500px">
-    <app-raise-concern
-      [area]="raiseConcernSection"
-      [verificationDetails]="concernVerificationDetails"
-      [assessmentYear]="assessmentYear"
-      [isParameter]="isParameter"
-      [isResult]="isValue"
-      [parameter]="concernParam!"
-      [isBaseline]="isBaseline"
-      [isLekage]="isLekage"
-      [isProject]="isProject"
-      [isProjection]="isProjection"
-    ></app-raise-concern>
+    <app-raise-concern [area]="raiseConcernSection" [verificationDetails]="concernVerificationDetails"
+      [assessmentYear]="assessmentYear" [isParameter]="isParameter" [isResult]="isValue" [parameter]="concernParam!"
+      [isBaseline]="isBaseline" [isLekage]="isLekage" [isProject]="isProject" [isProjection]="isProjection"
+      (onCompleteConcern)="onComplete($event)"></app-raise-concern>
   </div>
 </p-dialog>
-<p-dialog
-  header="Data Request History"
-  [(visible)]="displayHistory"
-  appendTo="body"
-  [style]="{ width: '50vw' }"
-  [draggable]="false"
-  [resizable]="false"
->
+<p-dialog header="Data Request History" [(visible)]="displayHistory" appendTo="body" [style]="{ width: '50vw' }"
+  [draggable]="false" [resizable]="false">
   <div class="container" style="width: 600px; height: 500px">
-    <app-view-datarequest-history
-      [parameterId]="paraId"
-      [listOfHistory]="requestHistoryList"
-    >
+    <app-view-datarequest-history [parameterId]="paraId" [listOfHistory]="requestHistoryList">
+
     </app-view-datarequest-history>
   </div>
 </p-dialog>

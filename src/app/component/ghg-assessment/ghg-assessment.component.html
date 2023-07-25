@@ -1,6 +1,9 @@
-<form #fData="ngForm" (ngSubmit)="createAssessmentCA(fData)">
+<form #fData="ngForm" (ngSubmit)="createAssessmentCA(fData)" >
   <div class="p-grid p-fluid col-sm-12">
     <div class="row p-2 mt-4">
+      <div  *ngIf="spin" style="z-index: 10000; left: 45%; top: 25%; position: fixed; " >   
+        <p-progressSpinner ></p-progressSpinner>
+      </div>
       <div class="col-12 col-md-3">
         <div>
           <label for="projectownership">Select Specific Climate Action*</label>
@@ -108,6 +111,7 @@
             dateFormat="yy"
             [disabled]="isDisableforSubmitButton"
             [required]="true"
+            (ngModelChange)="onBaseYearChange($event)"
           ></p-calendar>
         </div>
         <p
@@ -150,7 +154,7 @@
       <div class="col-12 col-md-7" *ngIf="IsProposal">
         <div>
           <p-calendar
-            [(ngModel)]="assessmentYear"
+            [(ngModel)]="assesmentYear"
             name="multiYear"
             #multiYear="ngModel"
             view="year"
@@ -163,7 +167,7 @@
         <p
           class="info-message text-danger"
           *ngIf="
-            !assessmentYear &&
+            !assesmentYear &&
             (fData.submitted || multiYear.touched || multiYear.dirty)
           "
         >
@@ -191,6 +195,7 @@
             [minFractionDigits]="1"
             [maxFractionDigits]="1"
             [required]="true"
+            [disabled]="true"
           >
           </p-inputNumber>
         </div>
@@ -459,19 +464,17 @@
 
       <div class="col-12 col-md-2">
         <div>
-          <div *ngIf="hasPrevActiveCA && !IsProposal">
-            <div class="col-1">
-              <div
-                style="font-size: 2em"
-                type="button"
-                class="pi pi-info-circle"
-                pTooltip="You can only select the methodology that was used for previous assessment"
-              ></div>
+          <div *ngIf="hasPrevActiveCA && !IsProposal"  >
+            <div class="col-1"> <div style="font-size: 2em;"  type="button"  class="pi pi-info-circle "
+               pTooltip={{toolTop}}  >
             </div>
           </div>
         </div>
+
+        </div>
       </div>
     </div>
+    <!-- ----------------Route list maintain ------------------------>
     <div>
       <div class="row p-2 ml-20" *ngIf="useRoute">
         <hr />
@@ -699,7 +702,7 @@
         <div class="row p-2">
           <div class="col-12 col-md-3">
             <div>
-              <h6>Baseline</h6>
+              <h4>Baseline</h4>
             </div>
           </div>
         </div>
@@ -1203,7 +1206,7 @@
         <div class="row p-2">
           <div class="col-12 col-md-3">
             <div>
-              <h6>Project</h6>
+              <h4>Project</h4>
             </div>
           </div>
         </div>

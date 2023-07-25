@@ -244,7 +244,6 @@ export class AssignDataRequestComponent implements OnInit, AfterViewInit {
       inputParameters.userId = userId;
       inputParameters.status = status;
       inputParameters.deadline = moment(this.selectedDeadline);
-
       this.parameterProxy.updateDeadlineDataEntry(inputParameters).subscribe(
         (res) => {
           this.messageService.add({

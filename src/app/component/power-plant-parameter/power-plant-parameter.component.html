@@ -53,11 +53,11 @@
                 [disabled]="isDisableforSubmitButton"
                 [options]="p.defaultValues"
                 optionLabel="name"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
-                *ngIf="!p.defaultValue && isSubmitted"
-              >
+                *ngIf="(!p.defaultValue && isSubmitted)">
                 This is a mandatory field
               </p>
             </div>
@@ -68,13 +68,13 @@
                 [disabled]="isDisableforSubmitButton"
                 [autoDisplayFirst]="false"
                 [options]="p.displayhisValues"
-                (onChange)="onSelectHistoricalVal($event, spi, i)"
+                (onChange) = "onSelectHistoricalVal($event, spi, i)"
                 optionLabel="label"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
-                *ngIf="!p.historicalValue && isSubmitted"
-              >
+                *ngIf="(!p.historicalValue && isSubmitted)">
                 This is a mandatory field
               </p>
             </div>
@@ -88,11 +88,11 @@
                 [autoDisplayFirst]="false"
                 [options]="instiTutionList"
                 optionLabel="name"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
-                *ngIf="!p.institution && isSubmitted"
-              >
+                *ngIf="(!p.institution && isSubmitted)">
                 This is a mandatory field
               </p>
             </div>
@@ -108,11 +108,11 @@
                 [autoDisplayFirst]="false"
                 [options]="p.defaultValues"
                 optionLabel="name"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
-                *ngIf="!p.defaultValue && isSubmitted"
-              >
+                *ngIf="(!p.defaultValue && isSubmitted)">
                 This is a mandatory field
               </p>
             </div>
@@ -123,13 +123,13 @@
                 [disabled]="isDisableforSubmitButton"
                 [autoDisplayFirst]="false"
                 [options]="p.displayhisValues"
-                (onChange)="onSelectHistoricalVal($event, spi, i)"
+                (onChange) = "onSelectHistoricalVal($event, spi, i)"
                 optionLabel="label"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
-                *ngIf="!p.historicalValue && isSubmitted"
-              >
+                *ngIf="(!p.historicalValue && isSubmitted)">
                 This is a mandatory field
               </p>
             </div>
@@ -145,8 +145,7 @@
               />
               <p
                 class="info-message text-danger"
-                *ngIf="!p.value && isSubmitted"
-              >
+                *ngIf="(!p.value && isSubmitted && !IsProposal)">
                 This is a mandatory field
               </p>
             </div>

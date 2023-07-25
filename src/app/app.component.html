@@ -17,10 +17,9 @@
           <div class="row mb-2">
             <div class="col-md-3">
               <img
-                src="https://climateactiontransparency.org/wp-content/themes/custom/assets/i/logo/logo_blue.svg"
-                height="40px"
-                alt="logo"
-              />
+              src="https://climateactiontransparency.org/wp-content/themes/custom/assets/i/logo/logo_purple.svg"
+              alt="logo" height="40px"
+            />
             </div>
             <div class="col-md-5">
               <img
@@ -487,7 +486,29 @@
               Activity log
             </div>
 
-            <p-accordion> </p-accordion>
+            <div
+            *ngIf="
+              userRole.role == 1 ||
+              userRole.role == 2 ||
+              userRole.role == 3 ||
+              userRole.role == 4 ||
+              userRole.role == 5 ||
+              userRole.role == 6 ||
+              userRole.role == 7 ||
+              userRole.role == 8 ||
+              userRole.role == 9 ||
+              userRole.role == 10 ||
+              userRole.role == 11
+            "
+            class="sidebar-items--link align-items-start"
+            [routerLink]="['/reset-password']"
+            routerLinkActive="selected"
+          >
+            <div class=""></div>
+            Reset Your Password
+          </div>
+            <p-accordion>
+            </p-accordion>
           </div>
         </div>
 

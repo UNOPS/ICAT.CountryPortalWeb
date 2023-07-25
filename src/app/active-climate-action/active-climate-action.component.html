@@ -80,13 +80,11 @@
               <th>
                 <div class="col-sm-2" style="width: 70.666667%"></div>
               </th>
-
               <th>Specific Climate Action</th>
               <th>Proponent</th>
               <th>Status</th>
               <th>MAC</th>
               <th>GHG Assessment</th>
-
               <th>Proposed Date</th>
               <th>Updated Date</th>
               <th></th>
@@ -100,7 +98,7 @@
               <td>{{ climateaction.projectStatus?.name }}</td>
 
               <ng-container
-                *ngIf="isMac(climateaction.assessments); else elseBlock"
+                *ngIf="climateaction.isMac; else elseBlock"
               >
                 <td>
                   <i class="pi pi-check-square" style="font-size: 1rem"></i>
@@ -113,7 +111,7 @@
               </ng-template>
 
               <ng-container
-                *ngIf="isGhg(climateaction.assessments); else elseBlock"
+                *ngIf="climateaction.isGhg; else elseBlock"
               >
                 <td>
                   <i class="pi pi-check-square" style="font-size: 1rem"></i>

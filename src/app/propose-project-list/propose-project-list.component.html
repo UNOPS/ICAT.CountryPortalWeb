@@ -64,14 +64,10 @@
         dataKey="id"
       >
         <ng-template pTemplate="header">
+          
           <tr>
             <th style="width: 3rem">
-              <p-tableHeaderCheckbox
-                (click)="buttonEnable()"
-              ></p-tableHeaderCheckbox>
-            </th>
-            <th>
-              <div class="col-sm-2" style="width: 70.666667%">
+              <div style="margin-bottom: 5px;">
                 <button
                   pRipple
                   class="fas fa-plus"
@@ -86,12 +82,23 @@
                   ></i>
                 </button>
               </div>
+              <p-tableHeaderCheckbox (click)="buttonEnable()" ></p-tableHeaderCheckbox>
             </th>
-
-            <th>Name</th>
+            <th>
+              View/Accept
+            </th>
+            <th >Name</th>
             <th>Project Proponent</th>
             <th>Status of the Project</th>
-            <th>Status of Approval</th>
+            <th type="button"  class="pi pi-info-circle "  pTooltip="Proposed - Climate actions those are just proposed by the proponent
+
+            Rejected - Climate Actions those are rejected.
+            
+            Data Requested - More details has been requested on the climate action from the project proponent.
+            
+            Accepted - Accepted climate actions which can be used in the system.
+            
+            Activated - Climate actions which has been used for an assessment which is initiated to go through the data collection process" >  Status of Approval</th>
             <th></th>
             <th></th>
           </tr>
@@ -154,25 +161,11 @@
                 </tr>
               </table>
             </td>
-            <td>
-              <button
-                pButton
-                pRipple
-                type="button"
-                label="Assess CA"
-                class="p-btn-sm"
-                (click)="toGhGAsse()"
-              ></button>
+            <td>    
+              <button pButton pRipple  type="button" label="Assess Climate Action" class="p-btn-sm" (click)="toGhGAsse(climateactions)"></button>
             </td>
             <td>
-              <button
-                pButton
-                pRipple
-                type="button"
-                label="Results"
-                class="p-btn-sm"
-                (click)="sendDetails(climateactions)"
-              ></button>
+              <button pButton pRipple type="button" label="Results" class="p-btn-sm" (click)="sendDetails(climateactions)"></button>
             </td>
           </tr>
         </ng-template>

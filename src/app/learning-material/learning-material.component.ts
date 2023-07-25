@@ -12,14 +12,15 @@ import {
 @Component({
   selector: 'app-learning-material',
   templateUrl: './learning-material.component.html',
-  styleUrls: ['./learning-material.component.css'],
+  styleUrls: ['./learning-material.component.css']
 })
 export class LearningMaterialComponent implements OnInit, AfterViewInit {
+
   learnigMaterials: LearningMaterial[];
   lm: any;
   ug: any;
-  sortOrder = 1;
-  sortType = 0;
+  sortOrder: number = 1;
+  sortType: number = 0;
   event: any;
   searchBy: any = {
     text: null,
@@ -33,12 +34,12 @@ export class LearningMaterialComponent implements OnInit, AfterViewInit {
     { name: 'BY DOCUMENT NAME -> ASC' },
   ];
 
-  userTypeId = 0;
-  sectorId = 0;
+  userTypeId: number = 0; // should dynamically add after login system develop
+  sectorId: number = 0; // should dynamically add after login system develop
   constructor(
     private LearningMaterialProxy: LearningMaterialControllerServiceProxy,
-    private cdr: ChangeDetectorRef,
-  ) {}
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
@@ -54,7 +55,9 @@ export class LearningMaterialComponent implements OnInit, AfterViewInit {
 
   onStatusChange(event: any) {
     this.onSearch();
+
   }
+
 
   loadgridData = () => {
     if (this.searchBy.sortOption.name == 'BY DATE -> DESC') {
@@ -74,10 +77,10 @@ export class LearningMaterialComponent implements OnInit, AfterViewInit {
       this.sortType = 1;
     }
 
-    const filtertext = this.searchBy.text ? this.searchBy.text : '';
+    let filtertext = this.searchBy.text ? this.searchBy.text : '';
 
-    const pageNumber = 1;
-    const rows = 1000;
+    let pageNumber = 1;
+    let rows = 1000;
     setTimeout(() => {
       this.LearningMaterialProxy.getLearningMaterialDetails(
         pageNumber,
@@ -85,16 +88,15 @@ export class LearningMaterialComponent implements OnInit, AfterViewInit {
         filtertext,
         this.sortOrder,
         this.sortType,
-      ).subscribe((a) => {
-        this.learnigMaterials = a.items;
 
-        this.lm = this.learnigMaterials.filter(
-          (o: any) => o.documentType == 'Learning Material',
-        );
-        this.ug = this.learnigMaterials.filter(
-          (o: any) => o.documentType == 'User Guidence',
-        );
-      });
+      )
+        .subscribe((a) => {
+          this.learnigMaterials = a.items;
+          this.lm = this.learnigMaterials.filter((o: any) => o.documentType == 'Learning Material');
+          this.ug = this.learnigMaterials.filter((o: any) => o.documentType == 'User Guidence');
+
+        });
     }, 1);
   };
+
 }

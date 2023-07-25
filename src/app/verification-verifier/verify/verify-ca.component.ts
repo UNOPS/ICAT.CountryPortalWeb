@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
-import { LazyLoadEvent } from 'primeng/api';
+import { LazyLoadEvent, MessageService } from 'primeng/api';
 
 import {
   Assessment,
@@ -20,12 +20,12 @@ export class VerifyCaComponent implements OnInit {
   VerificationStatusEnum = VerificationStatus;
 
   verificationStatus: string[] = [
-    VerificationStatus[VerificationStatus.Pending],
     VerificationStatus[VerificationStatus['Pre Assessment']],
-    VerificationStatus[VerificationStatus['NC Recieved']],
+    VerificationStatus[VerificationStatus['NC Received']] === 'NC Received' ? 'NC Sent' : 'NC Received' ,
+    VerificationStatus[VerificationStatus['In Remediation']],
     VerificationStatus[VerificationStatus['Initial Assessment']],
     VerificationStatus[VerificationStatus['Final Assessment']],
-    VerificationStatus[VerificationStatus.Fail],
+    VerificationStatus[VerificationStatus['Fail']],
     VerificationStatus[VerificationStatus['Pass']],
   ];
 
@@ -34,9 +34,9 @@ export class VerifyCaComponent implements OnInit {
     text: null,
   };
   loading: boolean;
-  totalRecords = 0;
-  isActive = false;
-  rows = 10;
+  totalRecords: number = 0;
+  isActive: boolean = false;
+  rows: number = 10;
   last: number;
   event: any;
   paras: AssessmentYear[] = [];
@@ -52,6 +52,7 @@ export class VerifyCaComponent implements OnInit {
     private vrServiceProxy: VerificationControllerServiceProxy,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private messageService: MessageService
   ) {}
 
   ngAfterViewInit(): void {
@@ -59,29 +60,7 @@ export class VerifyCaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userName = localStorage.getItem('user_name')!;
-
-    const filter1: string[] = [];
-    filter1.push('username||$eq||' + this.userName);
-
-    this.serviceProxy
-      .getManyBaseUsersControllerUser(
-        undefined,
-        undefined,
-        filter1,
-        undefined,
-        undefined,
-        undefined,
-        1000,
-        0,
-        0,
-        0,
-      )
-      .subscribe((res: any) => {
-        this.loggedUser = res.data;
-      });
-
-    this.onSearch();
+    
   }
 
   onStatusChange($event: any) {
@@ -97,26 +76,34 @@ export class VerifyCaComponent implements OnInit {
   }
 
   loadgridData = (event: LazyLoadEvent) => {
+   this.loading = true;
     this.totalRecords = 0;
 
-    const statusId = this.searchBy.status
-      ? Number(VerificationStatus[this.searchBy.status])
+    let status = this.searchBy.status  === 'NC Sent' ? 'NC Received' : this.searchBy.status
+    let statusId = status
+      ? Number(VerificationStatus[status])
       : 0;
-
-    const filtertext = this.searchBy.text ? this.searchBy.text : '';
-
-    const pageNumber =
+    let filtertext = this.searchBy.text ? this.searchBy.text : '';
+    let pageNumber =
       event.first === 0 || event.first === undefined
         ? 1
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
     this.rows = event.rows === undefined ? 10 : event.rows;
+    let Active = 0;
     setTimeout(() => {
       this.vrServiceProxy
         .getVerifierParameters(pageNumber, this.rows, statusId, filtertext)
         .subscribe((a) => {
           this.paras = a.items;
-
-          this.totalRecords = this.paras.length;
+          this.totalRecords = a.meta.totalItems;
+          this.loading = false;
+        }, error => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error loading'
+          })
+          this.loading = false
         });
     }, 1);
   };

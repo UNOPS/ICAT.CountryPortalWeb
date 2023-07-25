@@ -53,20 +53,21 @@ export class ResultComponent implements OnInit {
   basicOptions: any;
   assessmentYr2: AssessmentYear[] = [];
   yrId: number;
-
+  spin:boolean =false;
   leakage: any;
-  isShown = false;
+  isShown: boolean = false;
   title: string;
-  fileName = 'GHGparameters.xlsx';
+  fileName: string = 'GHGparameters.xlsx';
   excellist: any[] = [];
   methodologies: any[] = [];
   constructor(
     private serviceProxy: ServiceProxy,
     private asseProxi: AssessmentControllerServiceProxy,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.spin =true
     this.route.queryParams.subscribe((params) => {
       this.assessmentId = params['id'];
       this.assessmentYr = params['yr'];
@@ -77,18 +78,15 @@ export class ResultComponent implements OnInit {
         this.assessmentId,
         undefined,
         undefined,
-        0,
+        0
       )
       .subscribe((res: any) => {
         this.assessment = res;
-
         this.projctId = this.assessment.project?.id;
-
         if (this.assessment.lekageScenario == null) {
           this.isShown = true;
         }
-
-        const assessmentIdFilter: string[] = [];
+        let assessmentIdFilter: string[] = [];
 
         if (this.assessmentId != 0) {
           assessmentIdFilter.push('assessmentId||$eq||' + this.assessmentId);
@@ -105,28 +103,25 @@ export class ResultComponent implements OnInit {
             1000,
             0,
             0,
-            0,
+            0
           )
           .subscribe((res) => {
             this.objective = res.data;
-
             for (let a = 0; a <= this.objective.length; a++) {
               this.objectiveName.push(this.objective[a]?.objective);
             }
           });
 
-        const assessmentFilterBase: string[] = [];
+        let assessmentFilterBase: string[] = [];
 
         if (this.assessmentId != 0) {
           assessmentFilterBase.push('assessment.id||$eq||' + this.assessmentId);
         }
-
         if (this.assessment.isProposal) {
           this.asseProxi
             .getAssessmentDetails(this.assessmentId, this.assessmentYr)
             .subscribe((res) => {
               this.allParameter = res.parameters;
-
               for (let a = 0; a < this.allParameter.length; a++) {
                 if (this.allParameter[a].value != null) {
                   if (this.allParameter[a].isBaseline == true) {
@@ -152,7 +147,6 @@ export class ResultComponent implements OnInit {
             .getAssment(this.assessmentId, this.assessmentYr)
             .subscribe((res) => {
               this.allParameter = res.parameters;
-
               for (let a = 0; a < this.allParameter.length; a++) {
                 if (this.allParameter[a].isBaseline == true) {
                   this.baseParameter.push(this.allParameter[a]);
@@ -334,11 +328,12 @@ export class ResultComponent implements OnInit {
             },
           },
         };
+        this.spin =false
       });
+      
   }
-
   public download() {
-    const data = document.getElementById('download-content')!;
+    var data = document.getElementById('download-content')!;
 
     html2canvas(data).then((canvas) => {
       const componentWidth = data.offsetWidth;
@@ -360,86 +355,130 @@ export class ResultComponent implements OnInit {
     });
   }
 
-  backtoPAge() {}
+  backtoPAge() { }
 
   async downloadExcel() {
-    const res2 = await this.asseProxi
-      .getMethodologyNameByAssessmentId(this.assessmentId)
-      .toPromise();
-    const methodName = res2.methodology.displayName;
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet([]);
+    const nameValuePairs = [
+      [
+        'Assessment Name',
+        `Assessment of ${this.title} Specific Climate Action - ${this.project.climateActionName}`,
+      ],
+      ['Aggregated Actions', this.assessment.ndc ? this.assessment.ndc.name : '-'],
+      ['Action Areas', this.assessment.subNdc ? this.assessment.subNdc.name : '-'],
+      ['Objective of Assessment', this.objectiveName.join(',')],
+      ['Baseline Year', this.assessment.baseYear],
+      ['Project Year ', this.assessmentYr],
+      ['Assessment Approach ', this.assessment.assessmentType],
+      ['Assessment Methodology ', this.assessment.methodology.displayName],
+      ['Version of The Methodology ', this.assessment.methodology.version],
+    ];
 
-    for (const x of this.allParameter) {
-      const obj: excelGhgParameter = {
-        Methodology: '',
-        Version_of_The_Methodology: '',
-        Original_Name_of_The_Parameter: '',
-        Parameter_Name: '',
-        Entered_Value: '',
-        Entered_Unit: '',
-        Converted_Value: '',
-        Requested_Unit: '',
-        Institution: '',
-        Assessment_Type: '',
-        Alternative_Parameter: '',
-        Baseline_Parameter: '',
-        Base_Year: '',
-        Project_Parameter: '',
-        Leakage_Parameter: '',
-        Assessment_Year: '',
-        Projection_Parameter: '',
-        Projection_Base_Year: '',
-        Projection_Year: '',
-        Vehicle: '',
-        Fuel_type: '',
-        Route: '',
-        Power_plant: '',
-        DefaultValue: '',
-      };
+    const namevalue = XLSX.utils.sheet_add_aoa(worksheet, nameValuePairs);
 
-      obj.Methodology = methodName;
-      obj.Version_of_The_Methodology = x.methodologyVersion;
-      obj.Original_Name_of_The_Parameter = x.originalName;
-      obj.Parameter_Name = x.name;
-      obj.Entered_Value = x.value;
-      obj.Entered_Unit = x.uomDataEntry;
-      obj.Converted_Value = x.conversionValue;
-      obj.Requested_Unit = x.uomDataRequest;
-      obj.Institution = x?.institution ? x?.institution?.name : 'N/A';
-      obj.Assessment_Type = this.assessment.assessmentType;
-      obj.Alternative_Parameter = x.isAlternative ? 'Yes' : 'No';
-      obj.Baseline_Parameter = x.isBaseline ? 'Yes' : 'No';
-      obj.Base_Year = x.baseYear;
-      obj.Project_Parameter = x.isProject ? 'Yes' : 'No';
-      obj.Leakage_Parameter = x.isLekage ? 'Yes' : 'No';
-      obj.Assessment_Year = this.assessmentYr;
-      obj.Projection_Parameter = x.isProjection ? 'Yes' : 'No';
-      obj.Projection_Base_Year = x.projectionBaseYear
-        ? x.projectionBaseYear
-        : 'N/A';
-      obj.Projection_Year = x.projectionYear ? x.projectionYear : 'N/A';
-      obj.Vehicle = x.vehical ? x.vehical : 'N/A';
-      obj.Fuel_type = x.fuelType ? x.fuelType : 'N/A';
-      obj.Route = x.route ? x.route : 'N/A';
-      obj.Power_plant = x.powerPlant ? x.powerPlant : 'N/A';
-      obj.DefaultValue = x?.defaultValue ? x?.defaultValue?.name : 'N/A';
-
-      this.excellist.push(obj);
+    const tableData = [
+      [
+        'Original_Name_of_The_Parameter',
+        'Parameter Name',
+        'Entered Value',
+        'Entered Unit',
+        'Converted Value',
+        'Requested Unit',
+        'Institution',
+        'Alternative Parameter',
+        'Baseline Parameter',
+        'Project Parameter',
+        'Leakage Parameter',
+        'Projection Parameter',
+        'Projection Base Year',
+        'Vehicle',
+        'Fuel type',
+        'Power plant',
+        'DefaultValue',
+      ],
+    ];
+    for (let x of this.allParameter) {
+      tableData.push([
+        x.originalName,
+        x.name,
+        x.value,
+        x.uomDataEntry,
+        x.conversionValue,
+        x.uomDataRequest,
+        x?.institution ? x?.institution?.name : 'N/A',
+        x.isAlternative ? 'Yes' : 'No',
+        x.isBaseline ? 'Yes' : 'No',
+        x.isProject ? 'Yes' : 'No',
+        x.isLekage ? 'Yes' : 'No',
+        x.isProjection ? 'Yes' : 'No',
+        x.projectionBaseYear ? x.projectionBaseYear.toString() : 'N/A',
+        x.projectionYear ? x.projectionYear.toString() : 'N/A',
+        x.vehical ? x.vehical : 'N/A',
+        x.fuelType ? x.fuelType : 'N/A',
+        x.route ? x.route : 'N/A',
+        x.powerPlant ? x.powerPlant : 'N/A',
+        x?.defaultValue ? x?.defaultValue?.name : 'N/A',
+      ]);
     }
 
-    this.excellist.push(
-      {},
-      {
-        Baseline_Parameter: this.baselineEmission,
-        Project_Parameter: this.projectEmission,
-        Leakage_Parameter: this.leakageEmission,
-        Emission_Reduction: this.totalEmission,
-      },
-    );
+    const tableRange = XLSX.utils.sheet_add_aoa(worksheet, tableData, {
+      origin: 'A11',
+    });
+    const result = [];
+    if (this.baselineEmission) {
+      result.push(['Baseline Emission', this.baselineEmission + ' tCO₂e']);
+    } 
+    if (this.projectEmission) {
+      result.push(['Project Emission', this.projectEmission + ' tCO₂e']);
+    } 
+     if (this.leakageEmission) {
+      result.push(['Leakage Emission', this.leakageEmission + ' tCO₂e']);
+    } 
+     if (this.totalEmission) {
+      result.push(['Emission Reduction', this.totalEmission + ' tCO₂e']);
+    }
 
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.excellist);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'sheet1');
-    XLSX.writeFile(wb, this.fileName);
+    XLSX.utils.sheet_add_aoa(worksheet, result, {
+      origin: 'A' + (this.allParameter.length + 13),
+    });
+
+    if (this.projectionParameter.length > 0) {
+      const projectionResult = [
+        [
+          'Projection Result',
+        ],
+        [
+          '',
+        ],
+        [
+          'Year',
+          'Baseline Result',
+          'Project Result',
+          'Leakage Result',
+          'Emission Reduction',
+        ],
+      ];
+      for (let param of this.projectionData) {
+        projectionResult.push([
+          param.projectionYear.toString(),
+          param.baselineResult.toString(),
+          param.projectResult.toString(),
+          param.leakageResult>0?param.leakageResult.toString():'0 tCO₂e',
+          param.emissionReduction.toString(),
+
+        ]);
+      }
+
+      XLSX.utils.sheet_add_aoa(worksheet, projectionResult, {
+        origin: 'A' + (this.allParameter.length + 18),
+      });
+
+    }
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    XLSX.writeFile(workbook, 'data.xlsx');
+   
+ 
   }
 }
 

@@ -80,23 +80,28 @@ export class QualityCheckComponent implements OnInit {
         this.ndcList = res.data;
       });
 
-    const filtertext = this.searchBy.text ? this.searchBy.text : '';
-    const ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
-    const subNDC = this.searchBy.subNdc ? this.searchBy.subNdc.id : 0;
+    let filtertext = this.searchBy.text ? this.searchBy.text : '';
+    let ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
+    let subNDC = this.searchBy.subNdc ? this.searchBy.subNdc.id : 0;
 
-    this.qaServiceProxy
-      .getQCParameters(1, 10000, 0, filtertext, ndcId, subNDC, '')
+    this.qaServiceProxy.getQCParameters(
+      1,
+      10000,
+      0,
+      filtertext,
+      ndcId,
+      subNDC,
+      '',
+    )
       .subscribe((a) => {
+
         a.items.forEach((b: any) => {
-          if (
-            !this.climateAction.includes(b.assessment.project.climateActionName)
-          ) {
-            this.climateAction.push(b.assessment.project.climateActionName);
-          }
-        });
+          this.climateAction.push(b.assessment.project)
+        })
       });
 
     this.onSearch();
+
   }
 
   onStatusChange($event: any) {

@@ -1,5 +1,8 @@
 <div class="container pl-20 pr-20">
   <h4 class="mt-4">Results</h4>
+  <div  *ngIf="spin" style="z-index: 10000; left: 45%; top: 25%; position: fixed; " >   
+    <p-progressSpinner ></p-progressSpinner>
+  </div>
 
   <div class="p-grid p-fluid card">
     <div class="row mb-3">
@@ -164,17 +167,17 @@
               <td>{{ asseYer.assessmentYear }}</td>
               <td *ngIf="ase.assessmentType == 'MAC'">
                 {{
-                  ase.assessmentResult?.macResult
+                 ( ase.assessmentResult?.macResult
                     ? ase.assessmentResult?.macResult
-                    : 0
+                    : 0)| number: '1.0-5' 
                 }}
                 USD/tCO₂e
               </td>
               <td *ngIf="ase.assessmentType != 'MAC'">
                 {{
-                  ase.assessmentResult?.totalEmission
+                  (ase.assessmentResult?.totalEmission
                     ? ase.assessmentResult?.totalEmission
-                    : 0
+                    : 0)| number: '1.0-5' 
                 }}
                 tCO₂e
               </td>

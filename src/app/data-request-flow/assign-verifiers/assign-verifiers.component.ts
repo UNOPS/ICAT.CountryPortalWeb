@@ -50,12 +50,16 @@ export class AssignVerifiersComponent implements OnInit {
     this.usersControllerServiceProxy
       .allUserDetails(1, 1000, '', 2)
       .subscribe((res: any) => {
-        this.userList = res.items;
+        res.items.forEach((ra:any)=>{
+          if(ra.status==0){
+            this.userList.push(ra);
+          }
+        });
         this.totalRecords = res.totalRecords;
       });
   }
   onSearch() {
-    const event: any = {};
+    let event: any = {};
     event.rows = this.rows;
     event.first = 0;
 

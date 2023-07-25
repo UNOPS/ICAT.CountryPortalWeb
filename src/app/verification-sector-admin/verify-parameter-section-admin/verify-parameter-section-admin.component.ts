@@ -5,14 +5,18 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
   AssessmentYear,
+  AssessmentYearControllerServiceProxy,
   Parameter,
   ParameterHistoryControllerServiceProxy,
+  ParameterVerifierAcceptance,
   QualityCheckControllerServiceProxy,
   ServiceProxy,
   User,
   VerificationControllerServiceProxy,
   VerificationDetail,
 } from 'shared/service-proxies/service-proxies';
+import { VerificationService } from 'shared/verification-service';
+import { VerificationActionDialogComponent } from '../verification-action-dialog/verification-action-dialog.component';
 
 @Component({
   selector: 'app-verify-parameter-section-admin',
@@ -80,9 +84,16 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   isValue: boolean;
 
   loggedUser: User;
-  paraId: number;
+  paraId:number;
   requestHistoryList: any[] = [];
-  displayHistory = false;
+  displayHistory:boolean = false;
+  roundOneHeadTable: any;
+  roundTwoHeadTable: any;
+  roundThreeHeadTable: any;
+  hasResultConcern: boolean;
+  isResultActionDone: boolean = false
+  canActiveResult: boolean = false;
+  isCompleted: any;
 
   constructor(
     private qaServiceProxy: QualityCheckControllerServiceProxy,
@@ -92,6 +103,8 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     private verificationProxy: VerificationControllerServiceProxy,
     private serviceProxy: ServiceProxy,
     private prHistoryProxy: ParameterHistoryControllerServiceProxy,
+    private verificationService: VerificationService,
+    private assessmentYearControllerServiceProxy: AssessmentYearControllerServiceProxy
   ) {}
 
   ngOnInit(): void {
@@ -121,6 +134,44 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         this.loggedUser = res.data[0];
       });
+  }
+
+  async ngOnChanges(changes: any) {
+    let column: string = ''
+    if (this.header == 'Baseline Parameters') {
+      column = 'isBaseline'
+    }
+    if (this.header == 'Project Parameters') {
+      column = 'isProject'
+    }
+    if (this.header == 'Leakage Parameters') {
+      column = 'isLekage'
+    }
+    if (this.header == 'Projection Parameters') {
+      column = 'isProjection'
+    }
+
+    let rounds = await this.verificationService.checkVerificationStage(this.assessmentYear)
+
+    let stage: number
+    if (rounds.roundOneHeadTable !== undefined){
+      stage = 1
+    } 
+    if (rounds.roundTwoHeadTable !== undefined){
+      stage = 2
+    }
+    if (rounds.roundThreeHeadTable !== undefined){
+      stage = 3
+    }
+
+    let vd = this.verificationDetails.find((a: any )=> a.isResult === true && a[column] === true && a.verificationStage === stage)
+    if (vd?.explanation){
+      this.hasResultConcern = true
+    }
+    if (vd?.rootCause || vd?.correctiveAction) this.canActiveResult = true
+    if (vd?.action){
+      this.isResultActionDone = true
+    }
   }
 
   ngOnDestroy() {
@@ -178,9 +229,9 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
   }
 
   acceptParametrs() {
-    const verificationDetails: VerificationDetail[] = [];
+    let verificationDetails: VerificationDetail[] = [];
 
-    this.selectedParameter.map((v) => {
+    this.selectedParameter.map(async (v) => {
       let verificationDetail = undefined;
 
       if (this.verificationDetails) {
@@ -222,7 +273,7 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
       vd.editedOn = moment();
       vd.updatedDate = moment();
       vd.isAccepted = true;
-      vd.verificationStage = this.getverificationStage();
+      vd.verificationStage = await this.getverificationStage();
       vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
 
       verificationDetails.push(vd);
@@ -240,18 +291,17 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
       });
   }
 
-  getverificationStage() {
+  async getverificationStage() {
     let stage = 0;
-    if (
-      this.assessmentYear.verificationStatus === 1 ||
-      this.assessmentYear.verificationStatus === 2 ||
-      this.assessmentYear.verificationStatus === 3
-    ) {
-      stage = 1;
-    } else if (this.assessmentYear.verificationStatus === 4) {
-      stage = 2;
-    } else if (this.assessmentYear.verificationStatus === 5) {
-      stage = 3;
+    await this.checkVerificationStage()
+    if (this.roundOneHeadTable !== undefined){
+      stage = 1
+    } 
+    if (this.roundTwoHeadTable !== undefined){
+      stage = 2
+    } 
+    if (this.roundThreeHeadTable !== undefined) {
+      stage = 3
     }
 
     return stage;
@@ -264,10 +314,9 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
 
     if (this.verificationDetails) {
       this.concernVerificationDetails = this.verificationDetails.filter(
-        (a) => !a.isResult && a.parameter && a.parameter.id == parameter.id,
+        (a) => !a.isResult && a.parameter && (a.parameter.id == parameter.id || a.parameter.id === parameter.previouseParameterId)
       );
     }
-
     this.concernParam = parameter;
 
     this.displayConcern = true;
@@ -278,23 +327,24 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     this.isParameter = false;
     this.isValue = true;
     this.concernParam = undefined;
+    this.canActiveResult = true
 
     if (this.verificationDetails) {
       if (this.isBaseline) {
         this.concernVerificationDetails = this.verificationDetails.filter(
-          (a) => a.isResult && a.isBaseline,
+          (a) => a.isResult && a.isBaseline
         );
       } else if (this.isProject) {
         this.concernVerificationDetails = this.verificationDetails.filter(
-          (a) => a.isResult && a.isProject,
+          (a) => a.isResult && a.isProject
         );
       } else if (this.isLekage) {
         this.concernVerificationDetails = this.verificationDetails.filter(
-          (a) => a.isResult && a.isLekage,
+          (a) => a.isResult && a.isLekage
         );
       } else if (this.isProjection) {
         this.concernVerificationDetails = this.verificationDetails.filter(
-          (a) => a.isResult && a.isProjection,
+          (a) => a.isResult && a.isProjection
         );
       }
     }
@@ -302,65 +352,189 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
     this.displayConcern = true;
   }
 
-  getInfo(obj: any) {
-    this.paraId = obj.id;
+  async onComplete(e: any){
+    this.isCompleted = true
+    this.parameters = this.parameters.map(para => {
+      if (para.id === this.concernParam?.id){
+        para['canActiveAction'] = true
+        return para
+      } else {
+        return para
+      }
+    })
+    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assessmentYear.id).toPromise()
+    
+    if (e){
+      this.displayConcern = false
+    }
+  }
 
-    this.prHistoryProxy.getHistroyByid(this.paraId).subscribe((res) => {
-      this.requestHistoryList = res;
-    });
-
-    this.displayHistory = true;
+  getInfo(obj: any)
+  {
+       this.paraId = obj.id;
+       this.prHistoryProxy
+       .getHistroyByid(this.paraId)  // this.paraId
+       .subscribe((res) => {
+        this.requestHistoryList =res;
+       });
+       this.displayHistory = true;
   }
 
   parameterAction(event: any, parameter: Parameter) {
-    const verificationDetails: VerificationDetail[] = [];
+    let action = "Previouse value: " + parameter.value + parameter.uomDataEntry
+    let vd = undefined
+    if (this.verificationDetails){
+      vd = this.verificationDetails.find(
+        async (d) => 
+        d.parameter &&
+        d.parameter.id === parameter.id &&
+        d.verificationStage === await this.getverificationStage()
+      )
+    } else {}
 
-    let verificationDetail = undefined;
+    let data:any = {type: 'parameter'}
 
-    if (this.verificationDetails) {
-      verificationDetail = this.verificationDetails.find(
-        (a) =>
-          a.parameter &&
-          a.parameter.id == parameter.id &&
-          a.verificationStage == this.getverificationStage(),
-      );
-    }
-    let vd = new VerificationDetail();
-
-    if (verificationDetail) {
-      vd = verificationDetail;
+    data['parameter'] = parameter
+    if (vd){
+      data['verificationDetail'] = vd
     } else {
-      vd.assessmentId = this.assessmentYear.assessment.id;
-      const assessmentYear = new AssessmentYear();
-      assessmentYear.id = this.assessmentYear.id;
-      vd.assessmentYear = assessmentYear;
-      vd.year = Number(this.assessmentYear.assessmentYear);
-      vd.createdOn = moment();
-      vd.isAccepted = false;
-      const param = new Parameter();
-      param.id = parameter.id;
-      vd.parameter = param;
-
-      if (this.header == 'Baseline Parameter') {
-        vd.isBaseline = true;
-      }
-      if (this.header == 'Project Parameter') {
-        vd.isProject = true;
-      }
-      if (this.header == 'Leakage Parameter') {
-        vd.isLekage = true;
-      }
-      if (this.header == 'Projection Parameter') {
-        vd.isProjection = true;
-      }
+      data['verificationDetail'] = null
     }
 
-    vd.editedOn = moment();
-    vd.updatedDate = moment();
-    vd.verificationStage = this.getverificationStage();
-    vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
-    vd.isDataRequested = true;
-    verificationDetails.push(vd);
+    data['assessmentYear'] = this.assessmentYear
+
+    this.ref = this.dialogService.open(VerificationActionDialogComponent, {
+      header: parameter ? ('Enter value for ' + parameter.name.toLowerCase()):"Enter Aggregated Action",
+      width: '40%',
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
+      baseZIndex: 10000,
+      data: data,
+    });
+
+    this.ref.onClose.subscribe(async (res) => {
+      if (res){
+        if (res?.isEnterData){
+          action = action + ", New value: " + res?.value
+        } else {
+          action = action + ", Requested data from " + res?.value
+        }
+        await this.saveVerificationDetails(action, parameter)
+        this.isResultActionDone = true
+      }
+    })
+  }
+
+  async saveVerificationDetails(action: string, parameter?: Parameter ){
+    let verificationDetails: VerificationDetail[] = [];
+    
+    let verificationStage = await this.getverificationStage()
+    if (parameter){
+      let verificationDetail = undefined;
+  
+      if (this.verificationDetails) {
+        verificationDetail = this.verificationDetails.find(
+          (a) =>
+            a.parameter &&
+            a.parameter.id == parameter.id &&
+            a.verificationStage == verificationStage
+        );
+      }
+      let _vd = new VerificationDetail();
+      if (verificationDetail) {
+        _vd = verificationDetail;
+      } else {
+        _vd.assessmentId = this.assessmentYear.assessment.id;
+        let assesmentYear = new AssessmentYear();
+        assesmentYear.id = this.assessmentYear.id;
+        _vd.assessmentYear = assesmentYear;
+        _vd.year = Number(this.assessmentYear.assessmentYear);
+        _vd.createdOn = moment();
+        _vd.isAccepted = false;
+        let param = new Parameter();
+        param.id = parameter.id;
+        _vd.parameter = param;
+  
+        if (this.header == 'Baseline Parameter') {
+          _vd.isBaseline = true;
+        }
+        if (this.header == 'Project Parameter') {
+          _vd.isProject = true;
+        }
+        if (this.header == 'Leakage Parameter') {
+          _vd.isLekage = true;
+        }
+        if (this.header == 'Projection Parameter') {
+          _vd.isProjection = true;
+        }
+      }
+  
+      let filter = ['verifierAcceptance||$ne||' + ParameterVerifierAcceptance.REJECTED, 'previouseParameterId||$eq||' + parameter.id]
+      let para = (await this.serviceProxy.getManyBaseParameterControllerParameter(
+        undefined, undefined, filter, undefined, undefined, undefined, 100, 0, 1, 0
+      ).toPromise()).data[0]
+      _vd.parameter = para
+  
+      _vd.editedOn = moment();
+      _vd.updatedDate = moment();
+      _vd.verificationStage = await this.getverificationStage();
+      _vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
+      _vd.isDataRequested = true;
+      _vd.action = action
+      verificationDetails.push(_vd);
+    } else { 
+      let verificationDetail = undefined;
+      let column: string = ''
+      if (this.header == 'Baseline Parameters') {
+        column = 'isBaseline'
+      }
+      if (this.header == 'Project Parameters') {
+        column = 'isProject'
+      }
+      if (this.header == 'Leakage Parameters') {
+        column = 'isLekage'
+      }
+      if (this.header == 'Projection Parameters') {
+        column = 'isProjection'
+      }
+      if (this.verificationDetails) {
+        verificationDetail = this.verificationDetails.find(
+          (a: any) =>
+            a.isResult === true && a[column] === true &&
+            a.verificationStage == verificationStage
+        );
+        let _vd = new VerificationDetail();
+        if (verificationDetail) {
+          _vd = verificationDetail;
+        } else {
+          _vd.assessmentId = this.assessmentYear.assessment.id;
+          let assesmentYear = new AssessmentYear();
+          assesmentYear.id = this.assessmentYear.id;
+          _vd.assessmentYear = assesmentYear;
+          _vd.year = Number(this.assessmentYear.assessmentYear);
+          _vd.createdOn = moment();
+          _vd.isAccepted = false;
+    
+          if (this.header == 'Baseline Parameters') {
+            _vd.isBaseline = true;
+          }
+          if (this.header == 'Project Parameters') {
+            _vd.isProject = true;
+          }
+          if (this.header == 'Leakage Parameters') {
+            _vd.isLekage = true;
+          }
+          if (this.header == 'Projection Parameters') {
+            _vd.isProjection = true;
+          }
+        }
+        _vd.editedOn = moment();
+        _vd.updatedDate = moment();
+        _vd.verificationStage = await this.getverificationStage();
+        _vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
+        _vd.action = action
+        verificationDetails.push(_vd)
+      }
+    }
 
     this.verificationProxy
       .saveVerificationDetails(verificationDetails)
@@ -371,6 +545,59 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
           detail: 'successfully Save.',
           closable: true,
         });
+        window.location.reload()
       });
   }
+
+  onResultAction(){
+    let scenario: string = ''
+    if (this.header == 'Baseline Parameter') {
+      scenario = 'baseline'
+    }
+    if (this.header == 'Project Parameter') {
+      scenario = 'project'
+    }
+    if (this.header == 'Leakage Parameter') {
+      scenario = 'leakage'
+    }
+    if (this.header == 'Projection Parameter') {
+      scenario = 'projection'
+    }
+    let data:any = {type: 'result'}
+    this.ref = this.dialogService.open(VerificationActionDialogComponent, {
+      header: "Result action",
+      width: '40%',
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
+      baseZIndex: 10000,
+      data: data,
+    });
+
+    this.ref.onClose.subscribe(async (res) => {
+      if (res){
+        let result = await this.verificationProxy.sendResultToRecalculate(this.assessmentYear.id).toPromise()
+        let comment = this.loggedUser.userType.name + '|' + res.result.comment
+        await this.saveVerificationDetails(comment)
+      }
+    })
+  }
+
+  async checkVerificationStage() {
+    if (this.assessmentYear.assessment.id){
+      let verificationList = (await this.assessmentYearControllerServiceProxy
+        .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentYear.assessment.id, this.assessmentYear.assessmentYear)
+        .toPromise())[0]?.verificationDetail;
+      this.roundOneHeadTable = verificationList?.find((o: any) => o.verificationStage == 1);
+      this.roundTwoHeadTable = verificationList?.find((o: any) => o.verificationStage == 2);
+      this.roundThreeHeadTable = verificationList?.find((o: any) => o.verificationStage == 3);
+    }
+  }
+
+  onHide() {
+    if (!this.isCompleted){
+      if (this.isValue) {
+        this.canActiveResult = false
+      }
+    }
+  }
+
 }

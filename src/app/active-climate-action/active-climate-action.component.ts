@@ -106,23 +106,6 @@ export class ActiveClimateActionComponent implements OnInit, AfterViewInit {
       .subscribe((res: any) => {
         this.projectStatusList = res.data;
       });
-
-    this.serviceProxy
-      .getManyBaseAssessmentControllerAssessment(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        1000,
-        0,
-        0,
-        0,
-      )
-      .subscribe((res: any) => {
-        this.assessmentList = res.data;
-      });
   }
 
   projectSummery() {
@@ -134,28 +117,7 @@ export class ActiveClimateActionComponent implements OnInit, AfterViewInit {
       queryParams: { id: climateaction.id },
     });
   }
-
-  isMac(ast: any): boolean {
-    if (ast) {
-      const x = ast.find((o: any) => o.assessmentType == 'MAC');
-      return x;
-    }
-
-    return false;
-  }
-
-  isGhg(ast: any): boolean {
-    if (ast) {
-      const x = ast.find(
-        (o: any) =>
-          o.assessmentType == 'Ex-ante' || o.assessmentType == 'Ex-post',
-      );
-      return x;
-    }
-
-    return false;
-  }
-
+  
   isTracking(ast: any): boolean {
     if (ast) {
       const x = ast.find((o: any) => o.assessmentType == 'Tracking');
@@ -166,6 +128,7 @@ export class ActiveClimateActionComponent implements OnInit, AfterViewInit {
   }
 
   loadgridData = (event: LazyLoadEvent) => {
+    this.loading = true;
     this.totalRecords = 0;
 
     const statusId = this.searchBy.status ? this.searchBy.status.id : 0;
@@ -214,26 +177,7 @@ export class ActiveClimateActionComponent implements OnInit, AfterViewInit {
           this.climateactions = a.items;
           this.totalRecords = a.meta.totalItems;
 
-          this.climateactions.map((o) => {
-            const filter1: string[] = [];
-            filter1.push('project.id||$eq||' + o.id);
-            this.serviceProxy
-              .getManyBaseAssessmentControllerAssessment(
-                undefined,
-                undefined,
-                filter1,
-                undefined,
-                undefined,
-                undefined,
-                1000,
-                0,
-                0,
-                0,
-              )
-              .subscribe((res) => {
-                o.assessments = res.data;
-              });
-          });
+          this.loading = false;
         });
     }, 1);
   };

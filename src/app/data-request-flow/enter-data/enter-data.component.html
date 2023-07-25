@@ -155,7 +155,7 @@
               </div>
             </td>
 
-            <td>{{ parameterList.parameterId.value }}</td>
+            <td>{{ parameterList.parameterId.value | number: '1.0-5'}}</td>
             <td>{{ parameterList.parameterId.uomDataRequest }}</td>
             <td>
               <tr>
@@ -310,11 +310,11 @@
             </p-dropdown>
           </div>
         </td>
-        <td>
+        <td style="width: 150px">
           <div class="p-field mb-2" *ngIf="!isHistorical">
             <input
               placeholder="Type Your Value"
-              type="text"
+              type="number"
               #cations="ngModel"
               class="p-inputtext"
               [(ngModel)]="selectedValue"
@@ -333,6 +333,11 @@
               [required]="true"
             >
             </p-dropdown>
+            <p
+            class="info-message text-danger"
+            *ngIf="(!selectedHistoricalValue)">
+            This is a mandatory field
+          </p>
           </div>
         </td>
         <td>
@@ -352,7 +357,7 @@
         <td>
           <div class="p-field mb-2">
             <input
-              style="width: 322%; height: 55px"
+              style="width: 250%; height: 55px;"
               placeholder="Type Your Assumption"
               type="text"
               class="p-inputtext"

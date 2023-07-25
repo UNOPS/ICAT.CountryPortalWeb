@@ -36,16 +36,16 @@ export class UserFormComponent implements OnInit {
   sss: any = {
     ae_createdBy: null,
     ae_createdOn: null,
-    ae_description: 'MRV Admin',
+    ae_description: "MRV Admin",
     ae_editedBy: null,
     ae_editedOn: null,
     ae_id: 4,
-    ae_name: 'MRV Admin',
+    ae_name: "MRV Admin",
     ae_sortOrder: 4,
     ae_status: 0,
     int_institutionTypeId: 2,
-    int_userTypeId: 4,
-  };
+    int_userTypeId: 4
+  }
 
   institutions: Institution[] = [];
 
@@ -58,19 +58,22 @@ export class UserFormComponent implements OnInit {
   ];
   selecteduserTitle: { id: number; name: string };
 
-  isNewUser = true;
+  isNewUser: boolean = true;
   editUserId: number;
-  isEmailUsed = false;
-  usedEmail = '';
+  isEmailUsed: boolean = false;
+  usedEmail: string = '';
 
-  alertHeader = 'User';
+  alertHeader: string = 'User';
   alertBody: string;
-  showAlert = false;
+  showAlert: boolean = false;
 
-  coreatingUser = false;
+  coreatingUser: boolean = false;
   countryId: number;
   sectorId: number;
   userRole: string;
+  telephoneLength: number;
+  uniq: string;
+  mask: string;
 
   constructor(
     private serviceProxy: ServiceProxy,
@@ -79,8 +82,8 @@ export class UserFormComponent implements OnInit {
     private router: Router,
     private confirmationService: ConfirmationService,
     private UserTypeServiceProxy: UserTypeControllerServiceProxy,
-    private instProxy: InstitutionControllerServiceProxy,
-  ) {}
+    private instProxy: InstitutionControllerServiceProxy
+  ) { }
 
   ngOnInit(): void {
     const token = localStorage.getItem('access_token')!;
@@ -88,10 +91,34 @@ export class UserFormComponent implements OnInit {
     const tokenPayload = decode<any>(token);
     this.countryId = tokenPayload.countryId;
 
-    const country = new Country();
+    let country = new Country()
     country.id = this.countryId;
+    // country.id=2;
     this.sectorId = tokenPayload.sectorId;
-    this.userRole = tokenPayload.roles[0];
+    this.userRole = tokenPayload.roles[0]
+
+    this.serviceProxy.getOneBaseCountryControllerCountry(
+      this.countryId,
+      undefined,
+      undefined,
+      0
+    )
+      .subscribe((res: any) => {
+        this.telephoneLength = res.telephoneLength;
+        this.mask = res.uniqtelephone + " ";
+        let y = 3;
+        for (let x = 0; x < this.telephoneLength - 1; x++) {
+          if (x == y) {
+            y += 3;
+            this.mask += "-9"
+          }
+          else {
+            this.mask += "9"
+          }
+        }
+      })
+
+
 
     this.user.userType = undefined!;
     this.user.mobile = '';
@@ -107,16 +134,17 @@ export class UserFormComponent implements OnInit {
             this.editUserId,
             undefined,
             undefined,
-            0,
+            0
           )
           .subscribe((res: any) => {
             this.onInstitutionChange2(res);
             this.user = res;
             this.selecteduserType = {
-              ae_name: this.user.userType.description,
-              ae_id: this.user.userType.id,
-            };
-            this.selectedUserTypesFordrop.push(this.selecteduserType);
+              "ae_name": this.user.userType.description,
+              "ae_id": this.user.userType.id
+            }
+            this.selectedUserTypesFordrop.push(this.selecteduserType)
+
           });
       }
     });
@@ -125,35 +153,35 @@ export class UserFormComponent implements OnInit {
       this.userTypes = res;
     });
 
-    this.instProxy.getInstitutionForManageUsers(0, 0).subscribe((res) => {
-      this.institutions = res.items;
 
-      if (this.user?.institution) {
-        this.institutions.forEach((ins: Institution) => {
-          if (ins.id == this.user.institution.id) {
-            const cat = ins.category;
-            const type = ins.type;
-            ins.category = new InstitutionCategory(cat);
-            ins.type = new InstitutionType(type);
-            const _ins = new Institution(ins);
+    this.instProxy.getInstitutionForManageUsers(0, 0)
+      .subscribe((res) => {
+        this.institutions = res.items;
 
-            this.user.institution = _ins;
-          }
-        });
-      }
+        if (this.user?.institution) {
+          this.institutions.forEach((ins: Institution) => {
+            if (ins.id == this.user.institution.id) {
+              let cat = ins.category;
+              let type = ins.type;
+              ins.category = new InstitutionCategory(cat)
+              ins.type = new InstitutionType(type)
+              let _ins = new Institution(ins)
+              this.user.institution = _ins;
+            }
+          });
+        }
 
-      if (this.userRole == 'Data Collection Team') {
-        this.institutions = this.institutions.filter(
-          (o) =>
-            o.country.id == this.countryId &&
-            o.sectorId == this.sectorId &&
-            o.type.id == 3,
-        );
-      }
-    });
+        if (this.userRole == 'Data Collection Team') {
+          this.institutions = this.institutions.filter((o) => o.country.id == this.countryId && o.sectorId == this.sectorId && o.type.id == 3);
+        }
+
+
+      });
+
+
   }
 
-  onChangeUser(event: any) {}
+  onChangeUser(event: any) { }
 
   async saveUser(userForm: NgForm) {
     if (userForm.valid) {
@@ -178,26 +206,27 @@ export class UserFormComponent implements OnInit {
             if (res.data.length > 0) {
               this.isEmailUsed = true;
               this.usedEmail = res.data[0].email;
-
               this.messageService.add({
                 severity: 'error',
                 summary: 'Error.',
-                detail:
-                  'Email address is already in use, please select a diffrent email address to create a new user.!',
+                detail: 'Email address is already in use, please select a diffrent email address to create a new user.!',
                 sticky: true,
               });
             } else {
+              // create user
               this.user.username = this.user.email;
               this.user.status = 0;
+              // this.user.status = 1;
 
-              const userType = new UserType();
+              let userType = new UserType();
               userType.id = this.selecteduserType.ae_id;
               this.user.userType = userType;
 
-              const insTemp = this.user.institution;
+              let insTemp = this.user.institution;
               this.user.institution = new Institution();
               this.user.institution.id = insTemp.id;
               this.coreatingUser = true;
+
 
               this.serviceProxy
                 .createOneBaseUsersControllerUser(this.user)
@@ -216,7 +245,7 @@ export class UserFormComponent implements OnInit {
                   },
                   () => {
                     this.coreatingUser = false;
-                  },
+                  }
                 );
               setTimeout(() => {
                 this.onBackClick();
@@ -242,14 +271,15 @@ export class UserFormComponent implements OnInit {
                 detail: 'An error occurred, please try again.',
                 closable: true,
               });
-            },
+            }
           );
         setTimeout(() => {
           this.onBackClick();
         }, 1000);
       }
-    } else {
-      alert('Fill all the mandetory fields');
+    }
+    else {
+      alert("Fill all the mandetory fields")
     }
   }
 
@@ -259,65 +289,77 @@ export class UserFormComponent implements OnInit {
 
   onDeleteClick() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the user?',
-      header: 'Delete Confirmation',
+      message: `Are you sure you want to ${this.user.status ? 'activate' : 'deactivate'} the user?`,
+      header: `${this.user.status ? 'Activate' : 'Deactivate'} Confirmation`,
       acceptIcon: 'icon-not-visible',
       rejectIcon: 'icon-not-visible',
       accept: () => {
         this.deleteUser();
       },
-      reject: () => {},
+      reject: () => { },
     });
   }
 
   deleteUser() {
+
+    this.user.status = 1;
     this.serviceProxy
-      .deleteOneBaseUsersControllerUser(this.user.id)
+      .updateOneBaseUsersControllerUser(this.user.id, this.user)
       .subscribe((res) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Delete Confirmation',
+          detail: `${this.user.status ? 'deactivate' : 'activate'} Confirmation`,
+          closable: true,
+        });
+      }, err => {
+        // });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `${this.user.status ? 'deactivate' : 'activate'} fail`,
           closable: true,
         });
       });
   }
 
+
   async onInstitutionChange(event: any) {
-    let tempList = this.userTypes;
+    let tempList = this.userTypes
 
     if (event.type.id == 2) {
-      const res = await this.instProxy
-        .getInstitutionForUsers(event.id, 3)
-        .toPromise();
+      let res = await this.instProxy.getInstitutionForUsers(event.id, 3).toPromise()
 
       if (res == 1) {
-        tempList = tempList.filter((a) => a.ae_name != 'Sector Admin');
+
+        tempList = tempList.filter((a) => a.ae_name != "Sector Admin")
       }
-    } else if (event.type.id == 3) {
-      const res = await this.instProxy
-        .getInstitutionForUsers(event.id, 8)
-        .toPromise();
+    }
+    else if (event.type.id == 3) {
+
+      let res = await this.instProxy.getInstitutionForUsers(event.id, 8).toPromise();
 
       if (res == 1) {
-        tempList = tempList.filter((a) => a.ae_name != 'Institution Admin');
+        tempList = tempList.filter((a) => a.ae_name != "Institution Admin")
       }
     }
 
-    if (this.userRole === 'Institution Admin') {
+    if (this.userRole === "Institution Admin") {
+      this.selectedUserTypesFordrop = tempList.filter((a) => a.ae_name === "Data Entry Operator")
+    }
+    else {
+
       this.selectedUserTypesFordrop = tempList.filter(
-        (a) => a.ae_name === 'Data Entry Operator',
-      );
-    } else {
-      this.selectedUserTypesFordrop = tempList.filter(
-        (a) => a.int_institutionTypeId === event.type.id,
+        (a) => a.int_institutionTypeId === event.type.id
       );
     }
   }
 
   onInstitutionChange2(aaa: any) {
     this.selectedUserTypesFordrop = this.userTypes.filter(
-      (a) => a.int_institutionTypeId === 1,
+      (a) => a.int_institutionTypeId === 1//aaa.institution.type.id
     );
+
   }
+
 }

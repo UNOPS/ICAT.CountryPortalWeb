@@ -36,6 +36,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
   assignCAArray: any[] = [];
 
   loading: boolean;
+  spin: boolean = false;  
   totalRecords = 0;
   itemsPerPage = 0;
   rows = 10;
@@ -109,27 +110,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
 
   setPropose() {
     this.isProposal = 1;
-
-    this.AssessmentProxy.getAssmentDetails(
-      0,
-      0,
-      '',
-      '',
-      this.isProposal,
-      0,
-      '',
-    ).subscribe((res: any) => {
-      for (const a of res.items) {
-        if (a !== null) {
-          if (!this.assignCAArray.includes(a.project.climateActionName)) {
-            this.assignCAArray.push(a.project.climateActionName);
-            this.projects.push(a.project);
-          }
-        }
-      }
-    });
-
-    const event: any = {};
+    let event: any = {};
     event.rows = this.rows;
     event.first = 0;
     this.loadgridData(event);
@@ -137,32 +118,9 @@ export class AllResultComponent implements OnInit, AfterViewInit {
 
   setActive() {
     this.isProposal = 0;
-
-    this.AssessmentProxy.getAssmentDetails(
-      0,
-      0,
-      '',
-      '',
-      this.isProposal,
-      0,
-      '',
-    ).subscribe((res: any) => {
-      this.assignCAArray = [];
-      this.projects = [];
-      for (const a of res.items) {
-        if (a !== null) {
-          if (!this.assignCAArray.includes(a.project.climateActionName)) {
-            this.assignCAArray.push(a.project.climateActionName);
-            this.projects.push(a.project);
-          }
-        }
-      }
-    });
-
-    const event: any = {};
+    let event: any = {};
     event.rows = this.rows;
     event.first = 0;
-
     this.loadgridData(event);
   }
 
@@ -171,6 +129,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.spin = true
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
     const model: number[] = [];
@@ -182,54 +141,14 @@ export class AllResultComponent implements OnInit, AfterViewInit {
     } else {
       this.asseType = ['MAC', 'Ex-ante', 'Ex-post'];
     }
-    this.AssessmentProxy.getAssmentDetails(
-      0,
-      0,
-      '',
-      '',
-      this.isProposal,
-      0,
-      '',
-    ).subscribe((res: any) => {
-      for (const a of res.items) {
-        if (a !== null) {
-          if (!this.assignCAArray.includes(a.project.climateActionName)) {
-            this.assignCAArray.push(a.project.climateActionName);
-            this.projects.push(a.project);
-          }
-        }
-      }
-    });
-
-    this.serviceProxy
-      .getManyBaseAssessmentControllerAssessment(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        1000,
-        0,
-        0,
-        0,
-      )
-      .subscribe((res: any) => {
-        this.assessmentList = res.data;
-      });
-
-    const event: any = {};
-    event.rows = this.rows;
-    event.first = 0;
-    this.loadgridData(event);
   }
 
   loadgridData = (event: LazyLoadEvent) => {
-    this.loading = true;
+    this.spin = true;
     this.totalRecords = 0;
 
-    const filtertext = this.searchBy.text ? this.searchBy.text : '';
-    const pageNumber =
+    let filtertext = this.searchBy.text ? this.searchBy.text : '';
+    let pageNumber =
       event.first === 0 || event.first === undefined
         ? 1
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
@@ -244,7 +163,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
     const id = 0;
 
     setTimeout(() => {
-      this.AssessmentProxy.getAssmentDetails(
+      this.AssessmentProxy.getAssmentDetailsForResult(
         pageNumber,
         this.rows,
         filtertext,
@@ -256,7 +175,8 @@ export class AllResultComponent implements OnInit, AfterViewInit {
         this.assessments = a.items;
         this.totalRecords = a.meta.totalItems;
         this.loading = false;
-        this.itemsPerPage = a.meta.itemsPerPage;
+        this.itemsPerPage = a.meta.itemsPerPage
+        this.spin = false;
       });
     }, 1);
   };

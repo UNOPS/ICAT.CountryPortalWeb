@@ -142,7 +142,7 @@
               />
               <p
                 class="info-message text-danger"
-                *ngIf="!p.value && isSubmitted"
+                *ngIf="(!p.value && isSubmitted && !IsProposal)"
               >
                 This is a mandatory field
               </p>

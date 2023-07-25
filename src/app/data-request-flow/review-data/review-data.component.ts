@@ -257,7 +257,6 @@ export class ReviewDataComponent implements OnInit {
         ? 1
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
     this.rows = event.rows === undefined ? 10 : event.rows;
-
     setTimeout(() => {
       this.parameterProxy
         .getReviewDataRequest(

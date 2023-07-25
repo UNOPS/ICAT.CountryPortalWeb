@@ -10,16 +10,9 @@
           <div class="p-field">
             <label for="institution">Assign Institution </label>
 
-            <input
-              [disabled]="editUserId > 0"
-              type="text"
-              name="namehhhh"
-              class="form-control"
-              [(ngModel)]="user.institution.name"
-              #fdesignation="ngModel"
-              placeholder="Enter the institution"
-              required
-            />
+            <input [disabled]="editUserId > 0" type="text" name="namehhhh" class="form-control"
+              [(ngModel)]="user.institution.name" #fdesignation="ngModel" placeholder="Enter the institution"
+              required />
           </div>
         </div>
       </div>
@@ -31,16 +24,8 @@
           <div class="p-field">
             <label for="usertype">User Type </label>
 
-            <input
-              [disabled]="editUserId > 0"
-              type="text"
-              name="usertype"
-              class="form-control"
-              [(ngModel)]="user.userType.name"
-              #fdesignation="ngModel"
-              placeholder="Enter the user type"
-              required
-            />
+            <input [disabled]="editUserId > 0" type="text" name="usertype" class="form-control"
+              [(ngModel)]="user.userType.name" #fdesignation="ngModel" placeholder="Enter the user type" required />
           </div>
         </div>
       </div>
@@ -52,16 +37,8 @@
           <div class="p-field">
             <label for="email">Designation </label>
 
-            <input
-              [disabled]="editUserId > 0"
-              type="text"
-              name="designation"
-              class="form-control"
-              [(ngModel)]="user.designation"
-              #fdesignation="ngModel"
-              placeholder="-"
-              required
-            />
+            <input [disabled]="editUserId > 0" type="text" name="designation" class="form-control"
+              [(ngModel)]="user.designation" #fdesignation="ngModel" placeholder="-" required />
           </div>
         </div>
       </div>
@@ -72,16 +49,8 @@
         <div class="col-12 col-md-8">
           <div class="p-field">
             <label for="firstname">First Name </label>
-            <input
-              [disabled]="editUserId > 0"
-              type="text"
-              name="firstname"
-              class="form-control"
-              [(ngModel)]="user.firstName"
-              #ffn="ngModel"
-              placeholder="Enter the first name"
-              required
-            />
+            <input [disabled]="editUserId > 0" type="text" name="firstname" class="form-control"
+              [(ngModel)]="user.firstName" #ffn="ngModel" placeholder="Enter the first name" required />
           </div>
         </div>
       </div>
@@ -93,16 +62,8 @@
           <div class="p-field">
             <label for="lastname">Last Name </label>
 
-            <input
-              [disabled]="editUserId > 0"
-              type="text"
-              name="lastname"
-              class="form-control"
-              [(ngModel)]="user.lastName"
-              #fln="ngModel"
-              placeholder="Enter the last name"
-              required
-            />
+            <input [disabled]="editUserId > 0" type="text" name="lastname" class="form-control"
+              [(ngModel)]="user.lastName" #fln="ngModel" placeholder="Enter the last name" required />
           </div>
         </div>
       </div>
@@ -114,17 +75,8 @@
           <div class="p-field">
             <label for="email">Email </label>
 
-            <input
-              [disabled]="editUserId > 0"
-              type="email"
-              name="email"
-              class="form-control"
-              [(ngModel)]="user.email"
-              #femail="ngModel"
-              placeholder="Enter the email"
-              pattern="[\w-\.]+@([\w-]+\.)+[\w-]{1,20}$"
-              required
-            />
+            <input [disabled]="editUserId > 0" type="email" name="email" class="form-control" [(ngModel)]="user.email"
+              #femail="ngModel" placeholder="Enter the email" pattern="[\w-\.]+@([\w-]+\.)+[\w-]{1,20}$" required />
           </div>
         </div>
       </div>
@@ -135,17 +87,9 @@
         <div class="col-12 col-md-8">
           <div class="p-field">
             <label for="institution">Landline </label>
-            <p-inputMask
-              [disabled]="editUserId > 0"
-              type="text"
-              name="telephone"
-              mask="+99 99-999-9999"
-              [autoClear]="false"
-              placeholder="+99 999 999-9999"
-              [(ngModel)]="user.telephone"
-              #ftelephone="ngModel"
-              [styleClass]="'form-control'"
-            ></p-inputMask>
+            <p-inputMask [disabled]="editUserId > 0" type="text" name="telephone" mask="+99 99-999-9999"
+              [autoClear]="false" placeholder="+99 999 999-9999" [(ngModel)]="user.telephone" #ftelephone="ngModel"
+              [styleClass]="'form-control'"></p-inputMask>
           </div>
         </div>
       </div>
@@ -157,17 +101,9 @@
           <div class="p-field">
             <label for="mobile">Mobile </label>
 
-            <p-inputMask
-              [disabled]="editUserId > 0"
-              type="text"
-              name="mobile"
-              mask="+99 99-999-9999"
-              [autoClear]="false"
-              placeholder="+99 999 999-999"
-              [(ngModel)]="user.mobile"
-              [styleClass]="'form-control'"
-              #fmobile="ngModel"
-            ></p-inputMask>
+            <p-inputMask [disabled]="editUserId > 0" type="text" name="mobile" mask="+99 99-999-9999"
+              [autoClear]="false" placeholder="+99 999 999-999" [(ngModel)]="user.mobile" [styleClass]="'form-control'"
+              #fmobile="ngModel"></p-inputMask>
           </div>
         </div>
       </div>
@@ -175,25 +111,13 @@
 
     <div class="row">
       <div class="d-flex col-2 justify-content-start mb-0 pl-2">
-        <button
-          class="btn btn-secondary text-uppercase ml-15"
-          (click)="onBackClick()"
-        >
+        <button class="btn btn-secondary text-uppercase ml-15" (click)="onBackClick()">
           Back
         </button>
       </div>
-      <div
-        class="d-flex offset-2 col-2 justify-content-end p-button-vertical mb-0 pl-2"
-      >
-        <button
-          pButton
-          pRipple
-          *ngIf="!isNewUser"
-          [disabled]="itsMe || user.canNotDelete == true || checkRole"
-          class="btn text-uppercase"
-          type="button"
-          (click)="confirmDeletUser()"
-        >
+      <div class="d-flex offset-2 col-2 justify-content-end p-button-vertical mb-0 pl-2">
+        <button pButton pRipple *ngIf="!isNewUser" [disabled]="itsMe || user.canNotDelete == true || checkRole"
+          class="btn text-uppercase" type="button" (click)="confirmDeletUser()">
           {{ isActive == 0 ? 'Deactivate' : 'Activate' }}
         </button>
       </div>
@@ -201,8 +125,5 @@
   </div>
 </div>
 
-<p-confirmDialog
-  [style]="{ width: '50vw' }"
-  [baseZIndex]="10000"
-  rejectButtonStyleClass="p-button-text"
-></p-confirmDialog>
+<p-confirmDialog [style]="{ width: '50vw' }" [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text"></p-confirmDialog>

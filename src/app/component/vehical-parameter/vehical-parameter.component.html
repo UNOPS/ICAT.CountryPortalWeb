@@ -110,11 +110,11 @@
                 [autoDisplayFirst]="false"
                 [options]="p.defaultValues"
                 optionLabel="name"
+                [required]="true"
               ></p-dropdown>
               <p
                 class="info-message text-danger"
-                *ngIf="!p.defaultValue && isSubmitted"
-              >
+                *ngIf="(!p.defaultValue && isSubmitted)">
                 This is a mandatory field
               </p>
             </div>
@@ -143,12 +143,12 @@
                 #value="ngModel"
                 [disabled]="isDisableforSubmitButton"
                 [(ngModel)]="p.value"
+                [required]="true"
                 pInputText
               />
               <p
                 class="info-message text-danger"
-                *ngIf="!p.value && isSubmitted"
-              >
+                *ngIf="(!p.value && isSubmitted && !IsProposal)">
                 This is a mandatory field
               </p>
             </div>

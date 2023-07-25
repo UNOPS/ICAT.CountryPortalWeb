@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { VerificationStatus } from 'app/Model/VerificationStatus.enum';
-import { LazyLoadEvent } from 'primeng/api';
+import { LazyLoadEvent, MessageService } from 'primeng/api';
 import {
   Assessment,
   AssessmentYear,
@@ -20,7 +20,8 @@ export class VerificationSectorAdminComponent implements OnInit {
   verificationStatus: string[] = [
     VerificationStatus[VerificationStatus.Pending],
     VerificationStatus[VerificationStatus['Pre Assessment']],
-    VerificationStatus[VerificationStatus['NC Recieved']],
+    VerificationStatus[VerificationStatus['NC Received']],
+    VerificationStatus[VerificationStatus['In Remediation']],
     VerificationStatus[VerificationStatus['Initial Assessment']],
     VerificationStatus[VerificationStatus['Final Assessment']],
     VerificationStatus[VerificationStatus.Fail],
@@ -32,9 +33,9 @@ export class VerificationSectorAdminComponent implements OnInit {
     text: null,
   };
   loading: boolean;
-  totalRecords = 0;
-  isActive = false;
-  rows = 10;
+  totalRecords: number = 0;
+  isActive: boolean = false;
+  rows: number = 10;
   last: number;
   event: any;
   paras: AssessmentYear[] = [];
@@ -49,13 +50,14 @@ export class VerificationSectorAdminComponent implements OnInit {
     private vrServiceProxy: VerificationControllerServiceProxy,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private messageService: MessageService
   ) {}
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
-    this.onSearch();
+    // this.onSearch();
   }
 
   onStatusChange($event: any) {
@@ -71,26 +73,32 @@ export class VerificationSectorAdminComponent implements OnInit {
   }
 
   loadgridData = (event: LazyLoadEvent) => {
+    this.loading = true;
     this.totalRecords = 0;
-
-    const statusId = this.searchBy.status
+    let statusId = this.searchBy.status
       ? Number(VerificationStatus[this.searchBy.status])
       : 0;
-
-    const filtertext = this.searchBy.text ? this.searchBy.text : '';
-
-    const pageNumber =
+    let filtertext = this.searchBy.text ? this.searchBy.text : '';
+    let pageNumber =
       event.first === 0 || event.first === undefined
         ? 1
         : event.first / (event.rows === undefined ? 1 : event.rows) + 1;
     this.rows = event.rows === undefined ? 10 : event.rows;
+    let Active = 0;
     setTimeout(() => {
       this.vrServiceProxy
-        .getVRParameters(pageNumber, this.rows, statusId, filtertext)
+        .getVRParameters(pageNumber, this.rows, statusId, filtertext, 'false')
         .subscribe((a) => {
           this.paras = a.items;
-
           this.totalRecords = a.meta.totalItems;
+          this.loading = false;
+        }, error => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error loading'
+          })
+          this.loading = false
         });
     }, 1);
   };

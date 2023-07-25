@@ -21,9 +21,10 @@ export class LoginLayoutService {
   toggleLoginForm(
     showLoginForm: any,
     showForgotPassword: any,
-    showSetPassword: any,
+    showSetPassword: any
   ) {
     this.showForgotPassword.next(showForgotPassword);
     this.showLoginForm.next(showLoginForm);
+    this.showSetPassword.next(showSetPassword);
   }
 }

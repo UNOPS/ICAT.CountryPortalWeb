@@ -4,27 +4,26 @@
       <div class="col-md-6 login-content-wrapper">
         <div class="login-inner">
           <div class="row mb-2">
-            <div class="col-md-2">
-              <img
-                src="https://climateactiontransparency.org/wp-content/themes/custom/assets/i/logo/logo_blue.svg"
-                alt="logo"
-                (click)="toLanding()"
+            <div class="logo_img_w">
+              <img class="logo_img"
+                src="https://climateactiontransparency.org/wp-content/themes/custom/assets/i/logo/logo_purple.svg"
+                alt="logo" height="45px" style="padding-right: 2%; " (click)="toLanding()"  
               />
-            </div>
-            <div class="col-md-5">
-              <img
+              <img class="logo_img active_mod"
                 src="https://climateactiontransparency.org/wp-content/themes/custom/assets/i/logo/logo_text.svg"
-                alt="logo text"
-                (click)="toLanding()"
+                alt="logo text" height="40px" (click)="toLanding()" 
               />
             </div>
           </div>
-          <h2 class="mt-4">Welcome ...</h2>
-          <app-login-form *ngIf="showLoginForm"></app-login-form>
-          <app-forgot-password *ngIf="showForgotPassword"></app-forgot-password>
+        <h2 class="mt-4">Welcome ...</h2>
+        <app-login-form *ngIf="showLoginForm"></app-login-form>
+        <app-forgot-password *ngIf="showForgotPassword"></app-forgot-password>
+        <app-set-password *ngIf="showSetPassword"></app-set-password>
         </div>
       </div>
-      <div class="col-md-6 login-back"></div>
+      <div class="col-md-6 login-back">
+
+      </div>
     </div>
   </div>
 </section>

@@ -3,7 +3,10 @@
 
   <div class="row">
     <div class="p-grid p-fluid card">
-      <p-table #table [value]="finalRecords">
+      <p-table 
+        #table 
+        [value]="finalRecords" 
+        [loading]="loading">
         <ng-template pTemplate="header">
           <tr>
             <th>Assessment Year</th>

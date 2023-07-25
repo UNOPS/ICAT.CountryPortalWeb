@@ -24,13 +24,14 @@ export class DocumentUploadComponent implements OnInit, OnChanges {
   @Input() documentOwner: DocumentsDocumentOwner;
   @Input() documentOwnerId: number;
   @Input() isNew: boolean;
-  @Input() showDeleteButton = true;
-  @Input() showUpload = true;
-  @Input() id = 0;
+  @Input() showDeleteButton: boolean = true;
+  @Input() showUpload: boolean = true;
+  @Input() id: number = 0;
+  @Input() viewDocument: boolean = false;
 
   loading: boolean;
   uploadedFiles: any[] = [];
-  SERVER_URL = environment.baseUrlAPIDocUploadAPI;
+  SERVER_URL = environment.baseUrlAPIDocUploadAPI; //"http://localhost:7080/document/upload2";
   SERVER_URL_ANONYMOUS = environment.baseUrlAPIDocUploadAnonymousAPI;
   uploadURL: string;
   token: string;
@@ -76,17 +77,23 @@ export class DocumentUploadComponent implements OnInit, OnChanges {
       if (this.token) {
         await this.docService
           .getDocuments(this.documentOwnerId, this.documentOwner)
-          .subscribe((res) => {
-            this.doucmentList = res;
-            this.loading = false;
-          });
+          .subscribe(
+            (res) => {
+              this.doucmentList = res;
+              this.loading = false;
+            },
+            (err: any) => console.log(err)
+          );
       } else {
         await this.docService
           .getDocumentsAnonymous(this.documentOwnerId, this.documentOwner)
-          .subscribe((res) => {
-            this.doucmentList = res;
-            this.loading = false;
-          });
+          .subscribe(
+            (res) => {
+              this.doucmentList = res;
+              this.loading = false;
+            },
+            (err: any) => console.log(err)
+          );
       }
     }
   }
@@ -113,7 +120,6 @@ export class DocumentUploadComponent implements OnInit, OnChanges {
         this.documentOwnerId +
         '/' +
         this.documentOwner.toString();
-
       this.httpClient.post<any>(fullUrl, formData).subscribe(
         (res) => {
           this.load();

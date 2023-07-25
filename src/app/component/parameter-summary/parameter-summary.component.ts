@@ -14,6 +14,7 @@ import {
   AssessmentControllerServiceProxy,
   Parameter,
   ParameterHistoryControllerServiceProxy,
+  ParameterVerifierAcceptance,
   QualityCheckControllerServiceProxy,
   ServiceProxy,
 } from 'shared/service-proxies/service-proxies';
@@ -216,5 +217,9 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
       baseZIndex: 10000,
       data: param,
     });
+  }
+
+  showParameter(param: Parameter){
+    return (param.institution?.name != null || param.verifierAcceptance === ParameterVerifierAcceptance.DATA_ENTERED)
   }
 }

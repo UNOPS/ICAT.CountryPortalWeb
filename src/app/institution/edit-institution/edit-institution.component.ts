@@ -21,21 +21,22 @@ export class EditInstitutionComponent implements OnInit {
   sectorList: Sector[] = [];
   typeList: InstitutionType[] = [];
   categoryList: InstitutionCategory[] = [];
-  institutionId = 0;
-  Deactivate = 'Delete';
+  institutionId: number = 0;
+  Deactivate: string = "Delete";
+  telephoneLength: number;
+  // mask:string;
+  telephone: any;
 
   rejectComment: string;
   rejectCommentRequried: boolean;
   selectedProject: Institution;
   @ViewChild('op') overlay: any;
 
-  constructor(
-    private serviceProxy: ServiceProxy,
+  constructor(private serviceProxy: ServiceProxy,
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
     private router: Router,
-    private messageService: MessageService,
-  ) {}
+    private messageService: MessageService) { }
 
   OnShowOerlay() {
     this.rejectComment = '';
@@ -54,9 +55,8 @@ export class EditInstitutionComponent implements OnInit {
         1000,
         0,
         0,
-        0,
-      )
-      .subscribe((res: any) => {
+        0
+      ).subscribe((res: any) => {
         this.typeList = res.data;
       });
 
@@ -71,9 +71,8 @@ export class EditInstitutionComponent implements OnInit {
         1000,
         0,
         0,
-        0,
-      )
-      .subscribe((res: any) => {
+        0
+      ).subscribe((res: any) => {
         this.categoryList = res.data;
       });
 
@@ -88,9 +87,8 @@ export class EditInstitutionComponent implements OnInit {
         1000,
         0,
         0,
-        0,
-      )
-      .subscribe((res: any) => {
+        0
+      ).subscribe((res: any) => {
         this.sectorList = res.data;
       });
 
@@ -101,44 +99,47 @@ export class EditInstitutionComponent implements OnInit {
           this.institutionId,
           undefined,
           undefined,
-          0,
-        )
-        .subscribe((res) => {
+          0
+        ).subscribe((res) => {
           this.institution = res;
-        });
-    });
+          this.telephone = res.telephoneNumber;
+        })
+    })
+
   }
   saveForm(formData: NgForm) {
+
     if (formData.valid) {
-      const sector = new Sector();
+      let sector = new Sector();
       sector.id = this.institution.sector?.id;
       this.institution.sector = sector;
 
+
       if (this.institution.type) {
-        const type = new InstitutionType();
+        let type = new InstitutionType();
         type.id = this.institution.type?.id;
         this.institution.type = type;
       }
 
       if (this.institution.category) {
-        const category = new InstitutionCategory();
+        let category = new InstitutionCategory();
         category.id = this.institution.category?.id;
         this.institution.category = category;
       }
 
       if (this.institution.id > 0) {
         this.serviceProxy
-          .updateOneBaseInstitutionControllerInstitution(
-            this.institution.id,
-            this.institution,
-          )
+          .updateOneBaseInstitutionControllerInstitution(this.institution.id, this.institution)
           .subscribe(
             (res) => {
               this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
-                detail: this.institution.name + ' is updated successfully ',
+                detail:
+                  this.institution.name +
+                  ' is updated successfully ',
                 closable: true,
+
               });
             },
             (err) => {
@@ -148,14 +149,16 @@ export class EditInstitutionComponent implements OnInit {
                 detail: 'Internal server error, please try again.',
                 sticky: true,
               });
-            },
+            }
           );
         setTimeout(() => {
           this.onBackClick();
         }, 1000);
       }
-    } else {
-      alert('Fill all the mandetory fields in correct format');
+    }
+
+    else {
+      alert("Fill all the mandetory fields in correct format")
     }
   }
 

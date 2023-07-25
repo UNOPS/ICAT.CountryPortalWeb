@@ -26,7 +26,62 @@
         </div>
       </div>
     </div>
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Specific Climate Actions</label>
+            <p-dropdown
+              name="climateActiontype"
+              [options]="dataReqCA"
+              [(ngModel)]="searchBy.climateaction"
+              #fsector="ngModel"
+              [showClear]="true"
+              [filter]="true"
+              placeholder="Select .."
+              optionLabel="climateActionName"
+              (ngModelChange)="onCAChange($event)"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="projYear">Year</label>
+          <p-dropdown
+            name="projYear"
+            [options]="yearList"
+            [(ngModel)]="searchBy.year"
+            #fsector="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            placeholder="Select .."
+            optionLabel="assessmentYear"
+            (ngModelChange)="onYearChange($event)"
+          >
+          </p-dropdown>
+        </div>
+      </div>
 
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="projStatus">Status</label>
+          <p-dropdown
+            name="institutiontype"
+            [options]="statusList"
+            [(ngModel)]="searchBy.status"
+            #fsector="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            placeholder="Select .."
+            optionLabel="name"
+            (ngModelChange)="onStatusChange($event)"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
     <div class="col-sm-12">
       <p-table
         #dt
@@ -71,16 +126,16 @@
                 type="button"
                 (click)="directToApprovePage(datarequests)"
                 [disabled]="
-                  datarequests.qaStatus == 4 || datarequests.qaStatus == 1
+                  datarequests.qaStatus === 4 ||
+                  datarequests.qaStatus === 1 ||
+                  (datarequests.isAllParameterAccept &&
+                    datarequests.qaStatus !== null)
                 "
                 class="btn btn-primary btn-block text-uppercase btn-lg"
                 style="margin-left: 1%"
               >
-                 {{
-                  datarequests.qaStatus == 4 || datarequests.qaStatus == 1
-                    ? 'Approved Data'
-                    : 'Approve Data'
-                }}
+                <!--  {{datarequests.qaStatus ==4 || datarequests.qaStatus ==1 ? "Approved Data" : "Approve Data"}} -->
+                {{ getApproveDataLabel(datarequests) }}
               </button>
             </td>
           </tr>

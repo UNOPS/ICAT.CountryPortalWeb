@@ -10,9 +10,10 @@ import {
 @Component({
   selector: 'app-summarytrackclimateactions-country',
   templateUrl: './summarytrackclimateactions-country.component.html',
-  styleUrls: ['./summarytrackclimateactions-country.component.css'],
+  styleUrls: ['./summarytrackclimateactions-country.component.css']
 })
 export class SummarytrackclimateactionsCountryComponent implements OnInit {
+
   activities: TrackcaEntity[] = [];
   totalRecords: any;
   rows: any;
@@ -20,54 +21,53 @@ export class SummarytrackclimateactionsCountryComponent implements OnInit {
   finalRecords: activeproject[] = [];
   flagIds: any[] = [];
   records: TrackcaEntity[] = [];
+
+  loading: boolean = false
+
   constructor(
     private serviceProxy: ServiceProxy,
     private router: Router,
     private activerouter: ActivatedRoute,
-    private trckCAProxy: TrackClimateControllerServiceProxy,
-  ) {}
+    private trckCAProxy: TrackClimateControllerServiceProxy,) { }
 
   ngOnInit(): void {
-    this.trckCAProxy.getTrackClimateActionDetails().subscribe((res) => {
-      this.activities = res;
+    this.loading = true
+    this.trckCAProxy.getTrackClimateActionDetails()
+      .subscribe((async res => {
+        this.activities = res;
 
-      if (this.activities != undefined) {
-        for (const x of this.activities) {
-          this.flagIds.push(x.flag);
+        if (this.activities != undefined) {
+          this.flagIds = this.activities.map(x => x.flag)
         }
-      }
 
-      setTimeout(() => {
         this.flagIds = [...new Set(this.flagIds)];
-
-        for (const y of this.flagIds) {
+        for await (let y of this.flagIds) {
           this.records = this.activities.filter((o) => o.flag == y);
 
-          const record: activeproject = {
+          let record: activeproject = {
             Years: this.records[0].years,
-            Sectors: 'Transport',
-            GeneratedDate: moment(this.records[0].createdOn).format(
-              'YYYY-MM-DD HH:mm:ss',
-            ),
+            Sectors: "Transport",
+            GeneratedDate: moment(this.records[0].createdOn).format('YYYY-MM-DD HH:mm:ss'),
             ActualEmissionReduction: 0,
             ExpectedEmissionReduction: 0,
             flag: y,
           };
 
-          for (const x of this.records) {
-            record.ActualEmissionReduction =
-              record.ActualEmissionReduction + x.achieved;
-            record.ExpectedEmissionReduction =
-              record.ExpectedEmissionReduction + x.expected;
+          for await (let x of this.records) {
+            record.ActualEmissionReduction = record.ActualEmissionReduction + x.achieved;
+            record.ExpectedEmissionReduction = record.ExpectedEmissionReduction + x.expected;
           }
 
           this.finalRecords.push(record);
+
         }
-      }, 1);
-    });
+
+        this.loading = false
+      }))
+
   }
   generate() {
-    this.router.navigate(['/track-ca-country']);
+    this.router.navigate(['/track-ca-country'])
   }
 
   sendDetails(finalRecords: any) {

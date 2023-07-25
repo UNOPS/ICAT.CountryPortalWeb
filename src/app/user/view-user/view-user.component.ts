@@ -33,7 +33,7 @@ export class ViewUserComponent implements OnInit {
     private router: Router,
     private userControllerService: UsersControllerServiceProxy,
     private confirmationService: ConfirmationService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const token = localStorage.getItem('access_token')!;
@@ -54,42 +54,35 @@ export class ViewUserComponent implements OnInit {
             this.editUserId,
             undefined,
             undefined,
-            0,
+            0
           )
           .subscribe((res: any) => {
             this.user = res;
 
             this.isActive = this.user.status;
             this.itsMe = this.user.username == tokenPayload.usr;
-            const loggedUserRole = tokenPayload.roles[0];
+            let loggedUserRole = tokenPayload.roles[0]
+            if (this.user.userType.name == "Country Admin") {
 
-            if (this.user.userType.name == 'Country Admin') {
-            } else if (this.user.userType.name == 'Sector Admin') {
-              this.checkRole = loggedUserRole != 'Country Admin';
-            } else if (this.user.userType.name == 'MRV Admin') {
-              this.checkRole =
-                loggedUserRole != 'Sector Admin' ||
-                loggedUserRole != 'MRV Admin';
-            } else if (
-              this.user.userType.name == 'Technical Team' ||
-              this.user.userType.name == 'QC Team' ||
-              this.user.userType.name == 'Data Collection Team'
-            ) {
-              this.checkRole =
-                loggedUserRole != 'Sector Admin' &&
-                loggedUserRole != 'MRV Admin';
-            } else if (
-              this.user.userType.name == 'Institution Admin' ||
-              this.user.userType.name == 'Data Entry Operator'
-            ) {
-              this.checkRole =
-                loggedUserRole != 'Sector Admin' &&
-                loggedUserRole != 'MRV Admin' &&
-                loggedUserRole != 'Technical Team' &&
-                loggedUserRole != 'Data Collection Team';
-            } else {
             }
+            else if (this.user.userType.name == "Sector Admin") {
 
+              this.checkRole = loggedUserRole != "Country Admin"
+
+            }
+            else if (this.user.userType.name == "MRV Admin") {
+              this.checkRole = loggedUserRole != "Sector Admin" || loggedUserRole != "MRV Admin"
+
+            }
+            else if (this.user.userType.name == "Technical Team" || this.user.userType.name == "QC Team" || this.user.userType.name == "Data Collection Team") {
+              this.checkRole = loggedUserRole != "Sector Admin" && loggedUserRole != "MRV Admin"
+
+            }
+            else if (this.user.userType.name == "Institution Admin" || this.user.userType.name == "Data Entry Operator") {
+              this.checkRole = loggedUserRole != "Sector Admin" && loggedUserRole != "MRV Admin" && loggedUserRole != "Technical Team" && loggedUserRole != "Data Collection Team"
+
+            }
+            else { }
             this.institutions.forEach((ins) => {
               if (ins.id == this.user.institution.id) {
                 this.user.institution = ins;
@@ -103,32 +96,24 @@ export class ViewUserComponent implements OnInit {
     this.router.navigate(['/user-list']);
   }
   onDeleteClick() {
-    this.userControllerService
-      .changeStatus(this.user.id, this.isActive == 0 ? 1 : 0)
-      .subscribe((res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: `Successfully ${
-            this.isActive == 0 ? 'Deactivate' : 'activate'
-          }`,
-        });
-        this.user = res;
-        this.isActive = this.user.status;
-      });
+    this.userControllerService.changeStatus(this.user.id, this.isActive == 0 ? 1 : 0).subscribe(res => {
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: `Successfully ${this.isActive == 0 ? 'Deactivate' : 'activate'}` });
+      this.user = res;
+      this.isActive = this.user.status;
+    });
   }
 
   confirmDeletUser() {
     this.confirmationService.confirm({
-      message: `Are you sure that you want to ${
-        this.isActive == 0 ? 'deactivate' : 'activate'
-      } this User?`,
+      message: `Are you sure that you want to ${this.isActive == 0 ? 'deactivate' : 'activate'} this User?`,
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.onDeleteClick();
+        this.onDeleteClick()
+
       },
-      reject: (type: ConfirmEventType) => {},
+      reject: (type: ConfirmEventType) => {
+      }
     });
   }
 }

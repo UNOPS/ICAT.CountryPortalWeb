@@ -48,10 +48,10 @@
         <ng-container *ngIf="param.institution?.name != null">
           <tr>
             <td>{{ param.name }}</td>
-            <td>{{ param.institution?.name }}</td>
-            <td>{{ param.value }}</td>
+            <td>{{ param.institution ? param.institution?.name : 'N/A' }}</td>
+            <td>{{ param.value | number: '1.0-5' }}</td>
             <td>{{ param.uomDataEntry }}</td>
-            <td>{{ param.conversionValue }}</td>
+            <td>{{ param.conversionValue | number: '1.0-5' }}</td>
             <td>{{ param.uomDataRequest }}</td>
             <td>
               <table>

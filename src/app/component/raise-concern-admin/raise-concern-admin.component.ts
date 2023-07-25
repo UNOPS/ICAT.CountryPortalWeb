@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import {
   AssessmentYear,
+  AssessmentYearControllerServiceProxy,
   Parameter,
   ServiceProxy,
   User,
@@ -53,20 +54,26 @@ export class RaiseConcernAdminComponent implements OnInit {
   @Input()
   parameter: Parameter;
 
+  @Output()
+  onCompleteConcern = new EventEmitter<boolean>();
+
   lastConcernDate: Date = new Date();
 
-  commentRequried = false;
-  comment = '';
-  verificationRound = 0;
+  commentRequried: boolean = false;
+  comment: string = '';
+  verificationRound: number = 0;
   verificationDetail: VerificationDetail | undefined;
-  explanation = '';
-  correctiveAction = '';
-  rootCause = '';
+  explanation: string = '';
+  correctiveAction: string = '';
+  rootCause: string = '';
 
-  rootCausetRequried = false;
-  correctiveActionRequried = false;
+  rootCausetRequried: boolean = false;
+  correctiveActionRequried: boolean = false;
 
   loggedUser: User;
+  roundOneHeadTable: any;
+  roundTwoHeadTable: any;
+  roundThreeHeadTable: any;
 
   constructor(
     private verificationProxy: VerificationControllerServiceProxy,
@@ -74,12 +81,13 @@ export class RaiseConcernAdminComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private serviceProxy: ServiceProxy,
+    private assessmentYearControllerServiceProxy: AssessmentYearControllerServiceProxy
   ) {}
 
   ngOnInit(): void {
-    const userName = localStorage.getItem('user_name')!;
+    let userName = localStorage.getItem('user_name')!;
 
-    const filter1: string[] = [];
+    let filter1: string[] = [];
     filter1.push('username||$eq||' + userName);
 
     this.serviceProxy
@@ -100,7 +108,7 @@ export class RaiseConcernAdminComponent implements OnInit {
       });
   }
 
-  ngOnChanges(changes: any) {
+  async ngOnChanges(changes: any) {
     this.explanation = '';
     this.correctiveAction = '';
     this.rootCause = '';
@@ -109,39 +117,28 @@ export class RaiseConcernAdminComponent implements OnInit {
     this.correctiveActionRequried = false;
 
     if (this.assessmentYear && this.assessmentYear !== undefined) {
-      if (
-        this.assessmentYear.verificationStatus === 1 ||
-        this.assessmentYear.verificationStatus === 2 ||
-        this.assessmentYear.verificationStatus === 3
-      ) {
-        this.verificationRound = 1;
-      } else if (this.assessmentYear.verificationStatus === 4) {
-        this.verificationRound = 2;
-      } else if (this.assessmentYear.verificationStatus === 5)
-        this.verificationRound = 3;
+      await this.checkVerificationStage()
+      if (this.roundOneHeadTable !== undefined){
+        this.verificationRound = 1
+      }
+      if (this.roundTwoHeadTable !== undefined){
+        this.verificationRound = 2
+      }
+      if (this.roundThreeHeadTable !== undefined){
+        this.verificationRound = 3
+      }
     }
 
     if (this.verificationDetails && this.verificationDetails.length > 0) {
-      const concernDetails = this.verificationDetails.find(
-        (a) => a.explanation !== undefined && a.explanation !== null,
-      );
-
-      if (concernDetails) {
-        this.explanation = concernDetails.explanation;
-      }
-
-      if (concernDetails && concernDetails.updatedDate !== undefined) {
-        this.lastConcernDate = concernDetails.updatedDate.toDate();
-        this.explanation = concernDetails.explanation;
-      }
-
       this.verificationDetail = this.verificationDetails.find(
-        (a) => a.verificationStage == this.verificationRound,
+        (a) => a.verificationStage == this.verificationRound
       );
 
       if (this.verificationDetail) {
         this.rootCause = this.verificationDetail.rootCause;
         this.correctiveAction = this.verificationDetail.correctiveAction;
+        this.lastConcernDate = this.verificationDetail.updatedDate?.toDate()
+        this.explanation = this.verificationDetail.explanation
       }
     }
   }
@@ -213,6 +210,18 @@ export class RaiseConcernAdminComponent implements OnInit {
           detail: 'successfully Save.',
           closable: true,
         });
+        this.onCompleteConcern.emit(true)
       });
+  }
+
+  async checkVerificationStage() {
+    if (this.assessmentYear.assessment.id){
+      let verificationList = (await this.assessmentYearControllerServiceProxy
+        .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentYear.assessment.id, this.assessmentYear.assessmentYear)
+        .toPromise())[0]?.verificationDetail;
+      this.roundOneHeadTable = verificationList?.find((o: any) => o.verificationStage == 1);
+      this.roundTwoHeadTable = verificationList?.find((o: any) => o.verificationStage == 2);
+      this.roundThreeHeadTable = verificationList?.find((o: any) => o.verificationStage == 3);
+    }
   }
 }

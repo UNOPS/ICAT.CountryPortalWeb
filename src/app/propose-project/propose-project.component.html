@@ -49,9 +49,9 @@
               <label for="contatemail">Email*</label>
               <input
                 [disabled]="editEntytyId > 0"
-                pattern="[\w-\.]+@([\w-]+\.)+[\w-]{1,30}$"
+                pattern="[\w-\.]+@([\w-]+\.)+[\w-\.]{1,100}$"
                 type="text"
-                maxlength="300"
+                maxlength="100"
                 placeholder="Email"
                 name="contatemail"
                 class="p-inputtext"
@@ -109,18 +109,17 @@
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="telephoneNumber">Telephone Number*</label>
-               <p-inputMask
+              <input
               type="text"
               name="telephoneNumber"
-              mask="+99 99-999-9999"
-              [autoClear]="true"
-              placeholder="+99 999 999-9999"
+              placeholder="011 111 1111"
+              class="p-inputtext"
               [(ngModel)]="project.telephoneNumber"
-              [ngModelOptions]="{ standalone: false }"
+              [ngModelOptions]="{ standalone: true }"
               #telephoneNumber="ngModel"
-              [styleClass]="'form-control'"
+              pInputText
               [required]="true"
-            ></p-inputMask>
+            />
               <p
                 class="info-message text-danger"
                 *ngIf="
@@ -150,7 +149,7 @@
                 class="p-inputtext"
                 [(ngModel)]="project.institution"
                 [ngModelOptions]="{ standalone: false }"
-                pattern="^[a-zA-Z0-9 ]{1,64}$"
+                pattern="^[a-zA-Z0-9 ]{1,100}$"
                 pInputText
                 required
               />
@@ -170,17 +169,16 @@
             <div class="p-field">
               <label for="mobileNumber">Mobile Number</label>
 
-              <p-inputMask
+              <input
               type="text"
               name="mobileNumber"
-              mask="+99 99-999-9999"
-              [autoClear]="false"
-              placeholder="+99 999 999-9999"
+              class="p-inputtext"
+              placeholder="011 111 1111"
               [(ngModel)]="project.mobileNumber"
               [ngModelOptions]="{ standalone: true }"
-              #telephoneNumber="ngModel"
-              [styleClass]="'form-control'"
-            ></p-inputMask>
+              #mobileNumber="ngModel"
+              pInputText
+            />
             </div>
           </div>
         </div>
@@ -219,7 +217,6 @@
             </div>
           </div>
         </div>
-
 
       </div>
     </div>
@@ -653,7 +650,17 @@
                 [autoDisplayFirst]="false"
                 [options]="projectOwnerList"
                 optionLabel="name"
+                [required]="true"
               ></p-dropdown>
+              <p
+              class="info-message text-danger"
+              *ngIf="
+                !project.projectOwner &&
+                (fData.submitted || projectownership.touched || projectownership.dirty)
+              "
+            >
+              This is a mandatory field
+            </p>
             </ng-container>
             <ng-template #elseBlockownership>
               <input
@@ -683,10 +690,10 @@
                 #projDuration="ngModel"
                 [(ngModel)]="project.duration"
                 mode="decimal"
-                [min]="1"
+                [min]="0.01"
                 [max]="99"
                 [minFractionDigits]="1"
-                [maxFractionDigits]="1"
+                [maxFractionDigits]="2"
                 [required]="true"
               >
               </p-inputNumber>
@@ -765,7 +772,7 @@
         <div class="row p-2">
           <div class="col-12 col-md-12">
             <div class="p-field">
-              <label for="objective">Objective of the Specific Climate Action</label>
+              <label for="objective">Objective of the Specific Climate Action *</label>
               <textarea
                 [disabled]="editEntytyId > 0"
                 name="objective"
@@ -777,7 +784,17 @@
                 pInputTextarea
                 autoResize="autoResize"
                 class="p-inputtext"
+                [required]="true"
               ></textarea>
+              <p
+                class="info-message text-danger"
+                *ngIf="
+                  !project.objective &&
+                  (fData.submitted || objective.touched || objective.dirty)
+                "
+              >
+                This is a mandatory field
+              </p>
             </div>
           </div>
         </div>
@@ -792,7 +809,7 @@
             <p-radioButton
             name="isCity"
             [disabled]="flag==1"
-            value="0"
+            value=0
             [(ngModel)]="isCity"
           ></p-radioButton><label >National</label>
 
@@ -801,7 +818,7 @@
             <p-radioButton
             name="isCity"
             [disabled]="flag==1"
-            value="1"
+            value=1
             [(ngModel)]="isCity"
           ></p-radioButton><label >Sub National</label>
           </div>
@@ -1225,6 +1242,7 @@
               [documentOwnerId]="documentOwnerId"
               [isNew]="false"
               [showUpload]="true"
+              [viewDocument]="true"
             >
             </app-document-upload>
           </div>
@@ -1428,7 +1446,7 @@
 
           <div class="col-12 col-md-6">
             <div class="p-field">
-              Indicate the likelihood of GHG impact of this CA
+              Indicate the likelihood of GHG impact of this climate action.
             </div>
           </div>
 

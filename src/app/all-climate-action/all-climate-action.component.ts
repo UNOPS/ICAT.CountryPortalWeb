@@ -150,6 +150,7 @@ export class AllClimateActionComponent implements OnInit, AfterViewInit {
   }
 
   loadgridData = (event: LazyLoadEvent) => {
+    this.loading = true;
     this.totalRecords = 0;
     const statusId = this.searchBy.status ? this.searchBy.status.id : 0;
     const currentProgress = this.searchBy.currentProgress
@@ -178,6 +179,7 @@ export class AllClimateActionComponent implements OnInit, AfterViewInit {
           environment.apiKey1,
         )
         .subscribe((a) => {
+          this.loading = false
           this.climateactions = a.items;
           this.totalRecords = a.meta.totalItems;
         });

@@ -158,30 +158,26 @@
           <div class="col-12 col-md-6">
             <div class="p-field">
               <label for="objective">Contact Number*</label>
-
-              <p-inputMask
-                type="text"
-                name="telephone"
-                mask="+99 99-999-9999"
-                [autoClear]="false"
-                placeholder="+99 999 999-9999"
-                [(ngModel)]="intelephoneNumber"
-                #telephoneNumber="ngModel"
-                [styleClass]="'form-control'"
-              >
-              </p-inputMask>
-
-              <p
-                class="info-message text-danger"
-                *ngIf="
-                  !intelephoneNumber &&
-                  (fData.submitted ||
-                    telephoneNumber.touched ||
-                    telephoneNumber.dirty)
-                "
-              >
-                This is a mandatory field
-              </p>
+             
+            <input
+              type="text"
+              name="telephone"
+              [(ngModel)]="intelephoneNumber"
+              #telephoneNumber="ngModel"
+              placeholder="011 111 1111"
+              class="p-inputtext"
+              pInputText
+              required
+            />
+          <p
+          class="info-message text-danger"
+          *ngIf="
+            !intelephoneNumber &&
+            (fData.submitted || telephoneNumber.touched || telephoneNumber.dirty)
+          "
+          >
+          This is a mandatory field
+        </p>
             </div>
           </div>
         </div>

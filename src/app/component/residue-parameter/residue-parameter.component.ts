@@ -26,7 +26,9 @@ export class ResidueParameterComponent implements OnInit {
   instiTutionList: Institution[];
   isHistoricalValue = false;
 
-  constructor(private instituationProxy: InstitutionControllerServiceProxy) {}
+  constructor(
+    private instituationProxy: InstitutionControllerServiceProxy
+  ) { }
 
   ngOnInit(): void {
     const token = localStorage.getItem('access_token')!;
@@ -44,6 +46,9 @@ export class ResidueParameterComponent implements OnInit {
     this.parameterSection.residueSection.sectionparameters[idxSec].parameters[
       idxPara
     ]['value'] = event.value.value;
+    this.parameterSection.residueSection.sectionparameters[idxSec].parameters[
+      idxPara
+    ]['historicalParaID'] = event.value.id;
   }
 
   changeUnit(e: any, idxSec: any, idxPara: any) {

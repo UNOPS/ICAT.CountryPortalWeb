@@ -13,6 +13,7 @@ import {
   VerificationControllerServiceProxy,
   VerificationDetail,
 } from 'shared/service-proxies/service-proxies';
+import { VerificationService } from 'shared/verification-service';
 
 @Component({
   selector: 'app-verify-parameter-section',
@@ -88,11 +89,14 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   isParameter: boolean;
   isValue: boolean;
 
-  paraId: number;
+  paraId:number;
   requestHistoryList: any[] = [];
-  displayHistory = false;
+  displayHistory:boolean = false;
 
   isProjectionResult = false;
+  isResultAccepted: boolean = false
+  hasResultConcern: boolean;
+  isResultRaised: boolean;
 
   constructor(
     private qaServiceProxy: QualityCheckControllerServiceProxy,
@@ -101,20 +105,22 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private verificationProxy: VerificationControllerServiceProxy,
     private serviceProxy: ServiceProxy,
-    private prHistoryProxy: ParameterHistoryControllerServiceProxy,
+    private prHistoryProxy : ParameterHistoryControllerServiceProxy,
+    public verificationService: VerificationService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
     this.loadUser();
     if (this.multiResult) this.isProjectionResult = true;
   }
 
   loadUser() {
-    const userName = localStorage.getItem('user_name')!;
+    let userName = localStorage.getItem('user_name')!;
 
-    const filter1: string[] = [];
+    let filter1: string[] = [];
     filter1.push('username||$eq||' + userName);
-
+    
     this.serviceProxy
       .getManyBaseUsersControllerUser(
         undefined,
@@ -131,6 +137,48 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         this.loggedUser = res.data[0];
       });
+  }
+
+  async ngOnChanges(changes: any) {
+    let column: string
+    if (this.header == 'Baseline Parameter') {
+      column = 'isBaseline'
+    }
+    if (this.header == 'Project Parameter') {
+      column = 'isProject'
+    }
+    if (this.header == 'Leakage Parameter') {
+      column = 'isLekage'
+    }
+    if (this.header == 'Projection Parameter') {
+      column = 'isProjection'
+    }
+
+    let round: number
+    if (
+      this.assessmentYear.verificationStatus === 1 ||
+      this.assessmentYear.verificationStatus === 2 ||
+      this.assessmentYear.verificationStatus === 3
+    ) {
+      round = 1;
+    } else if (this.assessmentYear.verificationStatus === 4) {
+      round = 2;
+    } else if (this.assessmentYear.verificationStatus === 5)
+    round = 3;
+
+    let vd = this.verificationDetails.filter((a: any )=> a.isResult === true && a[column] === true  )
+
+    vd.forEach(v => {
+      if (v.isAccepted){
+        this.isResultAccepted = true
+        return
+      }else {
+        if (v.verificationStage === round && v.explanation){
+          this.hasResultConcern = true
+          return
+        }
+      }
+    })
   }
 
   ngOnDestroy() {
@@ -166,6 +214,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
   }
 
   checkboxCheck(event: any, param: Parameter) {
+    let c = document.getElementById('checkbox'+param.id)
     if (event.checked) {
       this.selectedParameter.push(param);
     } else {
@@ -174,14 +223,36 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  getInfo(obj: any) {
-    this.paraId = obj.id;
+  getInfo(obj: any){
+       this.paraId = obj.id;
+       this.prHistoryProxy
+       .getHistroyByid(this.paraId)  // this.paraId
+       .subscribe((res) => {
+         
+        this.requestHistoryList =res;
+       });
+       this.displayHistory = true;
+  }
 
-    this.prHistoryProxy.getHistroyByid(this.paraId).subscribe((res) => {
-      this.requestHistoryList = res;
-    });
 
-    this.displayHistory = true;
+  async onComplete(e: any){
+    this.parameters = this.parameters.map(para => {
+      if (para.id === this.concernParam?.id){
+        para['isConcernRaised'] = true
+        return para
+      } else {
+        return para
+      }
+    })
+    this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assessmentYear.id).toPromise()
+    if (e){
+      this.displayConcern = false
+      this.selectedParameter = []
+    }
+    if (this.isResultRaised){
+      this.hasResultConcern = true
+      this.isResultRaised = false
+    }
   }
 
   parameterAccept() {
@@ -197,15 +268,20 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     });
   }
 
-  acceptParametrs() {
-    const verificationDetails: VerificationDetail[] = [];
+  async acceptParametrs() {
+    let verificationDetails: VerificationDetail[] = [];
+    let parametersToUpdate = [...this.selectedParameter]
+    this.selectedParameter = []
 
-    this.selectedParameter.map((v) => {
+    for await (let v of parametersToUpdate) {
       v.isAcceptedByVerifier = 1;
-
       this.serviceProxy
-        .updateOneBaseParameterControllerParameter(v.id, v)
-        .subscribe((res) => {});
+        .updateOneBaseParameterControllerParameter(
+          v.id,
+          v
+        )
+        .subscribe(
+          (res) => {});
 
       let verificationDetail = undefined;
 
@@ -252,7 +328,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
       vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
 
       verificationDetails.push(vd);
-    });
+    };
 
     this.verificationProxy
       .saveVerificationDetails(verificationDetails)
@@ -263,7 +339,8 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
           detail: 'successfully Save.',
           closable: true,
         });
-        this.isAccept = true;
+        // this.isAccept=true
+        this.selectedParameter = []
       });
   }
 
@@ -300,7 +377,7 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     this.displayConcern = true;
   }
 
-  raiseConcernResult(event: any) {
+  async raiseConcernResult(event: any) {
     this.raiseConcernSection = this.ResultLabel;
     this.isParameter = false;
     this.isValue = true;
@@ -327,5 +404,107 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     }
 
     this.displayConcern = true;
+    this.isResultRaised = true
+  }
+
+  resultAccept(){
+    this.confirmationService.confirm({
+      message: 'Are sure you want to accept the result ?',
+      header: 'Accept Confirmation',
+      acceptIcon: 'icon-not-visible',
+      rejectIcon: 'icon-not-visible',
+      accept: () => {
+        this.acceptResult();
+      },
+      reject: () => {},
+    });
+  }
+
+  acceptResult() {
+    let verificationDetails: VerificationDetail[] = [];
+    let parametersToUpdate = [...this.selectedParameter]
+    this.selectedParameter = []
+
+    let column: string
+
+    if (this.header == 'Baseline Parameter') {
+      column = 'isBaseline'
+    }
+    if (this.header == 'Project Parameter') {
+      column = 'isProject'
+    }
+    if (this.header == 'Leakage Parameter') {
+      column = 'isLekage'
+    }
+    if (this.header == 'Projection Parameter') {
+      column = 'isProjection'
+    }
+
+    let verificationDetail = undefined;
+
+    if (this.verificationDetails) {
+      verificationDetail = this.verificationDetails.find(
+        (a: any) => a.assessmentId === this.assessmentYear.assessment.id && a[column] == true && a.isResult === true
+      );
+    }
+    let vd = new VerificationDetail();
+
+    if (verificationDetail) {
+      vd = verificationDetail;
+    } else {
+      vd.userVerifier = this.loggedUser.id;
+      vd.assessmentId = this.assessmentYear.assessment.id;
+      let assesmentYear = new AssessmentYear();
+      assesmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assesmentYear;
+      vd.year = Number(this.assessmentYear.assessmentYear);
+      vd.createdOn = moment();
+      vd.isResult = true
+
+
+      if (this.header == 'Baseline Parameter') {
+        vd.isBaseline = true;
+      }
+      if (this.header == 'Project Parameter') {
+        vd.isProject = true;
+      }
+      if (this.header == 'Leakage Parameter') {
+        vd.isLekage = true;
+      }
+      if (this.header == 'Projection Parameter') {
+        vd.isProjection = true;
+      }
+    }
+
+    vd.editedOn = moment();
+    vd.updatedDate = moment();
+    vd.isAccepted = true;
+    vd.verificationStage = this.getverificationStage();
+    vd.verificationStatus = Number(this.assessmentYear.verificationStatus);
+
+    verificationDetails.push(vd);
+
+    this.verificationProxy
+      .saveVerificationDetails(verificationDetails)
+      .subscribe((a) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'successfully Save.',
+          closable: true,
+        });
+        this.isResultAccepted = true
+      });
+  }
+
+  disableRaiseConcern(param: any){
+    if (this.assessmentYear.verificationStatus === +6){
+      return true
+    } else {
+      if (param.isConcernRaised){
+        return true
+      }
+    }
+    return false
   }
 }
