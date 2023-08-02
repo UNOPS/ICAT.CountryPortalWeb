@@ -3522,6 +3522,13 @@ export class GhgAssessmentComponent implements OnInit {
     }, 2000);
   }
 
+  async onBaseYearChange(event: any) {
+    this.years = [];
+    for (let i = 0; i < 30; i++) {
+      this.years.push({ label: (this.baseYear.getFullYear() + i).toString(), value: this.baseYear.getFullYear() + i });
+    }
+  }
+
   async onAssessmentYearChange(event: any) {
     this.projectionBaseyears = [];
     if (this.IsProposal) {

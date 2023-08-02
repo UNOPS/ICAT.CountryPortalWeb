@@ -121,7 +121,7 @@ export class ApproveDataComponent implements OnInit {
       });
 
   await  this.assessmentYearProxy
-      .getAssessmentByYearId(this.assesmentYearId, this.userName)
+      .getAssessmentByYearId(this.assessmentYearId, this.userName)
       .subscribe(async (res) => {
         if (res) {
           this.hideAllButtons = res?.qaStatus;
@@ -137,7 +137,7 @@ export class ApproveDataComponent implements OnInit {
       if(res.qaStatus){
         this.dissetButton =true
         }
-        this.getAssesment();
+        this.getAssessment();
         if (this.finalQC?.qaStatus == null) {
           this.checkQC();
         }

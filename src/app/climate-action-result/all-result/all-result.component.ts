@@ -163,7 +163,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
     const id = 0;
 
     setTimeout(() => {
-      this.AssessmentProxy.getAssmentDetailsForResult(
+      this.AssessmentProxy.getAssessmentDetailsForResult(
         pageNumber,
         this.rows,
         filtertext,
@@ -171,7 +171,7 @@ export class AllResultComponent implements OnInit, AfterViewInit {
         this.isProposal,
         id,
         ctAction,
-      ).subscribe((a) => {
+      ).subscribe((a: any) => {
         this.assessments = a.items;
         this.totalRecords = a.meta.totalItems;
         this.loading = false;

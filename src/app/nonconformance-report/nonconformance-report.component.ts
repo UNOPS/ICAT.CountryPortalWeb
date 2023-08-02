@@ -139,7 +139,7 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
           this.recievdAssementYear = this.assementYear.assessmentYear;
           this.assessmentId = this.assementYear.assessment.id;
 
-          let assessment = await this.serviceProxy.getOneBaseAssesmentControllerAssessment(this.assementYear.assessment.id, undefined, undefined, 0).toPromise()
+          let assessment = await this.serviceProxy.getOneBaseAssessmentControllerAssessment(this.assementYear.assessment.id, undefined, undefined, 0).toPromise()
 
           this.assYearProxy
             .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentId, this.recievdAssementYear)
