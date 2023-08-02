@@ -448,7 +448,7 @@ export class QualityCheckDetailComponent implements OnInit {
         detail: "There are parameters in data collection path"
       })
     } else {
-      if (this.assementYear.assessment.assessmentType != 'MAC') {
+      if (this.assessmentYear.assessment.assessmentType != 'MAC') {
         this.getAssesmentResult(true);
       } else {
           this.toCalMacResult();
