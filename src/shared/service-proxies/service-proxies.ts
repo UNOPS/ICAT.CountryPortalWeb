@@ -15963,12 +15963,12 @@ export class ProjectionResultControllerServiceProxy {
         return _observableOf(null as any);
     }
 
-    checkAllQCApprovmentProjectionResult(assementId: number): Observable<boolean> {
+    checkAllQCApprovmentProjectionResult(assessmentId: number): Observable<boolean> {
         let url_ = this.baseUrl + "/projection-result/checkAllQCApprovmentProjectionResult?";
-        if (assementId === undefined || assementId === null)
-            throw new Error("The parameter 'assementId' must be defined and cannot be null.");
+        if (assessmentId === undefined || assessmentId === null)
+            throw new Error("The parameter 'assessmentId' must be defined and cannot be null.");
         else
-            url_ += "assementId=" + encodeURIComponent("" + assementId) + "&";
+            url_ += "assessmentId=" + encodeURIComponent("" + assessmentId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -17714,7 +17714,7 @@ export class VerificationControllerServiceProxy {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getVRParameters(page: number, limit: number, statusId: number, filterText: string, isHistory: boolean): Observable<any> {
+    getVRParameters(page: number, limit: number, statusId: number, filterText: string, isHistory: string): Observable<any> {
         let url_ = this.baseUrl + "/verification/verification/GetVRParameters/{page}/{limit}/{statusId}/{filterText}?";
         if (page === undefined || page === null)
             throw new Error("The parameter 'page' must be defined and cannot be null.");
@@ -21804,6 +21804,83 @@ export class AssessmentControllerServiceProxy {
     }
 
     protected processCheckAssessmentReadyForCalculate(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getAssessmentDetailsForResult(page: number, limit: number, filterText: string, assessmentType: string, isProposal: number, projectId: number, ctAction: string): Observable<any> {
+        let url_ = this.baseUrl + "/assessment/assessments/assmentdetailsforresult/{page}/{limit}/{filterText}/{assessmentType}/{isProposal}/{projectId}/{ctAction}?";
+        if (page === undefined || page === null)
+            throw new Error("The parameter 'page' must be defined and cannot be null.");
+        else
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (limit === undefined || limit === null)
+            throw new Error("The parameter 'limit' must be defined and cannot be null.");
+        else
+            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+        if (filterText === undefined || filterText === null)
+            throw new Error("The parameter 'filterText' must be defined and cannot be null.");
+        else
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (assessmentType === undefined || assessmentType === null)
+            throw new Error("The parameter 'assessmentType' must be defined and cannot be null.");
+        else
+            url_ += "assessmentType=" + encodeURIComponent("" + assessmentType) + "&";
+        if (isProposal === undefined || isProposal === null)
+            throw new Error("The parameter 'isProposal' must be defined and cannot be null.");
+        else
+            url_ += "isProposal=" + encodeURIComponent("" + isProposal) + "&";
+        if (projectId === undefined || projectId === null)
+            throw new Error("The parameter 'projectId' must be defined and cannot be null.");
+        else
+            url_ += "projectId=" + encodeURIComponent("" + projectId) + "&";
+        if (ctAction === undefined || ctAction === null)
+            throw new Error("The parameter 'ctAction' must be defined and cannot be null.");
+        else
+            url_ += "ctAction=" + encodeURIComponent("" + ctAction) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAssessmentDetailsForResult(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAssessmentDetailsForResult(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<any>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<any>;
+        }));
+    }
+
+    protected processGetAssessmentDetailsForResult(response: HttpResponseBase): Observable<any> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -28198,6 +28275,7 @@ export class Project implements IProject {
     financialFecialbility: number;
     availabilityOfTechnology: number;
     actionJustification: string;
+    climateActionCreatedData: moment.Moment;
 
     [key: string]: any;
 
@@ -28305,6 +28383,7 @@ export class Project implements IProject {
             this.financialFecialbility = _data["financialFecialbility"];
             this.availabilityOfTechnology = _data["availabilityOfTechnology"];
             this.actionJustification = _data["actionJustification"];
+            this.climateActionCreatedData = _data["climateActionCreatedData"] ? moment(_data["climateActionCreatedData"].toString()) : <any>undefined;
         }
     }
 
@@ -28406,6 +28485,7 @@ export class Project implements IProject {
         data["financialFecialbility"] = this.financialFecialbility;
         data["availabilityOfTechnology"] = this.availabilityOfTechnology;
         data["actionJustification"] = this.actionJustification;
+        data["climateActionCreatedData"] = this.climateActionCreatedData ? this.climateActionCreatedData.toISOString() : <any>undefined;
         return data;
     }
 
@@ -28491,6 +28571,7 @@ export interface IProject {
     financialFecialbility: number;
     availabilityOfTechnology: number;
     actionJustification: string;
+    climateActionCreatedData: moment.Moment;
 
     [key: string]: any;
 }
