@@ -14,7 +14,7 @@ export const environment = {
     'http://localhost:8080' + '/report/chartDataImage',
   baseUrlCountryWeb:
     'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/',
-  baseUrlPMU: 'https://icat-ca-tool.climatesi.com/pmu-app',
+  baseUrlPMU: 'https://tracadpmu.unops.org',
   apiKey1: '1234',
   apiKey2: '56789',
 };

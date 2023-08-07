@@ -17,7 +17,7 @@ export const environment = {
   baseUrlCountryWeb:
     'https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/',
   baseUrlPMU: 
-    'https://icat-ca-tool.climatesi.com/pmu-app',
+    'https://tracadpmu.unops.org',
   apiKey1: '1234',
   apiKey2: '56789',
 };
