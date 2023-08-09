@@ -83,9 +83,9 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
 
 
   assesMentYearId: any;
-  recievdAssementYear: any;
+  recievdAssessmentYear: any;
   assessmentId: any;
-  assementYear: AssessmentYear = new AssessmentYear();
+  assessmentYear: AssessmentYear = new AssessmentYear();
   flag: string;
   isVerificationHistory: number;
 
@@ -135,14 +135,14 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
           undefined
         )
         .subscribe(async (res) => {
-          this.assementYear = res;
-          this.recievdAssementYear = this.assementYear.assessmentYear;
-          this.assessmentId = this.assementYear.assessment.id;
+          this.assessmentYear = res;
+          this.recievdAssessmentYear = this.assessmentYear.assessmentYear;
+          this.assessmentId = this.assessmentYear.assessment.id;
 
-          let assessment = await this.serviceProxy.getOneBaseAssessmentControllerAssessment(this.assementYear.assessment.id, undefined, undefined, 0).toPromise()
+          let assessment = await this.serviceProxy.getOneBaseAssessmentControllerAssessment(this.assessmentYear.assessment.id, undefined, undefined, 0).toPromise()
 
           this.assYearProxy
-            .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentId, this.recievdAssementYear)
+            .getVerificationDeatilsByAssessmentIdAndAssessmentYear(this.assessmentId, this.recievdAssessmentYear)
             .subscribe(async (a) => {
               this.assmentYearList = a;
               this.verificationList = a[0]?.verificationDetail;
@@ -240,7 +240,7 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
         if (para.isProject) hasProject = true
         if (para.isLekage) hasLekage = true
         if (para.isProjection) hasProjection = true
-        let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStatus === this.assementYear.verificationStatus))
+        let vd = vdList.find((o: any) => o.parameter?.id === para.id && (o.isAccepted || o.verificationStatus === this.assessmentYear.verificationStatus))
         if (vd === undefined) {
           if (para.hasChild && !para.value) {
             parentIds.push(para.id)
@@ -263,10 +263,10 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
 
     if (this.isReviewComplete) {
       let columns: string[] = []
-      if (this.assementYear.assessment.assessmentType === 'MAC') { columns = [...['isAssumption']] }
+      if (this.assessmentYear.assessment.assessmentType === 'MAC') { columns = [...['isAssumption']] }
       else { columns = [...['isNDC', 'isMethodology', 'isAssumption']] }
       for await (let col of columns) {
-        let vd = vdList.find((o: any) => o[col] && (o.isAccepted || o.verificationStatus === this.assementYear.verificationStatus))
+        let vd = vdList.find((o: any) => o[col] && (o.isAccepted || o.verificationStatus === this.assessmentYear.verificationStatus))
         if (vd === undefined) {
           this.isReviewComplete = false
           break;
@@ -302,7 +302,7 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
   }
 
   toChangeStatus() {
-    if (this.assementYear.verificationStatus === 8) { //assessment returned
+    if (this.assessmentYear.verificationStatus === 8) { //assessment returned
       this.messageService.add({
         severity: 'warn',
         summary: 'Warning',
@@ -310,19 +310,19 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
       });
     } else {
       if (this.flag == 'sec-admin') {
-        this.assementYear.verificationStatus = 2;
-        this.assementYear.editedOn = moment();
+        this.assessmentYear.verificationStatus = 2;
+        this.assessmentYear.editedOn = moment();
 
         if (this.roundOneHeadTable != undefined) {
-          this.assementYear.verificationStatus = 4;
+          this.assessmentYear.verificationStatus = 4;
         }
 
         if (this.roundTwoHeadTable != undefined) {
-          this.assementYear.verificationStatus = 5;
+          this.assessmentYear.verificationStatus = 5;
         }
 
         this.serviceProxy
-          .updateOneBaseAssessmentYearControllerAssessmentYear(this.assementYear.id, this.assementYear)
+          .updateOneBaseAssessmentYearControllerAssessmentYear(this.assessmentYear.id, this.assessmentYear)
           .subscribe(
             (res) => {
               this.messageService.add({ severity: 'success', summary: 'Success', detail: 'successfully updated !!' });
@@ -332,37 +332,37 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
 
       }
       else {
-        this.assementYear.verificationStatus = 1; //Nc REcieved
-        this.assementYear.editedOn = moment();
+        this.assessmentYear.verificationStatus = 1; //Nc REcieved
+        this.assessmentYear.editedOn = moment();
         if (this.roundOneHeadTable != undefined) {
           if (this.roundOneList.length != 0) {
-            this.assementYear.verificationStatus = 3; //Nc REcieved
+            this.assessmentYear.verificationStatus = 3; //Nc REcieved
           }
           else {
-            this.assementYear.verificationStatus = 7;
+            this.assessmentYear.verificationStatus = 7;
           }
         }
 
         if (this.roundTwoHeadTable != undefined) {
           if (this.roundTwoList.length != 0) {
-            this.assementYear.verificationStatus = 3; //Nc REcieved
+            this.assessmentYear.verificationStatus = 3; //Nc REcieved
           }
           else {
-            this.assementYear.verificationStatus = 7;
+            this.assessmentYear.verificationStatus = 7;
           }
         }
 
         if (this.roundThreeHeadTable != undefined) {
           if (this.roundThreeList.length != 0) {
-            this.assementYear.verificationStatus = 6; //Nc REcieved
+            this.assessmentYear.verificationStatus = 6; //Nc REcieved
           }
           else {
-            this.assementYear.verificationStatus = 7;
+            this.assessmentYear.verificationStatus = 7;
           }
         }
 
         this.serviceProxy
-          .updateOneBaseAssessmentYearControllerAssessmentYear(this.assementYear.id, this.assementYear)
+          .updateOneBaseAssessmentYearControllerAssessmentYear(this.assessmentYear.id, this.assessmentYear)
           .subscribe(
             (res) => {
               this.messageService.add({ severity: 'success', summary: 'Success', detail: 'successfully updated!' });
@@ -376,16 +376,16 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
     if (this.flag == "sec-admin") {
       this.router.navigate(['/verification-sector-admin/detail'], {
         queryParams: {
-          id: this.assementYear.id,
-          verificationStatus: this.assementYear.verificationStatus,
+          id: this.assessmentYear.id,
+          verificationStatus: this.assessmentYear.verificationStatus,
         },
       });
     }
     else {
       this.router.navigate(['/verification-verifier/detail'], {
         queryParams: {
-          id: this.assementYear.id,
-          verificationStatus: this.assementYear.verificationStatus,
+          id: this.assessmentYear.id,
+          verificationStatus: this.assessmentYear.verificationStatus,
         },
       });
 
@@ -394,22 +394,22 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
 
   disableSubmit() {
     if (this.flag === 'sec-admin') {
-      return ((this.assementYear.verificationStatus !== 3) || this.assementYear.verificationStatus === 7 || this.assementYear.verificationStatus === 6)
+      return ((this.assessmentYear.verificationStatus !== 3) || this.assessmentYear.verificationStatus === 7 || this.assessmentYear.verificationStatus === 6)
     } else {
       if (!this.isReviewComplete) {
         return true
       }
-      return (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 8 || this.assementYear.verificationStatus === 7 || this.assementYear.verificationStatus === 6)
+      return (this.assessmentYear.verificationStatus === 3 || this.assessmentYear.verificationStatus === 8 || this.assessmentYear.verificationStatus === 7 || this.assessmentYear.verificationStatus === 6)
     }
   }
 
   getSubmitLabel() {
     if (this.flag === 'sec-admin') {
-      if ((this.assementYear.verificationStatus !== 3 && this.assementYear.verificationStatus !== 8) || this.assementYear.verificationStatus === 7) {
+      if ((this.assessmentYear.verificationStatus !== 3 && this.assessmentYear.verificationStatus !== 8) || this.assessmentYear.verificationStatus === 7) {
         return "Submitted"
       }
     } else {
-      if (this.assementYear.verificationStatus === 3 || this.assementYear.verificationStatus === 8 || this.assementYear.verificationStatus === 7) {
+      if (this.assessmentYear.verificationStatus === 3 || this.assessmentYear.verificationStatus === 8 || this.assessmentYear.verificationStatus === 7) {
         return "Submitted"
       }
     }
@@ -418,14 +418,14 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
   }
 
   getStatus() {
-    if (this.assementYear.verificationStatus === 3) {
+    if (this.assessmentYear.verificationStatus === 3) {
       if (this.flag === 'sec-admin') {
         return 'NC Received'
       } else {
         return 'NC Sent'
       }
     } else {
-      return VerificationStatus[this.assementYear.verificationStatus]
+      return VerificationStatus[this.assessmentYear.verificationStatus]
     }
   }
 

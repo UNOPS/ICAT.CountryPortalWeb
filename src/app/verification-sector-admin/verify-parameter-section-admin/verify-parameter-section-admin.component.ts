@@ -444,9 +444,9 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
         _vd = verificationDetail;
       } else {
         _vd.assessmentId = this.assessmentYear.assessment.id;
-        let assesmentYear = new AssessmentYear();
-        assesmentYear.id = this.assessmentYear.id;
-        _vd.assessmentYear = assesmentYear;
+        let assessmentYear = new AssessmentYear();
+        assessmentYear.id = this.assessmentYear.id;
+        _vd.assessmentYear = assessmentYear;
         _vd.year = Number(this.assessmentYear.assessmentYear);
         _vd.createdOn = moment();
         _vd.isAccepted = false;
@@ -507,9 +507,9 @@ export class VerifyParameterSectionAdminComponent implements OnInit, OnDestroy {
           _vd = verificationDetail;
         } else {
           _vd.assessmentId = this.assessmentYear.assessment.id;
-          let assesmentYear = new AssessmentYear();
-          assesmentYear.id = this.assessmentYear.id;
-          _vd.assessmentYear = assesmentYear;
+          let assessmentYear = new AssessmentYear();
+          assessmentYear.id = this.assessmentYear.id;
+          _vd.assessmentYear = assessmentYear;
           _vd.year = Number(this.assessmentYear.assessmentYear);
           _vd.createdOn = moment();
           _vd.isAccepted = false;

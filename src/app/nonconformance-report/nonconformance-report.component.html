@@ -1499,15 +1499,15 @@
         <div class="col-md-6">
         </div>
         <div class="col-md-2">
-            <!-- <button *ngIf="isVerificationHistory !=1 && vStatus != 3" [disabled]="assementYear.verificationStatus == 7"
+            <!-- <button *ngIf="isVerificationHistory !=1 && vStatus != 3" [disabled]="assessmentYear.verificationStatus == 7"
              pButton pRipple type="button"  (click)="toChangeStatus()" class="p-button-info">
-             {{assementYear.verificationStatus == 7 ? "Submited" : "Submit" }}
+             {{assessmentYear.verificationStatus == 7 ? "Submited" : "Submit" }}
             </button> -->
             <button *ngIf="isVerificationHistory !=1 && vStatus != 3 " [disabled]="disableSubmit()" pButton pRipple
                 type="button" (click)="toChangeStatus()" class="p-button-info">
                 {{getSubmitLabel() }}
             </button>
-            <!-- <button *ngIf="vStatus != 3 || assementYear.verificationStatus == 7"
+            <!-- <button *ngIf="vStatus != 3 || assessmentYear.verificationStatus == 7"
              pButton pRipple type="button" label="Submited" [disabled]="true" class="p-button-info"></button> -->
 
         </div>

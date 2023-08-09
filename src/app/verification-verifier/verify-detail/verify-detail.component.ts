@@ -124,8 +124,8 @@ export class VerifyDetailComponent implements OnInit {
         undefined
       ).toPromise()
       await this.getVerificationDetail();
-      this.getAssesment();
-      this.getAssesmentResult(false);
+      this.getAssessment();
+      this.getAssessmentResult(false);
       this.getProjectionReuslt();
     });
 
@@ -258,7 +258,7 @@ export class VerifyDetailComponent implements OnInit {
     this.verificationDetails = await this.verificationProxy.getVerificationDetails(this.assesMentYearId).toPromise()
   }
 
-  getAssesmentResult(isCalculate: boolean) {
+  getAssessmentResult(isCalculate: boolean) {
     this.assessmentResultProxy
       .getAssessmentResult(
         this.assessmentYear.assessment.id,
@@ -328,7 +328,7 @@ export class VerifyDetailComponent implements OnInit {
       });
   }
 
-  getAssesment() {
+  getAssessment() {
     this.assessmentProxy
       .getAssment(
         this.assessmentYear.assessment.id,
@@ -834,9 +834,9 @@ export class VerifyDetailComponent implements OnInit {
     } else {
       vd.userVerifier = this.loggedUser.id;
       vd.assessmentId = this.assessmentYear.assessment.id;
-      let assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assessmentYear.id;
-      vd.assessmentYear = assesmentYear;
+      let assessmentYear = new AssessmentYear();
+      assessmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assessmentYear;
       vd.year = Number(this.assessmentYear.assessmentYear);
       vd.createdOn = moment();
       vd.isResult = true

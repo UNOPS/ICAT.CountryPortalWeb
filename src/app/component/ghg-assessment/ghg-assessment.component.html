@@ -154,7 +154,7 @@
       <div class="col-12 col-md-7" *ngIf="IsProposal">
         <div>
           <p-calendar
-            [(ngModel)]="assesmentYear"
+            [(ngModel)]="assessmentYear"
             name="multiYear"
             #multiYear="ngModel"
             view="year"
@@ -167,7 +167,7 @@
         <p
           class="info-message text-danger"
           *ngIf="
-            !assesmentYear &&
+            !assessmentYear &&
             (fData.submitted || multiYear.touched || multiYear.dirty)
           "
         >
