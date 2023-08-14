@@ -86,6 +86,7 @@ The environment variables should be declared in the files `environment.prod.ts` 
 | `baseUrlExcelUpload`                  | Country Portal Service API URL + `/parameter/upload`             |
 | `baseUrlAPIDocReportChartDownloadAPI` | Country Portal Service API URL + `/report/chartDataImage`        |
 | `baseUrlCountryWeb`                   | Country Portal Service API URL + `/`                             |
+| `baseUrlPMU`                          | PMU Portal Web API: https://tracadpmu.unops.org                  |
 | `apiKey1`                             | API key. Should be the same as used by the APIs                  |
 | `apiKey2`                             | API key. Should be the same as used by the APIs                  |
 
@@ -103,7 +104,6 @@ Some default users are provided for the application test. The `Admin` user can c
 ## Dependencies
 
 This application depends on CountryPortalService and CalculationEngine APIs.
-
 The complete dependency diagram of TraCAD Country and PMU applications:
 
 <p align="left">

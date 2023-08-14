@@ -131,8 +131,8 @@ export class CASADashboardComponent implements OnInit {
   constructor(private primengConfig: PrimeNGConfig,
     private emmissionProxy: EmissionReductionDraftdataControllerServiceProxy,
     private serviceproxy: ServiceProxy,
-    private assesmentserviceproxy: AssessmentControllerServiceProxy,
-    private assesmentResultserviceproxy: AssessmentResultControllerServiceProxy,
+    private assessmentserviceproxy: AssessmentControllerServiceProxy,
+    private assessmentResultserviceproxy: AssessmentResultControllerServiceProxy,
     private climateactionserviceproxy: ProjectControllerServiceProxy,
     private ndcserviceproxy: NdcControllerServiceProxy,
     private asseyearproxy: AssessmentYearControllerServiceProxy,
@@ -368,11 +368,11 @@ export class CASADashboardComponent implements OnInit {
               this.conValLst.push(!this.emissionReduction.conditionaltco2 && this.emissionReduction.conditionaltco2 == 0 ? 0 : ((this.conditionalValue - this.emissionReduction.baseYearEmission) / yearlstLength) * x + this.emissionReduction.baseYearEmission);
               this.unconValLst.push(!this.emissionReduction.unconditionaltco2 && this.emissionReduction.unconditionaltco2 == 0 ? 0 : ((this.unconditionalValue - this.emissionReduction.baseYearEmission) / yearlstLength) * x + this.emissionReduction.baseYearEmission);
               this.bauValLst.push(bauValue);
-              let res = await this.assesmentResultserviceproxy.getAssessmentResultforDashboard(this.yrList[x]).toPromise();
+              let res = await this.assessmentResultserviceproxy.getAssessmentResultforDashboard(this.yrList[x]).toPromise();
               this.assessmenResulytList = res
 
-              for (let assementResult of this.assessmenResulytList) {
-                total += assementResult.totalEmission ? Number(assementResult.totalEmission) : 0;
+              for (let assessmentResult of this.assessmenResulytList) {
+                total += assessmentResult.totalEmission ? Number(assessmentResult.totalEmission) : 0;
               }
 
 
@@ -721,9 +721,9 @@ export class CASADashboardComponent implements OnInit {
         let xaxis: number[] = [];
         for (let ndc of a.items) {
           let totalemissionRduction: number = 0;
-          for (let assement of ndc.assesment) {
+          for (let assessment of ndc.assessment) {
 
-            for (let assesrslt of assement.assessmentResult) {
+            for (let assesrslt of assessment.assessmentResult) {
               totalemissionRduction = totalemissionRduction + (assesrslt.totalEmission ? Number(assesrslt.totalEmission) : 0);
             }
           }

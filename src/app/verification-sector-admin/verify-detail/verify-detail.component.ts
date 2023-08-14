@@ -104,8 +104,8 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private assesmentProxy: AssessmentControllerServiceProxy,
-    private assesmentResaultProxy: AssessmentResultControllerServiceProxy,
+    private assessmentProxy: AssessmentControllerServiceProxy,
+    private assessmentResaultProxy: AssessmentResultControllerServiceProxy,
     private projectionResultProxy: ProjectionResultControllerServiceProxy,
     private router: Router,
     private messageService: MessageService,
@@ -173,9 +173,9 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
           });
 
           await this.getVerificationDetail();
-          this.getAssesment();
+          this.getAssessment();
           this.getProjectionResult();
-          this.getAssesmentResult(false);
+          this.getAssessmentResult(false);
 
         });
     });
@@ -267,8 +267,8 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
     }
   }
 
-  getAssesmentResult(isCalculate: boolean) {
-    this.assesmentResaultProxy
+  getAssessmentResult(isCalculate: boolean) {
+    this.assessmentResaultProxy
       .getAssessmentResult(
         this.assessmentYear.assessment.id,
         this.assesMentYearId,
@@ -329,13 +329,13 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
     }
   }
 
-  getAssesment() {
+  getAssessment() {
     let statusToRemove = [
       ParameterVerifierAcceptance.REJECTED,
       ParameterVerifierAcceptance.RETURNED,
       ParameterVerifierAcceptance.DATA_ENTERED
     ]
-    this.assesmentProxy
+    this.assessmentProxy
       .getAssment(
         this.assessmentYear.assessment.id,
         this.assessmentYear.assessmentYear
@@ -485,7 +485,7 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
       ? QuAlityCheckStatus.Pass
       : QuAlityCheckStatus.Fail;
 
-    this.assesmentResaultProxy
+    this.assessmentResaultProxy
       .updateQCStatusAssessmentResult(
         this.assessmentResult.id,
         this.assessmentResult.assessmentYear.id,
@@ -552,9 +552,9 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
       vd.updatedDate = moment();
       vd.userVerifier = this.loggedUser.id;
       vd.assessmentId = this.assessmentYear.assessment.id;
-      let assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assessmentYear.id;
-      vd.assessmentYear = assesmentYear;
+      let assessmentYear = new AssessmentYear();
+      assessmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assessmentYear;
       vd.year = Number(this.assessmentYear.assessmentYear);
 
       if (IsNdc) {
@@ -793,18 +793,18 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
 
     if (currentVerification) {
       vd = currentVerification;
-      let assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assessmentYear.id;
-      vd.assessmentYear = assesmentYear;
+      let assessmentYear = new AssessmentYear();
+      assessmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assessmentYear;
       vd.updatedDate = moment();
     } else {
       vd.createdOn = moment();
       vd.updatedDate = moment();
       vd.userVerifier = this.loggedUser.id;
       vd.assessmentId = this.assessmentYear.assessment.id;
-      let assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assessmentYear.id;
-      vd.assessmentYear = assesmentYear;
+      let assessmentYear = new AssessmentYear();
+      assessmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assessmentYear;
       vd.year = Number(this.assessmentYear.assessmentYear);
 
       if (IsNdc) {
@@ -896,9 +896,9 @@ export class VerifyDetailSectorAdminComponent implements OnInit {
         _vd = verificationDetail;
       } else {
         _vd.assessmentId = this.assessmentYear.assessment.id;
-        let assesmentYear = new AssessmentYear();
-        assesmentYear.id = this.assessmentYear.id;
-        _vd.assessmentYear = assesmentYear;
+        let assessmentYear = new AssessmentYear();
+        assessmentYear.id = this.assessmentYear.id;
+        _vd.assessmentYear = assessmentYear;
         _vd.year = Number(this.assessmentYear.assessmentYear);
         _vd.createdOn = moment();
         _vd.isAccepted = false;

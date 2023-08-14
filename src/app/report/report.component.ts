@@ -245,7 +245,7 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
       this.onSectorChange(this.selectedSector);
     }
   }
-  onselectedAssesmentType(selectedType:any){
+  onselectedAssessmentType(selectedType:any){
     if(selectedType.includes(this.typePair[3])&&!selectedType.includes(this.typePair[1])){
       
       selectedType.push(this.typePair[1]);

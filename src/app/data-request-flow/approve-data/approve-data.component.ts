@@ -26,7 +26,7 @@ import {
 export class ApproveDataComponent implements OnInit {
   assessmentYearId: number = 0;
   assessmentYear: any;
-  assementYearDetails: AssessmentYear = new AssessmentYear();
+  assessmentYearDetails: AssessmentYear = new AssessmentYear();
   parameters: Parameter[] = [];
   baselineParameters: Parameter[] = [];
   baselineParametersAcceptcount :number =0;
@@ -162,14 +162,14 @@ export class ApproveDataComponent implements OnInit {
         this.userName
       )
       .subscribe((res) => {
-        this.assementYearDetails.assessment = res;
+        this.assessmentYearDetails.assessment = res;
 
-        this.parameters = this.assementYearDetails.assessment?.parameters;
+        this.parameters = this.assessmentYearDetails.assessment?.parameters;
 
         let statusToRemove = [ParameterVerifierAcceptance.REJECTED]
 
         this.baselineParameters =
-          this.assementYearDetails.assessment?.parameters.filter(
+          this.assessmentYearDetails.assessment?.parameters.filter(
             (p) => p.isBaseline  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
             if(this.baselineParameters){
@@ -182,7 +182,7 @@ export class ApproveDataComponent implements OnInit {
             }
           
         this.projectParameters =
-          this.assementYearDetails?.assessment?.parameters.filter(
+          this.assessmentYearDetails?.assessment?.parameters.filter(
             (p) => p.isProject  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
           if(this.projectParameters){
@@ -195,7 +195,7 @@ export class ApproveDataComponent implements OnInit {
           }
          
         this.lekageParameters =
-          this.assementYearDetails?.assessment?.parameters.filter(
+          this.assessmentYearDetails?.assessment?.parameters.filter(
             (p) => p.isLekage  && !statusToRemove.includes(p.verifierAcceptance) && p.institution
           );
           if(this.lekageParameters){
@@ -208,7 +208,7 @@ export class ApproveDataComponent implements OnInit {
           }
         
         this.projectionParameters =
-          this.assementYearDetails?.assessment?.parameters.filter(
+          this.assessmentYearDetails?.assessment?.parameters.filter(
             (p) =>
               p.isProjection &&
               p.projectionBaseYear == this.headerAssessmentYear &&

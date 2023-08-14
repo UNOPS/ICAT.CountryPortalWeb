@@ -106,7 +106,7 @@ export class QualityCheckDetailComponent implements OnInit {
 
   isSubmitButtondisable: boolean = false;
 
-  isApproveAllAssesmentResult: boolean = false;
+  isApproveAllAssessmentResult: boolean = false;
   isApproveAllProjectionResult: boolean = false;
   verificationStatusIsNull: boolean = false;
   @ViewChild('opDRPro') overlayDRPro: any;
@@ -157,7 +157,7 @@ export class QualityCheckDetailComponent implements OnInit {
           }
           let filterResult: string[] = new Array();
           filterResult.push('assessmentYear.id||$eq||' + this.asseYearId) &
-            filterResult.push('assement.id||$eq||' + this.asseId);
+            filterResult.push('assessment.id||$eq||' + this.asseId);
           this.serviceProxy.getManyBaseAssessmentResultControllerAssessmentResult
             (
               undefined,
@@ -242,7 +242,7 @@ export class QualityCheckDetailComponent implements OnInit {
                   this.isbstacResultButtonsDisableReject = true;
                 }
 
-                this.isApproveAllAssesmentResult = await this.assessmentResultProxy.checkAllQCApprovmentAssessmentResult(this.asseResult[0].id).toPromise();
+                this.isApproveAllAssessmentResult = await this.assessmentResultProxy.checkAllQCApprovmentAssessmentResult(this.asseResult[0].id).toPromise();
               }
               else {
                 this.assessmentProxy
@@ -255,7 +255,7 @@ export class QualityCheckDetailComponent implements OnInit {
 
 
           let filterProjectionResult: string[] = new Array();
-          filterProjectionResult.push('assement.id||$eq||' + this.asseId);
+          filterProjectionResult.push('assessment.id||$eq||' + this.asseId);
           this.serviceProxy.getManyBaseProjectionResultControllerProjectionResult
             (
               undefined,
@@ -280,8 +280,8 @@ export class QualityCheckDetailComponent implements OnInit {
               }
             });
 
-          this.getAssesment();
-          this.getAssesmentResult(false);
+          this.getAssessment();
+          this.getAssessmentResult(false);
           this.getProjectionResult();
           await this.getVerificationDetails()
         });
@@ -294,7 +294,7 @@ export class QualityCheckDetailComponent implements OnInit {
       .toPromise())[0]?.verificationDetail;
   }
 
-  getAssesmentResult(isCalculate: boolean) {
+  getAssessmentResult(isCalculate: boolean) {
     this.assessmentResultProxy
       .getAssessmentResult(
         this.assessmentYear.assessment.id,
@@ -307,7 +307,7 @@ export class QualityCheckDetailComponent implements OnInit {
       .subscribe((res) => {
         this.assessmentResult = res;
         if (isCalculate) {
-          this.getAssesmentResult(false);
+          this.getAssessmentResult(false);
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -383,7 +383,7 @@ export class QualityCheckDetailComponent implements OnInit {
     }
   }
 
-  getAssesment() {
+  getAssessment() {
     this.assessmentProxy
       .getAssment(
         this.assessmentYear.assessment.id,
@@ -449,7 +449,7 @@ export class QualityCheckDetailComponent implements OnInit {
       })
     } else {
       if (this.assessmentYear.assessment.assessmentType != 'MAC') {
-        this.getAssesmentResult(true);
+        this.getAssessmentResult(true);
       } else {
           this.toCalMacResult();
       }
@@ -858,7 +858,7 @@ export class QualityCheckDetailComponent implements OnInit {
               : 3;
           }
 
-          this.isApproveAllAssesmentResult = await this.assessmentResultProxy
+          this.isApproveAllAssessmentResult = await this.assessmentResultProxy
             .checkAllQCApprovmentAssessmentResult(this.assessmentResult.id)
             .toPromise();
 
@@ -908,16 +908,16 @@ export class QualityCheckDetailComponent implements OnInit {
 
     }
 
-    let tempassementYear = this.assessmentYear;
+    let tempassessmentYear = this.assessmentYear;
 
     let assesemt = new Assessment();
-    assesemt.id = tempassementYear.assessment.id;
-    tempassementYear.assessment = assesemt;
+    assesemt.id = tempassessmentYear.assessment.id;
+    tempassessmentYear.assessment = assesemt;
 
     this.proxy
       .updateOneBaseAssessmentYearControllerAssessmentYear(
         this.assesMentYearId,
-        tempassementYear,
+        tempassessmentYear,
       )
       .subscribe(
         (res) => {

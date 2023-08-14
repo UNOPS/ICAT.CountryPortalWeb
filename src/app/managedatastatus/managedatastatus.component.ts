@@ -201,7 +201,7 @@ export class ManagedatastatusComponent implements OnInit {
 
       this.totalRecords = res.meta.totalItems;
       this.datarequests = [];
-      for (let assementYear of res.items) {
+      for (let assessmentYear of res.items) {
         let datarequests1: datarequest = {
           name: "",
           type: '',
@@ -218,17 +218,17 @@ export class ManagedatastatusComponent implements OnInit {
          
         };
 
-        datarequests1.name = assementYear.assessment.project.climateActionName;
-        datarequests1.year = assementYear.assessmentYear ? assementYear.assessmentYear : "";
-        datarequests1.type = assementYear.assessment.assessmentType;
-        datarequests1.assenmentYearId = assementYear.id;
-        datarequests1.qaStatus = assementYear.qaStatus;
-        datarequests1.verificationStatus = assementYear.verificationStatus;
+        datarequests1.name = assessmentYear.assessment.project.climateActionName;
+        datarequests1.year = assessmentYear.assessmentYear ? assessmentYear.assessmentYear : "";
+        datarequests1.type = assessmentYear.assessment.assessmentType;
+        datarequests1.assenmentYearId = assessmentYear.id;
+        datarequests1.qaStatus = assessmentYear.qaStatus;
+        datarequests1.verificationStatus = assessmentYear.verificationStatus;
 
         this.assessmentProxy
           .getAssessmentsForApproveData(
-            assementYear.assessment.id,
-            assementYear.assessmentYear,
+            assessmentYear.assessment.id,
+            assessmentYear.assessmentYear,
             " "
           )
           .subscribe((res) => {
@@ -239,7 +239,7 @@ export class ManagedatastatusComponent implements OnInit {
             }) => obj.parameterRequest.dataRequestStatus != 11 && obj.verifierAcceptance != ParameterVerifierAcceptance.REJECTED);
           })
         this.parameterProxy
-          .getDateRequestToManageDataStatus(assementYear.assessment.id, assementYear.assessmentYear)
+          .getDateRequestToManageDataStatus(assessmentYear.assessment.id, assessmentYear.assessmentYear)
           .subscribe(res => {
             datarequests1.totalreqCount = res.length;
             for (let dr of res) {

@@ -43,8 +43,8 @@ export class TrackclimateactionsCountryComponent implements OnInit {
     private climateactionserviceproxy: ProjectControllerServiceProxy,
     private messageService: MessageService,
     private router: Router,
-    private assesmentserviceProxy: AssessmentControllerServiceProxy,
-    private assesmentResaultProxy: AssessmentResultControllerServiceProxy,
+    private assessmentserviceProxy: AssessmentControllerServiceProxy,
+    private assessmentResaultProxy: AssessmentResultControllerServiceProxy,
     private trckCAProxy: TrackClimateControllerServiceProxy,
     private assYearProxy: AssessmentYearControllerServiceProxy,
     private route: ActivatedRoute,) { }

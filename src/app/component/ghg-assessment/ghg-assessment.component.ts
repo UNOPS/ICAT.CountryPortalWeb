@@ -71,7 +71,7 @@ export class GhgAssessmentComponent implements OnInit {
   climateActions: Project[] = [];
   selectedClimateAction: Project;
   baseYear: Date;
-  assesmentYear: Date;
+  assessmentYear: Date;
   years: SelectItem[] = new Array();
   selectYears: number[];
   selectedObjective: AssessmentObjective[] = [];
@@ -348,8 +348,8 @@ export class GhgAssessmentComponent implements OnInit {
     private http: HttpClient,
     private defaultValueControllerServiceProxy: DefaultValueControllerServiceProxy,
     private messageService: MessageService,
-    private assesmentResaultProxy: AssessmentResultControllerServiceProxy,
-    private assesmentYearProxy: AssessmentYearControllerServiceProxy,
+    private assessmentResaultProxy: AssessmentResultControllerServiceProxy,
+    private assessmentYearProxy: AssessmentYearControllerServiceProxy,
     private instituationProxy: InstitutionControllerServiceProxy,
     private assessmentProxy: AssessmentControllerServiceProxy,
     private applicabilityControllerServiceProxy:ApplicabilityControllerServiceProxy,
@@ -2529,9 +2529,9 @@ export class GhgAssessmentComponent implements OnInit {
           this.selectedAssessementByCA = res.data;
           let yearList: any[] = [];
           let uniqueYearList: any[] = [];
-          for (let assement of this.selectedAssessementByCA) {
-            this.methcode.push(assement.methodologyCode);
-            for (let asyears of assement.assessmentYear) {
+          for (let assessment of this.selectedAssessementByCA) {
+            this.methcode.push(assessment.methodologyCode);
+            for (let asyears of assessment.assessmentYear) {
 
               yearList.push(asyears.assessmentYear)
             }
@@ -2697,7 +2697,7 @@ export class GhgAssessmentComponent implements OnInit {
       const parameters: Parameter_Server[] = [];
 
       if (this.IsProposal) {
-        this.selectYears.push(this.assesmentYear.getFullYear());
+        this.selectYears.push(this.assessmentYear.getFullYear());
       }
 
       this.selectYears.map((y: any) => {
@@ -3169,12 +3169,12 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   getAssessmentResult(assessmentId: number) {
-    this.assesmentYearProxy
+    this.assessmentYearProxy
       .getAllByAssessmentId(assessmentId)
       .subscribe((res) => {
         const assesYear = res;
 
-        this.assesmentResaultProxy
+        this.assessmentResaultProxy
           .getAssessmentResult(
             assessmentId,
             assesYear[0].ay_id,
@@ -3516,7 +3516,7 @@ export class GhgAssessmentComponent implements OnInit {
       this.router.navigate(['/result'], {
         queryParams: {
           id: this.savedAsessment.id,
-          yr: this.assesmentYear.getFullYear(),
+          yr: this.assessmentYear.getFullYear(),
         },
       });
     }, 2000);
@@ -3532,7 +3532,7 @@ export class GhgAssessmentComponent implements OnInit {
   async onAssessmentYearChange(event: any) {
     this.projectionBaseyears = [];
     if (this.IsProposal) {
-      this.projectionBaseyears.push(this.assesmentYear.getFullYear());
+      this.projectionBaseyears.push(this.assessmentYear.getFullYear());
       this.ProjectionbaseYear = this.projectionBaseyears[0];
     } else {
       this.projectionBaseyears.push(...this.selectYears);
@@ -3541,7 +3541,7 @@ export class GhgAssessmentComponent implements OnInit {
       this.selectedApproch = '';
       this.assessmentYearAndTypeObjectList = [];
       for (const year of this.selectYears) {
-        const res2 = await this.assesmentYearProxy
+        const res2 = await this.assessmentYearProxy
           .getAssessmentByYearAndProjectId(
             year.toString(),
             this.selectedClimateAction.id,

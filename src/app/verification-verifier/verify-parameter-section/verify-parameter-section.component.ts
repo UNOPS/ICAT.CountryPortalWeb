@@ -454,9 +454,9 @@ export class VerifyParameterSectionComponent implements OnInit, OnDestroy {
     } else {
       vd.userVerifier = this.loggedUser.id;
       vd.assessmentId = this.assessmentYear.assessment.id;
-      let assesmentYear = new AssessmentYear();
-      assesmentYear.id = this.assessmentYear.id;
-      vd.assessmentYear = assesmentYear;
+      let assessmentYear = new AssessmentYear();
+      assessmentYear.id = this.assessmentYear.id;
+      vd.assessmentYear = assessmentYear;
       vd.year = Number(this.assessmentYear.assessmentYear);
       vd.createdOn = moment();
       vd.isResult = true
