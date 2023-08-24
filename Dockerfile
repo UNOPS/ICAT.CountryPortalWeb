@@ -3,9 +3,9 @@ FROM node:16-alpine3.16 as builder
 RUN apk update && apk add --no-cache make git
 # a) Create app directory
 WORKDIR /app
-# b) Create app/nginx directory and copy default.conf to it
-WORKDIR /app/nginx
-COPY nginx/default.conf /app/nginx/
+# # b) Create app/nginx directory and copy default.conf to it
+# WORKDIR /app/nginx
+# COPY nginx/default.conf /app/nginx/
 # c) Install app dependencies
 COPY package.json package-lock.json /app/
 RUN cd /app && npm set progress=false && npm install -f
