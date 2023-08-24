@@ -5,7 +5,7 @@ RUN apk update && apk add --no-cache make git
 WORKDIR /app
 # b) Create app/nginx directory and copy default.conf to it
 WORKDIR /app/nginx
-COPY nginx/default.conf.template /app/nginx/
+COPY nginx/default.conf /app/nginx/
 # c) Install app dependencies
 COPY package.json package-lock.json /app/
 RUN cd /app && npm set progress=false && npm install -f
@@ -19,7 +19,7 @@ RUN rm -rf /usr/share/nginx/html/*
 # b) From 'builder' copy your site to default nginx public folder
 COPY --from=builder /app/dist/icat.countryportalweb /usr/share/nginx/html
 # c) copy your own default nginx configuration to the conf folder
-RUN rm -rf /etc/nginx/default.conf.template
-COPY --from=builder /app/nginx/default.conf.template /etc/nginx/default.conf.template
+RUN rm -rf /etc/nginx/default.conf
+COPY --from=builder /app/nginx/default.conf /etc/nginx/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
