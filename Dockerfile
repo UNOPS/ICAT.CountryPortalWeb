@@ -1,12 +1,12 @@
 # STEP 1 building your app
 FROM node:16-alpine3.16 as builder
 RUN apk update && apk add --no-cache make git
-
+# a) Create app directory
 WORKDIR /app
-
+# b) Install app dependencies
 COPY package.json package-lock.json /app/
 RUN cd /app && npm set progress=false && npm install -f
-# Copy project files into the docker image and build your app
+# c) Copy project files into the docker image and build your app
 COPY .  /app
 RUN cd /app && npm run ng build --prod --output-path=dist
 # STEP 2 build a small nginx image
