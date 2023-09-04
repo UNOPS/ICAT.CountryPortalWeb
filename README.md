@@ -85,7 +85,6 @@ The environment variables should be declared in the files `environment.prod.ts` 
 | `baseUrlMac`                          | Calculation Engine API URL + `/mac`                              |
 | `baseUrlExcelUpload`                  | Country Portal Service API URL + `/parameter/upload`             |
 | `baseUrlAPIDocReportChartDownloadAPI` | Country Portal Service API URL + `/report/chartDataImage`        |
-| `baseUrlCountryWeb`                   | Country Portal Service API URL + `/`                             |
 | `baseUrlPMU`                          | PMU Portal Web API: https://tracadpmu.unops.org                  |
 | `apiKey1`                             | API key. Should be the same as used by the APIs                  |
 | `apiKey2`                             | API key. Should be the same as used by the APIs                  |
