@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "https://icat-countryportalservice-qa-2sshj5de3a-ey.a.run.app/api-json",
+      "url": "http://localhost:8080/api-json",
       "output": null
     }
   },
