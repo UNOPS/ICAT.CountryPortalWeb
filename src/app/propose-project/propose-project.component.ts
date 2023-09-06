@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DatePipe, Location } from '@angular/common';
-import {} from 'googlemaps';
+import { } from 'googlemaps';
 import {
   CaActionHistory,
   Country,
@@ -95,9 +95,9 @@ export class ProposeProjectComponent implements OnInit {
   institutionTypeID: number = 3;
   selectedInstitution: Institution;
   selectedDocuments: Documents[] = [];
-  counID:number;
+  counID: number;
 
-  telephoneLength:number;
+  telephoneLength: number;
 
   isSector: boolean = false;
 
@@ -126,20 +126,19 @@ export class ProposeProjectComponent implements OnInit {
     private messageService: MessageService,
     private projectProxy: ProjectControllerServiceProxy,
     private sectorProxy: SectorControllerServiceProxy
-  ) 
-  {}
+  ) { }
 
   ngOnInit(): void {
     const currentTime = new Date();
-    this.textdlod = 'Downloaded date '+this.datePipe.transform(currentTime, 'yyyy-MM-dd HH:mm:ss');
+    this.textdlod = 'Downloaded date ' + this.datePipe.transform(currentTime, 'yyyy-MM-dd HH:mm:ss');
     const token = localStorage.getItem('access_token')!;
     const countryId = token ? decode<any>(token).countryId : 0;
-    this.counID= countryId;
+    this.counID = countryId;
     this.userName = localStorage.getItem('user_name')!;
     let filterUser: string[] = [];
     filterUser.push('username||$eq||' + this.userName);
 
-    if (countryId>0){
+    if (countryId > 0) {
       this.sectorProxy.getCountrySector(countryId).subscribe((res: any) => {
         this.sectorList = res;
       });
@@ -285,8 +284,8 @@ export class ProposeProjectComponent implements OnInit {
             .subscribe(async (res1) => {
               this.project = res1;
               this.project.ndc = res1.ndc;
-              this.project.sector =res1.sector;
-              this.isCity=res1.subNationalLevl1?1:0;
+              this.project.sector = res1.sector;
+              this.isCity = res1.subNationalLevl1 ? 1 : 0;
               const latitude = parseFloat(this.project.latitude + '');
               const longitude = parseFloat(this.project.longitude + '');
               await this.addMarker(longitude, latitude);
@@ -548,16 +547,16 @@ export class ProposeProjectComponent implements OnInit {
         });
     }
   }
-  changInstitute(event: any) {}
+  changInstitute(event: any) { }
 
   //
   async saveForm(formData: NgForm) {
     if (this.exsistingPrpject) {
       return;
     }
-    const dumpSerctor=this.project.sector;
-    const dumpNdc=this.project.ndc;
-    const dumpSubNdc=this.project.subNdc;
+    const dumpSerctor = this.project.sector;
+    const dumpNdc = this.project.ndc;
+    const dumpSubNdc = this.project.subNdc;
 
     if (this.project.sector) {
       let sector = new Sector();
@@ -567,7 +566,7 @@ export class ProposeProjectComponent implements OnInit {
 
     this.project.proposeDateofCommence = moment(this.proposeDateofCommence);
     this.project.endDateofCommence = moment(this.endDateofCommence);
-    
+
     if (this.project.ndc) {
       this.project.currentNdc = this.project.ndc.name;
       this.project.previousNdc = this.project.ndc.name;
@@ -917,7 +916,7 @@ export class ProposeProjectComponent implements OnInit {
       accept: () => {
         this.location.back();
       },
-      reject: (type: any) => {},
+      reject: (type: any) => { },
     });
   }
   onRowSelect(event: any) {
@@ -961,7 +960,7 @@ export class ProposeProjectComponent implements OnInit {
 
             this.updateStatus(project, aprovalStatus);
           },
-          reject: () => {},
+          reject: () => { },
         });
       }
       if (aprovalStatus === 2) {
@@ -975,7 +974,7 @@ export class ProposeProjectComponent implements OnInit {
               status === undefined ? (null as any) : status;
             this.updateStatus(project, aprovalStatus);
           },
-          reject: () => {},
+          reject: () => { },
         });
       }
       if (aprovalStatus === 3) {
@@ -989,7 +988,7 @@ export class ProposeProjectComponent implements OnInit {
               status === undefined ? (null as any) : status;
             this.updateStatus(project, aprovalStatus);
           },
-          reject: () => {},
+          reject: () => { },
         });
       }
     } else {
@@ -1005,10 +1004,10 @@ export class ProposeProjectComponent implements OnInit {
 
   updateStatus(project: Project, aprovalStatus: number) {
 
-    const dumpSerctor=this.project.sector;
-    const dumpNdc=this.project.ndc;
-    const dumpSubNdc=this.project.subNdc;
-    
+    const dumpSerctor = this.project.sector;
+    const dumpNdc = this.project.ndc;
+    const dumpSubNdc = this.project.subNdc;
+
     let sector = new Sector();
     sector.id = project.sector.id;
     project.sector = sector;
@@ -1070,8 +1069,8 @@ export class ProposeProjectComponent implements OnInit {
             detail:
               aprovalStatus === 1 || aprovalStatus === 2
                 ? project.climateActionName +
-                  ' is successfully ' +
-                  (aprovalStatus === 1 ? 'Approved.' : 'Rejected')
+                ' is successfully ' +
+                (aprovalStatus === 1 ? 'Approved.' : 'Rejected')
                 : 'Data request sent successfully.',
             closable: true,
           });
@@ -1152,9 +1151,18 @@ export class ProposeProjectComponent implements OnInit {
 
   toUpdateNdcs() {
     const sector = new Sector();
+    const ndc = new Ndc();
+    const subndc = new SubNdc();
     sector.id = this.project.sector.id;
     sector.name = this.project.sector.name;
+    ndc.id= this.project.ndc.id;
+    ndc.name = this.project.ndc.name;
+    subndc.id= this.project.subNdc.id;
+    subndc.name= this.project.subNdc.name;
+    subndc.ndc =this.project.subNdc.ndc;
     this.project.sector = sector;
+    this.project.ndc = ndc;
+    this.project.subNdc=subndc;
 
     this.project.proposeDateofCommence = moment(this.proposeDateofCommence);
     this.project.endDateofCommence = moment(this.endDateofCommence);
@@ -1178,7 +1186,6 @@ export class ProposeProjectComponent implements OnInit {
       insti.id = this.project.mappedInstitution?.id;
       this.project.mappedInstitution = insti;
     }
-
     if (this.project.id > 0) {
       this.serviceProxy
         .updateOneBaseProjectControllerProject(this.project.id, this.project)
@@ -1197,7 +1204,7 @@ export class ProposeProjectComponent implements OnInit {
               .createOneBaseCaActionHistoryControllerCaActionHistory(
                 historyObject,
               )
-              .subscribe((res) => {});
+              .subscribe((res) => { });
 
             this.isMapped = 1;
             this.messageService.add({
