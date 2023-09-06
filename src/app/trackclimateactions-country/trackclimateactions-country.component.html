@@ -5,14 +5,14 @@
   <div class="p-grid p-fluid card">
     <div class="row p-2">
       <div class="col-sm-6" *ngIf="this.recievedFlag == undefined">
-        <p-dropdown name="assessmentYear" [(ngModel)]="selectedYear" [options]="uniqueYears" #fyear="ngModel"
+        <p-dropdown name="assessmentYear" [(ngModel)]="selectedYear" [options]="uniqueYears" #fyear="ngModel" appendTo="body"
           [filter]="true" placeholder="Select Assessment year" (ngModelChange)="onyearChange($event)">
         </p-dropdown>
 
       </div>
       <div class="col-sm-6" *ngIf="this.recievedFlag == undefined">
 
-        <p-multiSelect name="multiNdc" [options]="ndcList" [(ngModel)]="year" #fndc="ngModel"
+        <p-multiSelect name="multiNdc" [options]="ndcList" [(ngModel)]="year" #fndc="ngModel" appendTo="body"
           placeholder="Select Aggregated Actions" optionLabel="name" (ngModelChange)="onNDCChange($event)">
         </p-multiSelect>
       </div>
