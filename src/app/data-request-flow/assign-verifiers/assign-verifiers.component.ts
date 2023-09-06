@@ -68,7 +68,7 @@ export class AssignVerifiersComponent implements OnInit {
   onStatusChange($event: any) {
     this.onSearch();
   }
-  loadgridData = (event: LazyLoadEvent) => {
+  loadgridData(event: LazyLoadEvent){
     this.loading = true;
     this.totalRecords = 0;
 
