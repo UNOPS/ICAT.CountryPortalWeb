@@ -523,7 +523,7 @@ export class GhgAssessmentComponent implements OnInit {
           )!;
 
           this.selctedSubNdc = this.selectedNdc?.subNdc.find(
-            (a) => a.id === this.selectedClimateAction.subNdc?.id
+            (a) => a.id === this.selectedClimateAction?.subNdc?.id
           )!;
 
           this.proposeDateofCommence = new Date(
@@ -2487,7 +2487,7 @@ export class GhgAssessmentComponent implements OnInit {
     this.selectDefaultMethodForNDc();
 
     this.selctedSubNdc = this.selectedNdc?.subNdc.find(
-      (a) => a.id === this.selectedClimateAction.subNdc?.id,
+      (a) => a.id === this.selectedClimateAction?.subNdc?.id,
     )!;
 
     this.selectDefaultMethodForSUBNDc();
@@ -2635,7 +2635,7 @@ export class GhgAssessmentComponent implements OnInit {
     if (this.selectedNdc) {
       const metho = this.methodologyList.filter(
         (a) =>
-          a.subNdc.find((n: SubNdc) => n.id === this.selctedSubNdc.id) !==
+          a?.subNdc.find((n: SubNdc) => n.id === this.selctedSubNdc.id) !==
           undefined,
       );
 
