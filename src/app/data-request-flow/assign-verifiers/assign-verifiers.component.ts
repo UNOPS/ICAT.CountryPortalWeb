@@ -29,6 +29,8 @@ export class AssignVerifiersComponent implements OnInit {
   minDate: Date;
   selectedParameters: any[] = [];
   totalRecords = 0;
+  oldPageNumber=1;
+  changefilter=false;
   rows = 10;
   last: number;
   searchBy: any = {
@@ -62,14 +64,14 @@ export class AssignVerifiersComponent implements OnInit {
     let event: any = {};
     event.rows = this.rows;
     event.first = 0;
-
+this.changefilter=true;
     this.loadgridData(event);
   }
   onStatusChange($event: any) {
     this.onSearch();
   }
-  loadgridData(event: LazyLoadEvent){
-    this.loading = true;
+  loadgridData = (event: LazyLoadEvent) => {
+   
     this.totalRecords = 0;
 
     const pageNumber =
@@ -83,33 +85,38 @@ export class AssignVerifiersComponent implements OnInit {
       : 0;
 
     const filtertext = this.searchBy.text ? this.searchBy.text : '';
+    if(this.changefilter||(this.oldPageNumber!=pageNumber)||this.parameters.length==0){
+      this.loading = true;
+      setTimeout(() => {
+        this.assessmentProxy
+          .getAssessmentForAssignVerifiers(
+            pageNumber,
+            this.rows,
+            statusId,
+            filtertext,
+          )
+          .subscribe((a) => {
+            if (a) {
+              this.parameters = a.items;
+              this.totalRecords = a.meta.totalItems;
+              const uniqueStatus = [
+                ...new Set(a.items.map((obj: any) => obj.verificationStatus)),
+              ];
+  
+              this.verificationStatus = [];
+              uniqueStatus.forEach((element) => {
+                this.verificationStatus.push(
+                  this.VerificationStatusEnum[Number(element)],
+                );
+              });
+            }
+            this.changefilter=false;
+            this.loading = false;
+          });
+      }, 1);
 
-    setTimeout(() => {
-      this.assessmentProxy
-        .getAssessmentForAssignVerifiers(
-          pageNumber,
-          this.rows,
-          statusId,
-          filtertext,
-        )
-        .subscribe((a) => {
-          if (a) {
-            this.parameters = a.items;
-            this.totalRecords = a.meta.totalItems;
-            const uniqueStatus = [
-              ...new Set(a.items.map((obj: any) => obj.verificationStatus)),
-            ];
+    }
 
-            this.verificationStatus = [];
-            uniqueStatus.forEach((element) => {
-              this.verificationStatus.push(
-                this.VerificationStatusEnum[Number(element)],
-              );
-            });
-          }
-          this.loading = false;
-        });
-    }, 1);
   };
 
   onAcceptClick() {
