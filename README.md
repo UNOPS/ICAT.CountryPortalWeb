@@ -85,7 +85,6 @@ The environment variables should be declared in the files `environment.prod.ts` 
 | `baseUrlMac`                          | Calculation Engine API URL + `/mac`                              |
 | `baseUrlExcelUpload`                  | Country Portal Service API URL + `/parameter/upload`             |
 | `baseUrlAPIDocReportChartDownloadAPI` | Country Portal Service API URL + `/report/chartDataImage`        |
-| `baseUrlCountryWeb`                   | Country Portal Service API URL + `/`                             |
 | `baseUrlPMU`                          | PMU Portal Web API: https://tracadpmu.unops.org                  |
 | `apiKey1`                             | API key. Should be the same as used by the APIs                  |
 | `apiKey2`                             | API key. Should be the same as used by the APIs                  |
@@ -107,18 +106,8 @@ This application depends on CountryPortalService and CalculationEngine APIs.
 The complete dependency diagram of TraCAD Country and PMU applications:
 
 <p align="left">
-  <img src="https://lucid.app/publicSegments/view/9a6fb822-be5a-47d7-ad67-0434a4025234/image.png" width="800" alt="TraCAD Diagram" /></a>
+  <img src="https://lucid.app/publicSegments/view/7e56ab6c-3c14-428b-be1d-63dfd33760be/image.png" width="800" alt="TraCAD Diagram" /></a>
 </p>
-
-## Standalone TraCAD Country App Installation
-
-Suggested simplified installation of the standalone TraCAD Country Application:
-
-<p align="left">
-  <img src="https://lucid.app/publicSegments/view/173624cf-952e-40dd-bd8a-ab031a40a1b8/image.png" width="800" alt="TraCAD Simplified Diagram" /></a>
-</p>
-
-> This version doesn’t include the PMU TraCAD application and the CountryScheduler application responsible for the data synchronization between Country and PMU applications.
 
 ## License
 

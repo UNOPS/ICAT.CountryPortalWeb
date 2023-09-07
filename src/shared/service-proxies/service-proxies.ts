@@ -29843,6 +29843,7 @@ export class Parameter implements IParameter {
     verifierAcceptance: ParameterVerifierAcceptance;
     verifierConcern: string;
     previouseParameterId: number;
+    isConcernRaised: boolean;
 
     constructor(data?: IParameter) {
         if (data) {
@@ -29916,6 +29917,7 @@ export class Parameter implements IParameter {
             this.verifierAcceptance = _data["verifierAcceptance"];
             this.verifierConcern = _data["verifierConcern"];
             this.previouseParameterId = _data["previouseParameterId"];
+            this.isConcernRaised = _data["isConcernRaised"];
         }
     }
 
@@ -29986,6 +29988,7 @@ export class Parameter implements IParameter {
         data["verifierAcceptance"] = this.verifierAcceptance;
         data["verifierConcern"] = this.verifierConcern;
         data["previouseParameterId"] = this.previouseParameterId;
+        data["isConcernRaised"] = this.isConcernRaised;
         return data;
     }
 
@@ -30052,6 +30055,7 @@ export interface IParameter {
     verifierAcceptance: ParameterVerifierAcceptance;
     verifierConcern: string;
     previouseParameterId: number;
+    isConcernRaised: boolean;
 }
 
 export class VerificationDetail implements IVerificationDetail {
