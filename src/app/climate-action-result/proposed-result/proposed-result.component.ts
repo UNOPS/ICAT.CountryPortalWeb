@@ -81,13 +81,17 @@ export class ProposedResultComponent implements OnInit, AfterViewInit {
         id: assessments.id,
         yr: assessments.assessmentYear[0]?.assessmentYear,
       },
-    });
+    }).then(()=>{
+      window.location.reload();
+    });  
   }
 
   toMacDetails(assessments: Assessment) {
-    this.router.navigate(['/mac-result'], {
-      queryParams: { id: assessments.id },
-    });
+    this.router.navigate(['/mac-result'],{
+      queryParams: { id: assessments.id },      
+    }).then(()=>{
+      window.location.reload();
+    });    
   }
 
   ngOnInit(): void {

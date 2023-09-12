@@ -300,7 +300,7 @@ export class ProposeProjectComponent implements OnInit {
                 this.project.projectApprovalStatus == undefined
                   ? 'Propose'
                   : this.project.projectApprovalStatus?.name;
-              this.proposedDate = this.project.climateActionCreatedData?.toString();
+              this.proposedDate = this.project.createdOn?.toString();
               this.isMapped = this.project?.isMappedCorrectly;
               this.disbaleNdcmappedFromDB = this.project?.isMappedCorrectly;
               this.isLikelyhoodFromDb = this.project?.likelyhood;
@@ -379,7 +379,7 @@ export class ProposeProjectComponent implements OnInit {
                 this.project.projectApprovalStatus == undefined
                   ? 'Propose'
                   : this.project.projectApprovalStatus?.name;
-              this.proposedDate = this.project.climateActionCreatedData?.toString();
+              this.proposedDate = this.project.createdOn?.toString();
               this.isMapped = this.project?.isMappedCorrectly;
               this.disbaleNdcmappedFromDB = this.project?.isMappedCorrectly;
               this.isLikelyhoodFromDb = this.project?.likelyhood;
@@ -1157,9 +1157,9 @@ export class ProposeProjectComponent implements OnInit {
     sector.name = this.project.sector.name;
     ndc.id= this.project.ndc.id;
     ndc.name = this.project.ndc.name;
-    subndc.id= this.project.subNdc.id;
-    subndc.name= this.project.subNdc.name;
-    subndc.ndc =this.project.subNdc.ndc;
+    subndc.id= this.project.subNdc?.id;
+    subndc.name= this.project.subNdc?.name;
+    subndc.ndc =this.project.subNdc?.ndc;
     this.project.sector = sector;
     this.project.ndc = ndc;
     this.project.subNdc=subndc;
