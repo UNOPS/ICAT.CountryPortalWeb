@@ -327,7 +327,7 @@ export class UserFormComponent implements OnInit {
   async onInstitutionChange(event: any) {
     let tempList = this.userTypes
 
-    if (event.type.id == 2) {
+    if (event && event.type.id == 2) {
       let res = await this.instProxy.getInstitutionForUsers(event.id, 3).toPromise()
 
       if (res == 1) {
@@ -335,7 +335,7 @@ export class UserFormComponent implements OnInit {
         tempList = tempList.filter((a) => a.ae_name != "Sector Admin")
       }
     }
-    else if (event.type.id == 3) {
+    else if (event && event.type.id == 3) {
 
       let res = await this.instProxy.getInstitutionForUsers(event.id, 8).toPromise();
 
