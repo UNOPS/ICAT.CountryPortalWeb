@@ -11,7 +11,7 @@
               <label for="institution">Assign Institution *</label>
               <p-dropdown name="institution" [options]="institutions" [(ngModel)]="user.institution"
                 #finstitution="ngModel" [filter]="true" placeholder={{user.institution.name}} optionLabel="name"
-                (ngModelChange)="onInstitutionChange($event)"></p-dropdown>
+                (ngModelChange)="onInstitutionChange($event)" appendTo="body"></p-dropdown>
               <p class="info-message text-danger" *ngIf="
                   !user.institution.id &&
                   (fLogin.submitted ||
@@ -25,7 +25,7 @@
               <label for="institution">Assign Institution *</label>
               <p-dropdown name="institution" [options]="institutions" [(ngModel)]="user.institution"
                 #finstitution="ngModel" [filter]="true" placeholder={{user.institution.name}} optionLabel="name"
-                (ngModelChange)="onInstitutionChange($event)"></p-dropdown>
+                (ngModelChange)="onInstitutionChange($event)" appendTo="body"></p-dropdown>
               <p class="info-message text-danger" *ngIf="
                   !user.institution.id &&
                   (fLogin.submitted ||
