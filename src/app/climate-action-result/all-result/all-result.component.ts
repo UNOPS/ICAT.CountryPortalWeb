@@ -72,13 +72,17 @@ export class AllResultComponent implements OnInit, AfterViewInit {
   toMacDetails(assessments: Assessment) {
     this.router.navigate(['/mac-result'], {
       queryParams: { id: assessments.id },
-    });
+    }).then(()=>{
+      window.location.reload();
+    }); 
   }
 
   toDetails(assessments: Assessment, assYr: AssessmentYear) {
     this.router.navigate(['/result'], {
       queryParams: { id: assessments.id, yr: assYr.assessmentYear },
-    });
+    }).then(()=>{
+      window.location.reload();
+    }); 
   }
 
   constructor(
