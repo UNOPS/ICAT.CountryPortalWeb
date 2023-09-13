@@ -257,6 +257,9 @@ export class InstitutionComponent implements OnInit {
                 detail: institution.name + ' has saved successfully',
                 closable: true,
               });
+              setTimeout(() => {
+                this.onBackClick();
+              }, 1000);
             },
 
             (err) => {
@@ -268,9 +271,7 @@ export class InstitutionComponent implements OnInit {
               });
             },
           );
-        setTimeout(() => {
-          this.onBackClick();
-        }, 1000);
+       
       }
     } else {
       alert('Fill all the mandetory fields');

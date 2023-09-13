@@ -469,7 +469,7 @@
                 name="subndc"
                 #subndc="ngModel"
                 [autoDisplayFirst]="false"
-                [options]="project.ndc === undefined ? [] : project.ndc.subNdc"
+                [options]="project.ndc === undefined||project.ndc === null ? [] : project.ndc.subNdc"
                 [(ngModel)]="project.subNdc"
                 [ngModelOptions]="{ standalone: true }"
                 optionLabel="name"

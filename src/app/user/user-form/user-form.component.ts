@@ -238,6 +238,9 @@ export class UserFormComponent implements OnInit {
                       detail: 'User is created successfully!',
                       closable: true,
                     });
+                    setTimeout(() => {
+                      this.onBackClick();
+                    }, 1000);
                   },
                   (error) => {
                     this.coreatingUser = false;
@@ -247,9 +250,7 @@ export class UserFormComponent implements OnInit {
                     this.coreatingUser = false;
                   }
                 );
-              setTimeout(() => {
-                this.onBackClick();
-              }, 1000);
+            
             }
           });
       } else {
@@ -263,6 +264,10 @@ export class UserFormComponent implements OnInit {
                 detail: 'Successfully Saved',
                 closable: true,
               });
+
+              setTimeout(() => {
+                this.onBackClick();
+              }, 1000);
             },
             (error) => {
               this.messageService.add({
@@ -273,9 +278,7 @@ export class UserFormComponent implements OnInit {
               });
             }
           );
-        setTimeout(() => {
-          this.onBackClick();
-        }, 1000);
+       
       }
     }
     else {

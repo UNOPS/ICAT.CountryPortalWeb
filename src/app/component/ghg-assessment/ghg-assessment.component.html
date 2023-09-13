@@ -85,7 +85,7 @@
             name="subndc"
             #subndc="ngModel"
             [autoDisplayFirst]="false"
-            [options]="selectedNdc === undefined ? [] : selectedNdc.subNdc"
+            [options]="selectedNdc === undefined || selectedNdc === null? [] : selectedNdc.subNdc"
             [(ngModel)]="selctedSubNdc"
             [ngModelOptions]="{ standalone: true }"
             [disabled]="isDisableforSubmitButton"
