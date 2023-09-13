@@ -944,7 +944,7 @@ export class GhgAssessmentComponent implements OnInit {
 
   getMethodologyParam(): Observable<any> {
     const Url =
-      environment.baseUrlJsonFile + '/' + this.selectedMethodology.name;
+      environment.baseUrlJsonFile + '/' + this.selectedMethodology?.name;
     const headers = new HttpHeaders().set('api-key', environment.apiKey1);
     const file = undefined;
     return this.http.get(Url, { headers: headers });
