@@ -141,6 +141,9 @@ export class EditInstitutionComponent implements OnInit {
                 closable: true,
 
               });
+              setTimeout(() => {
+                this.onBackClick();
+              }, 1000);
             },
             (err) => {
               this.messageService.add({
@@ -151,9 +154,7 @@ export class EditInstitutionComponent implements OnInit {
               });
             }
           );
-        setTimeout(() => {
-          this.onBackClick();
-        }, 1000);
+       
       }
     }
 

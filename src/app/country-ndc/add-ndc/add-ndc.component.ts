@@ -141,6 +141,10 @@ export class AddNdcComponent implements OnInit {
                       },
                     );
                 }
+
+                setTimeout(() => {
+                  this.Back();
+                }, 1000);
               },
 
               (err) => {
@@ -152,9 +156,7 @@ export class AddNdcComponent implements OnInit {
                 });
               },
             );
-          setTimeout(() => {
-            this.Back();
-          }, 1000);
+        
         });
       this.confirm3 = true;
     } else {

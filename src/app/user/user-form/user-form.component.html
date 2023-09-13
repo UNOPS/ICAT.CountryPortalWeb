@@ -10,8 +10,8 @@
             <div class="p-field" *ngIf="!isNewUser">
               <label for="institution">Assign Institution *</label>
               <p-dropdown name="institution" [options]="institutions" [(ngModel)]="user.institution"
-                #finstitution="ngModel" [filter]="true" placeholder={{user.institution.name}} optionLabel="name"
-                (ngModelChange)="onInstitutionChange($event)"></p-dropdown>
+                #finstitution="ngModel" [filter]="true" placeholder="{{user.institution ? user.institution.name : '' }}" optionLabel="name"
+                (ngModelChange)="onInstitutionChange($event)" appendTo="body"></p-dropdown>
               <p class="info-message text-danger" *ngIf="
                   !user.institution.id &&
                   (fLogin.submitted ||
@@ -25,7 +25,7 @@
               <label for="institution">Assign Institution *</label>
               <p-dropdown name="institution" [options]="institutions" [(ngModel)]="user.institution"
                 #finstitution="ngModel" [filter]="true" placeholder={{user.institution.name}} optionLabel="name"
-                (ngModelChange)="onInstitutionChange($event)"></p-dropdown>
+                (ngModelChange)="onInstitutionChange($event)" appendTo="body"></p-dropdown>
               <p class="info-message text-danger" *ngIf="
                   !user.institution.id &&
                   (fLogin.submitted ||
@@ -57,7 +57,7 @@
             <div class="p-field" *ngIf="!isNewUser">
               <label for="contatname">User Type*</label>
               <p-dropdown [options]="selectedUserTypesFordrop" name="usertype" [(ngModel)]="selecteduserType"
-                placeholder="{{ user.userType.name }}" optionLabel="ae_name" #fut="ngModel"></p-dropdown>
+                placeholder="{{ user.userType ? user.userType.name : '' }}" optionLabel="ae_name" #fut="ngModel"></p-dropdown>
 
               <p class="info-message text-danger" *ngIf="
                   !selecteduserType?.ae_id &&
