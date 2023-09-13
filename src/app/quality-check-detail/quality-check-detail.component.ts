@@ -457,7 +457,7 @@ export class QualityCheckDetailComponent implements OnInit {
       this.isReadyToCAl = false;
       this.isDisable = true;
       window.location.reload()
-    },1500);
+    },3500);
     }
   }
 
