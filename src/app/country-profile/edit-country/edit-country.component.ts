@@ -94,9 +94,13 @@ export class EditCountryComponent implements OnInit {
           summary: 'Saved',
           detail: 'Country profile successfully updated',
         });
+
+        setTimeout(() => {
+          this.back();
+        }, 1000);
       });
 
-    this.back();
+
   }
 
   saveSector(sector: Sector[]) {
