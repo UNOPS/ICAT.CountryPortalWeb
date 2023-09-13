@@ -1,5 +1,5 @@
 # STEP 1 building your app
-FROM node:16-alpine3.16 as builder
+FROM node:16-alpine as builder
 RUN apk update && apk add --no-cache make git
 # a) Create app directory
 WORKDIR /app
