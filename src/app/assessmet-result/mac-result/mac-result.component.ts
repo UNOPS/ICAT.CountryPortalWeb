@@ -16,6 +16,7 @@ import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as moment from 'moment';
 import * as XLSX from 'xlsx';
+import { HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'app-mac-result',
   templateUrl: './mac-result.component.html',
@@ -100,8 +101,8 @@ export class MacResultComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.assessmentId = params['id'];
-    });
-
+    })
+    setTimeout(() => {
     this.serviceProxy
       .getOneBaseAssessmentControllerAssessment(
         this.assessmentId,
@@ -254,7 +255,7 @@ export class MacResultComponent implements OnInit {
                 this.getMacValue = this.resultList?.macResult;
               });
           });
-      });
+      })},500)
   }
 
   public download() {
