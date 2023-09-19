@@ -4,8 +4,7 @@ export const environment = {
   baseUrlAPIDocdownloadAPI:
     'http://localhost:8080' + '/document/downloadDocument',
   baseUrlAPIDocUploadAPI: 'http://localhost:8080' + '/document/upload2',
-  baseUrlAPIDocUploadAnonymousAPI:
-    'http://localhost:8080' + '/document/uploadFileAnonymous',
+  baseUrlAPIDocUploadAnonymousAPI: 'http://localhost:8080' + '/document/uploadFileAnonymous',
   baseUrlJsonFile:
     'https://icat-calculationengine-qa-2sshj5de3a-ey.a.run.app/filename',
   baseUrlMac: 'https://icat-calculationengine-qa-2sshj5de3a-ey.a.run.app/mac',
