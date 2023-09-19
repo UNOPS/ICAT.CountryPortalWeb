@@ -1497,7 +1497,7 @@ export class GhgAssessmentComponent implements OnInit {
           this.projectSelection[0].vehicals.unshift(vehicalCommon);
         }
        
-        let vehicalSection = this.genrateVehicalParameterSectionWhenHasFeedstock(
+        let vehicalSection = this.genrateVehicalParameterSection(
           this.projectSelection,
           vehicalParam,
           'Vehicle Info'
