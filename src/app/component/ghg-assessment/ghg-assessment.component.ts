@@ -2465,98 +2465,101 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   onCAChange(event: any) {
-    this.isDiasbaleEye = false;
-    this.toolTop = 'You can only select the methodology that was used for previous assessment <Br> That methodology are';
-    this.projectControllerServiceProxy.getmeth(this.selectedClimateAction.id).subscribe((res: any) => {
-
-      this.methcode = res;
-      for (let meth of this.methcode) {
-        this.toolTop = this.toolTop + ' <br> <p style="color: yellow">' + meth
+    if(event){
+      this.isDiasbaleEye = false;
+      this.toolTop = 'You can only select the methodology that was used for previous assessment <Br> That methodology are';
+      this.projectControllerServiceProxy.getmeth(this.selectedClimateAction.id).subscribe((res: any) => {
+  
+        this.methcode = res;
+        for (let meth of this.methcode) {
+          this.toolTop = this.toolTop + ' <br> <p style="color: yellow">' + meth
+        }
+      })
+      if (this.selectedClimateAction.projectApprovalStatus?.id == 5) {
+        this.hasPrevActiveCA = true
       }
-    })
-    if (this.selectedClimateAction.projectApprovalStatus?.id == 5) {
-      this.hasPrevActiveCA = true
-    }
-    else {
-      this.hasPrevActiveCA = false;
-    }
-    this.selectedNdc = this.ndcList.find(
-      (a) => a.id === this.selectedClimateAction.ndc?.id
-    )!;
-
-    this.selectDefaultMethodForNDc();
-
-    this.selctedSubNdc = this.selectedNdc?.subNdc.find(
-      (a) => a.id === this.selectedClimateAction?.subNdc?.id,
-    )!;
-
-    this.selectDefaultMethodForSUBNDc();
-
-    let year = this.selectedClimateAction.proposeDateofCommence.year();
-    this.years = [];
-    this.years.push({ label: year.toString(), value: year });
-    for (let i = 1; i < 30; i++) {
-      this.years.push({ label: (year + i).toString(), value: year + i });
-    }
-
-    this.proposeDateofCommence = new Date(
-      this.selectedClimateAction.proposeDateofCommence.year(),
-      this.selectedClimateAction.proposeDateofCommence.month(),
-      this.selectedClimateAction.proposeDateofCommence.date()
-    );
-
-    this.projectDuration = this.selectedClimateAction.duration;
-
-    if (this.IsProposal == false) {
-      let filterProject: string[] = new Array();
-      filterProject.push('project.id||$eq||' + event.id) &
-        filterProject.push('Assessment.isProposal||$eq||' + 0) &
-        filterProject.push('Assessment.assessmentType||$in||' + this.approachList);
-      this.serviceProxy.getManyBaseAssessmentControllerAssessment
-        (
-          undefined,
-          undefined,
-          filterProject,
-          undefined,
-          undefined,
-          undefined,
-          1000,
-          0,
-          0,
-          0
-        )
-        .subscribe((res: any) => {
-          this.selectedAssessementByCA = res.data;
-          let yearList: any[] = [];
-          let uniqueYearList: any[] = [];
-          for (let assessment of this.selectedAssessementByCA) {
-            this.methcode.push(assessment.methodologyCode);
-            for (let asyears of assessment.assessmentYear) {
-
-              yearList.push(asyears.assessmentYear)
+      else {
+        this.hasPrevActiveCA = false;
+      }
+      this.selectedNdc = this.ndcList.find(
+        (a) => a.id === this.selectedClimateAction.ndc?.id
+      )!;
+  
+      this.selectDefaultMethodForNDc();
+  
+      this.selctedSubNdc = this.selectedNdc?.subNdc.find(
+        (a) => a.id === this.selectedClimateAction?.subNdc?.id,
+      )!;
+  
+      this.selectDefaultMethodForSUBNDc();
+  
+      let year = this.selectedClimateAction.proposeDateofCommence.year();
+      this.years = [];
+      this.years.push({ label: year.toString(), value: year });
+      for (let i = 1; i < 30; i++) {
+        this.years.push({ label: (year + i).toString(), value: year + i });
+      }
+  
+      this.proposeDateofCommence = new Date(
+        this.selectedClimateAction.proposeDateofCommence.year(),
+        this.selectedClimateAction.proposeDateofCommence.month(),
+        this.selectedClimateAction.proposeDateofCommence.date()
+      );
+  
+      this.projectDuration = this.selectedClimateAction.duration;
+  
+      if (this.IsProposal == false) {
+        let filterProject: string[] = new Array();
+        filterProject.push('project.id||$eq||' + event.id) &
+          filterProject.push('Assessment.isProposal||$eq||' + 0) &
+          filterProject.push('Assessment.assessmentType||$in||' + this.approachList);
+        this.serviceProxy.getManyBaseAssessmentControllerAssessment
+          (
+            undefined,
+            undefined,
+            filterProject,
+            undefined,
+            undefined,
+            undefined,
+            1000,
+            0,
+            0,
+            0
+          )
+          .subscribe((res: any) => {
+            this.selectedAssessementByCA = res.data;
+            let yearList: any[] = [];
+            let uniqueYearList: any[] = [];
+            for (let assessment of this.selectedAssessementByCA) {
+              this.methcode.push(assessment.methodologyCode);
+              for (let asyears of assessment.assessmentYear) {
+  
+                yearList.push(asyears.assessmentYear)
+              }
             }
-          }
-          uniqueYearList = [...new Set(yearList)];
-          const result: any[] = [];
-          [...new Set(yearList)].forEach(item => result.push({
-            key: item,
-            count:
-              yearList.filter(i => i == item).length
-          }));
-          let duplicateYears = result.filter((obj) => obj.count > 1);
-          for (let x of duplicateYears) {
-            this.years = this.years.filter((obj) => obj != x['key'])
-          }
-
-          if (this.selectedAssessementByCA.length > 0) {
-            this.methodologys = [];
-            this.methodologys[0] = this.selectedAssessementByCA[0].methodology;
-          }
-          else {
-            this.methodologys = this.methodologysCopy;
-          }
-        });
+            uniqueYearList = [...new Set(yearList)];
+            const result: any[] = [];
+            [...new Set(yearList)].forEach(item => result.push({
+              key: item,
+              count:
+                yearList.filter(i => i == item).length
+            }));
+            let duplicateYears = result.filter((obj) => obj.count > 1);
+            for (let x of duplicateYears) {
+              this.years = this.years.filter((obj) => obj != x['key'])
+            }
+  
+            if (this.selectedAssessementByCA.length > 0) {
+              this.methodologys = [];
+              this.methodologys[0] = this.selectedAssessementByCA[0].methodology;
+            }
+            else {
+              this.methodologys = this.methodologysCopy;
+            }
+          });
+      }
     }
+    
   }
 
 
@@ -3363,10 +3366,13 @@ export class GhgAssessmentComponent implements OnInit {
   }
 
   onMethodologyChange($event: any) {
-    this.isClimateActionListDisabled = true;
-    this.clear();
-    this.loadJson();
-    this.methodAssessments = this.selectedMethodology.assessments;
+    if($event){
+      this.isClimateActionListDisabled = true;
+      this.clear();
+      this.loadJson();
+      this.methodAssessments = this.selectedMethodology.assessments;
+    }
+   
   }
 
   onBaselineScenarioChange(event: any) {
