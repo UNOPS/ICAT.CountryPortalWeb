@@ -281,7 +281,7 @@ export class ViewCountryComponent implements OnInit {
     if (evet.toString() == 'true') {
       const mngNdcFilter: string[] = [];
       mngNdcFilter.push('country.id||$eq||' + this.countryId);
-      mngNdcFilter.push('sector.id||$isnull||' + this.selectedSector.id);
+      mngNdcFilter.push('sector.id||$isnull||');
 
       this.serviceProxy
         .getManyBaseEmissionReductionDraftdataControllerEmissionReductioDraftDataEntity(
@@ -316,47 +316,52 @@ export class ViewCountryComponent implements OnInit {
           }
         });
     } else {
-      const mngNdcFilter: string[] = [];
-      mngNdcFilter.push('country.id||$eq||' + this.countryId);
-      mngNdcFilter.push('sector.id||$eq||' + evet.id);
 
-      this.serviceProxy
-        .getManyBaseEmissionReductionDraftdataControllerEmissionReductioDraftDataEntity(
-          undefined,
-          undefined,
-          mngNdcFilter,
-          undefined,
-          undefined,
-          undefined,
-          1000,
-          0,
-          0,
-          0,
-        )
-        .subscribe((res) => {
-          if (res.count == 0) {
-            const newSecter: Sector = new Sector();
-            newSecter.id = evet.id;
-            this.isNewNDAC = true;
-            this.emissionReduction = new EmissionReductioDraftDataEntity();
+      if(this.selectedSector){
 
-            this.emissionReduction.sector = newSecter;
-
-            this.emissionReduction.country = this.country;
-          } else {
-            this.isNewNDAC = false;
-
-            this.emissionReduction = res.data[0];
-
-            this.targetYear = this.emissionReduction.targetYear;
-
-            this.CEmission = this.emissionReduction.conditionaltco2;
-            this.unCEmission = this.emissionReduction.unconditionaltco2;
-            this.baEmission = this.emissionReduction.baseYearEmission;
-            this.year = this.emissionReduction.baseYear;
-            this.targetYearEmission = this.emissionReduction.targetYearEmission;
-          }
-        });
+        const mngNdcFilter: string[] = [];
+        mngNdcFilter.push('country.id||$eq||' + this.countryId);
+        mngNdcFilter.push('sector.id||$eq||' + this.selectedSector.id);
+  
+        this.serviceProxy
+          .getManyBaseEmissionReductionDraftdataControllerEmissionReductioDraftDataEntity(
+            undefined,
+            undefined,
+            mngNdcFilter,
+            undefined,
+            undefined,
+            undefined,
+            1000,
+            0,
+            0,
+            0,
+          )
+          .subscribe((res) => {
+            if (res.count == 0) {
+              const newSecter: Sector = new Sector();
+              newSecter.id = evet.id;
+              this.isNewNDAC = true;
+              this.emissionReduction = new EmissionReductioDraftDataEntity();
+  
+              this.emissionReduction.sector = newSecter;
+  
+              this.emissionReduction.country = this.country;
+            } else {
+              this.isNewNDAC = false;
+  
+              this.emissionReduction = res.data[0];
+  
+              this.targetYear = this.emissionReduction.targetYear;
+  
+              this.CEmission = this.emissionReduction.conditionaltco2;
+              this.unCEmission = this.emissionReduction.unconditionaltco2;
+              this.baEmission = this.emissionReduction.baseYearEmission;
+              this.year = this.emissionReduction.baseYear;
+              this.targetYearEmission = this.emissionReduction.targetYearEmission;
+            }
+          });
+      }
+     
     }
   }
 }

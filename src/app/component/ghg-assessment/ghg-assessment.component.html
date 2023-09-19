@@ -29,7 +29,7 @@
           class="info-message text-danger"
           *ngIf="
             !selectedClimateAction &&
-            (fData.submitted || cations.touched || cations.dirty)
+            (fData.submitted || cations.touched )
           "
         >
           This is a mandatory field
@@ -747,7 +747,7 @@
                 blHasResidue ||
                 blHasFeedstock ||
                 blHasLandClearance) &&
-              item.vehical.name !== 'Common'
+              item.vehical?.name !== 'Common'
             "
           >
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasFeedstock">
@@ -1247,7 +1247,7 @@
                 prHasStratum ||
                 prHasResidue ||
                 prHasLandClearance) &&
-              item.vehical.name !== 'Common'
+              item.vehical?.name !== 'Common'
             "
           >
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasFeedstock">
@@ -1743,7 +1743,7 @@
                 lkHasStratum ||
                 lkHasResidue ||
                 lkHasLandClearance) &&
-              item.vehical.name !== 'Common'
+              item.vehical?.name !== 'Common'
             "
           >
             <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasFeedstock">
