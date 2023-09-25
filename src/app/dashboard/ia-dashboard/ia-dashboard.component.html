@@ -6,7 +6,7 @@
   <div class="container pl-20 pr-20">
     <div class="row">
       <div class="col-md-6">
-        <div *ngIf="parameterList.length == 0" class="card">
+        <div *ngIf="parameterList&&parameterList.length == 0" class="card">
           <p-messages severity="warn">
             <ng-template pTemplate>
               <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
@@ -14,7 +14,7 @@
             </ng-template>
           </p-messages>
         </div>
-        <div *ngIf="parameterList.length > 0" class="card">
+        <div *ngIf="parameterList&&parameterList.length > 0" class="card">
           <div class="row justify-content-center">
             <div class="col-lg-4 col-md-5 col-sm-5 col-5">
               <h6>Data Requests</h6>
@@ -30,7 +30,7 @@
       </div>
 
       <div class="col-md-6">
-        <div *ngIf="climateactions.length == 0" class="card">
+        <div *ngIf="climateactions&&climateactions.length == 0" class="card">
           <p-messages severity="warn">
             <ng-template pTemplate>
               <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
@@ -40,7 +40,7 @@
             </ng-template>
           </p-messages>
         </div>
-        <div *ngIf="climateactions.length > 0" class="card">
+        <div *ngIf="climateactions&&climateactions.length > 0" class="card">
           <div class="row justify-content-center">
             <div class="col-md-5"><h6>Specific Climate Actions</h6></div>
           </div>
@@ -115,20 +115,9 @@
         </div>
       </div>
       <div class="col-md-12">
-        <div *ngIf="activeprojects.length == 0" class="card">
-          <div class="row">
-            <p-messages severity="warn">
-              <ng-template pTemplate>
-                <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
-                <div class="ml-2">
-                  There are no active projects data to show.
-                </div>
-              </ng-template>
-            </p-messages>
-          </div>
-        </div>
+      
 
-        <div *ngIf="activeprojects.length > 0" class="card">
+        <div  class="card">
           <div class="row justify-content-center">
             <div class="col-lg-3 col-md-4 col-sm-6 col-5">
               <h6>Active Projects</h6>
@@ -150,6 +139,7 @@
                 placeholder="Select .."
                 optionLabel="name"
                 (ngModelChange)="onndcChange($event)"
+                appendTo="body"
               >
               </p-dropdown>
             </div>
@@ -168,12 +158,13 @@
                 placeholder="Select .."
                 optionLabel="name"
                 (ngModelChange)="onsubndcChange($event)"
+                appendTo="body"
               >
               </p-dropdown>
             </div>
           </div>
 
-          <div class="row p-2">
+          <div *ngIf="activeprojects.length > 0" class="row p-2">
             <p-table
               #dt
               p-table
@@ -210,7 +201,21 @@
                 </tr>
               </ng-template>
             </p-table>
+         
           </div>
+          <div *ngIf="activeprojects.length == 0" class="card p-2">
+            <div class="row">
+              <p-messages severity="warn">
+                <ng-template pTemplate>
+                  <i class="pi pi-info-circle mr-20" style="font-size: 2rem"></i>
+                  <div class="ml-2">
+                    There are no active projects data to show.
+                  </div>
+                </ng-template>
+              </p-messages>
+            </div>
+          </div>
+          
         </div>
       </div>
     </div>
