@@ -73,7 +73,7 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
   emptyObj: Institution;
   emptyVal: string;
 
-  duration: number;
+  duration: number =0;
   baseScenarioProjectLife: number;
   projectScenarioTotalInvestment: number;
   baseScenarioTotalInvestment: number;
@@ -156,7 +156,7 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private messageService: MessageService,
     private router: Router,
-  ) {}
+  ) { }
 
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
@@ -335,11 +335,11 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
       });
   }
 
-  getSelectedApproach() {}
+  getSelectedApproach() { }
 
-  getSelectedIns() {}
+  getSelectedIns() { }
 
-  onChangeDefaultValues(event: any) {}
+  onChangeDefaultValues(event: any) { }
 
   onStatusChangebsAnnualFuel(event: any) {
     this.bsAnnualFuelDefaulVAl = Number(event.value);
@@ -382,6 +382,12 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
         queryParams: { id: this.slectedProject.id },
       });
     }
+  }
+  check(event: any) {
+    if(event == false){
+      this.duration = this.slectedProject.duration;
+    }
+    
   }
 
   createAssessments(data: NgForm) {
@@ -754,7 +760,7 @@ export class MacAssessmentApprovedComponent implements OnInit, AfterViewInit {
               closable: true,
             });
 
-            setTimeout(() => {}, 2000);
+            setTimeout(() => { }, 2000);
           });
       }
     }

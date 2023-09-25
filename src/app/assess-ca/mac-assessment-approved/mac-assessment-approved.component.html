@@ -261,7 +261,8 @@
         </div>
       </div>
       <div class="col-12 col-md-7">
-        <div *ngIf="baseScenarioTotalInvestment == 0; else elseBlock">
+        <!-- <div *ngIf="baseScenarioTotalInvestment == 0; else elseBlock"> -->
+          <div>
           <p-dropdown
             placeholder="Select Data Provider"
             name="bsTotalInvestment"
@@ -283,14 +284,14 @@
             This is a mandatory field
           </p>
         </div>
-        <ng-template #elseBlock>
+        <!-- <ng-template #elseBlock>
           <p-inputNumber
             name="bsTotalInvestment1"
             [(ngModel)]="baseScenarioTotalInvestment"
             [readonly]="true"
           >
           </p-inputNumber>
-        </ng-template>
+        </ng-template> -->
       </div>
     </div>
     <div class="row p-2">
@@ -303,7 +304,7 @@
         *ngIf="checkedbsProjectLife == false; else elseBlockbsProjectLife"
       >
         <div class="col-12 col-md-4">
-          <div *ngIf="baseScenarioProjectLife == 0; else elseBlock3">
+          <div >
             <p-dropdown
               placeholder="Select Data Provider"
               name="bsProjectLife"
@@ -325,14 +326,14 @@
               This is a mandatory field
             </p>
           </div>
-          <ng-template #elseBlock3>
+          <!-- <ng-template #elseBlock3>
             <p-inputNumber
               name="bsProjectLife1"
               [(ngModel)]="baseScenarioProjectLife"
               [readonly]="true"
             >
             </p-inputNumber>
-          </ng-template>
+          </ng-template> -->
         </div>
       </ng-container>
       <ng-template #elseBlockbsProjectLife>
@@ -528,7 +529,8 @@
         </div>
       </div>
       <div class="col-12 col-md-7">
-        <div *ngIf="projectScenarioTotalInvestment == 0; else elseBlock2">
+        <!-- <div *ngIf="projectScenarioTotalInvestment == 0; else elseBlock2"> -->
+          <div>
           <p-dropdown
             placeholder="Select Data Provider"
             name="psProjectLife"
@@ -550,14 +552,14 @@
             This is a mandatory field
           </p>
         </div>
-        <ng-template #elseBlock2>
+        <!-- <ng-template #elseBlock2>
           <p-inputNumber
             name="psTotalInvestment2"
             [(ngModel)]="projectScenarioTotalInvestment"
             [readonly]="true"
           >
           </p-inputNumber>
-        </ng-template>
+        </ng-template> -->
       </div>
     </div>
     <div class="row p-2">
@@ -592,15 +594,15 @@
               This is a mandatory field
             </p>
           </div>
-          <ng-template #elseBlock4>
-            <p-inputNumber
-              name="psProjectLife2"
-              [(ngModel)]="duration"
-              [readonly]="true"
-            >
-            </p-inputNumber>
-          </ng-template>
-        </div>
+            <ng-template #elseBlock4>
+              <p-inputNumber
+                name="psProjectLife2"
+                [(ngModel)]="duration"
+                [readonly]="true"
+              >
+              </p-inputNumber>
+            </ng-template>
+          </div>          
       </ng-container>
       <ng-template #elseBlockpsProjectLife>
         <div class="col-12 col-md-4">
@@ -624,8 +626,9 @@
             [(ngModel)]="checkedpsProjectLife"
             [binary]="true"
             inputId="binary"
-            [ngModelOptions]="{ standalone: true }"
-            label="Default Values"
+            [ngModelOptions]="{ standalone: false }"
+            label="Default Values {{checkedpsProjectLife}}"
+            (ngModelChange)="check($event)"
           ></p-checkbox>
         </div>
       </div>
