@@ -44,6 +44,7 @@ export class VerifyDetailComponent implements OnInit {
   drComment = '';
   commentRequried = false;
   displayConcern = false;
+  emissionReduction: number;
 
   assessmentResultComment = '';
   assessmentResultCommentRequried = false;
@@ -360,6 +361,10 @@ export class VerifyDetailComponent implements OnInit {
 
 
         this.parameters = this.assessmentYear.assessment.parameters;
+        let reductionPara = this.parameters.find(o => o.name === 'Reduction')
+        if (reductionPara){
+          this.emissionReduction = +reductionPara?.value
+        } 
         this.parameters = await Promise.all(
           this.parameters.map(para => {
             if (para.verifierAcceptance !== ParameterVerifierAcceptance.DATA_ENTERED){

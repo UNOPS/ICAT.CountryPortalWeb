@@ -181,6 +181,23 @@
       </div>
     </div>
 
+    <div class="row mb-3" *ngIf="assessmentYear.assessment.assessmentType === 'MAC' ">
+      <div class="col-md-5">
+        <div class="col-5">
+          <label> <strong>Emission Reduction </strong> </label>
+          <input
+            [disabled]="true"
+            type="text"
+            name="emissionReduction"
+            #baseasseYear="ngModel"
+            [(ngModel)]="emissionReduction"
+            class="p-inputtext"
+            pInputText
+          />
+        </div>
+      </div>
+    </div>
+
     <div class="row mb-3" *ngIf="assessmentYear.assessment.assessmentType == 'MAC' ">
       <div class="col-md-5">
         <div class="col-5">
