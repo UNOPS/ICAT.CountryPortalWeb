@@ -252,6 +252,7 @@ export class NonconformanceReportComponent implements OnInit, AfterViewInit {
                 break;
               }
             } else {
+              if (this.assessmentYear.assessment.assessmentType === 'MAC' && para.name === 'Reduction') break;
               this.isReviewComplete = false
               break;
             }
