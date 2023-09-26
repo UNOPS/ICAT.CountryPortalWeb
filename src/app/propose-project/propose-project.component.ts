@@ -1229,6 +1229,7 @@ export class ProposeProjectComponent implements OnInit {
           },
         );
     }
+    window.location.reload();
   }
 
   toDownload() {
