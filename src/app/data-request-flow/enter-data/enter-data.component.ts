@@ -389,7 +389,8 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
         this.isHistorical = false;
         const event: any = {};
         this.loadgridData(event);
-        // window.location.reload()
+        window.location.reload()
+        
       },
       (err) => {
         this.messageService.add({
