@@ -383,7 +383,7 @@
         <td>
           <div class="p-field">
             <button
-              [disabled]="!selectedValue && !selectedHistoricalValue"
+              [disabled]="(selectedValue==undefined ||selectedValue==null)  && !selectedHistoricalValue"
               type="button"
               pButton
               pRipple
