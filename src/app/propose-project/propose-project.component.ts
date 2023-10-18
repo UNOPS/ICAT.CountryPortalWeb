@@ -1214,6 +1214,9 @@ export class ProposeProjectComponent implements OnInit {
                 'Aggregated Actions and SubNdc  has updated successfully ',
               closable: true,
             });
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
           },
 
           (err) => {

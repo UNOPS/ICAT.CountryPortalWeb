@@ -387,6 +387,10 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
         this.onSearch();
         this.confirm1 = false;
         this.isHistorical = false;
+        const event: any = {};
+        this.loadgridData(event);
+        window.location.reload()
+        
       },
       (err) => {
         this.messageService.add({
