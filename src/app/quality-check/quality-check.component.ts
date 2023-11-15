@@ -131,7 +131,7 @@ export class QualityCheckComponent implements OnInit {
     const ndcId = this.searchBy.ndc ? this.searchBy.ndc.id : 0;
     const subNDC = this.searchBy.subNdc ? this.searchBy.subNdc.id : 0;
     const ctAction = this.searchBy.climateaction
-      ? this.searchBy.climateaction
+      ? this.searchBy.climateaction.climateActionName
       : '';
 
     const pageNumber =
