@@ -21,6 +21,7 @@ import {
   SubNdc,
   User,
   UserType,
+  UsersControllerServiceProxy,
 } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
 import { environment } from 'environments/environment';
@@ -108,6 +109,7 @@ export class IaDashboardComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private serviceProxy: ServiceProxy,
+    private userserviceProxy: UsersControllerServiceProxy,
     private climateactionserviceproxy: ProjectControllerServiceProxy,
     private emmissionProxy: EmissionReductionDraftdataControllerServiceProxy,
     private ndcProxy: NdcControllerServiceProxy,
@@ -152,13 +154,11 @@ export class IaDashboardComponent implements OnInit {
     const tokenPayload = decode<any>(token);
     this.userCountryId = tokenPayload.countryId;
 
-    this.ndcProxy.getDateRequest(0, 0, []).subscribe((res) => {
-      for (const d of res.data) {
+    this.ndcProxy.getDateRequest(1, 10, []).subscribe((res) => {
+
+      for (const d of res.items) {
         this.ndcList.push(d);
       }
-      this.ndcList = this.ndcList.filter(
-        (o) => o.country.id == this.userCountryId,
-      );
     });
 
     let i = 0;
@@ -172,10 +172,10 @@ export class IaDashboardComponent implements OnInit {
       const tokenPayload = decode<any>(token);
 
       const filterByUserEmail: string[] = [];
-
+       
       filterByUserEmail.push('email||$eq||' + tokenPayload.usr);
-      this.serviceProxy
-        .getOneBaseUsersControllerUser(7, undefined, undefined, 0)
+      this.userserviceProxy
+        .findUserByUserName(tokenPayload.usr)
         .subscribe((res: any) => {
           this.user = res;
 

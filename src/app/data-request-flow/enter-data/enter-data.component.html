@@ -230,7 +230,7 @@
           pTooltip="Download above table to excel. Please make sure not to change the template"
         ></div>
       </div>
-      <div class="col-sm-4 col-md-3" *ngIf="country.hasExelTem">
+      <div class="col-sm-4 col-md-3" *ngIf="country?.hasExelTem">
         <button
           style="position: relative; width: 85%"
           type="button"
@@ -371,7 +371,7 @@
         <td>
           <div class="p-field">
             <button
-              [disabled]="!selectedValue && !selectedHistoricalValue"
+              [disabled]="(selectedValue==undefined ||selectedValue==null) && !selectedHistoricalValue"
               type="button"
               pButton
               pRipple
@@ -383,7 +383,7 @@
         <td>
           <div class="p-field">
             <button
-              [disabled]="!selectedValue && !selectedHistoricalValue"
+              [disabled]="(selectedValue==undefined ||selectedValue==null)  && !selectedHistoricalValue"
               type="button"
               pButton
               pRipple
