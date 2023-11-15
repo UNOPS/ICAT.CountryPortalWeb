@@ -534,6 +534,9 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
   paraListFilter() {
     if (this.selectedParameters) {
       this.parameterListFilterData = [];
+      this.selectedParameters = this.selectedParameters.filter((obj, index, array) => {
+        return array.map(mapObj => mapObj.id).indexOf(obj.id) === index;
+      });
 
       this.selectedParameters.map((e) => {
         const id = e.parameterId.id;
