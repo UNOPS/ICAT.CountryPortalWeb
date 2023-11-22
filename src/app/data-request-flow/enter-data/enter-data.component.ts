@@ -149,13 +149,15 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
           if (a.parameterId.Assessment !== null) {
             if (
               !this.assignCAArray.includes(
-                a.parameterId.Assessment.Prject.climateActionName,
+                a.parameterId.Assessment.Prject?.climateActionName,
               )
             ) {
               this.assignCAArray.push(
-                a.parameterId.Assessment.Prject.climateActionName,
+                a.parameterId.Assessment.Prject?.climateActionName,
               );
-              this.climateactions.push(a.parameterId.Assessment.Prject);
+              if(a.parameterId.Assessment.Prject != null){
+                this.climateactions.push(a.parameterId.Assessment.Prject );
+              }              
             }
           }
         }
@@ -534,6 +536,9 @@ export class EnterDataComponent implements OnInit, AfterViewInit {
   paraListFilter() {
     if (this.selectedParameters) {
       this.parameterListFilterData = [];
+      this.selectedParameters = this.selectedParameters.filter((obj, index, array) => {
+        return array.map(mapObj => mapObj.id).indexOf(obj.id) === index;
+      });
 
       this.selectedParameters.map((e) => {
         const id = e.parameterId.id;
