@@ -1,0 +1,55 @@
+.card {
+  overflow-x: auto;
+}
+
+.has-details {
+  position: relative;
+}
+
+.details {
+  position: absolute;
+  top: 0;
+  transform: translateY(70%) scale(0);
+  transition: transform 0.1s ease-in;
+  transform-origin: left;
+  display: inline;
+  background: white;
+  z-index: 20;
+  min-width: 100%;
+  padding: 1rem;
+  border: 1px solid black;
+}
+
+.has-details:hover span {
+  transform: translateY(70%) scale(1);
+}
+
+span {
+  background-color: rgb(239, 241, 245);
+  border: 2px solid rgba(255, 255, 255, 0.973);
+  border-radius: 10px;
+  color: #000;
+  display: none;
+  padding: 10px;
+  position: relative;
+}
+
+span:before {
+  content: '';
+  border-style: solid;
+  border-width: 0 15px 15px 15px;
+  border-color: transparent transparent rgba(226, 232, 241, 0.973) transparent;
+  height: 0;
+  position: absolute;
+  top: -17px;
+  width: 0;
+}
+
+input {
+  display: block;
+}
+
+input:hover + span {
+  display: inline-block;
+  margin: 10px 0 0 10px;
+}

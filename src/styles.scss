@@ -1,0 +1,18 @@
+@use 'themes' as *;
+
+@use '@nebular/theme/styles/globals' as *;
+
+@include nb-install() {
+  @include nb-theme-global();
+}
+@import '../src/assets/scss/abstracts/variables';
+@import '../src/assets/scss/abstracts/mixin';
+@import '../src/assets/scss/abstracts/functions';
+@import '../node_modules/primeng/resources/themes/saga-blue/theme.css';
+@import '../node_modules/primeicons/primeicons.css';
+@import '../src/assets/scss/base/common';
+@import '../src/assets/scss/base/typography';
+@import '../src/assets/scss/base/icons';
+@import '../src/assets/scss/partials/landing';
+@import '../src/assets/scss/partials/login';
+@import '../src/assets/scss/partials/dashboard';

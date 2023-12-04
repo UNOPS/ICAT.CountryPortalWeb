@@ -1,0 +1,193 @@
+<div class="p-grid p-fluid card">
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <h4>{{ header }}</h4>
+    </div>
+    <div class="col-12 col-md-2" *ngIf="assessmentType != 'MAC'">
+      <div class="p-field">
+        <button
+          pButton
+          pRipple
+          label="Equation"
+          type="button"
+          style="margin-right: 10px"
+          class="p-button-raised"
+          (click)="toOpenImage()"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <h6>{{ scenario }}</h6>
+    </div>
+  </div>
+
+  <div class="row p-2">
+    <p-table
+      #table
+      [value]="parameters"
+      [loading]="loading"
+      [responsive]="true"
+      selectionMode="single"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Parameter</th>
+          <th>Data Provider</th>
+          <th>Entered Value</th>
+          <th>Unit</th>
+          <th>Value</th>
+          <th>Unit</th>
+          <th></th>
+          <th>Info</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-param>
+        <ng-container *ngIf="param.institution?.name != null">
+          <tr>
+            <td>{{ param.name }}</td>
+            <td>{{ param.institution ? param.institution?.name : 'N/A' }}</td>
+            <td>{{ param.value | number: '1.0-5' }}</td>
+            <td>{{ param.uomDataEntry }}</td>
+            <td>{{ param.conversionValue | number: '1.0-5' }}</td>
+            <td>{{ param.uomDataRequest }}</td>
+            <td>
+              <table>
+                <tr>
+                  <td>
+                    <button
+                      type="button"
+                      [disabled]="
+                        param?.parameterRequest?.qaStatus == 4 ||
+                        param?.parameterRequest?.qaStatus == 3
+                          ? true
+                          : false
+                      "
+                      pButton
+                      pRipple
+                      (click)="approve(param)"
+                      (click)="opDR.toggle($event); onRowSelect(param, true)"
+                      (click)="checkApproval()"
+                    >
+                      {{
+                        param.parameterRequest?.qaStatus === 4
+                          ? 'Approved'
+                          : 'Approve'
+                      }}
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      [disabled]="
+                        param?.parameterRequest?.qaStatus == 4 ||
+                        param?.parameterRequest?.qaStatus == 3
+                          ? true
+                          : false
+                      "
+                      pButton
+                      pRipple
+                      (click)="opDR.toggle($event); onRowSelect(param, false)"
+                    >
+                      {{
+                        param.parameterRequest?.qaStatus === 3
+                          ? 'Rejected'
+                          : 'Reject'
+                      }}
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      pButton
+                      pRipple
+                      (click)="historyClick(param)"
+                    >
+                      Check History
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <i
+                class="pi pi-ellipsis-v"
+                style="font-size: 1rem"
+                (click)="getInfo(param)"
+              ></i>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-template>
+    </p-table>
+
+    <p-overlayPanel
+      #opDR
+      [showCloseIcon]="true"
+      [style]="{ width: '50vw' }"
+      (onShow)="OnShowOerlayDR()"
+    >
+      <ng-template pTemplate>
+        <div
+          class="d-flex justify-content-start align-content-center flex-wrap mb-15"
+        >
+          <div class="col-12">
+            <div class="p-field">
+              <label for="scopeTA">Comment</label>
+              <textarea
+                name="scopeTA"
+                class="form-control"
+                class="form-control"
+                style="width: 100%"
+                pInputTextarea
+                [(ngModel)]="drComment"
+                #fscope="ngModel"
+                [rows]="5"
+                [cols]="30"
+                required
+                maxlength="500"
+              ></textarea>
+              <p class="info-message text-danger" *ngIf="commentRequried">
+                This is a mandatory field
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
+        >
+          <button
+            class="btn btn-primary text-uppercase"
+            type="submit"
+            (click)="drWithComment()"
+          >
+            Complete
+          </button>
+          <button
+            class="btn btn-primary text-uppercase ml-5"
+            type="submit"
+            (click)="opDR.hide()"
+          >
+            Cancel
+          </button>
+        </div>
+      </ng-template>
+    </p-overlayPanel>
+  </div>
+</div>
+
+<p-dialog
+  header="Data Request History"
+  [(visible)]="displayHistory"
+  appendTo="body"
+>
+  <div class="container" style="width: 600px; height: 500px">
+    <app-view-datarequest-history
+      [parameterId]="paraId"
+      [listOfHistory]="requestHistoryList"
+    >
+    </app-view-datarequest-history>
+  </div>
+</p-dialog>

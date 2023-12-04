@@ -1,0 +1,157 @@
+<div class="container">
+  <div class="p-2">
+    <h4 class="mt-4">Edit Country Profile</h4>
+  </div>
+
+  <form #fData="ngForm" novalidate>
+    <div class="card mt-0">
+      <div class="p-grid p-fluid col-sm-12">
+        <div class="row p-2">
+          <div class="col-md-6">
+            <img src="{{ country?.flagPath }}" alt="Image" class="img-fluid" />
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="p-field">
+              <label for="countryname" readonly
+                ><b>{{ country?.name }}</b></label
+              >
+              <br />
+              <textarea
+                name="countryname"
+                pattern="^[a-zA-Z0-9 ]{1,64}$"
+                [(ngModel)]="country.description"
+                rows="5"
+                cols="62"
+                pInputTextarea
+                length="300"
+                autoResize="autoResize"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="p-grid p-fluid col-sm-12">
+        <div class="row p-2">
+          <div class="col-12 col-md-6">
+            <div class="p-field">
+              <label for="nc"><b>National Communciation(s)</b></label>
+              <div class="col-12 mt-4">
+                <app-document-upload
+                  [doucmentList]="documents"
+                  [documentOwner]="documentsDocumentOwnerNC"
+                  [documentOwnerId]="-4"
+                  [showUpload]="true"
+                  [showDeleteButton]="true"
+                  name="nc"
+                >
+                </app-document-upload>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="p-field">
+              <label for="bur"><b>Biennial Update Report(s)</b></label>
+              <div class="col-12 mt-4">
+                <app-document-upload
+                  [doucmentList]="documents"
+                  [documentOwner]="documentsDocumentOwnerBUR"
+                  [documentOwnerId]="-5"
+                  [showUpload]="true"
+                  [showDeleteButton]="true"
+                  name="bur"
+                >
+                </app-document-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row p-2">
+          <div class="col-12 col-md-6">
+            <div class="p-field">
+              <label for="btc"><b>Biennial Transparency Report(s)</b></label>
+              <div class="col-12 mt-4">
+                <app-document-upload
+                  [doucmentList]="documents"
+                  [documentOwner]="documentsDocumentOwnerBTR"
+                  [documentOwnerId]="-6"
+                  [showUpload]="true"
+                  [showDeleteButton]="true"
+                  name="btc"
+                >
+                </app-document-upload>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="p-field">
+              <label for="ndc"><b>Aggregated Actions</b></label>
+              <div class="col-12 mt-4">
+                <app-document-upload
+                  [doucmentList]="documents"
+                  [documentOwner]="documentsDocumentOwnerNDC"
+                  [documentOwnerId]="-7"
+                  [showUpload]="true"
+                  [showDeleteButton]="true"
+                  name="ndc"
+                >
+                </app-document-upload>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="p-field">
+              <label for="ndc"><b>GHG Inventory</b></label>
+              <div class="col-12 mt-4">
+                <app-document-upload
+                  [doucmentList]="documents"
+                  [documentOwner]="documentsDocumentOwnerGHG"
+                  [documentOwnerId]="-8"
+                  [showUpload]="true"
+                  [showDeleteButton]="true"
+                  name="ghg"
+                >
+                </app-document-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+
+      <div class="text-end mb-2">
+        <button
+          class="mr-10"
+          pRipple
+          pButton
+          type="button"
+          style="margin-right: 1%"
+          (click)="back()"
+          label="Back"
+        ></button>
+        <button
+          pButton
+          label="Save"
+          style="margin-left: 1%"
+          (click)="saveCountry(country)"
+        ></button>
+      </div>
+    </div>
+
+    <p-confirmDialog
+      [style]="{ width: '50vw' }"
+      [baseZIndex]="10000"
+      rejectButtonStyleClass="p-button-text"
+    >
+    </p-confirmDialog>
+
+    <p-dialog [(visible)]="confirm">Country Saved Successfully!</p-dialog>
+  </form>
+</div>
+
+<p-toast></p-toast>

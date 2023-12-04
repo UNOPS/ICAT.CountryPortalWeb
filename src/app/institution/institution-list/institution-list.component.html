@@ -1,0 +1,98 @@
+<div class="container pl-20 pr-20">
+  <h4 class="mt-4">Institutions</h4>
+  <div class="card">
+    <div class="p-grid p-fluid col-sm-12">
+      <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+          <div class="p-inputgroup">
+            <input
+              placeholder="Type Your Keyword"
+              [(ngModel)]="searchBy.text"
+              #nameInstitution="ngModel"
+              type="text"
+              name="nameInstitution"
+              class="p-inputtext"
+              pInputText
+            />
+            <button
+              type="button"
+              pButton
+              pRipple
+              label="Search"
+              (click)="onSearch()"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
+      <p-table
+        #table
+        [value]="institutions"
+        [lazy]="true"
+        (onLazyLoad)="loadgridData($event)"
+        [paginator]="true"
+        [rows]="rows"
+        [showCurrentPageReport]="true"
+        paginatorDropdownAppendTo="body"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              <div class="col-sm-2" style="width: 70.666667%">
+                <button
+                  pRipple
+                  class="fas fa-plus"
+                  pButton
+                  type="button"
+                  style="background-color: #c6cfd7; border-color: transparent"
+                  (click)="addInstitution()"
+                >
+                  <i
+                    class="pi pi-plus"
+                    style="font-size: 1rem; color: #000"
+                  ></i>
+                </button>
+              </div>
+            </th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Address</th>
+            <th>Admin</th>
+            <th>Status</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-institutions>
+          <tr>
+            <td>
+              <button
+                type="button"
+                class="p-button-rounded p-button-text p-eye"
+                pButton
+                pRipple
+                icon="pi pi-eye"
+                (click)="viewInstitution(institutions)"
+              ></button>
+            </td>
+
+            <td>{{ institutions.name }}</td>
+            <td>{{ institutions.type?.name }}</td>
+            <td>{{ institutions.category?.name }}</td>
+            <td>{{ institutions.address }}</td>
+            <td>
+              {{ institutions.user[0]?.firstName }}
+              {{ institutions.user?.lastName }}
+            </td>
+            <td>{{ institutions.status == 0 ? 'Activate' : 'Deactivate' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

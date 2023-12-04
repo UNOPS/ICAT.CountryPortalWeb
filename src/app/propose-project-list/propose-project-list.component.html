@@ -1,0 +1,324 @@
+<div class="container">
+  <h4 class="mt-4">Manage Specific Climate Actions</h4>
+  <div class="p-grid p-fluid card">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Status of Approval</label>
+            <p-dropdown
+              name="projStatus"
+              [(ngModel)]="searchBy.ApprovalStatus"
+              [options]="projectApprovalStatus"
+              #projStatus="ngModel"
+              [showClear]="true"
+              [filter]="true"
+              placeholder="Select"
+              optionLabel="description"
+              (ngModelChange)="onStatusChange($event)"
+              appendTo="body"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-inputgroup pt-4">
+          <input
+            placeholder="Type Your Keyword"
+            [(ngModel)]="searchBy.text"
+            #nameClimate="ngModel"
+            type="text"
+            name="nameClimate"
+            class="p-inputtext"
+            pInputText
+          />
+          <button
+            type="button"
+            pButton
+            pRipple
+            label="Search"
+            (click)="onSearch()"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2">
+      <p-table
+        #table
+        [value]="climateactions"
+        [lazy]="true"
+        (onLazyLoad)="loadgridData($event)"
+        [paginator]="true"
+        [rows]="rows"
+        [showCurrentPageReport]="true"
+        paginatorDropdownAppendTo="body"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+        [responsive]="true"
+        selectionMode="multiple"
+        [(selection)]="selectedProjects"
+        dataKey="id"
+      >
+        <ng-template pTemplate="header">
+          
+          <tr>
+            <th style="width: 3rem">
+              <div style="margin-bottom: 5px;">
+                <button
+                  pRipple
+                  class="fas fa-plus"
+                  pButton
+                  type="button"
+                  style="background-color: #c6cfd7; border-color: transparent"
+                  (click)="addproject()"
+                >
+                  <i
+                    class="pi pi-plus"
+                    style="font-size: 1rem; color: #000"
+                  ></i>
+                </button>
+              </div>
+              <p-tableHeaderCheckbox (click)="buttonEnable()" ></p-tableHeaderCheckbox>
+            </th>
+            <th>
+              View/Accept
+            </th>
+            <th >Name</th>
+            <th>Project Proponent</th>
+            <th>Status of the Project</th>
+            <th type="button"  class="pi pi-info-circle "  pTooltip="Proposed - Climate actions those are just proposed by the proponent
+
+            Rejected - Climate Actions those are rejected.
+            
+            Data Requested - More details has been requested on the climate action from the project proponent.
+            
+            Accepted - Accepted climate actions which can be used in the system.
+            
+            Activated - Climate actions which has been used for an assessment which is initiated to go through the data collection process" >  Status of Approval</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-climateactions>
+          <tr>
+            <td style="text-align: center">
+              <p-tableCheckbox
+                [value]="climateactions"
+                (click)="buttonEnable()"
+              >
+              </p-tableCheckbox>
+            </td>
+            <td style="text-align: center">
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-eye"
+                (click)="detail(climateactions)"
+                class="p-button-rounded p-button-text p-eye"
+              ></button>
+            </td>
+            <td>{{ climateactions.climateActionName }}</td>
+            <td>{{ climateactions.institution }}</td>
+            <td>{{ climateactions.projectStatus?.name }}</td>
+            <td>
+              <table>
+                <tr>
+                  <ng-container
+                    *ngIf="
+                      climateactions.projectApprovalStatus?.id == 1 ||
+                        climateactions.projectApprovalStatus?.id == 5;
+                      else elseBlockAccept
+                    "
+                  >
+                    <td>
+                      <label>
+                        {{
+                          climateactions.projectApprovalStatus?.id === 1
+                            ? 'Accepted'
+                            : 'Activated'
+                        }}
+                      </label>
+                    </td>
+                  </ng-container>
+                  <ng-template #elseBlockAccept>
+                    <td>
+                      <label>
+                        {{
+                          climateactions.projectApprovalStatus?.id === 2
+                            ? 'Rejected'
+                            : climateactions.projectApprovalStatus?.id === 3
+                            ? 'Data Requested'
+                            : 'Proposed'
+                        }}
+                      </label>
+                    </td>
+                  </ng-template>
+                </tr>
+              </table>
+            </td>
+            <td>    
+              <button pButton pRipple  type="button" label="Assess Climate Action" class="p-btn-sm" (click)="toGhGAsse(climateactions)"></button>
+            </td>
+            <td>
+              <button pButton pRipple type="button" label="Results" class="p-btn-sm" (click)="sendDetails(climateactions)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-2">
+        <button
+          type="button"
+          [disabled]="isChecked"
+          pButton
+          pRipple
+          label="Download Excel"
+          class="p-btn-sm"
+          (click)="toDownloadCAs()"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <p-toast position="top-right"></p-toast>
+  <p-toast
+    position="bottom-center"
+    key="c"
+    (onClose)="onReject()"
+    [baseZIndex]="5000"
+  >
+    <ng-template let-message pTemplate="message">
+      <div class="p-flex p-flex-column" style="flex: 1">
+        <div class="p-text-center">
+          <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+          <h4>{{ message.summary }}</h4>
+          <p>{{ message.detail }}</p>
+        </div>
+        <div class="p-grid p-fluid">
+          <div class="p-col-6">
+            <button
+              type="button"
+              pButton
+              (click)="onConfirm()"
+              label="Yes"
+              class="p-button-success"
+            ></button>
+          </div>
+          <div class="p-col-6">
+            <button
+              type="button"
+              pButton
+              (click)="onReject()"
+              label="No"
+              class="p-button-secondary"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-toast>
+  <p-confirmDialog header="Climate Action" icon="pi pi-exclamation-triangle">
+  </p-confirmDialog>
+  <p-overlayPanel
+    #op
+    [showCloseIcon]="true"
+    [style]="{ width: '50vw' }"
+    (onShow)="OnShowOerlay()"
+  >
+    <ng-template pTemplate>
+      <div
+        class="d-flex justify-content-start align-content-center flex-wrap mb-15"
+      >
+        <textarea
+          name="scopeTA"
+          class="form-control"
+          class="form-control"
+          style="width: 100%"
+          pInputTextarea
+          [(ngModel)]="rejectComment"
+          #fscope="ngModel"
+          [rows]="5"
+          [cols]="30"
+          required
+          maxlength="2500"
+        ></textarea>
+        <p class="info-message text-danger" *ngIf="rejectCommentRequried">
+          This is a mandatory field
+        </p>
+      </div>
+      <div
+        class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
+      >
+        <button
+          class="btn btn-primary text-uppercase"
+          type="submit"
+          (click)="rejectWithComment()"
+        >
+          Reject
+        </button>
+        <button
+          class="btn btn-primary text-uppercase ml-5"
+          type="submit"
+          (click)="op.hide()"
+        >
+          Cancel
+        </button>
+      </div>
+    </ng-template>
+  </p-overlayPanel>
+
+  <p-overlayPanel
+    #opDR
+    [showCloseIcon]="true"
+    [style]="{ width: '50vw' }"
+    (onShow)="OnShowOerlayDR()"
+  >
+    <ng-template pTemplate>
+      <div
+        class="d-flex justify-content-start align-content-center flex-wrap mb-15"
+      >
+        <textarea
+          name="scopeTA"
+          class="form-control"
+          class="form-control"
+          style="width: 100%"
+          pInputTextarea
+          [(ngModel)]="drComment"
+          #fscope="ngModel"
+          [rows]="5"
+          [cols]="30"
+          required
+          maxlength="2500"
+        ></textarea>
+        <p class="info-message text-danger" *ngIf="drCommentRequried">
+          This is a mandatory field
+        </p>
+      </div>
+      <div
+        class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
+      >
+        <button
+          class="btn btn-primary text-uppercase"
+          type="submit"
+          (click)="drWithComment()"
+        >
+          Data Request
+        </button>
+        <button
+          class="btn btn-primary text-uppercase ml-5"
+          type="submit"
+          (click)="op.hide()"
+        >
+          Cancel
+        </button>
+      </div>
+    </ng-template>
+  </p-overlayPanel>
+</div>

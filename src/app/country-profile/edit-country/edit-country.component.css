@@ -1,0 +1,13 @@
+.p-inputtext {
+  margin: 10px;
+}
+
+.card {
+  margin-bottom: 2%;
+  margin-top: 2%;
+}
+
+#ndc,
+#ss {
+  width: 50%;
+}

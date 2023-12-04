@@ -1,0 +1,31 @@
+<div class="p-grid p-fluid card">
+  <div class="row p-2 mt-10">
+    <p-table
+      #table
+      [value]="parameters"
+      [responsive]="true"
+      selectionMode="single"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Year</th>
+          <th>Value</th>
+          <th>Date of Approval</th>
+          <th>Approved By</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-param>
+        <tr>
+          <td>{{ param.assessmentYear }}</td>
+          <td>{{ param.value }}</td>
+          <td>
+            {{
+              param.parameterRequest?.qaStatusUpdatedDate | date : 'dd-MM-yyyy'
+            }}
+          </td>
+          <td>{{ param.parameterRequest?.qcUserName }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

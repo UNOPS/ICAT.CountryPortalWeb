@@ -1,0 +1,203 @@
+<div class="container pl-20 pr-20">
+  <h4 class="mt-4">Results</h4>
+  <div  *ngIf="spin" style="z-index: 10000; left: 45%; top: 25%; position: fixed; " >   
+    <p-progressSpinner ></p-progressSpinner>
+  </div>
+
+  <div class="p-grid p-fluid card">
+    <div class="row mb-3">
+      <div class="row mb-3">
+        <p-tabView (onChange)="handleChange($event)">
+          <p-tabPanel header="Proposed Specific Climate Actions"> </p-tabPanel>
+          <p-tabPanel
+            [disabled]="
+              dataCollectionModuleStatus == 0 &&
+              dataCollectionGhgModuleStatus == 0
+            "
+            header="Active Specific Climate Actions"
+          >
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+      <div class="col-md-4">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="climateActionName">Specific Climate Actions</label>
+
+            <p-dropdown
+              name="climateActionName"
+              [(ngModel)]="searchBy.climateActionName1"
+              [options]="projects"
+              #climateActionName="ngModel"
+              [showClear]="true"
+              [filter]="true"
+              placeholder="Select .."
+              optionLabel="climateActionName"
+              (ngModelChange)="onStatusChange($event)"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="assessmentType">Climate Assessment Type</label>
+
+            <p-dropdown
+              name="assessmentType"
+              [(ngModel)]="searchBy.assessmentType1"
+              [options]="asseType"
+              #assessmentType="ngModel"
+              [showClear]="true"
+              [filter]="true"
+              placeholder="Select .."
+              (ngModelChange)="onStatusChange($event)"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-inputgroup pt-4">
+          <input
+            placeholder="Type Your Keyword"
+            [(ngModel)]="searchBy.text"
+            #asst="ngModel"
+            type="text"
+            name="asst"
+            class="p-inputtext"
+            pInputText
+          />
+          <button
+            type="button"
+            pButton
+            pRipple
+            label="Search"
+            (click)="onSearch()"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="row p-2"
+      [ngStyle]="{ 'margin-bottom': itemsPerPage === 1 ? '100px' : 'unset' }"
+    >
+      <p-table
+        [value]="assessments"
+        [lazy]="true"
+        (onLazyLoad)="loadgridData($event)"
+        [paginator]="true"
+        [rows]="rows"
+        paginatorDropdownAppendTo="body"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Entries"
+        [rowsPerPageOptions]="[1, 10, 25, 50]"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+        [responsive]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              <div class="col-sm-2" style="width: 70.666667%"></div>
+            </th>
+            <th>Name</th>
+            <th>Assessment Year</th>
+            <th>Assessment Result</th>
+            <th>Methodology</th>
+            <th>Assessment Type</th>
+
+            <th>Updated On</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-ase>
+          <ng-container>
+            <tr *ngFor="let asseYer of ase.assessmentYear">
+              <ng-container *ngIf="ase.isProposal == false; else elseBlock11">
+                <ng-container
+                  *ngIf="ase.assessmentType == 'MAC'; else elseBlock3"
+                >
+                  <td>
+                    <i
+                      class="pi pi-eye"
+                      style="font-size: 1.5rem; color: #000; margin-left: 17%"
+                      (click)="toMacDetails(ase)"
+                    ></i>
+                  </td>
+                </ng-container>
+                <ng-template #elseBlock3>
+                  <td>
+                    <i
+                      class="pi pi-eye"
+                      style="font-size: 1.5rem; color: #000; margin-left: 17%"
+                      (click)="toDetails(ase, asseYer)"
+                    ></i>
+                  </td>
+                </ng-template>
+              </ng-container>
+
+              <ng-template #elseBlock11>
+                <ng-container
+                  *ngIf="ase.assessmentType == 'MAC'; else elseBlock33"
+                >
+                  <td>
+                    <i
+                      class="pi pi-eye"
+                      style="font-size: 1.5rem; color: #000; margin-left: 17%"
+                      (click)="toMacDetails(ase)"
+                    ></i>
+                  </td>
+                </ng-container>
+                <ng-template #elseBlock33>
+                  <td>
+                    <i
+                      class="pi pi-eye"
+                      style="font-size: 1.5rem; color: #000; margin-left: 17%"
+                      (click)="toDetails(ase, asseYer)"
+                    ></i>
+                  </td>
+                </ng-template>
+              </ng-template>
+
+              <td>{{ ase.project?.climateActionName }}</td>
+              <td>{{ asseYer.assessmentYear }}</td>
+              <td *ngIf="ase.assessmentType == 'MAC'">
+                {{
+                 ( ase.assessmentResult?.macResult
+                    ? ase.assessmentResult?.macResult
+                    : 0)| number: '1.0-5' 
+                }}
+                USD/tCO₂e
+              </td>
+              <td *ngIf="ase.assessmentType != 'MAC'">
+                {{
+                  (ase.assessmentResult?.totalEmission
+                    ? ase.assessmentResult?.totalEmission
+                    : 0)| number: '1.0-5' 
+                }}
+                tCO₂e
+              </td>
+
+              <ng-container
+                *ngIf="ase.assessmentType == 'MAC'; else elseBlockmethNAme"
+              >
+                <td>N/A</td>
+              </ng-container>
+              <ng-template #elseBlockmethNAme>
+                <td>{{ ase.methodology?.displayName }}</td>
+              </ng-template>
+
+              <td>{{ ase.assessmentType }}</td>
+
+              <td>{{ ase.editedOn | date : 'yyyy-MM-dd ' }}</td>
+            </tr>
+          </ng-container>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>ICAT</title>
+<meta charset="UTF-8" />
+
+<style></style>
+
+<body style="background-color: #fff">
+  <header>
+    <div class="nav-bar py-2">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-center">
+            <a fragment="account-about" style="font-size: medium; cursor: pointer"
+              (click)="navigateToSection('about-tool')">About</a>&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-8">
+                <div class="row mb-2">
+                  <div class="logo_img_w">
+                    <img class="logo_img"
+                      src="https://climateactiontransparency.org/wp-content/themes/custom/assets/i/logo/logo_purple.svg"
+                      alt="logo" height="45px" style="padding-right: 2%;" />
+                    <img class="logo_img active_mod"
+                      src="https://climateactiontransparency.org/wp-content/themes/custom/assets/i/logo/logo_text.svg"
+                      alt="logo text" height="40px" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-3 d-flex justify-content-end align-items-center">
+                <button class="btn btn-primary mx-2" style="font-size: medium" type="button" (click)="toPropose()">
+                  Propose a Climate Action
+                </button>
+                <button class="btn btn-primary mx-2" style="font-size: medium" type="button" (click)="toLogin()">
+                  Login
+                </button>
+                <button class="btn btn-primary mx-2" style="font-size: medium" type="button" (click)="toPMU()">
+                  To ICAT PMU
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="banner">
+        <div class="container row col-xxl-8 px-4 py-5 align-items-center m-auto">
+          <div class="col-lg-6">
+            <h3>
+              ICAT Transport Climate Action Data Tool (TraCAD)<br />
+            </h3>
+            <button class="btn btn-primary mx-2" style="font-size: medium" type="button" (click)="toPropose()">
+              Propose a Climate Action
+            </button>
+          </div>
+          <div class="col-10 col-sm-8 col-lg-6">
+            <img src="./assets/images/Web-Preview.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes"
+              width="700" height="500" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="py-5" id="about-tool">
+      <div class="container">
+        <h2 class="text-center">About the tool</h2>
+        <h5 class="text-center">TraCAD supports and facilitates countries to systematically assess 
+          the impact of climate actions in the Transport sector. It does this by streamlining all 
+          aspects of the data collection process, and offers standard methodologies, calculations 
+          and reporting in one place. TraCAD has 4 main functionalities:</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <img src="./assets/images/about-tool.JPG" class="w-100" />
+          </div>
+          <div class="col-md-6 d-flex flex-column justify-content-center">
+            <div class="row mb-3">
+              <div class="col-12 d-flex align-items-center">
+                <span class="about-bullet one"></span>
+                <h5 class="mb-0">Data collection and management</h5>
+              </div>
+              <div class="col-12">
+                <p style="font-size: 15px;">
+                  All activities from data entry to quality control can be done in TraCAD. 
+                  The tool can link the multiple stakeholders involved in the data collection process, 
+                  and collect a wide range of data and information on climate actions.
+                </p>
+              </div>
+            </div>
+            <br>
+            <div class="row mb-3">
+              <div class="col-12 d-flex align-items-center">
+                <span class="about-bullet one"></span>
+                <h5 class="mb-0">GHG impact assessment</h5>
+              </div>
+              <div class="col-12">
+                <p style="font-size: 15px;">
+                  TraCAD can conduct greenhouse gas impact assessments using both Ex-ante and Ex-post 
+                  approaches based on international methodologies. Currently, TraCAD contains over 
+                  20 methodologies such as those developed by ICAT, the Clean Development Mechanism (CDM) 
+                  and the Japanese International Cooperation Agency (JICA).
+                </p>
+              </div>
+            </div>
+            <br>
+            <div class="row mb-3">
+              <div class="col-12 d-flex align-items-center">
+                <span class="about-bullet one"></span>
+                <h5 class="mb-0">Marginal abatement cost (MAC) assessment</h5>
+              </div>
+              <div class="col-12">
+                <p style="font-size: 15px;">
+                  TraCAD can calculate the costs associated with selected climate actions and generate a MAC 
+                  curve. This can facilitate countries to identify the climate actions providing the least 
+                  and most emission reductions, and what the associated cost of the climate action is.
+                </p>
+              </div>
+            </div>
+            <br>
+            <div class="row mb-3">
+              <div class="col-12 d-flex align-items-center">
+                <span class="about-bullet one"></span>
+                <h5 class="mb-0">Tracking climate actions</h5>
+              </div>
+              <div class="col-12">
+                <p style="font-size: 15px;">
+                  TraCAD can facilitate regular monitoring and tracking of specific climate actions 
+                  throughout their life cycle. Tailored reports can be generated and adjusted according 
+                  to country reporting needs.
+                </p>
+              </div>
+            </div>
+            <br>
+            <br>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section-heighlight py-5" id="Case-studies">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h2>Get started with TraCAD</h2>
+            <h5>TraCAD is an open source software and is free to use. 
+              If you are interested in using TraCAD and wish to learn more about the tool 
+              and its potential application, please contact the ICAT Secretariat: 
+              <a href="mailto:icat@unops.org">icat@unops.org</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+<footer class="main-footer py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 mb-3">
+        <div class="row">
+          <div class="col-12 mb-2">
+            <a href="https://www.climatesi.com/index.php" target="_blank">
+              <img src="./assets/images/SI-logo.jpg" class="developed-logo" />
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <p style="color: white; font-size: small;"> 
+              The development of TraCAD was supported by 
+              <a href="https://www.climatesi.com/index.php" target="_blank">Climate SI</a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="row">
+          <div class="row mb-2">
+            <div style="background-color: #fff" class="col-md-2">
+              <img src="https://climateactiontransparency.org/wp-content/themes/custom/assets/i/logo/logo_purple.svg"
+                alt="logo" height="45px" />
+            </div>
+            <div style="background-color: #fff" class="col-md-7">
+              <img src="https://climateactiontransparency.org/wp-content/themes/custom/assets/i/logo/logo_text.svg"
+                alt="logo text" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <a href="mailto:icat@unops.org"><small>Contact Us : </small></a>
+            <a href="mailto:icat@unops.org"><small>icat@unops.org</small> </a>
+          </div>
+          <div class="col-12">
+            <a href="http://www.climateactiontransparency.org/"><small>About Us</small></a>
+          </div>
+          <div class="col-12">
+            <a href="https://climateactiontransparency.org/" class="mr-3"><small>Initiative for Climate Action
+                Transperancy</small></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</html>

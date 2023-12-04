@@ -1,0 +1,87 @@
+<div>
+  <div *ngIf="showUpload">
+    <p-fileUpload
+      [maxFileSize]="50000000"
+      name="file"
+      [disabled]="isNew"
+      (uploadHandler)="myUploader($event)"
+      [auto]="true"
+      chooseLabel="Upload"
+      (onUpload)="onUploadComplete($event)"
+      [url]="uploadURL"
+    >
+      <ng-template pTemplate="content">
+        <ul *ngIf="uploadedFiles.length">
+          <li *ngFor="let file of uploadedFiles">
+            {{ file.name }} - {{ file.size }} bytes
+          </li>
+        </ul>
+      </ng-template>
+    </p-fileUpload>
+  </div>
+
+  <p-table
+    *ngIf="doucmentList.length > 0"
+    p-table
+    #table
+    [value]="doucmentList"
+    [lazy]="true"
+    (onLazyLoad)="loadDocments($event)"
+    [paginator]="false"
+    [loading]="loading"
+    [autoLayout]="true"
+    
+    scrollHeight="200px"
+  >
+    <ng-template pTemplate="header">
+      <tr >
+        <th  class="col-md-8"  >File Name</th>
+        <th class="col-md-1"></th>
+        <th *ngIf="viewDocument" class="col-md-1"></th>
+        <th class="col-md-1"></th>
+        <th class="col-md-1"></th>
+      </tr>
+    </ng-template>
+    <ng-template  pTemplate="body" let-doc>
+      <tr class="row">
+        <td class="col-md-9">
+          {{ doc.fileName }}
+        </td>
+          <td class="col-md-1">
+            <a
+              [href]="doc.url"
+              class="p-button p-component p-button-icon-only mr-10"
+              icon="pi pi-download"
+              pButton
+              ng-reflect-icon="pi pi-download"
+              target="_blank"
+            ></a>
+          </td>
+
+          <td *ngIf="viewDocument" class="col-md-1">
+            <a
+              [href]="doc.viewUrl"
+              class="p-button p-component p-button-icon-only mr-10"
+              icon="pi pi-eye"
+              pButton
+              ng-reflect-icon="pi pi-eye"
+              target="_blank"
+            ></a>
+          </td>
+           <td class="col-md-1">
+            <button pRipple 
+              *ngIf="showDeleteButton"
+              type="button"
+              icon="pi pi-times"
+              pButton
+              ng-reflect-icon="pi pi-times"
+              class="p-button p-component p-button-icon-only"
+              (click)="deleteConfirm(doc)"
+            ></button>
+          
+        </td>
+        <td  class="col-md-1"></td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

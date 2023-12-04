@@ -1,0 +1,83 @@
+<app-raise-concern-section
+  [area]="area"
+  [verificationDetails]="verificationDetails"
+  [assessmentYear]="assessmentYear"
+  [verificationRound]="1"
+  *ngIf="verificationRound > 1"
+>
+</app-raise-concern-section>
+
+<app-raise-concern-section
+  [area]="area"
+  [verificationDetails]="verificationDetails"
+  [assessmentYear]="assessmentYear"
+  [verificationRound]="2"
+  *ngIf="verificationRound > 2"
+>
+</app-raise-concern-section>
+
+<div class="p-grid p-fluid card">
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <div class="col-12">
+        <div>
+          <label for="projStatus">Non Conformance No :</label>
+          <label for="projStatus">{{ verificationRound }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="col-12">
+        <div>
+          <label for="projStatus">Area :</label>
+          <label for="projStatus">{{ area }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="col-12">
+        <div>
+          <label for="projStatus">Date :</label>
+          <label for="projStatus">{{
+            lastConcernDate | date: 'yyyy-MM-dd '
+          }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div
+      class="d-flex justify-content-start align-content-center flex-wrap mb-15"
+    >
+      <div class="col-12">
+        <div class="p-field">
+          <label for="scopeTA">Observation</label>
+          <textarea
+            name="scopeTA"
+            class="form-control"
+            class="form-control"
+            style="width: 100%"
+            pInputTextarea
+            [(ngModel)]="comment"
+            #fscope="ngModel"
+            [rows]="5"
+            [cols]="30"
+            required
+            maxlength="500"
+          ></textarea>
+          <p class="info-message text-danger" *ngIf="commentRequried">
+            This is a mandatory field
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
+    >
+      <button class="btn btn-primary text-uppercase" (click)="onComplete()">
+        Complete
+      </button>
+    </div>
+  </div>
+</div>

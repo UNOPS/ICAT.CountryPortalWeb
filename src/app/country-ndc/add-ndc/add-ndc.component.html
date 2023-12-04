@@ -1,0 +1,102 @@
+<section class="container pl-20 pr-20">
+  <div class="row">
+    <h4 class="mt-4">Add New Aggregated Actions</h4>
+    <div class="p-grid p-fluid card">
+      <div class="row p-2 container">
+        <div style="float: left; width: 50%">
+          <h6>Name of the Aggregated Actions</h6>
+          <br />
+          <div style="width: 100%">
+            <input
+              type="text"
+              class="p-inputtext"
+              class="p-inputtext"
+              name="ndcname"
+              #ndcname="ngModel"
+              field="ndcname"
+              [(ngModel)]="ndc"
+              pInputText
+              [ngModelOptions]="{ standalone: true }"
+              required
+              placeholder="Aggregated Actions name"
+            />
+            <p
+              class="info-message text-danger"
+              *ngIf="!ndc && (confirm2 || ndcname.touched)"
+            ></p>
+          </div>
+
+          <div class="showInputFieldNDC"></div>
+          <br />
+        </div>
+
+        <div style="float: right; width: 50%">
+          <h6>Add New Action Areas</h6>
+          <br />
+          <p-table [value]="subndcs" class="mb-10">
+            <ng-template pTemplate="body" let-rowData let-subndc>
+              <tr>
+                <td>
+                  <input
+                    type="text"
+                    class="p-inputtext"
+                    [(ngModel)]="subndc.name"
+                    pInputText
+                    placeholder="Add new Action Areas"
+                    style="width: 100%"
+                  /><br />
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <div class="mt-10">
+            <button
+              pRipple
+              class="fas fa-plus"
+              (click)="addnewsub()"
+              pButton
+              type="button"
+              style="background-color: #c6cfd7; border-color: transparent"
+            >
+              <i class="pi pi-plus" style="font-size: 1rem"></i>
+            </button>
+
+            <button
+              pRipple
+              class="fas fa-plus fa-minus"
+              (click)="removesub()"
+              pButton
+              type="button"
+              style="
+                background-color: #c6cfd7;
+                border-color: transparent;
+                margin-left: 2%;
+              "
+            >
+              <i class="pi pi-minus" style="font-size: 1rem"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 text-end">
+      <button
+        pRipple
+        pButton
+        type="button"
+        (click)="Back()"
+        label="Back"
+        style="margin-right: 20px"
+      ></button>
+      <button
+        pRipple
+        pButton
+        type="button"
+        label="Save"
+        (click)="save()"
+      ></button>
+
+      <p-toast position="top-right"></p-toast>
+    </div>
+  </div>
+</section>

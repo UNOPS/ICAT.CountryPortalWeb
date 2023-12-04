@@ -1,0 +1,407 @@
+<div class="container pl-20 pr-20">
+  <h4 class="mt-4">Data Request</h4>
+  <div class="p-grid p-fluid card">
+    <div class="row mb-3">
+      <div class="col-md-4"></div>
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="p-inputgroup pt-4">
+          <input
+            placeholder="Type Your Keyword"
+            type="text"
+            class="p-inputtext"
+            [(ngModel)]="searchBy.text"
+            pInputText
+          />
+          <button
+            type="button"
+            pButton
+            pRipple
+            label="Search"
+            (click)="onSearchClick($event)"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Specific Climate Actions</label>
+            <p-dropdown
+              name="climateActiontype"
+              [options]="dataReqAssignCA"
+              [(ngModel)]="searchBy.climateaction"
+              #fsector="ngModel"
+              [showClear]="true"
+              [filter]="true"
+              placeholder="Select .."
+              optionLabel="climateActionName"
+              (ngModelChange)="onCAChange($event)"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="projYear">Year</label>
+          <p-dropdown
+            name="projYear"
+            [options]="yearList"
+            [(ngModel)]="searchBy.year"
+            #fsector="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            placeholder="Select .."
+            optionLabel="assessmentYear"
+            (ngModelChange)="onYearChange($event)"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="projStatus">Data Provider</label>
+          <p-dropdown
+            name="institutiontype"
+            [options]="instuitutionList"
+            [(ngModel)]="searchBy.institution"
+            #fsector="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            placeholder="Select .."
+            optionLabel="name"
+            (ngModelChange)="onInstitutionChange($event)"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2" style="margin-bottom: 36px">
+      <p-table
+        #table
+        [value]="dataRequestList"
+        [lazy]="true"
+        (onLazyLoad)="loadgridData($event)"
+        [paginator]="true"
+        [rows]="rows"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+        [responsive]="true"
+        [(selection)]="selectedParameters"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th>Specific Climate Actions</th>
+            <th>Assessment Type</th>
+            <th>Scenario</th>
+            <th>Parameter</th>
+            <th>Alternative/Parents Available</th>
+            <th>Data Provider</th>
+            <th>Year</th>
+            <th>Deadline</th>
+            <th>Status</th>
+            <th>Info</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-dataRequestList>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="dataRequestList"> </p-tableCheckbox>
+            </td>
+            <td>
+              <div
+                class="might-overflow"
+                [pTooltip]="
+                  dataRequestList?.parameter?.Assessment?.Prject
+                    ?.climateActionName
+                "
+                tooltipPosition="top"
+              >
+                {{
+                  dataRequestList?.parameter?.Assessment?.Prject
+                    ?.climateActionName
+                }}
+              </div>
+            </td>
+            <td>
+              {{ dataRequestList?.parameter?.Assessment?.assessmentType }}
+            </td>
+            <td>
+              {{
+                dataRequestList?.parameter.isAlternative ? 'Alternative' : ''
+              }}
+              {{ dataRequestList?.parameter.isBaseline ? 'Baseline' : '' }}
+              {{ dataRequestList?.parameter.isProject ? 'Project' : '' }}
+              {{ dataRequestList?.parameter.isLekage ? 'Lekage' : '' }}
+              {{ dataRequestList?.parameter.isProjection ? 'Projection' : '' }}
+            </td>
+            <td>
+              <button
+                data-toggle="tooltip"
+                type="button"
+                (click)="showAlternativity(dataRequestList.parameter)"
+                style="background-color: transparent; border-color: transparent"
+              >
+                <div
+                  class="might-overflow"
+                  [pTooltip]="dataRequestList?.parameter?.name"
+                  tooltipPosition="top"
+                >
+                  {{ dataRequestList?.parameter?.name }}
+                </div>
+              </button>
+            </td>
+            <td>
+              <button
+                (click)="showAlternativity(dataRequestList.parameter)"
+                pRipple
+                [disabled]="!dataRequestList.parameter.hasChild"
+                class="fas fa-plus"
+                pButton
+                type="button"
+                style="background-color: #c6cfd7; border-color: transparent"
+              >
+                <i
+                  class="pi pi-pencil"
+                  style="font-size: 1rem; color: rgb(255, 255, 255)"
+                ></i>
+              </button>
+            </td>
+            <td>
+              <div
+                class="might-overflow"
+                [pTooltip]="dataRequestList.parameter?.institution?.name"
+                tooltipPosition="top"
+              >
+                {{
+                  dataRequestList.parameter.institution
+                    ? dataRequestList.parameter.institution.name
+                    : ''
+                }}
+              </div>
+
+              <button
+                pRipple
+                class="fas fa-plus"
+                pButton
+                type="button"
+                style="background-color: #c6cfd7; border-color: transparent"
+                (click)="showDataProviders(dataRequestList.parameter)"
+              >
+                <i
+                  class="pi pi-pencil"
+                  style="font-size: 1rem; color: rgb(255, 255, 255)"
+                ></i>
+              </button>
+            </td>
+            <td>
+              {{
+                dataRequestList.parameter.AssessmentYear
+                  ? dataRequestList.parameter.AssessmentYear
+                  : dataRequestList.parameter.projectionYear
+                  ? dataRequestList.parameter.projectionYear
+                  : dataRequestList.parameter.projectionBaseYear
+              }}
+            </td>
+            <td>{{ dataRequestList.deadline | date : 'dd-MM-yyyy ' }}</td>
+            <td>
+              {{
+                dataRequestList.dataRequestStatus == -1 ? 'Just Created' : ''
+              }}
+              {{ dataRequestList.dataRequestStatus == 1 ? 'Saved' : '' }}
+              {{
+                dataRequestList.dataRequestStatus == 30 ? 'Rejected(QC)' : ''
+              }}
+              {{
+                dataRequestList.dataRequestStatus == -6 ? 'Rejected(IA)' : ''
+              }}
+            </td>
+            <td>
+              <i
+                class="pi pi-ellipsis-v"
+                style="font-size: 2rem"
+                (click)="getInfo(dataRequestList)"
+              ></i>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div class="col-md-3 offset-9">
+        <button
+          class="mt-2"
+          type="button"
+          pButton
+          pRipple
+          label="Request"
+          (click)="onSendClick()"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+<p-toast position="top-right"></p-toast>
+<p-dialog [(visible)]="confirm1" header="Assign a Deadline">
+  <div class="container" style="width: 600px; height: 500px">
+    <table>
+      <tr>
+        <td colspan="3">
+          <div class="p-field mb-2">
+            <label for="projStatus" style="padding-right: 5px">Deadline</label>
+            <p-calendar
+              [minDate]="minDate"
+              [(ngModel)]="selectedDeadline"
+              placeholder="DD/MM/YYYY"
+              dateFormat="dd/mm/yy"
+            ></p-calendar>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="p-field">
+            <button
+              type="button"
+              pButton
+              pRipple
+              label="Save"
+              (click)="onClickSend(1)"
+              style="width: 100px"
+            ></button>
+          </div>
+        </td>
+        <td>
+          <div class="p-field">
+            <button
+              type="button"
+              style="width: 100px"
+              pButton
+              pRipple
+              label="Send Now"
+              (click)="onClickSend(2)"
+            ></button>
+          </div>
+        </td>
+        <td>
+          <div class="p-field"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="Data Request History"
+  [(visible)]="displayHistory"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <app-view-datarequest-history
+    [parameterId]="paraId"
+    [listOfHistory]="requestHistoryList"
+  >
+  </app-view-datarequest-history>
+</p-dialog>
+<p-dialog
+  header="Change Data Provider"
+  [(visible)]="displayDataProvider"
+  [dismissableMask]="true"
+  [modal]="true"
+  (onHide)="cancelDataProviders()"
+  [draggable]="false"
+  [resizable]="true"
+>
+  <p-card
+    subheader="{{ selectedParameter?.name }}"
+    [style]="{ width: '360px' }"
+    styleClass="p-card-shadow"
+  >
+    <ng-template pTemplate="header"> </ng-template>
+    <p-listbox
+      [options]="dataProviderList"
+      [(ngModel)]="selectedDataProvider"
+      [metaKeySelection]="false"
+      [checkbox]="true"
+      [filter]="true"
+      [listStyle]="{ 'max-height': '250px' }"
+      optionLabel="name"
+    >
+    </p-listbox>
+    <small *ngIf="selectDataProvider" class="p-error"
+      >Please select Data provider.</small
+    >
+    <ng-template pTemplate="footer">
+      <div class="d-flex flex-row-reverse">
+        <p-button
+          label="Update"
+          (onClick)="updateDataProviders()"
+          icon="pi pi-check"
+        ></p-button>
+        <p-button
+          label="Cancel"
+          (onClick)="cancelDataProviders()"
+          icon="pi pi-times"
+          styleClass="p-button-secondary"
+          [style]="{ 'margin-right': '.5em' }"
+        ></p-button>
+      </div>
+    </ng-template>
+  </p-card>
+</p-dialog>
+<p-dialog
+  header="Change alternativity"
+  [(visible)]="parameterDisplay"
+  [dismissableMask]="true"
+  [modal]="true"
+  (onHide)="cancelDataProviders()"
+  [draggable]="false"
+  [resizable]="true"
+>
+  <p-card [style]="{ width: '360px' }" styleClass="p-card-shadow">
+    <span style="font-size: 16px"><b>Parent Parameter</b></span>
+    <p-listbox
+      [options]="parentParameter"
+      optionLabel="name"
+      emptyMessage="No alternative parameters"
+      [style]="{ 'margin-bottom': '20px' }"
+    ></p-listbox>
+    <span style="font-size: 16px"><b>Alternative Parameter</b></span>
+    <p-listbox
+      [options]="childParameter"
+      optionLabel="name"
+      emptyMessage="No alternative parameters"
+      class="alternative"
+    ></p-listbox>
+
+    <ng-template pTemplate="footer">
+      <div class="d-flex flex-row-reverse">
+        <p-button
+          [disabled]="disableButton"
+          [label]="
+            isAlternative ? 'Deactivate Alternative' : 'Activate Alternative'
+          "
+          (onClick)="activateAlternativity(isAlternative)"
+          icon="pi pi-check"
+        ></p-button>
+        <p-button
+          label="Cancel"
+          (onClick)="cancelDataProviders()"
+          icon="pi pi-times"
+          styleClass="p-button-secondary"
+          [style]="{ 'margin-right': '.5em' }"
+        ></p-button>
+      </div>
+    </ng-template>
+  </p-card>
+</p-dialog>

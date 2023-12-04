@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row">
+    <div>
+      <div class="row">
+        <div class="col-12 mb-40 mt-40">
+          <h2>Methodologies</h2>
+        </div>
+        <div *ngFor="let methologie of methologies" class="col-4 mb-4">
+          <div style="cursor: pointer" class="row">
+            <div class="col-8 mb-3">
+              <img
+                src="https://act.campaign.gov.uk/wp-content/uploads/sites/25/2017/02/form_icon-1.jpg"
+                class="w-100"
+                (click)="viewPdf(methologie)"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col text-break">
+              <h6>{{ methologie.name }}</h6>
+              <small>
+                <p>
+                  {{ methologie.displayName }}
+                </p>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-paginator
+  [first]="first"
+  [rows]="rows"
+  [totalRecords]="totalRecords"
+  (onPageChange)="onPageChange($event)"
+  [showJumpToPageDropdown]="true"
+  [showPageLinks]="true"
+></p-paginator>

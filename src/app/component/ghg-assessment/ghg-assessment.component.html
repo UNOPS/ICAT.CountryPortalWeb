@@ -1,0 +1,2402 @@
+<form #fData="ngForm" (ngSubmit)="createAssessmentCA(fData)" >
+  <div class="p-grid p-fluid col-sm-12">
+    <div class="row p-2 mt-4">
+      <div  *ngIf="spin" style="z-index: 10000; left: 45%; top: 25%; position: fixed; " >   
+        <p-progressSpinner ></p-progressSpinner>
+      </div>
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Select Specific Climate Action*</label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-dropdown
+            placeholder="Select Specific Climate Action"
+            name="Specific Climate Actions"
+            #cations="ngModel"
+            [(ngModel)]="selectedClimateAction"
+            [autoDisplayFirst]="false"
+            [options]="climateActions"
+            optionLabel="climateActionName"
+            [disabled]="isClimateActionListDisabled"
+            (ngModelChange)="onCAChange($event)"
+            [required]="true"
+            appendTo="body"
+          ></p-dropdown>
+        </div>
+        <p
+          class="info-message text-danger"
+          *ngIf="
+            !selectedClimateAction &&
+            (fData.submitted || cations.touched )
+          "
+        >
+          This is a mandatory field
+        </p>
+      </div>
+      <div class="col-12 col-md-2">
+        <div class="p-field">
+          <button
+            pButton
+            pRipple
+            [disabled]="isDiasbaleEye"
+            type="button"
+            icon="pi pi-eye"
+            class="p-button-rounded p-button-text"
+            (click)="detail()"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Aggregated Action</label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-dropdown
+            placeholder="Select Aggregated Action"
+            name="ndc"
+            #ndc="ngModel"
+            [options]="ndcList"
+            [(ngModel)]="selectedNdc"
+            optionLabel="name"
+            [disabled]="isDisableforSubmitButton"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="onNdcChange($event)"
+            appendTo="body"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Action area</label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-dropdown
+            placeholder="Select Action area"
+            name="subndc"
+            #subndc="ngModel"
+            [autoDisplayFirst]="false"
+            [options]="selectedNdc === undefined || selectedNdc === null? [] : selectedNdc.subNdc"
+            [(ngModel)]="selctedSubNdc"
+            [ngModelOptions]="{ standalone: true }"
+            [disabled]="isDisableforSubmitButton"
+            optionLabel="name"
+            (ngModelChange)="onSubNdcChange($event)"
+            appendTo="body"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Base Year*</label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-calendar
+            [(ngModel)]="baseYear"
+            name="baseYear"
+            view="year"
+            dateFormat="yy"
+            [disabled]="isDisableforSubmitButton"
+            [required]="true"
+            (ngModelChange)="onBaseYearChange($event)"
+          ></p-calendar>
+        </div>
+        <p
+          class="info-message text-danger"
+          *ngIf="!baseYear && fData.submitted"
+        >
+          This is a mandatory field
+        </p>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Assessment Year*</label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7" *ngIf="!IsProposal">
+        <div>
+          <p-multiSelect
+            name="multiYear"
+            #multiYear="ngModel"
+            name="multiYear"
+            [options]="years"
+            [disabled]="isDisableforSubmitButton"
+            [(ngModel)]="selectYears"
+            (ngModelChange)="onAssessmentYearChange($event)"
+            [required]="true"
+          ></p-multiSelect>
+        </div>
+        <p
+          class="info-message text-danger"
+          *ngIf="
+            selectYears?.length === 0 &&
+            (fData.submitted || multiYear.touched || multiYear.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
+      </div>
+      <div class="col-12 col-md-7" *ngIf="IsProposal">
+        <div>
+          <p-calendar
+            [(ngModel)]="assessmentYear"
+            name="multiYear"
+            #multiYear="ngModel"
+            view="year"
+            dateFormat="yy"
+            [disabled]="isDisableforSubmitButton"
+            (ngModelChange)="onAssessmentYearChange($event)"
+            [required]="true"
+          ></p-calendar>
+        </div>
+        <p
+          class="info-message text-danger"
+          *ngIf="
+            !assessmentYear &&
+            (fData.submitted || multiYear.touched || multiYear.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Project Duration*</label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-inputNumber
+            placeholder="Years"
+            name="projDuration"
+            #projDuration="ngModel"
+            [(ngModel)]="projectDuration"
+            [disabled]="isDisableforSubmitButton"
+            mode="decimal"
+            [min]="1"
+            [max]="99"
+            [minFractionDigits]="1"
+            [maxFractionDigits]="1"
+            [required]="true"
+            [disabled]="true"
+          >
+          </p-inputNumber>
+        </div>
+        <p
+          class="info-message text-danger"
+          *ngIf="
+            !projectDuration &&
+            (fData.submitted || projDuration.touched || projDuration.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Date of Commence*</label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-calendar
+            placeholder="DD/MM/YYYY"
+            dateFormat="dd/mm/yy"
+            appendTo="body"
+            name="propsedDate"
+            #propsedDate="ngModel"
+            [disabled]="isDisableforSubmitButton"
+            [(ngModel)]="proposeDateofCommence"
+            [required]="true"
+          ></p-calendar>
+        </div>
+        <p
+          class="info-message text-danger"
+          *ngIf="
+            !proposeDateofCommence &&
+            (fData.submitted || propsedDate.touched || propsedDate.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Objective of Assessment</label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-multiSelect
+            appendTo="body"
+            #assessmentObjective="ngModel"
+            name="assessmentObjective"
+            [options]="assessmentObjectiveList"
+            optionLabel="objective"
+            [disabled]="isDisableforSubmitButton"
+            [(ngModel)]="selectedObjective"
+            (onFilter)="Changeobjective($event)"
+            (ngModelChange)="onCAChangeProjectStatus()"
+          ></p-multiSelect>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Assessment Approach* </label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-dropdown
+            placeholder="Select Approach"
+            name="ApproachCA"
+            #Approach="ngModel"
+            [(ngModel)]="selectedApproch"
+            [autoDisplayFirst]="false"
+            [options]="approachList"
+            [disabled]="isDisableforSubmitButton"
+            (ngModelChange)="onChangeAssessmentType()"
+            [required]="true"
+          ></p-dropdown>
+        </div>
+        <p
+          class="info-message text-danger"
+          *ngIf="
+            !selectedApproch &&
+            (fData.submitted || Approach.touched || Approach.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
+
+        <br />
+        <div>
+          <p style="color: red">{{ this.warningMessage }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2" *ngIf="this.methodologys.length != 1">
+      <div class="col-12 col-md-3">
+        <label for="projectownership"
+          >Select a Methodology for Assessment*
+        </label>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="p-field-radiobutton">
+          <p-radioButton
+            name="city"
+            value="true"
+            [(ngModel)]="isGuidedSelection"
+            [disabled]="isDisableforSubmitButton"
+            inputId="city1"
+            (ngModelChange)="isGuidedSelectionChange($event)"
+          ></p-radioButton>
+
+          <label for="city1"
+            >Guided Selection
+            <div
+              type="button"
+              class="pi pi-info-circle"
+              pTooltip="Please check the applicability criteria of methodology to specifications of your climate actions"
+            ></div>
+          </label>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="p-field-radiobutton">
+          <p-radioButton
+            name="city2"
+            value="false"
+            [(ngModel)]="isGuidedSelection"
+            [disabled]="isDisableforSubmitButton"
+            inputId="city2"
+            (ngModelChange)="isDirectSelectionChange($event)"
+          ></p-radioButton>
+          <label for="city2">Direct Selection</label>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2 ml-10" *ngIf="isGuidedSelection?.toString() === 'true'">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Type of Mitigation Action* </label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-dropdown
+            placeholder="Select Type of Mitigation Action"
+            name="TMA"
+            appendTo="body"
+            [autoDisplayFirst]="false"
+            [options]="mitigationActionType"
+            #mAtype="ngModel"
+            [(ngModel)]="selectedMitigationActionType"
+            [disabled]="isDisableforSubmitButton"
+            optionLabel="name"
+            (ngModelChange)="onMitigationActionChange($event)"
+            [required]="true"
+          ></p-dropdown>
+        </div>
+        <p
+          class="info-message text-danger"
+          *ngIf="
+            !selectedMitigationActionType &&
+            (fData.submitted || mAtype.touched || mAtype.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
+      </div>
+    </div>
+    <div class="row p-2 ml-10" *ngIf="isGuidedSelection?.toString() === 'true'">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Application of Assessment* </label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-multiSelect
+            placeholder="Application of Assessment"
+            name="aoAssessment"
+            appendTo="body"
+            [options]="applicability"
+            #mAtype1="ngModel"
+            [(ngModel)]="selectedApplicability"
+            [disabled]="isDisableforSubmitButton"
+            optionLabel="name"
+            (ngModelChange)="onApplicationAssessmentChange($event)"
+            [required]="true"
+          ></p-multiSelect>
+        </div>
+        <p
+          class="info-message text-danger"
+          *ngIf="
+            selectedApplicability?.length === 0 &&
+            (fData.submitted || mAtype1.touched || mAtype1.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
+      </div>
+    </div>
+    <div class="row p-2 ml-10" *ngIf="isGuidedSelection?.toString() === 'true'">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Easy of Use / Data Collection* </label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-dropdown
+            placeholder="Select Easy of Use / Data Collection"
+            name="easofuse"
+            [autoDisplayFirst]="false"
+            appendTo="body"
+            [options]="this.arrEsy"
+            #mAtype3="ngModel"
+            [disabled]="isDisableforSubmitButton"
+            [(ngModel)]="selectedEasyofdataCollection"
+            (ngModelChange)="onEasyOFdataCollectionChange($event)"
+            [required]="true"
+          ></p-dropdown>
+        </div>
+        <p
+          class="info-message text-danger"
+          *ngIf="
+            !selectedEasyofdataCollection &&
+            (fData.submitted || mAtype3.touched || mAtype3.dirty)
+          "
+        >
+          This is a mandatory field
+        </p>
+      </div>
+    </div>
+    <div class="row p-2 ml-10">
+      <div class="col-12 col-md-3">
+        <div>
+          <label for="projectownership">Methodology* </label>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div>
+          <p-dropdown
+            placeholder="Select Methodology"
+            appendTo="body"
+            name="Methodology"
+            [autoDisplayFirst]="false"
+            [options]="methodologys"
+            #Methodology="ngModel"
+            [(ngModel)]="selectedMethodology"
+            optionLabel="displayName"
+            [disabled]="isMethodologyDisabled"
+            (ngModelChange)="onMethodologyChange($event)"
+            [required]="true"
+          ></p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-2">
+        <div>
+          <div *ngIf="hasPrevActiveCA && !IsProposal"  >
+            <div class="col-1"> <div style="font-size: 2em;"  type="button"  class="pi pi-info-circle "
+               pTooltip={{toolTop}}  >
+            </div>
+          </div>
+        </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- ----------------Route list maintain ------------------------>
+    <div>
+      <div class="row p-2 ml-20" *ngIf="useRoute">
+        <hr />
+        <div class="col-12 col-md-3">
+          <div>
+            <h6>Enter Routes</h6>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="useRoute">
+        <div class="row p-2 ml-30" *ngFor="let route of routes; let i = index">
+          <div class="col-12 col-md-2 ml-30">
+            <div>
+              <label for="{{ 'route' + i }}">Route</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-5">
+            <div>
+              <input
+                type="text"
+                name="{{ 'route' + i }}"
+                class="p-inputtext"
+                #routei="ngModel"
+                [(ngModel)]="route.name"
+                [readonly]="!routePowerPlantMaintain"
+                pInputText
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-md-2"
+            *ngIf="routePowerPlantMaintain && routes!.length - 1 === i"
+          >
+            <div class="p-field d-flex align-items-center">
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-plus-circle"
+                class="p-button-rounded p-button-text"
+                (click)="addRoute()"
+              ></button>
+            </div>
+          </div>
+          <div
+            class="col-12 col-md-2"
+            *ngIf="routePowerPlantMaintain && routes!.length - 1 !== i"
+          >
+            <div class="p-field">
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-minus-circle"
+                class="p-button-rounded p-button-text"
+                (click)="removeRoute(i)"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2 ml-20" *ngIf="usePowerPlant">
+      <hr />
+      <div class="col-12 col-md-3">
+        <div>
+          <h6>Enter Power Plants</h6>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="usePowerPlant">
+      <div class="row p-2 ml-30" *ngFor="let ppl of powerPlants; let i = index">
+        <div class="col-12 col-md-2 ml-30">
+          <div>
+            <label for="{{ 'ppl' + i }}">Power Plant</label>
+          </div>
+        </div>
+        <div class="col-12 col-md-5">
+          <div>
+            <input
+              type="text"
+              name="{{ 'ppl' + i }}"
+              class="p-inputtext"
+              #route="ngModel"
+              [(ngModel)]="ppl.name"
+              [readonly]="!routePowerPlantMaintain"
+              pInputText
+            />
+          </div>
+        </div>
+        <div
+          class="col-12 col-md-2"
+          *ngIf="routePowerPlantMaintain && powerPlants!.length - 1 === i"
+        >
+          <div class="p-field d-flex align-items-center">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-plus-circle"
+              class="p-button-rounded p-button-text"
+              (click)="addPowerPlant()"
+            ></button>
+          </div>
+        </div>
+        <div
+          class="col-12 col-md-2"
+          *ngIf="routePowerPlantMaintain && powerPlants!.length - 1 !== i"
+        >
+          <div class="p-field">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-minus-circle"
+              class="p-button-rounded p-button-text"
+              (click)="removePowerPlant(i)"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="row p-2 ml-20" *ngIf="useStratum">
+        <hr />
+        <div class="col-12 col-md-3">
+          <div>
+            <h6>Enter Stratum</h6>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="useStratum">
+        <div
+          class="row p-2 ml-30"
+          *ngFor="let stratum of stratums; let i = index"
+        >
+          <div class="col-12 col-md-2 ml-30">
+            <div>
+              <label for="{{ 'stratum' + i }}">Stratum </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-5">
+            <div>
+              <input
+                type="text"
+                name="{{ 'stratum' + i }}"
+                class="p-inputtext"
+                #routei="ngModel"
+                [(ngModel)]="stratum.name"
+                [readonly]="!routePowerPlantMaintain"
+                pInputText
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-md-2"
+            *ngIf="routePowerPlantMaintain && stratums!.length - 1 === i"
+          >
+            <div class="p-field d-flex align-items-center">
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-plus-circle"
+                class="p-button-rounded p-button-text"
+                (click)="addStratum()"
+              ></button>
+            </div>
+          </div>
+          <div
+            class="col-12 col-md-2"
+            *ngIf="routePowerPlantMaintain && stratums!.length - 1 !== i"
+          >
+            <div class="p-field">
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-minus-circle"
+                class="p-button-rounded p-button-text"
+                (click)="removeStratum(i)"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-2" *ngIf="usePowerPlant || useRoute || useStratum">
+      <div class="d-flex justify-content-end">
+        <div>
+          <button
+            *ngIf="isSaveRoutePowerplantStratum"
+            pButton
+            pRipple
+            type="button"
+            (click)="powerPlantRoutestratumSave()"
+            class="btn btn-primary btn-block text-uppercase btn-lg"
+          >
+            Save
+          </button>
+          <button
+            *ngIf="!isSaveRoutePowerplantStratum"
+            pButton
+            pRipple
+            type="button"
+            (click)="powerPlantRoutestratumSave()"
+            class="btn btn-primary btn-block text-uppercase btn-lg"
+          >
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="
+        (!usePowerPlant && !useRoute && !useStratum) ||
+        !isSaveRoutePowerplantStratum
+      "
+    >
+      <div *ngIf="baslineParam !== undefined && baslineParam.length > 0">
+        <hr />
+        <div class="row p-2">
+          <div class="col-12 col-md-3">
+            <div>
+              <h4>Baseline</h4>
+            </div>
+          </div>
+        </div>
+        <div class="row p-2">
+          <div class="col-12 col-md-3">
+            <div>
+              <label for="bScenario">Baseline Scenario</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-7">
+            <div>
+              <textarea
+                type="text"
+                placeholder="Enter Baseline Scenario"
+                name="bScenario"
+                #bScenario="ngModel"
+                [(ngModel)]="baselineScenario"
+                [disabled]="isDisableforSubmitButton"
+                rows="5"
+                cols="62"
+                pInputTextarea
+                autoResize="autoResize"
+                class="p-inputtext"
+                (ngModelChange)="onBaselineScenarioChange($event)"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row p-2"
+          *ngFor="let item of basllineSelection; let i = index"
+        >
+          <div
+            class="d-flex flex-row row"
+            *ngIf="
+              (blHasVehicale ||
+                blHasFuel ||
+                blHasRoute ||
+                blHasPowerPlant ||
+                blHasStratum ||
+                blHasSoil ||
+                blHasResidue ||
+                blHasFeedstock ||
+                blHasLandClearance) &&
+              item.vehical?.name !== 'Common'
+            "
+          >
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasFeedstock">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'feedstock' + i }}">Feedstock Type</label>
+
+                  <p-dropdown
+                    placeholder="Select Feedstock"
+                    name="{{ 'feedstock' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.oneFeedstock"
+                    [autoDisplayFirst]="false"
+                    [options]="getOptions(blFeedstockValue)"
+                    optionLabel="name"
+                    [editable]="true"
+                    [disabled]="!baselineShowMaintain"
+                    (onChange)="
+                      ChangeDimensionFeedstockType(
+                        $event,
+                        blFeedstockValue,
+                        item
+                      )
+                    "
+                  ></p-dropdown>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddFeedstock"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionFeedstockValue(item, blFeedstockValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasVehicale">
+              <div class="p-2">
+                <div *ngIf="!blHasVehicaleMulti">
+                  <label for="{{ 'vehicle' + i }}">Vehicle</label>
+                  <p-dropdown
+                    id="{{ 'vehicle' + i }}"
+                    placeholder="Select Vehicle"
+                    name="{{ 'vehicle' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.vehical"
+                    [autoDisplayFirst]="false"
+                    [options]="getOptions(blVehicalValue)"
+                    optionLabel="name"
+                    [editable]="true"
+                    [disabled]="!baselineShowMaintain"
+                    (onChange)="
+                      ChangeDimensionVehicalType($event, blVehicalValue, item)
+                    "
+                  ></p-dropdown>
+                </div>
+
+                <div *ngIf="blHasVehicaleMulti">
+                  <label for="{{ 'Vehicle' + i }}">Vehicle</label>
+                  <p-multiSelect
+                    id="{{ 'Vehicle' + i }}"
+                    placeholder="Select Vehicles"
+                    name="{{ 'Vehicle' + i }}"
+                    #fuel="ngModel"
+                    [(ngModel)]="item.vehicals"
+                    [options]="getOptions(blVehicalValue)"
+                    optionLabel="name"
+                    [disabled]="!baselineShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionVehicalTypeMulti(
+                        $event,
+                        blVehicalValue,
+                        item
+                      )
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddVehical"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionVehicalValue(item, blVehicalValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasFuel">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'ppl' + i }}">Fuel Type</label>
+                  <p-multiSelect
+                    id="{{ 'fuel' + i }}"
+                    placeholder="Select Fuel Type"
+                    name="{{ 'fuel' + i }}"
+                    #fuel="ngModel"
+                    [(ngModel)]="item.fuel"
+                    [options]="getOptions(blFuelValue)"
+                    optionLabel="name"
+                    appendTo="body"
+                    [disabled]="!baselineShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionFuelType($event, blFuelValue, item)
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddFuel"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionFuelValue(item, blFuelValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasResidue">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'residue' + i }}">Residue Type</label>
+                  <p-multiSelect
+                    id="{{ 'residue' + i }}"
+                    placeholder="Select Residue Type"
+                    name="{{ 'residue' + i }}"
+                    #residue="ngModel"
+                    [(ngModel)]="item.residue"
+                    [options]="getOptions(blResidueValue)"
+                    optionLabel="name"
+                    [disabled]="!baselineShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionResidueType($event, blResidueValue, item)
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddResidue"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionResidueValue(item, blResidueValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasSoil">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'soil' + i }}">Soil Type</label>
+                  <p-multiSelect
+                    id="{{ 'soil' + i }}"
+                    placeholder="Select Soil Type"
+                    name="{{ 'soil' + i }}"
+                    #soil="ngModel"
+                    [(ngModel)]="item.soil"
+                    [options]="getOptions(blSoilValue)"
+                    optionLabel="name"
+                    [disabled]="!baselineShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionSoilType($event, blSoilValue, item)
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddSoil"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionSoilValue(item, blSoilValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="d-flex flex-wrap p-2 col-md-3"
+              *ngIf="blHasLandClearance"
+            >
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'landclearance' + i }}"
+                    >LandClearance Type</label
+                  >
+                  <p-multiSelect
+                    id="{{ 'landclearance' + i }}"
+                    placeholder="Select LandClearance Type"
+                    name="{{ 'landclearance' + i }}"
+                    #landclearance="ngModel"
+                    [(ngModel)]="item.landClearance"
+                    [options]="getOptions(blLandClearanceValue)"
+                    optionLabel="name"
+                    [disabled]="!baselineShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionLandClearanceType(
+                        $event,
+                        blLandClearanceValue,
+                        item
+                      )
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddLandClearance"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="
+                      addDimensionLandClearanceValue(item, blLandClearanceValue)
+                    "
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasRoute">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'ppl' + i }}">Route</label>
+                  <p-multiSelect
+                    placeholder="Select Route"
+                    name="{{ 'Route' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.route"
+                    [options]="routes"
+                    [disabled]="!baselineShowMaintain"
+                    optionLabel="name"
+                  ></p-multiSelect>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasStratum">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'stratum' + i }}">Stratum</label>
+                  <p-multiSelect
+                    placeholder="Select Stratum"
+                    name="{{ 'stratum' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.stratum"
+                    [options]="stratums"
+                    [disabled]="!baselineShowMaintain"
+                    optionLabel="name"
+                  ></p-multiSelect>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="blHasPowerPlant">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'ppl' + i }}">Power Plant</label>
+                  <p-dropdown
+                    placeholder="Select Power Plant"
+                    name="{{ 'ppbl' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.powerPlan"
+                    [autoDisplayFirst]="false"
+                    [options]="powerPlants"
+                    optionLabel="name"
+                    [disabled]="!baselineShowMaintain"
+                  ></p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3">
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="
+                  baselineShowMaintain &&
+                  ((basllineSelection!.length - 1 === i &&
+                    !hasCommonBaseline) ||
+                    (basllineSelection!.length - 2 === i && hasCommonBaseline))
+                "
+              >
+                <div class="p-field">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="p-button-rounded p-button-text"
+                    (click)="addBaselineParam()"
+                  ></button>
+                </div>
+              </div>
+              <div
+                class="p-2"
+                *ngIf="
+                  baselineShowMaintain &&
+                  ((basllineSelection!.length - 1 !== i &&
+                    !hasCommonBaseline) ||
+                    (basllineSelection!.length - 2 !== i && hasCommonBaseline))
+                "
+              >
+                <div class="p-field">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-minus-circle"
+                    class="p-button-rounded p-button-text"
+                    (click)="removeBaselineParam(i)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row p-2">
+          <div class="d-flex justify-content-end">
+            <div *ngIf="showBaslineGenrate">
+              <button
+                pButton
+                pRipple
+                type="button"
+                [disabled]="baselineScenario != '' ? false : true"
+                (click)="baslineGenrate()"
+                class="btn btn-primary btn-block text-uppercase btn-lg"
+              >
+                Generate
+              </button>
+            </div>
+            <div *ngIf="!showBaslineGenrate">
+              <button
+                pButton
+                pRipple
+                type="button"
+                [disabled]="isDisableforSubmitButton"
+                (click)="baslineGenrate()"
+                class="btn btn-primary btn-block text-uppercase btn-lg"
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
+        <app-route-parameter
+          [parameterSection]="blParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-route-parameter>
+        <app-vehical-parameter
+          [parameterSection]="blParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        ></app-vehical-parameter>
+        <app-fuel-parameter
+          [parameterSection]="blParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        ></app-fuel-parameter>
+        <app-power-plant-parameter
+          [parameterSection]="blParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-power-plant-parameter>
+        <app-feedstock-parameter
+          [parameterSection]="blParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-feedstock-parameter>
+        <app-stratum-parameter
+          [parameterSection]="blParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-stratum-parameter>
+        <app-soil-parameter
+          [parameterSection]="blParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-soil-parameter>
+        <app-residue-parameter
+          [parameterSection]="blParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-residue-parameter>
+      </div>
+
+      <div *ngIf="ProjectParam !== undefined && ProjectParam.length > 0">
+        <hr />
+        <div class="row p-2">
+          <div class="col-12 col-md-3">
+            <div>
+              <h4>Project</h4>
+            </div>
+          </div>
+        </div>
+        <div class="row p-2">
+          <div class="col-12 col-md-3">
+            <div>
+              <label for="pScenario">Project Scenario</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-7">
+            <div>
+              <input
+                type="text"
+                name="pScenario"
+                class="p-inputtext"
+                [disabled]="isDisableforSubmitButton"
+                placeholder="Enter Project Scenario"
+                #pScenario="ngModel"
+                [(ngModel)]="ProjectScenario"
+                pInputText
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="row p-2"
+          *ngFor="let item of projectSelection; let i = index"
+        >
+          <div
+            class="d-flex flex-row row"
+            *ngIf="
+              (prHasVehicale ||
+                prHasFuel ||
+                prHasRoute ||
+                prHasPowerPlant ||
+                prHasFeedstock ||
+                prHasSoil ||
+                prHasStratum ||
+                prHasResidue ||
+                prHasLandClearance) &&
+              item.vehical?.name !== 'Common'
+            "
+          >
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasFeedstock">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'prfeedstock' + i }}">Feedstock Type</label>
+
+                  <p-dropdown
+                    placeholder="Select Feedstock"
+                    name="{{ 'prfeedstock' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.oneFeedstock"
+                    [autoDisplayFirst]="false"
+                    [options]="getOptions(prFeedstockValue)"
+                    optionLabel="name"
+                    [editable]="true"
+                    [disabled]="!projectShowMaintain"
+                    (onChange)="
+                      ChangeDimensionFeedstockType(
+                        $event,
+                        prFeedstockValue,
+                        item
+                      )
+                    "
+                  ></p-dropdown>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddFeedstock"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionFeedstockValue(item, prFeedstockValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasVehicale">
+              <div class="p-2">
+                <div *ngIf="!prHasVehicaleMulti">
+                  <label for="{{ 'ppl' + i }}">Vehicle</label>
+                  <p-dropdown
+                    id="{{ 'prv' + i }}"
+                    placeholder="Select Vehicle"
+                    name="{{ 'prv' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.vehical"
+                    [autoDisplayFirst]="false"
+                    [options]="getOptions(prVehicalValue)"
+                    optionLabel="name"
+                    [editable]="true"
+                    [disabled]="!projectShowMaintain"
+                    (onChange)="
+                      ChangeDimensionVehicalType($event, prVehicalValue, item)
+                    "
+                    (onChange)="changeProjectVehicle()"
+                  ></p-dropdown>
+                </div>
+
+                <div *ngIf="prHasVehicaleMulti">
+                  <label for="{{ 'Vehicle' + i }}">Vehicle</label>
+                  <p-multiSelect
+                    id="{{ 'Vehicle' + i }}"
+                    placeholder="Select Vehicles"
+                    name="{{ 'Vehicle' + i }}"
+                    #fuel="ngModel"
+                    [(ngModel)]="item.vehicals"
+                    [options]="getOptions(prVehicalValue)"
+                    optionLabel="name"
+                    [disabled]="!projectShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionVehicalTypeMulti(
+                        $event,
+                        prVehicalValue,
+                        item
+                      )
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddVehical"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionVehicalValue(item, prVehicalValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasFuel">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'ppl' + i }}">Fuel Type</label>
+                  <p-multiSelect
+                    placeholder="Select Fuel Type"
+                    name="{{ 'prf' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.fuel"
+                    [options]="getOptions(prFuelValue)"
+                    optionLabel="name"
+                    appendTo="body"
+                    [disabled]="!projectShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionFuelType($event, prFuelValue, item)
+                    "
+                    (onChange)="changeProjectFuel()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddFuel"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionFuelValue(item, prFuelValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasResidue">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'prresidue' + i }}">Residue Type</label>
+                  <p-multiSelect
+                    id="{{ 'prresidue' + i }}"
+                    placeholder="Select Residue Type"
+                    name="{{ 'prresidue' + i }}"
+                    #residue="ngModel"
+                    [(ngModel)]="item.residue"
+                    [options]="getOptions(prResidueValue)"
+                    optionLabel="name"
+                    [disabled]="!projectShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionResidueType($event, prResidueValue, item)
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddResidue"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionResidueValue(item, prResidueValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasSoil">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'prsoil' + i }}">Soil Type</label>
+                  <p-multiSelect
+                    id="{{ 'prsoil' + i }}"
+                    placeholder="Select Soil Type"
+                    name="{{ 'prsoil' + i }}"
+                    #soil="ngModel"
+                    [(ngModel)]="item.soil"
+                    [options]="getOptions(prSoilValue)"
+                    optionLabel="name"
+                    [disabled]="!projectShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionSoilType($event, prSoilValue, item)
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddSoil"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionSoilValue(item, prSoilValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="d-flex flex-wrap p-2 col-md-3"
+              *ngIf="blHasLandClearance"
+            >
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'prlandclearance' + i }}"
+                    >LandClearance Type</label
+                  >
+                  <p-multiSelect
+                    id="{{ 'prlandclearance' + i }}"
+                    placeholder="Select LandClearance Type"
+                    name="{{ 'prlandclearance' + i }}"
+                    #landclearance="ngModel"
+                    [(ngModel)]="item.landClearance"
+                    [options]="getOptions(prLandClearanceValue)"
+                    optionLabel="name"
+                    [disabled]="!projectShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionLandClearanceType(
+                        $event,
+                        prLandClearanceValue,
+                        item
+                      )
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddLandClearance"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="
+                      addDimensionLandClearanceValue(item, prLandClearanceValue)
+                    "
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasRoute">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'ppl' + i }}">Route</label>
+                  <p-multiSelect
+                    placeholder="Select Route"
+                    name="{{ 'prRoute' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.route"
+                    [options]="routes"
+                    optionLabel="name"
+                    [disabled]="!projectShowMaintain"
+                  ></p-multiSelect>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasStratum">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'prstratum' + i }}">Stratum</label>
+                  <p-multiSelect
+                    placeholder="Select Stratum"
+                    name="{{ 'prstratum' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.stratum"
+                    [options]="stratums"
+                    [disabled]="!projectShowMaintain"
+                    optionLabel="name"
+                  ></p-multiSelect>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="prHasPowerPlant">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'ppl' + i }}">Power Plant</label>
+                  <div>
+                    <p-dropdown
+                      placeholder="Select Power Plant"
+                      name="{{ 'pppr' + i }}"
+                      #vehical="ngModel"
+                      [(ngModel)]="item.powerPlan"
+                      [autoDisplayFirst]="false"
+                      [options]="powerPlants"
+                      [disabled]="!projectShowMaintain"
+                      optionLabel="name"
+                    ></p-dropdown>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3">
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="
+                  projectShowMaintain &&
+                  ((projectSelection!.length - 1 === i && !hasCommonProject) ||
+                    (projectSelection!.length - 2 === i && hasCommonProject))
+                "
+              >
+                <div class="p-field">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="p-button-rounded p-button-text"
+                    (click)="addProjectParam()"
+                  ></button>
+                </div>
+              </div>
+              <div
+                class="p-2"
+                *ngIf="
+                  projectShowMaintain &&
+                  ((projectSelection!.length - 1 !== i && !hasCommonProject) ||
+                    (projectSelection!.length - 2 !== i && hasCommonProject))
+                "
+              >
+                <div class="p-field">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-minus-circle"
+                    class="p-button-rounded p-button-text"
+                    (click)="removeProjectParam(i)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row p-2">
+          <div class="d-flex justify-content-end">
+            <div *ngIf="showProjectGenrate">
+              <button
+                pButton
+                pRipple
+                type="button"
+                [disabled]="ProjectScenario != '' ? false : true"
+                (click)="projectGenrate()"
+                class="btn btn-primary btn-block text-uppercase btn-lg"
+              >
+                Generate
+              </button>
+            </div>
+            <div *ngIf="!showProjectGenrate">
+              <button
+                pButton
+                pRipple
+                type="button"
+                [disabled]="isDisableforSubmitButton"
+                (click)="projectGenrate()"
+                class="btn btn-primary btn-block text-uppercase btn-lg"
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
+        <app-route-parameter
+          [parameterSection]="prParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-route-parameter>
+        <app-vehical-parameter
+          [parameterSection]="prParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        ></app-vehical-parameter>
+        <app-fuel-parameter
+          [parameterSection]="prParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        ></app-fuel-parameter>
+        <app-power-plant-parameter
+          [parameterSection]="prParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-power-plant-parameter>
+        <app-feedstock-parameter
+          [parameterSection]="prParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-feedstock-parameter>
+        <app-stratum-parameter
+          [parameterSection]="prParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-stratum-parameter>
+        <app-soil-parameter
+          [parameterSection]="prParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-soil-parameter>
+        <app-residue-parameter
+          [parameterSection]="prParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-residue-parameter>
+      </div>
+
+      <div *ngIf="lekageParam !== undefined && lekageParam.length > 0">
+        <hr />
+        <div class="row p-2">
+          <div class="col-12 col-md-3">
+            <div>
+              <h6>Leakage</h6>
+            </div>
+          </div>
+        </div>
+        <div class="row p-2">
+          <div class="col-12 col-md-3">
+            <div>
+              <label for="lScenario">Leakage Scenario</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-7">
+            <div>
+              <input
+                type="text"
+                name="lScenario"
+                class="p-inputtext"
+                #pScenario="ngModel"
+                [(ngModel)]="LeakageScenario"
+                pInputText
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="row p-2"
+          *ngFor="let item of lekageSelection; let i = index"
+        >
+          <div
+            class="d-flex flex-row row"
+            *ngIf="
+              (lkHasVehicale ||
+                lkHasFuel ||
+                lkHasRoute ||
+                lkHasPowerPlant ||
+                lkHasFeedstock ||
+                lkHasSoil ||
+                lkHasStratum ||
+                lkHasResidue ||
+                lkHasLandClearance) &&
+              item.vehical?.name !== 'Common'
+            "
+          >
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasFeedstock">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'lkfeedstock' + i }}">Feedstock Type</label>
+
+                  <p-dropdown
+                    placeholder="Select Feedstock"
+                    name="{{ 'lkfeedstock' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.oneFeedstock"
+                    [autoDisplayFirst]="false"
+                    [options]="getOptions(lkFeedstockValue)"
+                    optionLabel="name"
+                    [editable]="true"
+                    [disabled]="!lekageShowMaintain"
+                    (onChange)="
+                      ChangeDimensionFeedstockType(
+                        $event,
+                        lkFeedstockValue,
+                        item
+                      )
+                    "
+                  ></p-dropdown>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddFeedstock"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionFeedstockValue(item, lkFeedstockValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasVehicale">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'ppl' + i }}">Vehicle</label>
+                </div>
+              </div>
+              <div class="p-2">
+                <div>
+                  <p-dropdown
+                    placeholder="Select Vehicle"
+                    name="{{ 'lkve' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.vehical"
+                    [autoDisplayFirst]="false"
+                    [options]="getOptions(lkVehicalValue)"
+                    optionLabel="name"
+                    [editable]="true"
+                    (onChange)="
+                      ChangeDimensionVehicalType($event, lkVehicalValue, item)
+                    "
+                    [disabled]="!lekageShowMaintain"
+                  ></p-dropdown>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddVehical"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionVehicalValue(item, lkVehicalValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasFuel">
+              <label for="{{ 'lkpu' + i }}">Fuel Type</label>
+
+              <div class="p-2">
+                <div>
+                  <p-multiSelect
+                    id="{{ 'lkpu' + i }}"
+                    placeholder="Select Fuel Type"
+                    name="{{ 'lkpu' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.fuel"
+                    [options]="getOptions(lkFuelValue)"
+                    optionLabel="name"
+                    appendTo="body"
+                    [disabled]="!lekageShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionFuelType($event, lkFuelValue, item)
+                    "
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddFuel"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionFuelValue(item, lkFuelValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasResidue">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'lkresidue' + i }}">Residue Type</label>
+                  <p-multiSelect
+                    id="{{ 'lkresidue' + i }}"
+                    placeholder="Select Residue Type"
+                    name="{{ 'lkresidue' + i }}"
+                    #residue="ngModel"
+                    [(ngModel)]="item.residue"
+                    [options]="getOptions(lkResidueValue)"
+                    optionLabel="name"
+                    [disabled]="!lekageShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionResidueType($event, lkResidueValue, item)
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddResidue"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionResidueValue(item, lkResidueValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasSoil">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'lksoil' + i }}">Soil Type</label>
+                  <p-multiSelect
+                    id="{{ 'lksoil' + i }}"
+                    placeholder="Select Soil Type"
+                    name="{{ 'lksoil' + i }}"
+                    #soil="ngModel"
+                    [(ngModel)]="item.soil"
+                    [options]="getOptions(lkSoilValue)"
+                    optionLabel="name"
+                    [disabled]="!lekageShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionSoilType($event, lkSoilValue, item)
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddSoil"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="addDimensionSoilValue(item, lkSoilValue)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="d-flex flex-wrap p-2 col-md-3"
+              *ngIf="lkHasLandClearance"
+            >
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'lklandclearance' + i }}"
+                    >LandClearance Type</label
+                  >
+                  <p-multiSelect
+                    id="{{ 'lklandclearance' + i }}"
+                    placeholder="Select LandClearance Type"
+                    name="{{ 'lklandclearance' + i }}"
+                    #landclearance="ngModel"
+                    [(ngModel)]="item.landClearance"
+                    [options]="getOptions(lkLandClearanceValue)"
+                    optionLabel="name"
+                    [disabled]="!lekageShowMaintain"
+                    (onFilter)="
+                      ChangeDimensionLandClearanceType(
+                        $event,
+                        lkLandClearanceValue,
+                        item
+                      )
+                    "
+                    (onChange)="onbaseFuelChange()"
+                  ></p-multiSelect>
+                </div>
+              </div>
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="item.canAddLandClearance"
+              >
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="btn btn-primary btn-block text-uppercase btn-lg"
+                    (click)="
+                      addDimensionLandClearanceValue(item, lkLandClearanceValue)
+                    "
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasRoute">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'ppl' + i }}">Route</label>
+                </div>
+              </div>
+              <div class="p-2">
+                <div>
+                  <p-multiSelect
+                    placeholder="Select Route"
+                    name="{{ 'Route' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.route"
+                    [options]="routes"
+                    optionLabel="name"
+                    [disabled]="!lekageShowMaintain"
+                  ></p-multiSelect>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasStratum">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'lkstratum' + i }}">Stratum</label>
+                  <p-multiSelect
+                    placeholder="Select Stratum"
+                    name="{{ 'lkstratum' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.stratum"
+                    [options]="stratums"
+                    [disabled]="!lekageShowMaintain"
+                    optionLabel="name"
+                  ></p-multiSelect>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3" *ngIf="lkHasPowerPlant">
+              <div class="p-2">
+                <div>
+                  <label for="{{ 'ppl' + i }}">Power Plant</label>
+                </div>
+              </div>
+              <div class="p-2">
+                <div>
+                  <p-dropdown
+                    placeholder="Select Power Plant"
+                    name="{{ 'pplk' + i }}"
+                    #vehical="ngModel"
+                    [(ngModel)]="item.powerPlan"
+                    [autoDisplayFirst]="false"
+                    [options]="powerPlants"
+                    [disabled]="!lekageShowMaintain"
+                    optionLabel="name"
+                  ></p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap p-2 col-md-3">
+              <div
+                class="p-2 d-flex align-items-center"
+                *ngIf="
+                  lekageShowMaintain &&
+                  ((lekageSelection!.length - 1 === i && !hasCommonLeakage) ||
+                    (lekageSelection!.length - 2 === i && hasCommonLeakage))
+                "
+              >
+                <div class="p-field">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-plus-circle"
+                    class="p-button-rounded p-button-text"
+                    (click)="addLekageParam()"
+                  ></button>
+                </div>
+              </div>
+              <div
+                class="p-2"
+                *ngIf="
+                  lekageShowMaintain &&
+                  ((lekageSelection!.length - 1 !== i && !hasCommonLeakage) ||
+                    (lekageSelection!.length - 2 !== i && hasCommonLeakage))
+                "
+              >
+                <div class="p-field">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-minus-circle"
+                    class="p-button-rounded p-button-text"
+                    (click)="removeLekageParam(i)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row p-2">
+          <div class="d-flex justify-content-end">
+            <div *ngIf="showLekageGenrate">
+              <button
+                pButton
+                pRipple
+                [disabled]="LeakageScenario != '' ? false : true"
+                type="button"
+                (click)="lekageGenrate()"
+                class="btn btn-primary btn-block text-uppercase btn-lg"
+              >
+                Generate
+              </button>
+            </div>
+            <div *ngIf="!showLekageGenrate">
+              <button
+                pButton
+                pRipple
+                type="button"
+                [disabled]="isDisableforSubmitButton"
+                (click)="lekageGenrate()"
+                class="btn btn-primary btn-block text-uppercase btn-lg"
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <app-route-parameter
+          [parameterSection]="lkParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-route-parameter>
+        <app-vehical-parameter
+          [parameterSection]="lkParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        ></app-vehical-parameter>
+        <app-fuel-parameter
+          [parameterSection]="lkParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        ></app-fuel-parameter>
+        <app-power-plant-parameter
+          [parameterSection]="lkParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-power-plant-parameter>
+        <app-feedstock-parameter
+          [parameterSection]="lkParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-feedstock-parameter>
+        <app-stratum-parameter
+          [parameterSection]="lkParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-stratum-parameter>
+        <app-soil-parameter
+          [parameterSection]="lkParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-soil-parameter>
+        <app-residue-parameter
+          [parameterSection]="lkParameters"
+          [IsProposal]="IsProposal"
+          [isDisableforSubmitButton]="isDisableforSubmitButton"
+          [infos]="infos"
+          [isSubmitted]="isSubmitted"
+        >
+        </app-residue-parameter>
+      </div>
+    </div>
+
+    <div *ngIf="selectedApproch === 'Ex-ante'">
+      <hr />
+      <div class="row p-2">
+        <div class="col-12 col-md-10">
+          <div>
+            <h6>Projection</h6>
+          </div>
+        </div>
+      </div>
+      <div class="row p-2">
+        <div class="col-12 col-md-3">
+          <div>
+            <label for="pindicator">Projection Indicator</label>
+          </div>
+        </div>
+        <div class="col-12 col-md-7">
+          <div>
+            <p-dropdown
+              placeholder="Select Project Indicator"
+              name="pindicator"
+              [options]="projectIndicaters"
+              [(ngModel)]="selectedprojectIndicater"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="row p-2">
+        <div class="col-12 col-md-3">
+          <div>
+            <label for="pby">Projection Base Year</label>
+          </div>
+        </div>
+        <div class="col-12 col-md-7">
+          <p-dropdown
+            placeholder="Select Projection Base Year"
+            name="py"
+            [options]="projectionBaseyears"
+            [(ngModel)]="ProjectionbaseYear"
+          ></p-dropdown>
+        </div>
+      </div>
+      <div class="row p-2">
+        <div class="col-12 col-md-3">
+          <div>
+            <label for="pbypg">
+              {{
+                selectedprojectIndicater
+                  ? ProjectIndicaterEnum[
+                      ProjectIndicaterEnum['Population Growth (POP)']
+                    ] === selectedprojectIndicater
+                    ? 'POP of '
+                    : 'GDP of '
+                  : ''
+              }}Projection Base Year</label
+            >
+          </div>
+        </div>
+        <div class="col-12 col-md-7">
+          <div *ngIf="!IsProposal">
+            <div *ngIf="pBYPDDefaultValue">
+              <p-dropdown
+                placeholder="Select Default value"
+                name="dvbvy"
+                [autoDisplayFirst]="false"
+                [(ngModel)]="selectdProjectionBaseYeardefaultValue"
+                [autoDisplayFirst]="false"
+                [options]="ProjectionBaseYeardefaultValues"
+                optionLabel="name"
+              ></p-dropdown>
+            </div>
+            <div *ngIf="!pBYPDDefaultValue">
+              <p-dropdown
+                placeholder="Select Institution"
+                name="lvp"
+                [autoDisplayFirst]="false"
+                [(ngModel)]="selectdProjectionBaseYearInstition"
+                [autoDisplayFirst]="false"
+                [options]="instiTutionList"
+                optionLabel="name"
+              ></p-dropdown>
+            </div>
+          </div>
+          <div *ngIf="IsProposal">
+            <div *ngIf="pBYPDDefaultValue.toString() === 'true'">
+              <p-dropdown
+                placeholder="Select Default value"
+                name="dvby"
+                [autoDisplayFirst]="false"
+                [(ngModel)]="selectdProjectionBaseYeardefaultValue"
+                [autoDisplayFirst]="false"
+                [options]="ProjectionBaseYeardefaultValues"
+                optionLabel="name"
+              ></p-dropdown>
+            </div>
+            <div *ngIf="pBYPDDefaultValue.toString() === 'false'">
+              <input
+                type="text"
+                name="bybpi"
+                class="p-inputtext"
+                #value="ngModel"
+                [(ngModel)]="selectdProjectionBaseYearValue"
+                pInputText
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-2"></div>
+      </div>
+      <div class="row p-2" *ngIf="!IsProposal">
+        <div class="col-12 col-md-3">
+          <div>
+            <label for="py">Projection Year/s</label>
+          </div>
+        </div>
+        <div class="col-12 col-md-7">
+          <div>
+            <p-multiSelect
+              name="py"
+              [options]="years"
+              [(ngModel)]="projectionYears"
+            ></p-multiSelect>
+          </div>
+        </div>
+      </div>
+      <div class="row p-2" *ngIf="IsProposal">
+        <div class="col-12 col-md-3">
+          <div>
+            <label for="py">Projection Year</label>
+          </div>
+        </div>
+        <div class="col-12 col-md-7">
+          <div>
+            <p-calendar
+              [(ngModel)]="ProjectionYear"
+              name="projectionYear"
+              view="year"
+              dateFormat="yy"
+            ></p-calendar>
+          </div>
+        </div>
+      </div>
+      <div class="row p-2">
+        <div class="col-12 col-md-3">
+          <div>
+            <label for="pypg">
+              {{
+                selectedprojectIndicater
+                  ? ProjectIndicaterEnum[
+                      ProjectIndicaterEnum['Population Growth (POP)']
+                    ] === selectedprojectIndicater
+                    ? 'POP of '
+                    : 'GDP of '
+                  : ''
+              }}Projection Year</label
+            >
+          </div>
+        </div>
+        <div class="col-12 col-md-7">
+          <div *ngIf="!IsProposal">
+            <div>
+              <p-dropdown
+                placeholder="Select Institution"
+                name="lvpyear"
+                [autoDisplayFirst]="false"
+                [(ngModel)]="selectdProjectionYearInstition"
+                [autoDisplayFirst]="false"
+                [options]="instiTutionList"
+                optionLabel="name"
+              ></p-dropdown>
+            </div>
+          </div>
+          <div *ngIf="IsProposal">
+            <div>
+              <input
+                type="text"
+                name="bvpidsss"
+                class="p-inputtext"
+                #value123="ngModel"
+                [(ngModel)]="selectdProjectionYearValue"
+                pInputText
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="col-12 col-md-5"
+    *ngIf="
+      (!showBaslineGenrate && !showProjectGenrate) ||
+      !showLekageGenrate ||
+      selectedApproch === 'Ex-ante'
+    "
+  >
+    <button
+      *ngIf="!isSave || !IsProposal"
+      pRipple
+      class="btn btn-primary btn-block text-uppercase"
+      type="submit"
+      [disabled]="isDisableforSubmitButton"
+    >
+      {{ IsProposal ? 'Calculate' : 'Send to DC Team' }}
+    </button>
+    <button
+      *ngIf="isSave && IsProposal"
+      pRipple
+      class="btn btn-primary btn-block text-uppercase"
+      (click)="ViewResultClick()"
+    >
+      View results
+    </button>
+  </div>
+</form>
+<p-toast position="bottom-right"></p-toast>

@@ -1,0 +1,80 @@
+<div class="p-grid p-fluid card">
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <div class="col-12">
+        <div>
+          <label for="projStatus">Non Conformance No :</label>
+          <label for="projStatus">{{ verificationRound }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="col-12">
+        <div>
+          <label for="projStatus">Area :</label>
+          <label for="projStatus">{{ area }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="col-12">
+        <div>
+          <label for="projStatus">Date :</label>
+          <label for="projStatus">{{
+            lastConcernDate | date : 'yyyy-MM-dd '
+          }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <div class="col-12">
+        <div>
+          <label for="projStatus">Explanation :</label>
+          <label for="projStatus">{{ verificationDetail?.explanation }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <div class="col-12">
+        <div>
+          <label for="projStatus">Root Cause :</label>
+          <label for="projStatus">{{ verificationDetail?.rootCause }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <div class="col-12">
+        <div>
+          <label for="projStatus">Corrective Action :</label>
+          <label for="projStatus">{{
+            verificationDetail?.correctiveAction
+          }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <div class="col-12">
+        <div>
+          <label for="projStatus">Status :</label>
+          <label for="projStatus">{{
+            verificationDetail !== undefined
+              ? verificationStatusEnum[verificationDetail.verificationStatus]
+              : ''
+          }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

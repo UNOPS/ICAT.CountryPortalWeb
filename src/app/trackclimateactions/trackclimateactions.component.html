@@ -1,0 +1,300 @@
+<p-toast></p-toast>
+<section class="container pl-20 pr-20">
+  <h4 class="mt-4">Track Specific Climate Actions</h4>
+
+  <div class="p-grid p-fluid card">
+    <div class="row p-2">
+      <div class="col-sm-6" *ngIf="this.recievedFlag == undefined">
+        <p-dropdown
+          name="assessmentYear"
+          [(ngModel)]="selectedYear"
+          [options]="uniqueYears"
+          #fyear="ngModel"
+          [filter]="true"
+          placeholder="Select Assessment year"
+          (ngModelChange)="onyearChange($event)"
+        >
+        </p-dropdown>
+      </div>
+      <div class="col-sm-6" *ngIf="this.recievedFlag == undefined">
+        <p-multiSelect
+          name="multiNdc"
+          [options]="ndcList"
+          [(ngModel)]="year"
+          #fndc="ngModel"
+          placeholder="Select Aggregated Actions"
+          optionLabel="name"
+          (ngModelChange)="onNDCChange($event)"
+        >
+        </p-multiSelect>
+      </div>
+
+      <br /><br /><br /><br />
+      <div class="col-sm-12" #TABLE>
+        <p-table
+          #dt
+          id="excel-table"
+          p-table
+          #table
+          [value]="activeprojects"
+          [lazy]="true"
+          (onLazyLoad)="loadgridData($event)"
+          [paginator]="true"
+          [rows]="rows"
+          [showCurrentPageReport]="true"
+          paginatorDropdownAppendTo="body"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [rowsPerPageOptions]="[1, 10, 25, 50]"
+          [totalRecords]="activeprojects.length"
+          [loading]="loading"
+          [responsive]="true"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="has-details">
+                Name
+                <span class="details">
+                  <ul>
+                    Parties may indicate whether a measure is included in the
+                    ‘with measures’ projections.
+                  </ul>
+                </span>
+              </th>
+              <th class="has-details">
+                Description
+                <span class="details">
+                  <ul>
+                    Additional information may also be provided on the cost of
+                    the mitigation actions, non-GHG mitigation benefits, and how
+                    the mitigation action interacts with other mitigation
+                    actions, as appropriate (para. 83(a–c) of the MPGs)
+                  </ul>
+                  <ul>
+                    Parties should identify actions, policies and measures that
+                    influence GHG emissions from international transport (para.
+                    88 of the MPGs).
+                  </ul>
+                  <ul>
+                    Parties should, to the extent possible, provide information
+                    about how actions, policies and measures are modifying
+                    longer-term trends in GHG emissions and removals (para. 89
+                    of the MPGs).
+                  </ul>
+                </span>
+              </th>
+              <th>Objectives</th>
+              <th>Type of Instrument</th>
+              <th class="has-details">
+                Status
+                <span class="details">
+                  <ul>
+                    Parties shall, to the extent possible, use the following
+                    descriptive terms to report on status of implementation:
+                    planned, adopted or implemented (para. 82(e) of the MPGs).
+                  </ul>
+                </span>
+              </th>
+              <th class="has-details">
+                Sector(s) affected
+                <span class="details">
+                  <ul>
+                    Parties shall, to the extent possible, provide information
+                    on sector(s) affected: energy, transport, industrial
+                    processes and product use, agriculture, LULUCF, waste
+                    management or other (paras. 81 and 82(f) of the MPGs).
+                  </ul>
+                </span>
+              </th>
+              <th>Gasses affected</th>
+              <th>Nationally determined contributions</th>
+              <th>Start year of implementation</th>
+              <th>Implementing entity or entities</th>
+              <th class="has-details">
+                Estimate of GHG Emission Reduction (kt CO₂ eq)
+                <span class="details">
+                  <ul>
+                    Each Party shall provide, to the extent possible, estimates
+                    of expected and achieved GHG emission reductions for its
+                    actions, policies and measures in the tabular format; those
+                    developing country Parties that need flexibility in the
+                    light of their capacities with respect to this provision are
+                    instead encouraged to report this information (para. 85 of
+                    the MPGs).
+                  </ul>
+                  <ul>
+                    To the extent available, each Party shall describe the
+                    methodologies and assumptions used to estimate the GHG
+                    emission reductions or removals due to each action, policy
+                    and measure. This information may be presented in an annex
+                    to the biennial transparency report (para. 86 of the MPGs).
+                  </ul>
+                </span>
+                <tr>
+                  <th>Achieved</th>
+                  <th>Expected</th>
+                </tr>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-activeprojects>
+            <tr>
+              <td>
+                {{ activeprojects.Name }}
+              </td>
+
+              <td>
+                <input
+                  type="text"
+                  class="p-inputtext"
+                  [(ngModel)]="activeprojects.Description"
+                  pInputText
+                  style="border: transparent"
+                  [readonly]="true"
+                />
+                <span>{{ activeprojects.Description }}</span>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="p-inputtext"
+                  [(ngModel)]="activeprojects.Objectives"
+                  pInputText
+                  style="border: transparent"
+                  [readonly]="true"
+                />
+                <span>{{ activeprojects.Objectives }}</span>
+              </td>
+              <td>
+                <p-dropdown
+                  placeholder="Select"
+                  name="instrument"
+                  [(ngModel)]="activeprojects.Type_Of_Instrument"
+                  [options]="instrumentList"
+                ></p-dropdown>
+              </td>
+              <td>
+                <p-dropdown
+                  placeholder="Select"
+                  name="status"
+                  [(ngModel)]="activeprojects.Status"
+                  [options]="statusList"
+                  [readonly]="true"
+                ></p-dropdown>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="p-inputtext"
+                  [(ngModel)]="activeprojects.Sector_affected"
+                  pInputText
+                  style="border: transparent"
+                  [readonly]="true"
+                />
+                <span>{{ activeprojects.Sector_affected }}</span>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="p-inputtext"
+                  [(ngModel)]="activeprojects.Gasses_affected"
+                  pInputText
+                  style="border: transparent"
+                  [readonly]="true"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="p-inputtext"
+                  [(ngModel)]="activeprojects.ndc_ca"
+                  pInputText
+                  style="border: transparent"
+                  [readonly]="true"
+                />
+                <span>{{ activeprojects.ndc_ca }}</span>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="p-inputtext"
+                  [(ngModel)]="activeprojects.startYear_of_implementation"
+                  pInputText
+                  style="border: transparent"
+                  [readonly]="true"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="p-inputtext"
+                  [(ngModel)]="activeprojects.implementing_entity_or_entities"
+                  pInputText
+                  style="border: transparent"
+                  [readonly]="true"
+                />
+                <span>{{
+                  activeprojects.implementing_entity_or_entities
+                }}</span>
+              </td>
+              <td>
+                <tr>
+                  <td>
+                    <input
+                      type="text"
+                      class="p-inputtext"
+                      [(ngModel)]="activeprojects.achieved"
+                      pInputText
+                      style="border: transparent"
+                      [readonly]="true"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      class="p-inputtext"
+                      [(ngModel)]="activeprojects.expected"
+                      pInputText
+                      style="border: transparent"
+                      [readonly]="true"
+                    />
+                  </td>
+                </tr>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="col">
+          <button
+            pRipple
+            pButton
+            type="button"
+            (click)="download()"
+            class="btn btn-primary btn-block text-uppercase btn-lg"
+            style="margin-left: 1%"
+          >
+              Download Excel
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="col" *ngIf="this.recievedFlag == undefined">
+          <button
+            pRipple
+            pButton
+            type="button"
+            (click)="publish()"
+            class="btn btn-primary btn-block text-uppercase btn-lg"
+            style="margin-left: 1%"
+          >
+              Publish
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

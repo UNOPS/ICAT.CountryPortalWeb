@@ -1,0 +1,536 @@
+<div class="container">
+  <h4 class="mt-4">Approve Data</h4>
+  <div class="p-grid p-fluid card">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Specific Climate Actions</label>
+            <input
+              [disabled]="true"
+              type="text"
+              name="ndc"
+              #chgEmission="ngModel"
+              [(ngModel)]="headerlcimateActionName"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Assessment Type</label>
+            <input
+              [disabled]="true"
+              type="text"
+              name="ndc"
+              #chgEmission="ngModel"
+              [(ngModel)]="headerAssessmentType"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3" *ngIf="headerAssessmentType != 'MAC'">
+      <div class="col-md-6">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Aggregated Actions</label>
+            <input
+              [disabled]="true"
+              type="text"
+              name="ndc"
+              #chgEmission="ngModel"
+              [(ngModel)]="headerNDCName"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Action Areas</label>
+            <input
+              [disabled]="true"
+              type="text"
+              name="subNDc"
+              #chgEmission="ngModel"
+              [(ngModel)]="headerSubNDCName"
+              class="p-inputtext"
+              pInputText
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="col-5">
+          <label for="projStatus">Assessment Year</label>
+        </div>
+        <input
+          [disabled]="true"
+          type="text"
+          name="asseyear"
+          #asseyear="ngModel"
+          [(ngModel)]="headerAssessmentYear"
+          class="p-inputtext"
+          pInputText
+        />
+      </div>
+
+      <div class="col-md-6" *ngIf="headerAssessmentType != 'MAC'">
+        <div class="col-5">
+          <label for="projStatus">Base Year</label>
+        </div>
+        <input
+          [disabled]="true"
+          type="text"
+          name="baseasseyear"
+          #baseasseyear="ngModel"
+          [(ngModel)]="headerBaseYear"
+          class="p-inputtext"
+          pInputText
+        />
+      </div>
+    </div>
+
+    <div class="row mb-3" *ngIf="baselineParameters.length > 0">
+      <h4 class="mt-4 ml-3">Baseline Parameter</h4>
+      <p-table
+        #table
+        [value]="baselineParameters"
+        [lazy]="true"
+        [paginator]="false"
+        [showCurrentPageReport]="false"
+        [rowsPerPageOptions]="[1, 10, 25, 50]"
+        [loading]="loading"
+        [responsive]="true"
+        [(selection)]="selectedBaselineParameters"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox *ngIf="baselineParametersAcceptcount !== baselineParameters.length"></p-tableHeaderCheckbox>
+            </th>
+            <th>Parameter</th>
+            <th>Data Provider</th>
+            <th>Value</th>
+            <th>Unit</th>
+            <th>Status</th>
+            <th>Info</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-baselineParameters>
+          <tr>
+            <td>
+              <p-tableCheckbox *ngIf="baselineParameters.parameterRequest.dataRequestStatus === 9" [value]="baselineParameters"> </p-tableCheckbox>
+            </td>
+            <td>{{ baselineParameters.name }}</td>
+            <td>{{ baselineParameters.institution.name }}</td>
+
+            <td>
+              {{ baselineParameters.value }}
+            </td>
+            <td>
+              {{ baselineParameters.uomDataEntry }}
+            </td>
+
+            <td>
+              {{
+                baselineParameters.parameterRequest.dataRequestStatus == 9
+                  ? 'Pending'
+                  : ''
+              }}
+              {{
+                baselineParameters.parameterRequest.dataRequestStatus == 11
+                  ? 'Accepted'
+                  : ''
+              }}
+              {{
+                baselineParameters.parameterRequest.dataRequestStatus == -9
+                  ? 'Rejected'
+                  : ''
+              }}
+            </td>
+            <td>
+              <i
+                class="pi pi-ellipsis-v"
+                style="font-size: 2rem"
+                (click)="getInfo(baselineParameters)"
+              ></i>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="row mb-3" *ngIf="projectParameters && projectParameters.length > 0">
+      <h4 class="mt-4">Project Parameter</h4>
+      <p-table
+        #table
+        [value]="projectParameters"
+        [lazy]="true"
+        [paginator]="false"
+        [showCurrentPageReport]="false"
+        [rowsPerPageOptions]="[1, 10, 25, 50]"
+        [loading]="loading"
+        [responsive]="true"
+        [(selection)]="selectedProjectParameters"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox *ngIf="projectParametersAcceptcount !== projectParameters.length"></p-tableHeaderCheckbox>
+            </th>
+            <th>Parameter</th>
+            <th>Data Provider</th>
+            <th>Value</th>
+            <th>Unit</th>
+            <th>Status</th>
+            <th>Info</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-projectParameters>
+          <tr>
+            <td>
+              <p-tableCheckbox  *ngIf="projectParameters.parameterRequest.dataRequestStatus === 9" [value]="projectParameters"> </p-tableCheckbox>
+            </td>
+            <td>{{ projectParameters.name }}</td>
+            <td>{{ projectParameters.institution.name }}</td>
+
+            <td>
+              {{ projectParameters.value }}
+            </td>
+            <td>
+              {{ projectParameters.uomDataEntry }}
+            </td>
+
+            <td>
+              {{
+                projectParameters.parameterRequest.dataRequestStatus == 9
+                  ? 'Pending'
+                  : ''
+              }}
+              {{
+                projectParameters.parameterRequest.dataRequestStatus == 11
+                  ? 'Accepted'
+                  : ''
+              }}
+              {{
+                projectParameters.parameterRequest.dataRequestStatus == -9
+                  ? 'Rejected'
+                  : ''
+              }}
+            </td>
+            <td>
+              <i
+                class="pi pi-ellipsis-v"
+                style="font-size: 2rem"
+                (click)="getInfo(projectParameters)"
+              ></i>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="row mb-3" *ngIf="lekageParameters && lekageParameters.length > 0">
+      <h4 class="mt-4">Leakage Parameter</h4>
+      <p-table
+        #table
+        [value]="lekageParameters"
+        [lazy]="true"
+        [paginator]="false"
+        [showCurrentPageReport]="false"
+        [rowsPerPageOptions]="[1, 10, 25, 50]"
+        [loading]="loading"
+        [responsive]="true"
+        [(selection)]="selectedLeakageParameters"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox *ngIf="lekageParametersAcceptcount !== lekageParameters.length"></p-tableHeaderCheckbox>
+            </th>
+            <th>Parameter</th>
+            <th>Data Provider</th>
+            <th>Value</th>
+            <th>Unit</th>
+            <th>Status</th>
+            <th>Info</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-lekageParameters>
+          <tr>
+            <td>
+              <p-tableCheckbox  *ngIf="lekageParameters.parameterRequest.dataRequestStatus === 9" [value]="lekageParameters"> </p-tableCheckbox>
+            </td>
+            <td>{{ lekageParameters.name }}</td>
+            <td>{{ lekageParameters.institution.name }}</td>
+
+            <td>
+              {{ lekageParameters.value }}
+            </td>
+            <td>
+              {{ lekageParameters.uomDataEntry }}
+            </td>
+
+            <td>
+              {{
+                lekageParameters.parameterRequest.dataRequestStatus == 9
+                  ? 'Pending'
+                  : ''
+              }}
+              {{
+                lekageParameters.parameterRequest.dataRequestStatus == 11
+                  ? 'Accepted'
+                  : ''
+              }}
+              {{
+                lekageParameters.parameterRequest.dataRequestStatus == -9
+                  ? 'Rejected'
+                  : ''
+              }}
+            </td>
+            <td>
+              <i
+                class="pi pi-ellipsis-v"
+                style="font-size: 2rem"
+                (click)="getInfo(lekageParameters)"
+              ></i>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="row mb-3" *ngIf="projectionParameters && projectionParameters.length > 0">
+      <h4 class="mt-4">Projection Parameter</h4>
+      <p-table
+        #table
+        [value]="projectionParameters"
+        [lazy]="true"
+        [paginator]="false"
+        [showCurrentPageReport]="false"
+        [rowsPerPageOptions]="[1, 10, 25, 50]"
+        [loading]="loading"
+        [responsive]="true"
+        [(selection)]="selectedProjectionParameters"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox *ngIf="projectionParametersAcceptcount !== projectionParameters.length"></p-tableHeaderCheckbox>
+            </th>
+            <th>Parameter</th>
+            <th>Data Provider</th>
+            <th>Value</th>
+            <th>Unit</th>
+            <th>Status</th>
+            <th>Info</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-projectionParameter>
+          <tr>
+            <td>
+              <p-tableCheckbox  *ngIf="projectionParameter.parameterRequest.dataRequestStatus === 9" [value]="projectionParameter">
+              </p-tableCheckbox>
+            </td>
+            <td>{{ projectionParameter.name }}</td>
+            <td>
+              {{
+                projectionParameter.institution
+                  ? projectionParameter.institution.name
+                  : ""
+              }}
+            </td>
+            <td>
+              {{ projectionParameter.value }}
+            </td>
+            <td>
+              {{ projectionParameter.uomDataEntry }}
+            </td>
+
+            <td>
+              {{
+                projectionParameter.parameterRequest.dataRequestStatus == 9
+                  ? 'Pending'
+                  : ''
+              }}
+              {{
+                projectionParameter.parameterRequest.dataRequestStatus == 11
+                  ? 'Accepted'
+                  : ''
+              }}
+              {{
+                projectionParameter.parameterRequest.dataRequestStatus == -9
+                  ? 'Rejected'
+                  : ''
+              }}
+            </td>
+            <td>
+              <i
+                class="pi pi-ellipsis-v"
+                style="font-size: 2rem"
+                (click)="getInfo(projectionParameters)"
+              ></i>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="row mb-3" *ngIf="hideAllButtons != 4">
+      <div
+        class="d-flex justify-content-end align-content-center flex-wrap mb-15 mr-10"
+      >
+        <button
+          class="btn btn-primary text-uppercase"
+          type="submit"
+          [disabled]="disableAccept()"
+          (click)="onAcceptClick()"
+        >
+          {{getAcceptLabel()}}
+        </button>
+        <div *ngIf="isHideRejectButton == false">
+        <button
+          class="btn btn-primary text-uppercase ml-5"
+          type="submit"
+          [disabled]="disableReject()"
+          (click)="onRejectClick()"
+          
+        >
+          Reject 
+        </button>
+         </div>
+        <button
+          class="btn btn-primary text-uppercase ml-5"
+          type="submit"
+          [disabled]="!enableQCButton || dissetButton"
+          (click)="onOpenPopUP()"
+        >
+          {{ this.buttonLabel }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<p-dialog [(visible)]="confirm1" header="Reject Data">
+  <div class="container" style="width: 600px; height: 500px">
+    <div class="row mb-2">
+      <div class="col-3">Data Provider</div>
+      <div class="col-4">
+        <p-dropdown
+          name="dataProvider"
+          [options]="institutionList"
+          [(ngModel)]="selectedInstitution"
+          #fsector="ngModel"
+          [showClear]="true"
+          [filter]="true"
+          placeholder="Select .."
+          optionLabel="name"
+        >
+        </p-dropdown>
+      </div>
+      <div class="col-5"></div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-3">New Deadline</div>
+      <div class="col-4">
+        <p-calendar
+          [minDate]="minDate"
+          [(ngModel)]="selectedDeadline"
+          placeholder="DD/MM/YYYY"
+          dateFormat="dd/mm/yy"
+        ></p-calendar>
+      </div>
+      <div class="col-5"></div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-3">Reason</div>
+      <div class="col-4">
+        <textarea
+          rows="4"
+          cols="35"
+          placeholder="Reason for Reject"
+          type="text"
+          class="p-inputtext"
+          [(ngModel)]="reasonForReject"
+          pInputTextarea
+        ></textarea>
+      </div>
+      <div class="col-5"></div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-3"></div>
+      <div class="col-4">
+        <button
+          type="button"
+          pButton
+          pRipple
+          label="Reject"
+          style="margin-right: 10px"
+          (click)="onRejectConfirm()"
+        ></button>
+
+        <button type="button" pButton pRipple label="Cancel"></button>
+      </div>
+      <div class="col-5"></div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog [(visible)]="isOpenPopUp" header="Assign deadline and send to QC">
+  <div class="container" style="width: 600px; height: 500px">
+    <div class="row mb-2">
+      <div class="col-3">New Deadline</div>
+      <div class="col-4">
+        <p-calendar
+          [minDate]="minDate"
+          [(ngModel)]="selectedQCDeadline"
+          placeholder="DD/MM/YYYY"
+          dateFormat="dd/mm/yy"
+        ></p-calendar>
+      </div>
+      <div class="col-5"></div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-3"></div>
+      <div class="col-4">
+        <button
+          type="button"
+          pButton
+          pRipple
+          label="Send"
+          style="margin-right: 10px"
+          (click)="onClickQC()"
+        ></button>
+      </div>
+      <div class="col-5"></div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="Data Request History"
+  [(visible)]="displayHistory"
+  appendTo="body"
+>
+  <div class="container" style="width: 600px; height: 500px">
+    <app-view-datarequest-history
+      [parameterId]="paraId"
+      [listOfHistory]="requestHistoryList"
+    >
+    </app-view-datarequest-history>
+  </div>
+</p-dialog>
+
+<p-toast position="top-right"></p-toast>

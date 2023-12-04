@@ -1,0 +1,146 @@
+<section class="container pl-20 pr-20">
+  <h4 class="mt-4">Status of Data Request</h4>
+
+  <div class="p-grid p-fluid card" [style]="{ overflow: 'visible' }">
+    <div class="row p-2">
+      <div class="col-12 col-md-6"></div>
+      <div class="col-12 col-md-6">
+        <div class="p-inputgroup pb-4">
+          <label for="namemethodology"></label>
+          <input
+            placeholder="Type Your Keyword"
+            [(ngModel)]="searchBy.text"
+            #namemethodology="ngModel"
+            type="text"
+            name="namemethodology"
+            class="p-inputtext"
+            pInputText
+          />
+          <button
+            type="button"
+            pButton
+            pRipple
+            label="Search"
+            (click)="onSearch()"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="col-12">
+          <div class="p-field">
+            <label for="projStatus">Specific Climate Actions</label>
+            <p-dropdown
+              name="climateActiontype"
+              [options]="dataReqCA"
+              [(ngModel)]="searchBy.climateaction"
+              #fsector="ngModel"
+              [showClear]="true"
+              [filter]="true"
+              placeholder="Select .."
+              optionLabel="climateActionName"
+              (ngModelChange)="onCAChange($event)"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="projYear">Year</label>
+          <p-dropdown
+            name="projYear"
+            [options]="yearList"
+            [(ngModel)]="searchBy.year"
+            #fsector="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            placeholder="Select .."
+            optionLabel="assessmentYear"
+            (ngModelChange)="onYearChange($event)"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-field">
+          <label for="projStatus">Status</label>
+          <p-dropdown
+            name="institutiontype"
+            [options]="statusList"
+            [(ngModel)]="searchBy.status"
+            #fsector="ngModel"
+            [showClear]="true"
+            [filter]="true"
+            placeholder="Select .."
+            optionLabel="name"
+            (ngModelChange)="onStatusChange($event)"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <p-table
+        #dt
+        #table
+        [value]="datarequests"
+        [lazy]="true"
+        (onLazyLoad)="loadgridData($event)"
+        [paginator]="true"
+        [rows]="rows"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="['10', '25', '50']"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+        [responsive]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Specific Climate Action</th>
+            <th>Assessment Type</th>
+            <th>Assessment Year</th>
+            <th>Total Data Requests</th>
+            <th>Pending Data Requests</th>
+            <th>Pending Data Entries</th>
+            <th>Received</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-datarequests>
+          <tr>
+            <td>{{ datarequests.name }}</td>
+            <td>{{ datarequests.type }}</td>
+            <td>{{ datarequests.year }}</td>
+            <td>{{ datarequests.totalreqCount }}</td>
+            <td>{{ datarequests.pendingreqCount }}</td>
+            <td>{{ datarequests.pendingdataentries }}</td>
+            <td>{{ datarequests.recieved }}</td>
+            <td>
+              <button
+                pRipple
+                pButton
+                type="button"
+                (click)="directToApprovePage(datarequests)"
+                [disabled]="
+                  datarequests.qaStatus === 4 ||
+                  datarequests.qaStatus === 1 ||
+                  (datarequests.isAllParameterAccept &&
+                    datarequests.qaStatus !== null)
+                "
+                class="btn btn-primary btn-block text-uppercase btn-lg"
+                style="margin-left: 1%"
+              >
+                <!--  {{datarequests.qaStatus ==4 || datarequests.qaStatus ==1 ? "Approved Data" : "Approve Data"}} -->
+                {{ getApproveDataLabel(datarequests) }}
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</section>

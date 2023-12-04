@@ -1,0 +1,572 @@
+<nb-layout>
+  <nb-layout-column class="p-0">
+    <div class="wrapper d-flex flex-row flex-grow-1">
+      <div
+        *ngIf="showLeftMenu"
+        class="sidebar d-flex flex-column customSB d-print-none"
+        [ngClass]="{ open: togglemenu || innerWidth > 1280 }"
+      >
+        <div
+          class="sidebar--button selectable"
+          (click)="togglemenu = !togglemenu"
+        >
+          <i class="pi pi-arrow-right" *ngIf="!togglemenu"></i>
+          <i class="pi pi-arrow-left" *ngIf="togglemenu"></i>
+        </div>
+        <div class="sidebar--header">
+          <div class="row mb-2">
+            <div class="col-md-3">
+              <img
+              src="https://climateactiontransparency.org/wp-content/themes/custom/assets/i/logo/logo_purple.svg"
+              alt="logo" height="40px"
+            />
+            </div>
+            <div class="col-md-5">
+              <img
+                src="https://climateactiontransparency.org/wp-content/themes/custom/assets/i/logo/logo_text.svg"
+                width="150px"
+                height="40px"
+                alt="logo text"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-items flex-grow-1">
+          <div data-ccs-admin-menu>
+            <div
+              *ngIf="
+                userRole.role == 1 ||
+                userRole.role == 2 ||
+                userRole.role == 3 ||
+                userRole.role == 4 ||
+                userRole.role == 5 ||
+                userRole.role == 6 ||
+                userRole.role == 7
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/dashboard']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Dashboard
+            </div>
+
+            <div
+              *ngIf="
+                userRole.role == 8 ||
+                userRole.role == 9 ||
+                userRole.role == 10 ||
+                userRole.role == 11
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/ia-dashboard']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Dashboard
+            </div>
+
+            <div
+              *ngIf="userRole.role == 2"
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/verification-verifier']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Verification
+            </div>
+
+            <div
+              *ngIf="userRole.role == 2"
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/verification-history']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Verification History
+            </div>
+
+            <div
+              *ngIf="userRole.role == 1"
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/view-country']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Country Profile
+            </div>
+
+            <div
+              *ngIf="
+                userRole.role == 1 ||
+                userRole.role == 3 ||
+                userRole.role == 4 ||
+                userRole.role == 5 ||
+                userRole.role == 6
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/institution-list']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Manage Institutions
+            </div>
+
+            <div
+              *ngIf="
+                userRole.role == 1 ||
+                userRole.role == 3 ||
+                userRole.role == 4 ||
+                userRole.role == 5 ||
+                userRole.role == 6 ||
+                userRole.role == 8
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/user-list']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Manage Users
+            </div>
+
+            <div
+              *ngIf="userRole.role == 6 || userRole.role == 4"
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/app-managedatastatus']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Data Request Status
+            </div>
+
+            <div
+              *ngIf="userRole.role == 6 || userRole.role == 4"
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/app-data-request']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Data Request
+            </div>
+
+            <div
+              *ngIf="userRole.role == 6 || userRole.role == 4"
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/app-manage-default-values']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Manage Default Values
+            </div>
+
+            <div
+              *ngIf="userRole.role == 8"
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/app-assign-data-request']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Assign Data Request
+            </div>
+
+            <div
+              *ngIf="
+                userRole.role == 8 ||
+                userRole.role == 9 ||
+                userRole.role == 10 ||
+                userRole.role == 11
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/app-enter-data']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Enter Data
+            </div>
+
+            <div
+              *ngIf="userRole.role == 8"
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/app-review-data']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Review Data
+            </div>
+
+            <p-accordion
+              *ngIf="
+                userRole.role == 1 ||
+                userRole.role == 3 ||
+                userRole.role == 4 ||
+                userRole.role == 5 ||
+                userRole.role == 8 ||
+                userRole.role == 9 ||
+                userRole.role == 10
+              "
+            >
+              <p-accordionTab data-assess>
+                <p-header
+                  class="p-accordion-header-text d-flex flex-row align-items-left"
+                >
+                  <div routerLinkActive="selected">
+                    <p class="mb-2">Climate Action</p>
+                  </div>
+                </p-header>
+
+                <div
+                  *ngIf="
+                    userRole.role == 1 ||
+                    userRole.role == 8 ||
+                    userRole.role == 9 ||
+                    userRole.role == 10
+                  "
+                  class="sidebar-items--link d-flex flex-column align-items-start"
+                  [routerLink]="['/climate-action']"
+                  routerLinkActive="selected"
+                >
+                  <p class="mb-0 ml-20">All Climate Actions</p>
+                </div>
+
+                <div
+                  *ngIf="
+                    userRole.role == 3 ||
+                    userRole.role == 4 ||
+                    userRole.role == 5
+                  "
+                  class="sidebar-items--link d-flex flex-column align-items-start"
+                  [routerLink]="['/propose-project-list']"
+                  routerLinkActive="selected"
+                >
+                  <p class="mb-0 ml-20">Manage Climate Actions</p>
+                </div>
+
+                <div
+                  *ngIf="
+                    userRole.role == 3 ||
+                    userRole.role == 4 ||
+                    userRole.role == 5
+                  "
+                  class="sidebar-items--link d-flex flex-column align-items-start"
+                  [routerLink]="['/all-climate-action']"
+                  routerLinkActive="selected"
+                >
+                  <p class="mb-0 ml-20">Accepted Climate Action</p>
+                </div>
+
+                <div
+                  *ngIf="
+                    (userRole.role == 3 ||
+                      userRole.role == 4 ||
+                      userRole.role == 5) &&
+                    [
+                      models.DATACOLLECTION_MODULE,
+                      models.DATACOLLECTION_GHG_MODULE
+                    ].some(getModel)
+                  "
+                  class="sidebar-items--link d-flex flex-column align-items-start"
+                  [routerLink]="['/active-climate-action']"
+                  routerLinkActive="selected"
+                >
+                  <p class="mb-0 ml-20">Assessed Climate Action</p>
+                </div>
+
+                <div
+                  *ngIf="
+                    (userRole.role == 1 || userRole.role == 3) &&
+                    [
+                      models.DATACOLLECTION_MODULE,
+                      models.DATACOLLECTION_GHG_MODULE
+                    ].some(getModel)
+                  "
+                  class="sidebar-items--link d-flex flex-column align-items-start"
+                  [routerLink]="['/track-ca-summary-country']"
+                  routerLinkActive="selected"
+                >
+                  <p class="mb-0 ml-20">Track Climate Actions</p>
+                </div>
+              </p-accordionTab>
+            </p-accordion>
+
+            <p-accordion
+              *ngIf="
+                (userRole.role == 3 ||
+                  userRole.role == 4 ||
+                  userRole.role == 5) &&
+                [
+                  models.GHG_MODULE,
+                  models.MAC_MODULE,
+                  models.DATACOLLECTION_MODULE
+                ].some(getModel)
+              "
+            >
+              <p-accordionTab data-assess>
+                <p-header
+                  class="p-accordion-header-text d-flex flex-row align-items-left"
+                >
+                  <p class="mb-2">Assess Climate Actions</p>
+                </p-header>
+
+                <div
+                  *ngIf="
+                    (userRole.role == 3 ||
+                      userRole.role == 4 ||
+                      userRole.role == 5) &&
+                    [models.MAC_MODULE, models.DATACOLLECTION_MODULE].some(
+                      getModel
+                    )
+                  "
+                  class="sidebar-items--link d-flex flex-column align-items-start ml-16"
+                  [routerLink]="['/mac-tab']"
+                  routerLinkActive="selected"
+                >
+                  <p class="mb-0 ml-20">MAC</p>
+                </div>
+                <div
+                  *ngIf="
+                    (userRole.role == 3 ||
+                      userRole.role == 4 ||
+                      userRole.role == 5) &&
+                    [
+                      models.GHG_MODULE,
+                      models.MAC_MODULE,
+                      models.DATACOLLECTION_MODULE
+                    ].some(getModel)
+                  "
+                  class="sidebar-items--link d-flex flex-column align-items-start ml-16"
+                  [routerLink]="['/ghg-impact']"
+                  routerLinkActive="selected"
+                >
+                  <p class="mb-0 ml-20">GHG Impact</p>
+                </div>
+              </p-accordionTab>
+            </p-accordion>
+
+            <div
+              *ngIf="userRole.role == 7 || userRole.role == 4"
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/qc']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Quality Control
+            </div>
+
+            <div
+              *ngIf="
+                (userRole.role == 3 ||
+                  userRole.role == 4 ||
+                  userRole.role == 5) &&
+                [
+                  models.GHG_MODULE,
+                  models.MAC_MODULE,
+                  models.DATACOLLECTION_MODULE
+                ].some(getModel)
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/all-result']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Results
+            </div>
+
+            <div
+              *ngIf="
+                (userRole.role == 3 ||
+                  userRole.role == 4 ||
+                  userRole.role == 5) &&
+                [
+                  models.DATACOLLECTION_MODULE,
+                  models.DATACOLLECTION_GHG_MODULE
+                ].some(getModel)
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/verification-sector-admin']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Verification
+            </div>
+
+            <div
+              *ngIf="
+                userRole.role == 1 ||
+                userRole.role == 2 ||
+                userRole.role == 3 ||
+                userRole.role == 4 ||
+                userRole.role == 5 ||
+                userRole.role == 6 ||
+                userRole.role == 7
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/methodologies']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Methodologies
+            </div>
+
+            <div
+              *ngIf="
+                userRole.role == 1 &&
+                [
+                  models.DATACOLLECTION_MODULE,
+                  models.DATACOLLECTION_GHG_MODULE
+                ].some(getModel)
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/app-assign-verifiers']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Assign Verifiers
+            </div>
+
+            <div
+              *ngIf="
+                (userRole.role == 1 ||
+                  userRole.role == 3 ||
+                  userRole.role == 4 ||
+                  userRole.role == 5) &&
+                [
+                  models.DATACOLLECTION_MODULE,
+                  models.DATACOLLECTION_GHG_MODULE
+                ].some(getModel)
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/report']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Reports
+            </div>
+
+            <div
+              *ngIf="
+                userRole.role == 1 ||
+                userRole.role == 2 ||
+                userRole.role == 3 ||
+                userRole.role == 4 ||
+                userRole.role == 5 ||
+                userRole.role == 6 ||
+                userRole.role == 7 ||
+                userRole.role == 8 ||
+                userRole.role == 9 ||
+                userRole.role == 10 ||
+                userRole.role == 11
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/learning-material']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Learning Materials
+            </div>
+
+            <div
+              *ngIf="
+                userRole.role == 1 ||
+                userRole.role == 2 ||
+                userRole.role == 3 ||
+                userRole.role == 4 ||
+                userRole.role == 5 ||
+                userRole.role == 6 ||
+                userRole.role == 7 ||
+                userRole.role == 8 ||
+                userRole.role == 9 ||
+                userRole.role == 10 ||
+                userRole.role == 11
+              "
+              class="sidebar-items--link align-items-start"
+              [routerLink]="['/activity']"
+              routerLinkActive="selected"
+            >
+              <div class=""></div>
+              Activity log
+            </div>
+
+            <div
+            *ngIf="
+              userRole.role == 1 ||
+              userRole.role == 2 ||
+              userRole.role == 3 ||
+              userRole.role == 4 ||
+              userRole.role == 5 ||
+              userRole.role == 6 ||
+              userRole.role == 7 ||
+              userRole.role == 8 ||
+              userRole.role == 9 ||
+              userRole.role == 10 ||
+              userRole.role == 11
+            "
+            class="sidebar-items--link align-items-start"
+            [routerLink]="['/reset-password']"
+            routerLinkActive="selected"
+          >
+            <div class=""></div>
+            Reset Your Password
+          </div>
+            <p-accordion>
+            </p-accordion>
+          </div>
+        </div>
+
+        <div class="sidebar--footer">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div class="ml-2 mr-2"></div>
+        </div>
+      </div>
+      <div class="main d-flex flex-column flex-grow-1">
+        <div class="d-flex flex-column justify-content-end">
+          <div class="p-text-nowrap p-text-truncate m-0 pr-2 text-right">
+            <div
+              class="top-panel d-flex justify-content-end"
+              *ngIf="showTopMenu"
+            >
+              <div class="d-flex mt-10 mr-20">
+                <span class="mr-10">
+                  <img
+                    style="
+                      position: relative;
+                      top: 50%;
+                      transform: translateY(-50%);
+                    "
+                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+                    alt="mdo"
+                    width="45"
+                    height="45"
+                    class="rounded-circle"
+                /></span>
+
+                <span></span>
+                <span>
+                  <div class="username">{{ fname }} {{ lname }}</div>
+                  <div class="userrole">{{ urole }}</div>
+                  <div class="userrole">{{ instName }}</div>
+                </span>
+
+                <div class="col-sm"></div>
+                <span>
+                  <button
+                    class="btn btn-block btn-primary ml-10 mt-10 text-uppercase"
+                    type="submit"
+                    (click)="logout()"
+                  >
+                    Logout
+                  </button></span
+                >
+              </div>
+            </div>
+          </div>
+          <div
+            class="p-text-nowrap p-text-truncate m-0 mb-1 pr-2 text-right"
+          ></div>
+        </div>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </nb-layout-column>
+</nb-layout>
