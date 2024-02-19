@@ -3260,7 +3260,7 @@ export class GhgAssessmentComponent implements OnInit {
         if (!p.value && !p.institution) {
           if (!p.defaultValue && p.isDefaultValue) {
             this.requiredParas = false;
-          } else if (!p.isDefaultValue && !p.institution) {
+          } else if (!p.isDefaultValue && !p.institution && !this.checkaltnative(p.alternativeParameters)) {
             this.requiredParas = false;
           }
         }
@@ -3328,7 +3328,21 @@ export class GhgAssessmentComponent implements OnInit {
 
     return param;
   }
-
+  checkaltnative(para: Parameter[]){
+    let st :Boolean =true;
+     for (let p of para){
+      if (p.isAlternativeParameter) {
+        if (!p.value && !p.institution) {
+          if (!p.defaultValue && p.isDefaultValue) {
+            st= false;
+          } else if (!p.isDefaultValue && !p.institution) {
+            st = false;
+          }
+        }
+      }
+     }
+     return st;
+    }
   createProjectionParam(
     name: string,
     institution: Institution,
