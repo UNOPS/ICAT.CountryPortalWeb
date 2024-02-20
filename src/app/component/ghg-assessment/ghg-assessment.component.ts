@@ -1632,6 +1632,36 @@ export class GhgAssessmentComponent implements OnInit {
         this.prParameters.powerPlantSection = powerSection;
       }
     }
+    if (this.prHasFuel) {
+      if (!this.prHasFeedstock) {
+        let fuelParam = this.getDiminsion(this.fuel, this.ProjectParam);
+
+        let fuelCommon = this.getCommon(this.prFuelValue);
+        if (fuelCommon) {
+          this.projectSelection[0].fuel.unshift(fuelCommon);
+        }
+
+        let fuelSection = this.genrateFuelParameterSection(
+          this.projectSelection,
+          fuelParam,
+          'Fuel Info'
+        );
+        this.prParameters.fuelSection = fuelSection;
+      }
+      else {
+        let fuelParam = this.getDiminsion(this.fuel, this.ProjectParam);
+        let fuelCommon = this.getCommon(this.prFuelValue);
+        if (fuelCommon) {
+          this.projectSelection[0].fuel.unshift(fuelCommon);
+        }
+          let fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
+            this.projectSelection,
+            fuelParam,
+            'Fuel Info'
+          );
+          this.prParameters.fuelSection = fuelSection;
+      }
+    }
     this.getParameterInfo(this.prParameters);
   }
 }
