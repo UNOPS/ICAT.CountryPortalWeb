@@ -628,7 +628,7 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
       this.spin=false;
     })
     let url = environment.baseUrlAPI + `/${res.fileName}`;
-    window.open(url, '_blank');
+    setTimeout(() => {window.open(url, '_blank');},10000)
   
     this.filterReportData()
    
