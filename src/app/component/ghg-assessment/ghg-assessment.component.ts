@@ -1632,6 +1632,36 @@ export class GhgAssessmentComponent implements OnInit {
         this.prParameters.powerPlantSection = powerSection;
       }
     }
+    if (this.prHasFuel) {
+      if (!this.prHasFeedstock) {
+        let fuelParam = this.getDiminsion(this.fuel, this.ProjectParam);
+
+        let fuelCommon = this.getCommon(this.prFuelValue);
+        if (fuelCommon) {
+          this.projectSelection[0].fuel.unshift(fuelCommon);
+        }
+
+        let fuelSection = this.genrateFuelParameterSection(
+          this.projectSelection,
+          fuelParam,
+          'Fuel Info'
+        );
+        this.prParameters.fuelSection = fuelSection;
+      }
+      else {
+        let fuelParam = this.getDiminsion(this.fuel, this.ProjectParam);
+        let fuelCommon = this.getCommon(this.prFuelValue);
+        if (fuelCommon) {
+          this.projectSelection[0].fuel.unshift(fuelCommon);
+        }
+          let fuelSection = this.genrateFuelParameterSectionWhenHasFeedstock(
+            this.projectSelection,
+            fuelParam,
+            'Fuel Info'
+          );
+          this.prParameters.fuelSection = fuelSection;
+      }
+    }
     this.getParameterInfo(this.prParameters);
   }
 }
@@ -3260,7 +3290,7 @@ export class GhgAssessmentComponent implements OnInit {
         if (!p.value && !p.institution) {
           if (!p.defaultValue && p.isDefaultValue) {
             this.requiredParas = false;
-          } else if (!p.isDefaultValue && !p.institution) {
+          } else if (!p.isDefaultValue && !p.institution && !this.checkaltnative(p.alternativeParameters)) {
             this.requiredParas = false;
           }
         }
@@ -3328,7 +3358,21 @@ export class GhgAssessmentComponent implements OnInit {
 
     return param;
   }
-
+  checkaltnative(para: Parameter[]){
+    let st :Boolean =true;
+     for (let p of para){
+      if (p.isAlternativeParameter) {
+        if (!p.value && !p.institution) {
+          if (!p.defaultValue && p.isDefaultValue) {
+            st= false;
+          } else if (!p.isDefaultValue && !p.institution) {
+            st = false;
+          }
+        }
+      }
+     }
+     return st;
+    }
   createProjectionParam(
     name: string,
     institution: Institution,

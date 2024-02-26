@@ -626,11 +626,11 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
 
     let resultPdfData = await this.reportProxy.getReportPdfFileData(this.reportPdfFile).subscribe((a) => {
       this.spin=false;
+      let url = environment.baseUrlAPI + `/document/downloadReport/${ res.fileName }`;
+      setTimeout(() => {window.open(url, '_blank');},10000)
+      this.filterReportData()
     })
-    let url = environment.baseUrlAPI + `/${res.fileName}`;
-    setTimeout(() => {window.open(url, '_blank');},10000)
-  
-    this.filterReportData()
+ 
    
   }
 }
