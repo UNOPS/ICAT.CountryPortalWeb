@@ -502,9 +502,8 @@ export class ProposeProjectComponent implements OnInit {
         this.institutionList = res.data;
       });
 
-    if (this.editEntytyId != 0) {
+    if (this.editEntytyId != 0 && this.editEntytyId !=undefined) {
       const docFilter: string[] = [];
-
       docFilter.push('documentOwnerId||$eq||' + this.editEntytyId);
       this.serviceProxy
         .getManyBaseDocumentControllerDocuments(

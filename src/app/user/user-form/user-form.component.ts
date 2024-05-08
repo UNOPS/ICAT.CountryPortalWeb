@@ -28,6 +28,8 @@ export class UserFormComponent implements OnInit {
   temp3: string;
 
   user: User = new User();
+  country: Country= new Country();
+
 
   userTypes: any[] = [];
   selectedUserTypesFordrop: UserType[] = [];
@@ -74,7 +76,7 @@ export class UserFormComponent implements OnInit {
   telephoneLength: number;
   uniq: string;
   mask: string;
-
+  
   constructor(
     private serviceProxy: ServiceProxy,
     private route: ActivatedRoute,
@@ -104,6 +106,7 @@ export class UserFormComponent implements OnInit {
       0
     )
       .subscribe((res: any) => {
+        this.country= res;
         this.telephoneLength = res.telephoneLength;
         this.mask = res.uniqtelephone + " ";
         let y = 3;
@@ -329,33 +332,65 @@ export class UserFormComponent implements OnInit {
 
   async onInstitutionChange(event: any) {
     let tempList = this.userTypes
-
-    if (event && event.type.id == 2) {
-      let res = await this.instProxy.getInstitutionForUsers(event.id, 3).toPromise()
-
-      if (res == 1) {
-
-        tempList = tempList.filter((a) => a.ae_name != "Sector Admin")
+    if(this.country.dataCollectionGhgModule || this.country.dataCollectionModule){
+      if (event && event.type.id == 2) {
+        let res = await this.instProxy.getInstitutionForUsers(event.id, 3).toPromise()
+  
+        if (res == 1) {
+  
+          tempList = tempList.filter((a) => a.ae_name != "Sector Admin")
+        }
+      }
+      else if (event && event.type.id == 3) {
+  
+        let res = await this.instProxy.getInstitutionForUsers(event.id, 8).toPromise();
+  
+        if (res == 1) {
+          tempList = tempList.filter((a) => a.ae_name != "Institution Admin")
+        }
+      }
+  
+      if (this.userRole === "Institution Admin") {
+        this.selectedUserTypesFordrop = tempList.filter((a) => a.ae_name === "Data Entry Operator")
+      }
+      else {
+  
+        this.selectedUserTypesFordrop = tempList.filter(
+          (a) => a.int_institutionTypeId === event.type.id
+        );
       }
     }
-    else if (event && event.type.id == 3) {
 
-      let res = await this.instProxy.getInstitutionForUsers(event.id, 8).toPromise();
-
-      if (res == 1) {
-        tempList = tempList.filter((a) => a.ae_name != "Institution Admin")
+    else{
+      if (event && event.type.id == 2) {
+        let res = await this.instProxy.getInstitutionForUsers(event.id, 3).toPromise()
+  
+        if (res == 1) {
+  
+          tempList = tempList.filter((a) => a.ae_name != "Sector Admin" && a.ae_name != "Data Collection Team" &&  a.ae_name != "QC Team" )
+        }
+      }
+      else if (event && event.type.id == 3) {
+  
+        let res = await this.instProxy.getInstitutionForUsers(event.id, 8).toPromise();
+  
+        if (res == 1) {
+          tempList = tempList.filter((a) => a.ae_name != "Institution Admin" && a.ae_name != "Data Collection Team" &&  a.ae_name != "QC Team")
+        }
+      }
+  
+      if (this.userRole === "Institution Admin") {
+        this.selectedUserTypesFordrop = tempList.filter((a) => a.ae_name === "Data Entry Operator" && a.ae_name != "Data Collection Team" &&  a.ae_name != "QC Team")
+      }
+      else {
+  
+        this.selectedUserTypesFordrop = tempList.filter(
+          (a) => a.int_institutionTypeId === event.type.id
+        );
       }
     }
 
-    if (this.userRole === "Institution Admin") {
-      this.selectedUserTypesFordrop = tempList.filter((a) => a.ae_name === "Data Entry Operator")
-    }
-    else {
-
-      this.selectedUserTypesFordrop = tempList.filter(
-        (a) => a.int_institutionTypeId === event.type.id
-      );
-    }
+   
   }
 
   onInstitutionChange2(aaa: any) {
