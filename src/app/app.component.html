@@ -275,6 +275,8 @@
                   *ngIf="
                     (userRole.role == 1 || userRole.role == 3) &&
                     [
+                      models.GHG_MODULE,
+                      models.MAC_MODULE,
                       models.DATACOLLECTION_MODULE,
                       models.DATACOLLECTION_GHG_MODULE
                     ].some(getModel)
