@@ -364,10 +364,8 @@ export class UserFormComponent implements OnInit {
       }
     }
     else {
-      console.log(this.country, event.type)
       if (event && event.type.id == 2) {
         let res = await this.instProxy.getInstitutionForUsers(event.id, 3).toPromise()
-        console.log(res)
         if (res == 1) {
 
           tempList = tempList.filter((a) => a.ae_name != "Sector Admin" && a.ae_name != "Data Collection Team" && a.ae_name != "QC Team")
