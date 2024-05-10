@@ -7,9 +7,11 @@ import {
 } from './../../../shared/service-proxies/service-proxies';
 import {
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { environment } from '../../../environments/environment';
@@ -28,6 +30,9 @@ export class DocumentUploadComponent implements OnInit, OnChanges {
   @Input() showUpload: boolean = true;
   @Input() id: number = 0;
   @Input() viewDocument: boolean = false;
+
+  @Output() documentID =new EventEmitter<any>();
+  // onCompleteConcern = new EventEmitter<boolean>();
 
   loading: boolean;
   uploadedFiles: any[] = [];
@@ -80,6 +85,7 @@ export class DocumentUploadComponent implements OnInit, OnChanges {
           .subscribe(
             (res) => {
               this.doucmentList = res;
+              this.documentID.emit(res);
               this.loading = false;
             },
             (err: any) => console.log(err)
@@ -107,7 +113,6 @@ export class DocumentUploadComponent implements OnInit, OnChanges {
     if (this.doucmentList === undefined || this.doucmentList === null) {
       this.doucmentList = [];
     }
-
     for (const file of event.files) {
       this.loading = true;
       file.documentOwner = this.documentOwner;

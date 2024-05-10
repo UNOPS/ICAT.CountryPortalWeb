@@ -431,7 +431,7 @@ export class MacAssessmentComponent implements OnInit, AfterViewInit {
       );
       assessment.emmisionReductionValue = this.reduction;
       assessment.assessmentType = 'MAC';
-      assessment.ghgAssessTypeForMac = this.ghgAssessmentTypeForMac;
+      assessment.ghgAssessTypeForMac = this.ghgAssessmentTypeForMac||'Ex-post';
       assessment.project = this.slectedProject;
       assessment.isProposal = this.IsProposal;
 
