@@ -432,6 +432,8 @@
                   userRole.role == 4 ||
                   userRole.role == 5) &&
                 [
+                  models.GHG_MODULE,
+                  models.MAC_MODULE,
                   models.DATACOLLECTION_MODULE,
                   models.DATACOLLECTION_GHG_MODULE
                 ].some(getModel)
