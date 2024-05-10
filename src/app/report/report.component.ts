@@ -113,7 +113,7 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
 
   dataCollectionGhgModuleStatus: number;
   spin:boolean =false;
-
+assignedModule:number[]=[]
   searchBy: any = {
     sector: null,
     ndc: null,
@@ -154,6 +154,7 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
 
+this.assignedModule=tokenPayload.moduleLevels;
     this.mainSubscription = this.requestTrigger
     .pipe(debounceTime(1000)) // Adjust the debounce time (in milliseconds) as per your requirements
     .subscribe(() => {
@@ -355,8 +356,18 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
     this.assessmentYrFilter = [];
     this.popUpYrList = [];
 
-    this.assessmentYrFilter.push('assessment.id||$in||' + this.yrIdList) &
+    this.assessmentYrFilter.push('assessment.id||$in||' + this.yrIdList);
+
+    if(this.assignedModule[3]==1||this.assignedModule[4]==1){
       this.assessmentYrFilter.push('verificationStatus||$eq||' + 7);
+    }else if(this.assignedModule[1]==1||this.assignedModule[2]==1){
+      this.assessmentYrFilter.push('assessment.isProposal||$eq||true');
+    }else{
+      this.assessmentYrFilter.push('verificationStatus||$eq||' + 7);
+      this.assessmentYrFilter.push('assessment.isProposal||$eq||false');
+     
+    }
+      
 
     if (this.yrIdList.length > 0) {
       this.serviceProxy
