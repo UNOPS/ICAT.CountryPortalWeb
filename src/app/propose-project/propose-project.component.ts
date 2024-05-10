@@ -100,6 +100,8 @@ export class ProposeProjectComponent implements OnInit {
   telephoneLength: number;
 
   isSector: boolean = false;
+  doc: any[] = [];
+  projectID:number=0;
 
   @ViewChild('gmap') gmap: any;
   @ViewChild('op') overlay: any;
@@ -125,7 +127,7 @@ export class ProposeProjectComponent implements OnInit {
     private location: Location,
     private messageService: MessageService,
     private projectProxy: ProjectControllerServiceProxy,
-    private sectorProxy: SectorControllerServiceProxy
+    private sectorProxy: SectorControllerServiceProxy,
   ) { }
 
   ngOnInit(): void {
@@ -502,11 +504,17 @@ export class ProposeProjectComponent implements OnInit {
         this.institutionList = res.data;
       });
 
-    if (this.editEntytyId != 0) {
+      this.getdoc();
+    
+  }
+  changInstitute(event: any) { }
+
+  async getdoc(){
+    if (this.editEntytyId != 0 && this.editEntytyId != undefined) {
       const docFilter: string[] = [];
 
       docFilter.push('documentOwnerId||$eq||' + this.editEntytyId);
-      this.serviceProxy
+      await this.serviceProxy
         .getManyBaseDocumentControllerDocuments(
           undefined,
           undefined,
@@ -519,8 +527,29 @@ export class ProposeProjectComponent implements OnInit {
           0,
           0
         )
-        .subscribe((res: any) => {
-          this.selectedDocuments = res.data;
+        .subscribe(async (res: any) => {
+          this.selectedDocuments =await res.data;
+        });
+    }
+    else if(this.projectID>0){
+      let docFilter: string[] = new Array();
+
+      docFilter.push('documentOwnerId||$eq||' + this.projectID);
+     await this.serviceProxy
+        .getManyBaseDocumentControllerDocuments(
+          undefined,
+          undefined,
+          docFilter,
+          undefined,
+          undefined,
+          undefined,
+          1000,
+          0,
+          0,
+          0
+        )
+        .subscribe(async (res: any) => {
+          this.selectedDocuments = await res.data;
         });
     }
 
@@ -547,7 +576,6 @@ export class ProposeProjectComponent implements OnInit {
         });
     }
   }
-  changInstitute(event: any) { }
 
   //
   async saveForm(formData: NgForm) {
@@ -665,14 +693,30 @@ export class ProposeProjectComponent implements OnInit {
         this.serviceProxy
           .createOneBaseProjectControllerProject(this.project)
           .subscribe(
-            (res) => {
+            async (res) => {
+              for(let a of this.doc){
+                this.projectID= res.id;
+                a.documentOwnerId= res.id
+               await this.serviceProxy.updateOneBaseDocumentControllerDocuments(a.id,a)
+                .subscribe((re) => { 
+                });
+              }
+             
+              setTimeout(() => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'project  has save successfully',
+                  closable: true,
+                });
+  
+                this.getdoc();
+                this.router.navigate(['/propose-project'], {
+                  queryParams: { id: this.projectID, flag: this.flag },
+                });
+              }, 3000);
               this.isSaving = true;
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Success',
-                detail: 'project  has save successfully',
-                closable: true,
-              });
+             
             },
 
             (err) => {
@@ -691,6 +735,12 @@ export class ProposeProjectComponent implements OnInit {
       }
     }
 
+  }
+
+  onComplete(e: any) {
+    if (e) {
+      this.doc=e;
+    }
   }
 
   onnameKeyDown(event: any) {
@@ -1232,10 +1282,12 @@ export class ProposeProjectComponent implements OnInit {
     window.location.reload();
   }
 
-  toDownload() {
+  async toDownload() {
+    await this.getdoc();
     this.textdlod = 'Downloaded date ' + moment().format('YYYY-MM-DD HH:mm:ss');
     this.isDownloadMode = 1;
     this.isDownloading = true;
+    
 
     setTimeout(() => {
       const data = document.getElementById('content')!;

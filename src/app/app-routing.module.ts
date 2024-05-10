@@ -391,6 +391,8 @@ const routes: Routes = [
     data: {
       expectedRoles: [UserRoles.COUNTRY_ADMIN, UserRoles.SECTOR_ADMIN],
       expectedModules: [
+        CountryModule.GHG_MODULE,
+        CountryModule.MAC_MODULE,
         CountryModule.DATACOLLECTION_MODULE,
         CountryModule.DATACOLLECTION_GHG_MODULE,
       ],
