@@ -60,6 +60,7 @@ import { TrackclimateactionsCountryComponent } from './trackclimateactions-count
 import { VerifyDetailSectorAdminComponent } from './verification-sector-admin/verify-detail/verify-detail.component';
 import { DefaultValueFormComponent } from './data-request-flow/manage-default-values/default-value-form/default-value-form.component';
 import { SetPasswordComponent } from './login/set-password/set-password.component';
+import { DirectDefaultValueFormComponent } from './data-request-flow/manage-default-values/default-value-form/direct-default-value-form/direct-default-value-form.component';
 
 export enum UserRoles {
   COUNTRY_ADMIN = 'Country Admin',
@@ -369,6 +370,10 @@ const routes: Routes = [
   {
     path: 'app-manage-default-values-form',
     component: DefaultValueFormComponent,
+  },
+  {
+    path: 'app-direct-default-value-form',
+    component: DirectDefaultValueFormComponent,
   },
   { path: 'track-ca', component: TrackclimateactionsComponent },
   {

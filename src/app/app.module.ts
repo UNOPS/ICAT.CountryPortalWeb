@@ -168,6 +168,7 @@ import {PasswordModule} from 'primeng/password';
 import { VerificationActionDialogComponent } from './verification-sector-admin/verification-action-dialog/verification-action-dialog.component';
 import { SetPasswordComponent } from './login/set-password/set-password.component';
 import { VerificationService } from 'shared/verification-service';
+import { DirectDefaultValueFormComponent } from './data-request-flow/manage-default-values/default-value-form/direct-default-value-form/direct-default-value-form.component';
 
 export function getRemoteServiceBaseUrl(): string {
   return environment.baseUrlAPI;
@@ -263,6 +264,7 @@ export function getRemoteServiceBaseUrl(): string {
     ResidueParameterComponent,
     VerificationActionDialogComponent,
     SetPasswordComponent,
+    DirectDefaultValueFormComponent,
     
   ],
   imports: [
