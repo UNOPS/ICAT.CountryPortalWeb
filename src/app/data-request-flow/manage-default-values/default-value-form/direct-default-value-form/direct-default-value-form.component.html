@@ -1,0 +1,194 @@
+<div class="container pl-20 pr-20">
+    <div class="mb-12">
+      <h4 class="mt-4">Default value form</h4>
+    </div>
+    <form #fData="ngForm" (ngSubmit)="saveForm(fData)" novalidate>
+      <div class="card">
+        <div class="p-grid p-fluid col-sm-12">
+          <div class="row p-2">
+            <div class="col-12 col-md-6">
+              <div class="p-field">
+                <label for="contatname">Parent Parameter*</label>
+                <p-dropdown
+                  placeholder="Select Parameter"
+                  name="ParentParameter"
+                  #ParentParameter="ngModel"
+                  [options]="parentParametersList"
+                  optionLabel="parameterName"
+                  [(ngModel)]="parentParameter"
+                  (ngModelChange)="getSelectedParentParameter()"
+                ></p-dropdown>
+                <p
+                  class="info-message text-danger"
+                  *ngIf="
+                    !parentParameter &&
+                    (fData.submitted ||
+                      ParentParameter.touched ||
+                      ParentParameter.dirty)
+                  "
+                >
+                  This is a mandatory field
+                </p>
+              </div>
+            </div>
+          </div>
+  
+          <div class="row p-2">
+            <div class="col-12 col-md-6">
+              <div class="p-field">
+                <label for="contatname">Country*</label>
+                <input
+                  [disabled]="true"
+                  type="text"
+                  #Country="ngModel"
+                  maxlength="50"
+                  name="Country"
+                  [(ngModel)]="userCountry"
+                  field="Country"
+                  class="p-inputtext"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+  
+          <div class="row p-2">
+            <div class="col-12 col-md-6">
+              <div class="p-field">
+                <label for="contatname">Source *</label>
+                <input
+                type="text"
+                #Institution="ngModel"
+                maxlength="50"
+                name="Institution"
+                [(ngModel)]="institution"
+                field="Institution"
+                class="p-inputtext"
+                required
+              />
+                <p
+                  class="info-message text-danger"
+                  *ngIf="
+                    !institution &&
+                    (fData.submitted ||
+                    Institution.touched ||
+                    Institution.dirty)
+                  "
+                >
+                  This is a mandatory field
+                </p>
+              </div>
+            </div>
+          </div>
+  
+          <div class="row p-2">
+            <div class="col-12 col-md-6">
+              <div class="p-field">
+                <label for="projectownership">Years*</label>
+                <p-multiSelect
+                  appendTo="body"
+                  name="multiYear"
+                  #multiYear="ngModel"
+                  [options]="Years"
+                  [(ngModel)]="selectedYears"
+                >
+                </p-multiSelect>
+                <p
+                  class="info-message text-danger"
+                  *ngIf="
+                    !selectedYears &&
+                    (fData.submitted || multiYear.touched || multiYear.dirty)
+                  "
+                >
+                  This is a mandatory field
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-2">
+            <div class="col-12 col-md-6">
+              <div class="p-field">
+                <label for="contatname">Value*</label>
+                <input
+                type="text"
+                #Values="ngModel"
+                maxlength="50"
+                name="Values"
+                [(ngModel)]="value"
+                field="Values"
+                class="p-inputtext"
+                required
+              />
+                <p
+                  class="info-message text-danger"
+                  *ngIf="
+                    !value &&
+                    (fData.submitted ||
+                    Values.touched ||
+                    Values.dirty)
+                  "
+                >
+                  This is a mandatory field
+                </p>
+              </div>
+            </div>
+          </div>
+  
+          <!-- <div class="row p-2">
+            <div class="col-12 col-md-6">
+              <div class="p-field">
+                <label for="deadline">Data Request Deadline*</label>
+                <p-calendar
+                  appendTo="body"
+                  placeholder="DD/MM/YYYY"
+                  dateFormat="dd/mm/yy"
+                  name="propsedDate"
+                  #propsedDate="ngModel"
+                  [(ngModel)]="deadLine"
+                  [minDate]="Date"
+                ></p-calendar>
+                <p
+                  class="info-message text-danger"
+                  *ngIf="
+                    !deadLine &&
+                    (fData.submitted || propsedDate.touched || propsedDate.dirty)
+                  "
+                >
+                  This is a mandatory field
+                </p>
+              </div>
+            </div>
+          </div> -->
+  
+          <div class="row p-2">
+            <div class="col-12 col-md-6">
+              <div class="row p-2">
+                <div class="col-12 col-md-6"></div>
+                <div class="col-12 col-md-3">
+                  <button
+                    pButton
+                    pRipple
+                    label="Back"
+                    style="margin-right: 10px"
+                    (click)="onBackClick()"
+                  ></button>
+                </div>
+                <div class="col-12 col-md-3">
+                  <button
+                    pButton
+                    pRipple
+                    label="Save"
+                    style="margin-right: 10px"
+                    type="submit"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <p-toast position="top-right"></p-toast>
+  
