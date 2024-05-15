@@ -39,6 +39,7 @@ export class ManageDefaultValuesComponent implements OnInit {
   selectedstatustype: ProjectStatus;
   searchText: string;
   userCountryId: number;
+  moduleLevel: any;
   loading: boolean;
   totalRecords = 0;
   itemsPerPage = 0;
@@ -83,6 +84,7 @@ export class ManageDefaultValuesComponent implements OnInit {
     const token = localStorage.getItem('access_token')!;
     const tokenPayload = decode<any>(token);
     this.userCountryId = tokenPayload.countryId;
+    this.moduleLevel = tokenPayload.moduleLevels;
 
     this.serviceProxy
       .getManyBaseDefaultValueControllerDefaultValue(
@@ -213,6 +215,11 @@ export class ManageDefaultValuesComponent implements OnInit {
   }
 
   toForm() {
+    if (this.moduleLevel[3] == 1 || this.moduleLevel[4] == 1) {
     this.router.navigate(['app-manage-default-values-form'], {});
   }
+  else{
+    this.router.navigate(['app-direct-default-value-form'], {});
+  }
+}
 }

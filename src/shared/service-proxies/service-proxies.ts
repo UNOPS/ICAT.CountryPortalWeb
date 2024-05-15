@@ -33239,6 +33239,7 @@ export class DefaultValueDtos implements IDefaultValueDtos {
     deadLine: moment.Moment;
     year: number[];
     country: Country;
+    value: number;
 
     constructor(data?: IDefaultValueDtos) {
         if (data) {
@@ -33257,6 +33258,7 @@ export class DefaultValueDtos implements IDefaultValueDtos {
         if (_data) {
             this.parameterName = _data["parameterName"];
             this.parentId = _data["parentId"];
+            this.value = _data["value"];
             this.administrationLevel = _data["administrationLevel"];
             this.source = _data["source"];
             this.deadLine = _data["deadLine"] ? moment(_data["deadLine"].toString()) : <any>undefined;
@@ -33280,6 +33282,7 @@ export class DefaultValueDtos implements IDefaultValueDtos {
         data = typeof data === 'object' ? data : {};
         data["parameterName"] = this.parameterName;
         data["parentId"] = this.parentId;
+        data["value"] = this.value;
         data["administrationLevel"] = this.administrationLevel;
         data["source"] = this.source;
         data["deadLine"] = this.deadLine ? this.deadLine.toISOString() : <any>undefined;
@@ -33308,6 +33311,7 @@ export interface IDefaultValueDtos {
     deadLine: moment.Moment;
     year: number[];
     country: Country;
+    value: number;
 }
 
 export enum CountryStatus {
