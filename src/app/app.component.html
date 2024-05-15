@@ -130,7 +130,8 @@
             </div>
 
             <div
-              *ngIf="userRole.role == 6 || userRole.role == 4"
+              *ngIf="(userRole.role == 6 || userRole.role == 4) &&
+              [models.DATACOLLECTION_MODULE,models.DATACOLLECTION_GHG_MODULE].some(getModel)"
               class="sidebar-items--link align-items-start"
               [routerLink]="['/app-managedatastatus']"
               routerLinkActive="selected"
@@ -140,7 +141,8 @@
             </div>
 
             <div
-              *ngIf="userRole.role == 6 || userRole.role == 4"
+              *ngIf="userRole.role == 6 || userRole.role == 4 &&
+              [models.DATACOLLECTION_MODULE,models.DATACOLLECTION_GHG_MODULE].some(getModel)"
               class="sidebar-items--link align-items-start"
               [routerLink]="['/app-data-request']"
               routerLinkActive="selected"
@@ -345,7 +347,8 @@
             </p-accordion>
 
             <div
-              *ngIf="userRole.role == 7 || userRole.role == 4"
+              *ngIf="userRole.role == 7 || userRole.role == 4 &&
+              [models.DATACOLLECTION_MODULE,models.DATACOLLECTION_GHG_MODULE].some(getModel)"
               class="sidebar-items--link align-items-start"
               [routerLink]="['/qc']"
               routerLinkActive="selected"
