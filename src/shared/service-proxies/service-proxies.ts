@@ -20995,12 +20995,12 @@ export class InstitutionControllerServiceProxy {
         return _observableOf(<any>null);
     }
 
-    deactivateInstitution(instiId: number): Observable<any> {
-        let url_ = this.baseUrl + "/institution/deactivateInstituion?";
-        if (instiId === undefined || instiId === null)
-            throw new Error("The parameter 'instiId' must be defined and cannot be null.");
+    deactivateInstitution(institutionId: number): Observable<any> {
+        let url_ = this.baseUrl + "/institution/deactivateInstitution?";
+        if (institutionId === undefined || institutionId === null)
+            throw new Error("The parameter 'institutionId' must be defined and cannot be null.");
         else
-            url_ += "instiId=" + encodeURIComponent("" + instiId) + "&";
+            url_ += "institutionId=" + encodeURIComponent("" + institutionId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
