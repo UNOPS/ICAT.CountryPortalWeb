@@ -42,7 +42,7 @@
             <br />
             <a
               *ngIf="listDocumentsNC[0]"
-              href="{{ SERVER_URL }}/inline/{{ listDocumentsNC[0]?.id }}"
+              href="#" (click)="openDocument(listDocumentsNC[0]?.id); $event.preventDefault()"
             >
               {{ listDocumentsNC[0]?.fileName }}
             </a>
@@ -64,7 +64,7 @@
               <ng-template pTemplate>
                 <ng-container *ngFor="let set of listDocumentsNC">
                   <div>
-                    <a href="{{ SERVER_URL }}/inline/{{ set?.id }}">
+                    <a href="#" (click)="openDocument(set?.id); $event.preventDefault()">
                       {{ set.fileName }}
                     </a>
                   </div>
@@ -81,7 +81,7 @@
 
             <a
               *ngIf="listDocumentsBUR[0]"
-              href="{{ SERVER_URL }}/inline/{{ listDocumentsBUR[0]?.id }}"
+              href="#" (click)="openDocument(listDocumentsBUR[0]?.id); $event.preventDefault()"
             >
               {{ listDocumentsBUR[0]?.fileName }}
             </a>
@@ -103,7 +103,7 @@
               <ng-template pTemplate>
                 <ng-container *ngFor="let set of this.listDocumentsBUR">
                   <div>
-                    <a href="{{ SERVER_URL }}/inline/{{ set?.id }}">
+                    <a href="#" (click)="openDocument(set?.id); $event.preventDefault()">
                       {{ set.fileName }}
                     </a>
                   </div>
@@ -123,7 +123,7 @@
             <br />
             <a
               *ngIf="listDocumentsBTR[0]"
-              href="{{ SERVER_URL }}/inline/{{ listDocumentsBTR[0]?.id }}"
+              href="#" (click)="openDocument(listDocumentsBTR[0]?.id); $event.preventDefault()"
             >
               {{ listDocumentsBTR[0]?.fileName }}
             </a>
@@ -144,7 +144,7 @@
               <ng-template pTemplate>
                 <ng-container *ngFor="let set of listDocumentsBTR">
                   <div>
-                    <a href="{{ SERVER_URL }}/inline/{{ set?.id }}">
+                    <a href="#" (click)="openDocument(set?.id); $event.preventDefault()">
                       {{ set.fileName }}
                     </a>
                   </div>
@@ -163,7 +163,7 @@
             <br />
             <a
               *ngIf="listDocumentsNDC[0]"
-              href="{{ SERVER_URL }}/inline/{{ listDocumentsNDC[0]?.id }}"
+              href="#" (click)="openDocument(listDocumentsNDC[0]?.id); $event.preventDefault()"
             >
               {{ listDocumentsNDC[0]?.fileName }}
             </a>
@@ -184,7 +184,7 @@
               <ng-template pTemplate>
                 <ng-container *ngFor="let set of listDocumentsNDC">
                   <div>
-                    <a href="{{ SERVER_URL }}/inline/{{ set?.id }}">
+                    <a href="#" (click)="openDocument(set?.id); $event.preventDefault()">
                       {{ set.fileName }}
                     </a>
                   </div>
@@ -202,7 +202,7 @@
             <br />
             <a
               *ngIf="listDocumentsGHG[0]"
-              href="{{ SERVER_URL }}/inline/{{ listDocumentsGHG[0]?.id }}"
+              href="#" (click)="openDocument(listDocumentsGHG[0]?.id); $event.preventDefault()"
             >
               {{ listDocumentsGHG[0]?.fileName }}
             </a>
@@ -223,7 +223,7 @@
               <ng-template pTemplate>
                 <ng-container *ngFor="let set of listDocumentsGHG">
                   <div>
-                    <a href="{{ SERVER_URL }}/inline/{{ set?.id }}">
+                    <a href="#" (click)="openDocument(set?.id); $event.preventDefault()">
                       {{ set.fileName }}
                     </a>
                   </div>

@@ -15,6 +15,7 @@ import {
   ServiceProxy,
 } from 'shared/service-proxies/service-proxies';
 import { environment } from 'environments/environment';
+import { openAuthenticatedChartImage } from 'app/shared/authenticated-download.util';
 @Component({
   selector: 'app-final-report',
   templateUrl: './final-report.component.html',
@@ -440,10 +441,15 @@ export class FinalReportComponent implements OnInit {
       )
       .toPromise();
 
-    const link = document.createElement('a');
-    link.href = this.SERVER_URL + '/' + namechart.name;
-    link.click();
-    link.remove();
+    try {
+      await openAuthenticatedChartImage(
+        this.http,
+        environment.baseUrlAPI,
+        namechart.name,
+      );
+    } catch {
+      alert('Failed to download chart. Please try again.');
+    }
   }
 
   downLoadFile(data: any, type: string) {

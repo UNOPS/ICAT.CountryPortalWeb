@@ -6,7 +6,9 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { ReportComponent } from '../report.component';
+import { openStoredResourceUrl } from 'app/shared/authenticated-download.util';
 
 @Component({
   selector: 'app-document-report',
@@ -24,6 +26,7 @@ export class DocumentReportComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     public router: Router,
     private documentService: ReportComponent,
+    private http: HttpClient,
   ) {}
 
   ngAfterViewInit(): void {
@@ -43,7 +46,7 @@ export class DocumentReportComponent implements OnInit, AfterViewInit {
   }
 
   onRedirect() {
-    window.location.href = this.object_array[0][8].document;
+    openStoredResourceUrl(this.http, this.object_array[0][8].document);
   }
 
   publish(reportName: string) {

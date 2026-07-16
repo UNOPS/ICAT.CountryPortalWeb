@@ -12,6 +12,9 @@ import {
   MethodologyControllerServiceProxy,
   ServiceProxy,
 } from 'shared/service-proxies/service-proxies';
+import { HttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
+import { openStoredResourceUrl } from 'app/shared/authenticated-download.util';
 
 @Component({
   selector: 'app-methodologies',
@@ -43,6 +46,8 @@ export class MethodologiesComponent implements OnInit, AfterViewInit {
     private serviceProxy: ServiceProxy,
     private methodologyProxy: MethodologyControllerServiceProxy,
     private cdr: ChangeDetectorRef,
+    private http: HttpClient,
+    private messageService: MessageService,
   ) {}
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
@@ -69,7 +74,14 @@ export class MethodologiesComponent implements OnInit, AfterViewInit {
   onRedirect(meth: Methodology) {
     const docPath = meth?.documents;
 
-    window.location.href = docPath;
+    openStoredResourceUrl(this.http, docPath).catch(() => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to open document',
+        closable: true,
+      });
+    });
   }
 
   loadgridData = (event: LazyLoadEvent) => {

@@ -6,7 +6,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
+import { openStoredResourceUrl } from 'app/shared/authenticated-download.util';
 import * as moment from 'moment';
 
 import {
@@ -69,6 +71,7 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
     private AssessmentProxy: AssessmentControllerServiceProxy,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private http: HttpClient,
   ) {}
 
   ngAfterViewInit(): void {
@@ -184,11 +187,11 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
   }
 
   toView(lm: any) {
-    window.location.href = lm.document;
+    openStoredResourceUrl(this.http, lm.document);
   }
 
   viewPdf(obj: Methodology) {
-    window.location.href = obj.documents;
+    openStoredResourceUrl(this.http, obj.documents);
   }
 
   toPropose() {

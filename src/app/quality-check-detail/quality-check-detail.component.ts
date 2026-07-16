@@ -17,8 +17,11 @@ import {
   AssessmentYearControllerServiceProxy,
   ServiceProxy,
   VerificationDetail,
+import {
   ParameterVerifierAcceptance,
 } from 'shared/service-proxies/service-proxies';
+import { openStoredResourceUrl } from 'app/shared/authenticated-download.util';
+import { openStoredResourceUrl } from 'app/shared/authenticated-download.util';
 
 @Component({
   selector: 'app-quality-check-detail',
@@ -341,7 +344,14 @@ export class QualityCheckDetailComponent implements OnInit {
         detail: 'Error,No documents for this methodology!.',
       });
     } else {
-      window.location.href = this.methodDocument;
+      openStoredResourceUrl(this.httpClient, this.methodDocument).catch(() => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to open document',
+          closable: true,
+        });
+      });
     }
   }
 
@@ -615,7 +625,14 @@ export class QualityCheckDetailComponent implements OnInit {
       });
     }
     else {
-      window.location.href = this.resultImage;
+      openStoredResourceUrl(this.httpClient, this.resultImage).catch(() => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to open image',
+          closable: true,
+        });
+      });
     }
 
   }

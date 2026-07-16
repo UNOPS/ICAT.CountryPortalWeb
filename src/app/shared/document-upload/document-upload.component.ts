@@ -15,6 +15,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { MessageService } from 'primeng/api';
+import { openAuthenticatedDocumentById, openAuthenticatedUrl } from '../authenticated-download.util';
 
 @Component({
   selector: 'app-document-upload',
@@ -44,6 +46,7 @@ export class DocumentUploadComponent implements OnInit, OnChanges {
     private docService: DocumentControllerServiceProxy,
     private httpClient: HttpClient,
     private confirmationService: ConfirmationService,
+    private messageService: MessageService,
   ) {
     this.token = localStorage.getItem('access_token')!;
   }
@@ -154,6 +157,29 @@ export class DocumentUploadComponent implements OnInit, OnChanges {
       },
       reject: () => {},
     });
+  }
+
+  async downloadDocument(doc: Documents, inline = false): Promise<void> {
+    try {
+      const url = inline ? doc.viewUrl : doc.url;
+      if (url) {
+        await openAuthenticatedUrl(this.httpClient, url);
+      } else {
+        await openAuthenticatedDocumentById(
+          this.httpClient,
+          environment.baseUrlAPI,
+          doc.id,
+          inline ? 'inline' : 'attachment',
+        );
+      }
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to download document',
+        closable: true,
+      });
+    }
   }
 
   base64ToArrayBuffer(base64: any) {

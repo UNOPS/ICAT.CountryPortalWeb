@@ -1,4 +1,7 @@
 import { environment } from './../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
+import { openAuthenticatedReportByName } from 'app/shared/authenticated-download.util';
 import {
   NdcControllerServiceProxy,
   ProjectControllerServiceProxy,
@@ -140,6 +143,8 @@ assignedModule:number[]=[]
     private ndcProxy: NdcControllerServiceProxy,
     private cilmateProxy: ProjectControllerServiceProxy,
     private sectorProxy: SectorControllerServiceProxy,
+    private http: HttpClient,
+    private messageService: MessageService,
   ) { }
 
   ngOnDestroy(): void {
@@ -635,13 +640,32 @@ this.assignedModule=tokenPayload.moduleLevels;
     this.reportPdfFile.assessmentType = this.summeryReportPDF.assessType.toString();
     this.reportPdfFile.generateReportName = res.fileName
 
-    let resultPdfData = await this.reportProxy.getReportPdfFileData(this.reportPdfFile).subscribe((a) => {
+    let resultPdfData = await this.reportProxy.getReportPdfFileData(this.reportPdfFile).subscribe(async () => {
       this.spin=false;
-      let url = environment.baseUrlAPI + `/document/downloadReport/${ res.fileName }`;
-      setTimeout(() => {window.open(url, '_blank');},10000)
-      this.filterReportData()
-    })
- 
-   
+      try {
+        await openAuthenticatedReportByName(this.http, environment.baseUrlAPI, res.fileName);
+      } catch {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Report was generated but could not be opened',
+          closable: true,
+        });
+      }
+      this.filterReportData();
+    });
+  }
+
+  async viewReport(file: { generateReportName: string }): Promise<void> {
+    try {
+      await openAuthenticatedReportByName(this.http, this.SERVER_URL, file.generateReportName);
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to open report',
+        closable: true,
+      });
+    }
   }
 }

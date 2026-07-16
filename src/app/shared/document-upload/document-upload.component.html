@@ -48,25 +48,25 @@
           {{ doc.fileName }}
         </td>
           <td class="col-md-1">
-            <a
-              [href]="doc.url"
+            <button
+              type="button"
               class="p-button p-component p-button-icon-only mr-10"
               icon="pi pi-download"
               pButton
               ng-reflect-icon="pi pi-download"
-              target="_blank"
-            ></a>
+              (click)="downloadDocument(doc)"
+            ></button>
           </td>
 
           <td *ngIf="viewDocument" class="col-md-1">
-            <a
-              [href]="doc.viewUrl"
+            <button
+              type="button"
               class="p-button p-component p-button-icon-only mr-10"
               icon="pi pi-eye"
               pButton
               ng-reflect-icon="pi pi-eye"
-              target="_blank"
-            ></a>
+              (click)="downloadDocument(doc, true)"
+            ></button>
           </td>
            <td class="col-md-1">
             <button pRipple 

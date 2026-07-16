@@ -6,11 +6,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import {
   Methodology,
   Report,
   ServiceProxy,
 } from 'shared/service-proxies/service-proxies';
+import { openStoredResourceUrl } from 'app/shared/authenticated-download.util';
 
 @Component({
   selector: 'app-loard-more',
@@ -42,6 +44,7 @@ export class LoardMoreComponent implements OnInit, AfterViewInit {
 
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private http: HttpClient,
   ) {}
 
   ngAfterViewInit(): void {
@@ -86,6 +89,6 @@ export class LoardMoreComponent implements OnInit, AfterViewInit {
   }
 
   viewPdf(obj: Methodology) {
-    window.location.href = obj.documents;
+    openStoredResourceUrl(this.http, obj.documents);
   }
 }

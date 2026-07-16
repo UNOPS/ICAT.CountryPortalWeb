@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { QuAlityCheckStatus } from 'app/Model/QuAlityCheckStatus.enum';
+import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
@@ -20,6 +21,7 @@ import {
 } from 'shared/service-proxies/service-proxies';
 import { QcHistoryComponent } from '../qc-history/qc-history.component';
 import decode from 'jwt-decode';
+import { openStoredResourceUrl } from 'app/shared/authenticated-download.util';
 @Component({
   selector: 'app-parameter-summary',
   templateUrl: './parameter-summary.component.html',
@@ -69,6 +71,7 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
     private prHistoryProxy: ParameterHistoryControllerServiceProxy,
     private serviceProxy: ServiceProxy,
     private assessmentProxy: AssessmentControllerServiceProxy,
+    private http: HttpClient,
   ) {}
 
   ngOnInit(): void {
@@ -124,7 +127,14 @@ export class ParameterSummaryComponent implements OnInit, OnDestroy {
         detail: 'Error,No Equation for this methodology!.',
       });
     } else {
-      window.location.href = this.baseImage;
+      openStoredResourceUrl(this.http, this.baseImage).catch(() => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to open image',
+          closable: true,
+        });
+      });
     }
   }
 

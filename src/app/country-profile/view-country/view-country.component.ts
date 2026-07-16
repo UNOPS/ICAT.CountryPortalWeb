@@ -1,4 +1,4 @@
-import { HttpParams } from '@angular/common/http';
+import { HttpParams, HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'environments/environment';
@@ -14,6 +14,7 @@ import {
   ServiceProxy,
 } from 'shared/service-proxies/service-proxies';
 import decode from 'jwt-decode';
+import { openAuthenticatedDocumentById } from 'app/shared/authenticated-download.util';
 @Component({
   selector: 'app-view-country',
   templateUrl: './view-country.component.html',
@@ -75,6 +76,7 @@ export class ViewCountryComponent implements OnInit {
     private messageService: MessageService,
     private sectorProxy: SectorControllerServiceProxy,
     private documentProxy: DocumentControllerServiceProxy,
+    private http: HttpClient,
   ) {}
 
   ngOnInit(): void {
@@ -362,6 +364,27 @@ export class ViewCountryComponent implements OnInit {
           });
       }
      
+    }
+  }
+
+  async openDocument(documentId: number): Promise<void> {
+    if (!documentId) {
+      return;
+    }
+
+    try {
+      await openAuthenticatedDocumentById(
+        this.http,
+        environment.baseUrlAPI,
+        documentId,
+      );
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to open document',
+        closable: true,
+      });
     }
   }
 }
