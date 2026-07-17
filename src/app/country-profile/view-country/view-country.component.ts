@@ -367,7 +367,7 @@ export class ViewCountryComponent implements OnInit {
     }
   }
 
-  async openDocument(documentId: number): Promise<void> {
+  async openDocument(documentId: number | undefined): Promise<void> {
     if (!documentId) {
       return;
     }
