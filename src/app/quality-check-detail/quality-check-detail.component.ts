@@ -17,10 +17,8 @@ import {
   AssessmentYearControllerServiceProxy,
   ServiceProxy,
   VerificationDetail,
-import {
   ParameterVerifierAcceptance,
 } from 'shared/service-proxies/service-proxies';
-import { openStoredResourceUrl } from 'app/shared/authenticated-download.util';
 import { openStoredResourceUrl } from 'app/shared/authenticated-download.util';
 
 @Component({
