@@ -10,7 +10,7 @@ RUN cd /app && npm set progress=false && npm install -f
 COPY .  /app
 RUN cd /app && npm run ng build --prod --output-path=dist
 # STEP 2 build a small nginx image
-FROM nginx:1.22.1-alpine
+FROM nginx:1.31.9-alpine
 # a) Remove default nginx code
 RUN rm -rf /usr/share/nginx/html/*
 # b) From 'builder' copy your site to default nginx public folder
